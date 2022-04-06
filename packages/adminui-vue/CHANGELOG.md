@@ -21,6 +21,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+- `many/oneOf filter`: fixed error when filtering by 'Many' field type using 'one of'
 
 ## [5.22.7] - 2022-03-31
 ### Fixed

@@ -49,6 +49,10 @@ export default {
       }
     }
   },
+  // this hook will be call after call hook in mixin
+  created () {
+    if (!Array.isArray(this.value)) this.value = []
+  },
   methods: {
     getCondition () {
       const { $ut, value, manyOptions } = this
