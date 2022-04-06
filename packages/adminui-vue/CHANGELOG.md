@@ -17,15 +17,22 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [5.22.8] - 2022-04-06
 ### Changed
- - `UCodeMirror` support new property: `options`, which allows custom CodeMirror component configurations,
-   as described at https://codemirror.net/doc/manual.html#config
+- `UCodeMirror` support new property: `options`, which allows custom CodeMirror component configurations,
+  as described at https://codemirror.net/doc/manual.html#config
  ```angular2html
  <u-code-mirror
     :options="{lineWrapping: true}"
  />
  ```
 
+### Deprecated
+- The `ASSIGN_DATA` mutation deprecates `loadedData` property - it was misnamed.
+  Use the new `data` property instead.
+
 ### Fixed
+- The "processing" Vuex store module now uses `ASSIGN_DATA` instead of `LOAD_DATA` mutation
+  on adding new record.  This fixed problem with case, when server return all the default values
+  from `addnew` method and form is not dirty, so it may not be saved.
 - `many/oneOf filter`: fixed error when filtering by 'Many' field type using 'one of'
 
 ## [5.22.7] - 2022-03-31
@@ -37,12 +44,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - `Form.js`: added updating this.tabId in `created` event handler after new entity Id is already generated.
     It fixes bug when newly created entity can be opened in a separate tab.
  - az localization: fixed typo in July month name: `İyun` -> `İyul`
- - `UCron` localzation fixed
+ - `UCron` localization fixed
 
 ## [5.22.5] - 2022-03-25
 ### Added
  - `utils/clickOutside` additional listener to `dblclick` event for target elements
- - `UCron` - фdded functionality to hide seconds, minutes, etc.
+ - `UCron` - added functionality to hide seconds, minutes, etc.
 
 ### Changed
 - improved icons `download-with-signatures`, `upload-with-signatures` and `view-signatures` - better clarity of
