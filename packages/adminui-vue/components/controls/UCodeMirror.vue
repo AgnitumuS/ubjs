@@ -13,12 +13,13 @@
         </ul>
         <h5>Search</h5>
         <ul>
-          <li>Ctrl+F  - Start searching</li>
-          <li>Ctrl+G  - Find next</li>
+          <li>Ctrl+F - Start searching</li>
+          <li>Ctrl+G - Find next</li>
           <li>Shift-Ctrl+G - Find previous</li>
           <li>Shift-Ctrl+F - Replace</li>
           <li>Shift-Ctrl+R - Replace all</li>
-          <li>Alt+F - Persistent search (dialog does not autoclose, enter to find next, Shift-Enter to find previous)</li>
+          <li>Alt+F - Persistent search (dialog does not autoclose, enter to find next, Shift-Enter to find previous)
+          </li>
           <li>Alt+G - Jump to line</li>
         </ul>
         <h5>Edit</h5>
@@ -28,13 +29,13 @@
           <li>Ctrl+Z - Undo the last change</li>
           <li>Ctrl+Y - Redo the last undone change</li>
           <li>Ctrl+U - Undo the last change to the selection</li>
-          <li>Alt-Left / Alt-Right - Move the cursor to the start/end  of the line</li>
+          <li>Alt-Left / Alt-Right - Move the cursor to the start/end of the line</li>
           <li>Tab / Shift + Tab - If something is selected, indent/dedent it</li>
         </ul>
       </template>
       <i class="u-icon-circle-question ub-code-mirror__help"></i>
     </el-tooltip>
-    <textarea ref="textarea" />
+    <textarea ref="textarea"/>
   </div>
 </template>
 
@@ -76,6 +77,11 @@ export default {
       default: false
     },
 
+    /**  Any additional properties to pass to CodeMirror control, see https://codemirror.net/doc/manual.html#config */
+    options: {
+      type: Object
+    },
+
     /**
      * Optional function what return a hints. See hint/show-hint.js section in https://codemirror.net/doc/manual.html#addons
      * Called with one parameter - codeMirror instance
@@ -111,25 +117,44 @@ export default {
   },
 
   mounted () {
+    const defaultOptions = {
+      lineNumbers: true,
+      tabSize: 2,
+      highlightSelectionMatches: {
+        annotateScrollbar: true
+      },
+      matchBrackets: true,
+      foldGutter: true,
+      gutters: [
+        'CodeMirror-linenumbers',
+        'CodeMirror-foldgutter',
+        'CodeMirror-lint-markers'
+      ]
+    }
+
     // do not put _codeMirror inside data to prevent it observation
     // Vue initialize reactivity BEFORE created(), so all NEW object properties assigned here is not reactive
     SystemJS.import('@unitybase/codemirror-full').then((CodeMirror) => {
-      this._codeMirror = CodeMirror.fromTextArea(this.$refs.textarea, {
-        mode: this.editorMode,
-        lineNumbers: true,
-        lint: Object.assign({ asi: true, esversion: 8 }, this.$UB.connection.appConfig.uiSettings.adminUI.linter),
-        readOnly: this.readonly,
-        tabSize: 2,
-        highlightSelectionMatches: { annotateScrollbar: true },
-        matchBrackets: true,
-        foldGutter: true,
-        gutters: ['CodeMirror-linenumbers', 'CodeMirror-foldgutter', 'CodeMirror-lint-markers'],
-        extraKeys: {
-          'Ctrl-Space': 'autocomplete',
-          'Ctrl-Q': this.showTemplates,
-          'Ctrl-B': this.doBeautify
-        }
-      })
+      this._codeMirror = CodeMirror.fromTextArea(
+        this.$refs.textarea,
+        {
+          ...defaultOptions,
+          mode: this.editorMode,
+          lint: Object.assign(
+            {
+              asi: true,
+              esversion: 8
+            },
+            this.$UB.connection.appConfig.uiSettings.adminUI.linter
+          ),
+          readOnly: this.readonly,
+          extraKeys: {
+            'Ctrl-Space': 'autocomplete',
+            'Ctrl-Q': this.showTemplates,
+            'Ctrl-B': this.doBeautify
+          },
+          ...this.options
+        })
       this._codeMirror.setValue(this.textValue || '')
       this._codeMirror.on('change', debounce(300, cmInstance => {
         const newValFromCm = cmInstance.getValue()
