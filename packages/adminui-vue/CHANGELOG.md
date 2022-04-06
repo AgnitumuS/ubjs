@@ -8,6 +8,15 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+## [5.22.8] - 2022-04-06
+### Changed
  - `UCodeMirror` support new property: `options`, which allows custom CodeMirror component configurations,
    as described at https://codemirror.net/doc/manual.html#config
  ```angular2html
@@ -15,10 +24,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
     :options="{lineWrapping: true}"
  />
  ```
-
-### Deprecated
-
-### Removed
 
 ### Fixed
 - `many/oneOf filter`: fixed error when filtering by 'Many' field type using 'one of'

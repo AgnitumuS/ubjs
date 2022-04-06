@@ -10,10 +10,15 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Changed
 
 ### Deprecated
- - The `ASSIGN_DATA` mutation deprecates `loadedData` property - it was misnamed.
-   Use the new `data` property instead.
 
 ### Removed
+
+### Fixed
+
+## [5.22.6] - 2022-04-06
+### Deprecated
+ - The `ASSIGN_DATA` mutation deprecates `loadedData` property - it was misnamed.
+   Use the new `data` property instead.
 
 ### Fixed
  - The "processing" Vuex store module now uses `ASSIGN_DATA` instead of `LOAD_DATA` mutation
