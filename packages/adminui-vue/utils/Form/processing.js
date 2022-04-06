@@ -337,9 +337,14 @@ function createProcessingModule ({
        * @param {object} payload
        * @param {object} [payload.collection] optional collection (if not passed update master store)
        * @param {object} [payload.index] optional collection item index. required in case collection is passed
-       * @param {object} payload.loadedState
+       * @param {object} payload.data
+       * @param {object} payload.loadedState  Deprecated!!!  Use "data" instead
        */
-      ASSIGN_DATA (state, { collection, index, loadedState }) {
+      ASSIGN_DATA (state, { collection, index, data, loadedState }) {
+        if (!data && loadedState) {
+          data = loadedState
+        }
+
         let stateToChange
         if (collection) {
           if (!(collection in state.collections)) {
@@ -354,7 +359,7 @@ function createProcessingModule ({
           stateToChange = state
         }
 
-        for (const [key, value] of Object.entries(loadedState)) {
+        for (const [key, value] of Object.entries(data)) {
           change(stateToChange, key, value)
         }
       },
@@ -577,7 +582,7 @@ function createProcessingModule ({
           fieldList,
           execParams: parentContext
         })
-        commit('LOAD_DATA', data)
+        commit('ASSIGN_DATA', { data })
         if (created) {
           await created()
         }
