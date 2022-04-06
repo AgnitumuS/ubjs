@@ -36,6 +36,21 @@
       ]
     },
     {
+      "name": "code2",
+      "dataType": "String",
+      "size": 32,
+      "caption": "Code2",
+      "description": "Mapped to code",
+      "allowNull": false,
+      "mapping": [
+        {
+          "name": "AnsiSQL",
+          "expressionType": "Field",
+          "expression": "C_CODE"
+        }
+      ]
+    },
+    {
       "name": "rnd",
       "dataType": "BigInt",
       "caption": "Random val",

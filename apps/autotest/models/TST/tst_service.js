@@ -388,3 +388,11 @@ me.resourceLimitationTest = function (ctx) {
   ctx.dataStore.runSQL(q, {})
 }
 me.entity.addMethod('resourceLimitationTest')
+
+me.entity.addMethod('reloadConfig')
+/**
+ * @param {ubMethodParams} ctx
+ */
+me.reloadConfig = function (ctx) {
+  App.reloadConfig()
+}
