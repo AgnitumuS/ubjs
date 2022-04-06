@@ -8,6 +8,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
+ - `UCodeMirror` support new property: `options`, which allows custom CodeMirror component configurations,
+   as described at https://codemirror.net/doc/manual.html#config
+ ```angular2html
+ <u-code-mirror
+    :options="{lineWrapping: true}"
+ />
+ ```
 
 ### Deprecated
 
