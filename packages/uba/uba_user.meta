@@ -145,7 +145,12 @@
 			"dataType": "DateTime",
 			"allowNull": false, "defaultValue": "currentDate",
 			"defaultView": false,
-			"caption": "Last password change date"
+			"caption": "Last password change date",
+			"restrictions": {
+				"I": "Supervisor",
+				"S": "Supervisor",
+				"U": "Supervisor"
+			}
 		}
 	]
 }
