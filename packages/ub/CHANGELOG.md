@@ -14,6 +14,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+ - environment variable replacer in `meta` file consider variable name contains only `A-Za-z0-9_-#.@$` characters.
+  This fix replacing expressions in mapping what contains for example `%` symbol, like `"expression": "(CONCAT('%', 'attr', '%'))"` )
 
 ## [5.22.27] - 2022-03-25
 ### Added
