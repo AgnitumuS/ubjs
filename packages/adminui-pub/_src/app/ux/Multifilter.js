@@ -1305,7 +1305,7 @@ Ext.define('UB.ux.Multifilter', {
       cfg.allowBlank = !required
       cfg.withoutIndent = true
       cfg.margin = context.getItemMargin()
-
+      cfg.editable = true
       if (!Ext.isEmpty(initParam.value)) {
         value = initParam.value
       }
