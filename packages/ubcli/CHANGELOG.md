@@ -14,6 +14,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+
+## [5.22.7] - 2022-04-08
+### Fixed
  - Init DB script for inserting roles and users - correct value in `mi_unityEntity`
 
 ## [5.22.6] - 2022-04-06

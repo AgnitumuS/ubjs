@@ -8,13 +8,16 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
- - `UB.ux.Multifilter`: added the ability to contextually search the ubdetailgrid filter for attributes of type enum
 
 ### Deprecated
 
 ### Removed
 
 ### Fixed
+
+## [5.22.7] - 2022-04-08
+### Changed
+ - `UB.ux.Multifilter`: added the ability to contextually search the ubdetailgrid filter for attributes of type enum
 
 ## [5.22.6] - 2022-03-29
 ### Changed

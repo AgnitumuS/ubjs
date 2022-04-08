@@ -6,8 +6,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
- - access to `uba_user.lastPasswordChangeDate` attribute now restricted to
-   Supervisor role members only
 
 ### Changed
 
@@ -16,6 +14,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+
+## [5.22.5] - 2022-04-08
+### Added
+ - access to `uba_user.lastPasswordChangeDate` attribute now restricted to
+   Supervisor role members only
 
 ## [5.22.4] - 2022-03-25
 ## [5.22.3] - 2022-02-16
