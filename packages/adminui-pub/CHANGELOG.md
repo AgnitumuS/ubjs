@@ -12,6 +12,19 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Deprecated
 
 ### Removed
+
+### Fixed
+
+## [5.22.7] - 2022-04-08
+### Changed
+ - `UB.ux.Multifilter`: added the ability to contextually search the ubdetailgrid filter for attributes of type enum
+
+## [5.22.6] - 2022-03-29
+### Changed
+- `UBApp`: generateTabId() - used entity name in tabId when formCode is not specified instead of '-' symbol.
+
+## [5.22.5] - 2022-03-25
+### Removed
  - `UB.ux.UBObject` is removed (not used)
  - `UB.view.CommandBuilder.CommandTypeComboBox` is *REMOVED* (not used)
  - `UB.view.CommandBuilder.FormsComboBox` is *REMOVED* (not used)
@@ -19,6 +32,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - `UB.ux.UBDetailTreeGrid` is *REMOVED* (not used)
 
 ### Fixed
+ - localization for tinymce UI (en, ru, uk locales)
 
 ## [5.22.4] - 2022-02-16
 ### Added

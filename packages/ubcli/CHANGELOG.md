@@ -15,6 +15,18 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.22.7] - 2022-04-08
+### Fixed
+ - Init DB script for inserting roles and users - correct value in `mi_unityEntity`
+
+## [5.22.6] - 2022-04-06
+## [5.22.5] - 2022-03-31
+### Fixed
+ - `ubcli generateDDL`: fixed DDL generation for multi-tenant environments for `uba_subject` entity.
+   Now tenant DB-level RLS returns values with mi_tenantID=0 also, so that records for uba_role are visible 
+   to users of all tenants.
+
+## [5.22.4] - 2022-03-25
 ## [5.22.3] - 2022-02-16
 ### Fixed
  - `ubcli generateDDL`: fixed DDL generation for multi-language columns when default language

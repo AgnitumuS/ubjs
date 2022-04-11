@@ -6,12 +6,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
- - `utils/clickOutside` additional listener to `dblclick` event for target elements
 
 ### Changed
-- improved icons `download-with-signatures`, `upload-with-signatures` and `view-signatures` - better clarity of
-  symbols
-- Use UB icon `u-icon-signature` for signature instead of FontAwesome icon in the SignatureVerificationResult component
 
 ### Deprecated
 
@@ -19,12 +15,58 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.22.9] - 2022-04-08
+## [5.22.8] - 2022-04-06
+### Changed
+- `UCodeMirror` support new property: `options`, which allows custom CodeMirror component configurations,
+  as described at https://codemirror.net/doc/manual.html#config
+ ```angular2html
+ <u-code-mirror
+    :options="{lineWrapping: true}"
+ />
+ ```
+
+### Deprecated
+- The `ASSIGN_DATA` mutation deprecates `loadedData` property - it was misnamed.
+  Use the new `data` property instead.
+
+### Fixed
+- The "processing" Vuex store module now uses `ASSIGN_DATA` instead of `LOAD_DATA` mutation
+  on adding new record.  This fixed problem with case, when server return all the default values
+  from `addnew` method and form is not dirty, so it may not be saved.
+- `many/oneOf filter`: fixed error when filtering by 'Many' field type using 'one of'
+
+## [5.22.7] - 2022-03-31
+### Fixed
+- `Form.processing`: call of the `created` hook
+
+## [5.22.6] - 2022-03-29
+### Fixed
+ - `Form.js`: added updating this.tabId in `created` event handler after new entity Id is already generated.
+    It fixes bug when newly created entity can be opened in a separate tab.
+ - az localization: fixed typo in July month name: `İyun` -> `İyul`
+ - `UCron` localization fixed
+
+## [5.22.5] - 2022-03-25
+### Added
+ - `utils/clickOutside` additional listener to `dblclick` event for target elements
+ - `UCron` - added functionality to hide seconds, minutes, etc.
+
+### Changed
+- improved icons `download-with-signatures`, `upload-with-signatures` and `view-signatures` - better clarity of
+  symbols
+- Use UB icon `u-icon-signature` for signature instead of FontAwesome icon in the SignatureVerificationResult component
+
+### Fixed
+ - `UTableEntity` - fixed hiding the filter when the table has one column and fix entity-equal filter
+ - `USelectEntity` - fixed error when click in corner select'a
+
 ## [5.22.4] - 2022-02-16
 ### Added
 - `UDropdown`:`customClass` prop added - allows set a custom CSS class for u-dropdown
 - `UTableEntity` store: new mutation `CLEAR_FILTER` allows clear current filters set
 - `UCheckbox` - new component. Styled <input type="checkbox">
-- `URadio` - new component. Wrapper for groups consisting of styled <input type="radio"> 
+- `URadio` - new component. Wrapper for groups consisting of styled <input type="radio">
 - `UCron` - new component. An easy compilation cron expression. Can convert cron expression into a human-readable string
   if @unitybase/adminui-pub is available
 - new icons: `u-icon-download-with-signatures`, `u-icon-upload-with-signatures` and `u-icon-view-signatures`

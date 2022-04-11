@@ -267,6 +267,12 @@ export default {
         const parsed = Array.isArray(messageBody) ? messageBody : JSON.parse(messageBody)
         if (parsed && Array.isArray(parsed)) {
           const [localeKey, ...params] = parsed
+          if (typeof localeKey === 'object') {
+            const value = localeKey[$App.connection.userLang()] ??
+              localeKey[$App.connection.appConfig.defaultLang] ??
+              localeKey['en']
+            return this.$ut(value, params.map(p => this.localizeMessage(p)))
+          }
           return this.$ut(localeKey, params.map(p => this.localizeMessage(p)))
         }
         return messageBody

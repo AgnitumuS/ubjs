@@ -136,7 +136,7 @@
     >
       <button
         type="button"
-        class="u-icon-more ub-select__more-icon"
+        class="u-icon-more-vertical ub-select__more-icon"
       />
       <template #dropdown>
         <u-dropdown-item
@@ -963,7 +963,6 @@ export default {
   align-items: center;
   justify-content: center;
   height: 36px;
-  transform: rotate(90deg);
   color: hsl(var(--hs-control), var(--l-state-default));
   cursor: pointer;
   border: none;

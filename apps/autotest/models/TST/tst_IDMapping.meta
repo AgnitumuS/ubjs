@@ -36,6 +36,21 @@
       ]
     },
     {
+      "name": "code2",
+      "dataType": "String",
+      "size": 32,
+      "caption": "Code2",
+      "description": "Mapped to code",
+      "allowNull": false,
+      "mapping": [
+        {
+          "name": "AnsiSQL",
+          "expressionType": "Field",
+          "expression": "C_CODE"
+        }
+      ]
+    },
+    {
       "name": "rnd",
       "dataType": "BigInt",
       "caption": "Random val",
@@ -57,7 +72,27 @@
           "expression": "random()"
         }
       ]
-    }
+    },
+    {
+      "name": "percentTest",
+      "dataType": "String",
+      "size": 4000,
+      "caption": "Самостійний структурний підрозділ",
+      "description": "Самостійний структурний підрозділ",
+      "allowNull": true,
+      "mapping": [
+        {
+          "name": "AnsiSQL",
+          "expressionType": "Expression",
+          "expression": "length(C_CODE)"
+        },
+        {
+          "name": "MSSQL2012",
+          "expressionType": "Expression",
+          "expression": "(CONCAT('%', 'fgh', '%'))"
+        }
+      ]
+    },
   ],
   "mapping": [{
       "name": "AnsiSQL",

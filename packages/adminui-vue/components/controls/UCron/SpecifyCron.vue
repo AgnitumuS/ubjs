@@ -47,6 +47,7 @@ export default {
 .specify-cron .u-checkbox {
   min-width: 40px;
   margin-right: var(--u-gap-double);
+  white-space: nowrap;
 }
 .specify-cron .u-checkbox__label {
   text-transform: capitalize;

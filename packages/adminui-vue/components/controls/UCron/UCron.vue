@@ -2,16 +2,17 @@
   <div class="u-cron">
     <div class="u-cron__desc">
       <div class="u-cron__desc--expresion">
-        {{$ut('UCron.expression')}}: <span>{{ cronString }}</span>
+        {{ $ut('UCron.expression') }}: <span>{{ cronString }}</span>
       </div>
       <div class="u-cron__desc--txt">
-        {{$ut('UCron.interpretation')}}: <span>{{ humanCronString }}</span>
+        {{ $ut('UCron.interpretation') }}: <span>{{ humanCronString }}</span>
       </div>
     </div>
     <div class="u-cron__main">
       <div class="u-cron__sidebar">
         <span
           v-for="(item, index) in everyTime"
+          v-show="item.visible"
           :key="index"
           class="u-cron__tab"
           :class="{ 'u-cron__tab-active': everyTimeValue === item.id }"
@@ -35,6 +36,11 @@
 /* global $App */
 const ubPubAvailable = typeof $App !== 'undefined' // not available for UIDoc
 
+const defaultProp = {
+  visible: true,
+  value: '*'
+}
+
 export default {
   name: 'UCron',
   components: {
@@ -53,18 +59,78 @@ export default {
     value: {
       type: String,
       default: ''
+    },
+    /**
+     * visible {boolean} - display in the list
+     * value {string} - default value for this part of cron
+     */
+    seconds: {
+      type: Object,
+      default: () => defaultProp
+    },
+    minutes: {
+      type: Object,
+      default: () => defaultProp
+    },
+    hours: {
+      type: Object,
+      default: () => defaultProp
+    },
+    day: {
+      type: Object,
+      default: () => defaultProp
+    },
+    month: {
+      type: Object,
+      default: () => defaultProp
+    },
+    week: {
+      type: Object,
+      default: () => defaultProp
     }
   },
   data () {
     return {
       everyTimeValue: 'day',
       everyTime: [
-        { id: 'seconds', label: this.$ut('UCron.second'), value: '*' },
-        { id: 'minutes', label: this.$ut('UCron.minute'), value: '*' },
-        { id: 'hours', label: this.$ut('UCron.hour'), value: '*' },
-        { id: 'day', label: this.$ut('UCron.day'), value: '*' },
-        { id: 'month', label: this.$ut('UCron.month'), value: '*' },
-        { id: 'week', label: this.$ut('UCron.dayOfWeek'), value: '*' }
+        {
+          id: 'seconds',
+          label: this.$ut('UCron.second'),
+          value: this.seconds.value || '*',
+          visible:
+            this.seconds.visible === undefined ? true : this.seconds.visible
+        },
+        {
+          id: 'minutes',
+          label: this.$ut('UCron.minute'),
+          value: this.minutes.value || '*',
+          visible:
+            this.minutes.visible === undefined ? true : this.minutes.visible
+        },
+        {
+          id: 'hours',
+          label: this.$ut('UCron.hour'),
+          value: this.hours.value || '*',
+          visible: this.hours.visible === undefined ? true : this.hours.visible
+        },
+        {
+          id: 'day',
+          label: this.$ut('UCron.day'),
+          value: this.day.value || '*',
+          visible: this.day.visible === undefined ? true : this.day.visible
+        },
+        {
+          id: 'month',
+          label: this.$ut('UCron.month'),
+          value: this.month.value || '*',
+          visible: this.month.visible === undefined ? true : this.month.visible
+        },
+        {
+          id: 'week',
+          label: this.$ut('UCron.dayOfWeek'),
+          value: this.week.value || '*',
+          visible: this.week.visible === undefined ? true : this.week.visible
+        }
         // { id: 'year', label: 'року', value: '*' }
       ]
     }
@@ -77,7 +143,9 @@ export default {
       return this.everyTime.map((i) => i.value).join(' ')
     },
     humanCronString () {
-      return ubPubAvailable ? $App.verbaliseCronExpression(this.cronString) : this.cronString
+      return ubPubAvailable
+        ? $App.verbaliseCronExpression(this.cronString)
+        : this.cronString
     }
   },
   watch: {

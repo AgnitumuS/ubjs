@@ -114,7 +114,7 @@ function validateAttributesBlobStore (domainJson, serverConfig) {
 function replaceEnvInMapping (domainJson, serverConfig) {
   const envs = process.env
   function doReplace (content) {
-    return content.replace(/%(.*?)(?:\|\|(.*?))?%/g, function replacer (match, p1, def) {
+    return content.replace(/%([\w-#.@$]*?)(?:\|\|([\w-#.@$]*?))?%/g, function replacer (match, p1, def) {
       if (envs.hasOwnProperty(p1)) {
         return envs[p1]
       } else {

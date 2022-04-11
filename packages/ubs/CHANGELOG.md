@@ -6,15 +6,32 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+ - Message history (`ubs_message` form) - multilanguage message body support on the client.
+  If the message body is an array with first element of type object then locale key is taken
+  from this object by key in order: user language, default language, english.
+  Example:
+  ```json
+  [
+    {
+      "uk": "Текст українською: {0}",
+      "en": "English text: {0}"
+    },
+    ["dfx_validation.codeWithSpace","Mon Nov 08 2021 16:10:15 GMT+0200 (EET)"]
+  ]
+  ```
 
 ### Changed
 
 ### Deprecated
 
 ### Removed
- - `UBS.cliUtils` is *REMOVED* (deprecated from 2019)
 
 ### Fixed
+
+## [5.22.6] - 2022-04-08
+## [5.22.5] - 2022-03-25
+### Removed
+ - `UBS.cliUtils` is *REMOVED* (deprecated from 2019)
 
 ## [5.22.4] - 2022-02-16
 ## [5.22.3] - 2022-02-08
