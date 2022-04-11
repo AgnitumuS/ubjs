@@ -6,6 +6,19 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+ - Message history (`ubs_message` form) - multilanguage message body support on the client.
+  If the message body is an array with first element of type object then locale key is taken
+  from this object by key in order: user language, default language, english.
+  Example:
+  ```json
+  [
+    {
+      "uk": "Текст українською: {0}",
+      "en": "English text: {0}"
+    },
+    ["dfx_validation.codeWithSpace","Mon Nov 08 2021 16:10:15 GMT+0200 (EET)"]
+  ]
+  ```
 
 ### Changed
 
