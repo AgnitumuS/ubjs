@@ -302,24 +302,6 @@ ServerApp.grantEndpointToRole = function (endpointName, roleCode) {
 }
 
 /**
- * @method addAppLevelMethod
- * @deprecated Use {@link class:ServerApp.registerEndpoint App.registerEndpoint} instead
- * @memberOf ServerApp
- */
-ServerApp.addAppLevelMethod = function () {
-  throw new Error('App.addAppLevelMethod is obsolete. Use App.registerEndpoint instead')
-}
-
-/**
- * @method  serviceMethodByPassAuthentication
- * @deprecated Use {@link class:App.registerEndpoint App.registerEndpoint} instead
- * @memberOf ServerApp
- */
-ServerApp.serviceMethodByPassAuthentication = function () {
-  throw new Error('App.serviceMethodByPassAuthentication is obsolete. Use App.registerEndpoint instead')
-}
-
-/**
  * Server configuration - result of {@link module:argv~getServerConfiguration argv.getServerConfiguration}
  * @readonly
  * @type {Object}

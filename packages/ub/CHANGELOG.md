@@ -12,6 +12,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Deprecated
 
 ### Removed
+ - `App.addAppLevelMethod` and `App.serviceMethodByPassAuthentication` methods are removed (marked as obsolete 3 years ago).
+   `App.registerEndpoint` is used instead.
 
 ### Fixed
 
