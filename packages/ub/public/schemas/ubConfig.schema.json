@@ -636,6 +636,10 @@
           "default": [],
           "description": "Groups codes (uba_group.code) to exclude from user groups during user logon. Useful in case a same DB is used by several server instances, and one of instance (internal portal for example) should exclude  roles available to user\r\n**WARNING**: roles what assigned directly to user (in uba_userroles) are **NOT** filtered and remains available"
         },
+        "disabledAccounts": {
+          "type": "string",
+          "description": "Regular expression of user accounts, which cannot login.  Useful for disabling service accounts on interactive UB instances."
+        },
         "multitenancy": {
           "type": "object",
           "description": "Multi-tenancy configuration (UB EE)",

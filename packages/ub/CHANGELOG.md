@@ -6,6 +6,20 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+ - a new security option: `security.disabledAccounts`, which defines a regular expression
+   for disabled accounts.  This is useful for configuration with several UB instances, when
+   some users shall be served by specific instance only.
+   Example:
+ ```json
+ {
+   "security": {
+     "authenticationMethods": [
+       "UB"
+     ],
+     "disabledAccounts": "^service\\..+"
+   }
+ }
+ ```
 
 ### Changed
 
