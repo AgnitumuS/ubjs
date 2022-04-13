@@ -16,6 +16,7 @@ App.registerEndpoint('changePassword', changePasswordEp, true, false, true)
 me.entity.addMethod('changeLanguage')
 me.entity.addMethod('setUDataKey')
 me.entity.addMethod('changeOtherUserPassword')
+me.entity.addMethod('getUserData')
 
 me.on('insert:before', checkDuplicateUser)
 me.on('update:before', checkDuplicateUser)
@@ -507,3 +508,25 @@ function denyBuildInUserDeletion (ctx) {
     }
   }
 }
+
+/**
+ * Rest endpoint what returns a `userData` - information about logged-in user.
+ * For clients what uses an UBConnection userData is already available and can be obtained using `connection.userData()` function.
+ * This endpoint is mostly for third-party integration.
+ *
+ * @example
+GET /rest/uba_user/getUserData
+
+ * @param fake
+ * @param {THTTPRequest} req
+ * @param {THTTPResponse} resp
+ * @method getUserData
+ * @memberOf uba_user_ns.prototype
+ * @memberOfModule @unitybase/uba
+ * @published
+*/
+function getUserData (fake, req, resp) {
+  resp.writeEnd(Session.uData)
+  resp.statusCode = 200
+}
+me.getUserData = getUserData

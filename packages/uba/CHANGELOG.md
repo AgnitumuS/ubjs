@@ -6,6 +6,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+ - `uba_user.getUserData` rest endpoint added - return a user data for third-party integrations using `GET /rest/uba_user/getUserData`
 
 ### Changed
 
