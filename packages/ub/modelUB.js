@@ -8,7 +8,6 @@ const format = require('@unitybase/base').format
 const blobStores = require('@unitybase/blob-stores')
 const TubDataStore = require('./TubDataStore')
 const Errors = require('./modules/ubErrors')
-// TODO - this hack is required for register UB.getWSNotifier. Must be rewrites
 const ws = require('./modules/web-sockets')
 const mI18n = require('./modules/i18n')
 const modelLoader = require('./modules/modelLoader')
@@ -313,4 +312,13 @@ UB.registerMixinModule('multitenancy', multitenancyImpl)
 const fsStorageImpl = require('./mixins/fsStorageMixin')
 UB.registerMixinModule('fsStorage', fsStorageImpl)
 
+if (App.serverConfig.security.disabledAccounts) {
+  const reDisabledAccounts = new RegExp(App.serverConfig.security.disabledAccounts)
+  Session.on('login', () => {
+    if (reDisabledAccounts.test(Session.uData.login)) {
+      console.error('Login disabled by security.disabledAccounts option')
+      throw new Errors.ESecurityException('<<<Login disabled>>>')
+    }
+  })
+}
 module.exports = UB
