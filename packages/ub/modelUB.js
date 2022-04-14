@@ -303,7 +303,7 @@ if (App.serverConfig.security.disabledAccounts) {
   Session.on('login', () => {
     if (reDisabledAccounts.test(Session.uData.login)) {
       console.error('Login disabled by security.disabledAccounts option')
-      throw new Errors.UBAbort('<<<Login disabled>>>')
+      throw new Errors.ESecurityException('<<<Login disabled>>>')
     }
   })
 }
