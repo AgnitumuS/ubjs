@@ -6,6 +6,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+## [5.22.7] - 2022-04-14
+### Added
  - Message history (`ubs_message` form) - multilanguage message body support on the client.
   If the message body is an array with first element of type object then locale key is taken
   from this object by key in order: user language, default language, english.
@@ -19,14 +30,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
     ["dfx_validation.codeWithSpace","Mon Nov 08 2021 16:10:15 GMT+0200 (EET)"]
   ]
   ```
-
-### Changed
-
-### Deprecated
-
-### Removed
-
-### Fixed
 
 ## [5.22.6] - 2022-04-08
 ## [5.22.5] - 2022-03-25
