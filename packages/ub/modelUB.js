@@ -26,41 +26,43 @@ const UB = module.exports = {
   /**
    * If we are in UnityBase server scripting (both -f or server thread) this property is true, if in browser - undefined or false.
    * Use it for check execution context in scripts, shared between client & server.
-   * To check we are in server thread use process.isServer.
+   * To check we are in server thread use process.isServer
+   *
    * @readonly
    */
   isServer: true,
   /**
    * Server-side Abort exception. To be used in server-side logic in case of HANDLED
    * exception. This errors logged using "Error" log level to prevent unnecessary
-   * EXC log entries.
+   * EXC log entries
+   *
    * @property {UBAbort} UBAbort
    */
   UBAbort: Errors.UBAbort,
   /**
    * Server-side Security exception. Throwing of such exception will trigger
    * `Session.securityViolation` event
-   * @propety {ESecurityException} ESecurityException
+   *
+   * @property {ESecurityException} ESecurityException
    */
   ESecurityException: Errors.ESecurityException,
   /**
    * Creates namespaces to be used for scoping variables and classes so that they are not global.
+   *
    * @example
-
 UB.ns('DOC.Report');
 DOC.Report.myReport = function() { ... };
-
    * @deprecated Try to avoid namespaces - instead create a module and use require()
-   * @param {String} namespacePath
-   * @return {Object} The namespace object.
+   * @param {string} namespacePath
+   * @returns {object} The namespace object.
    */
   ns: ns,
   format: format,
   /**
    * Create new instance of {@link ServerRepository}
    *
-   * @param {String} entityName
-   * @param {Object} [cfg]
+   * @param {string} entityName
+   * @param {object} [cfg]
    * @param {SyncConnection} [connection] Pass in case of remote UnityBase server connection.
    * @returns {ServerRepository}
    */
@@ -71,13 +73,15 @@ DOC.Report.myReport = function() { ... };
   getWSNotifier: ws.getWSNotifier,
   /**
    * Information about the logged in user
+   *
    * @property {Session} Session
    */
   Session: Session,
   /**
    * Construct new data store
+   *
    * @param {string} entityCode
-   * @return {TubDataStore}
+   * @returns {TubDataStore}
    */
   DataStore: function (entityCode) {
     return new TubDataStore(entityCode)
@@ -99,8 +103,7 @@ UB.i18nExtend({
 })
 UB.i18n('greeting', 'Mark', 'Kiev') // in case current user language is en -> "Hello Mark, welcome to Kiev"
 UB.i18n('greeting', 'uk', 'Mark', 'Kiev') // in case ru lang is supported -> "Привет Mark, добро пожаловать в Kiev"
-
-   * @param {String} msg Message to translate
+   * @param {string} msg Message to translate
    * @param {...*} args Format args
    * @returns {*}
    */
@@ -130,8 +133,8 @@ UB.i18n('greeting', 'uk', 'Mark', 'Kiev') // in case ru lang is supported -> "П
   },
   /**
    * Merge localizationObject to UB.i18n
+   *
    * @example
-
 const UB = require('@unitybase/ub')
 UB.i18nExtend({
  "en": {yourMessage: "yourTranslationToEng", ...},
@@ -142,8 +145,7 @@ UB.i18nExtend({
 console.log(UB.i18n(yourMessage))
 // will output "yourTranslationToUk"
 console.log(UB.i18n(yourMessage, 'uk'))
-
-   * @param {Object} localizationObject
+   * @param {object} localizationObject
    */
   i18nExtend: mI18n.extend,
   /**
@@ -158,19 +160,21 @@ console.log(UB.i18n(yourMessage, 'uk'))
    *
    * For new models we recommend to require non-entity modules manually
    *
-   * @param {String} folderPath
-   * @param {Boolean} isFromPublicFolder
+   * @param {string} folderPath
+   * @param {boolean} isFromPublicFolder
    * @param {number} depth Current recursion depth
    */
   loadLegacyModules: modelLoader.loadLegacyModules,
   /**
    * Application instance
+   *
    * @property {ServerApp} App
    */
   App: App,
   start: start,
   /**
    * A way to add additional mixins into domain
+   *
    * @param {string} mixinName A name used as "mixins" section key inside entity *.meta file
    * @param {MixinModule} mixinModule A module what implements a MixinModule interface
    */
@@ -228,6 +232,9 @@ function start () {
 }
 
 // normalize ENUMS TubCacheType = {Entity: 1, SessionEntity: 2} => {Entity: 'Entity', SessionEntity: 'SessionEntity'}
+/**
+ *
+ */
 function normalizeEnums () {
   const enums = ['TubftsScope', 'TubCacheType', 'TubEntityDataSourceType',
     'TubAttrDataType', 'TubSQLExpressionType', 'TubSQLDialect', 'TubSQLDriver']
@@ -240,9 +247,12 @@ function normalizeEnums () {
 }
 
 // domain initialization
+/**
+ *
+ */
 function initializeDomain () {
-  const { addEntityMethod } = process.binding('ub_app')
-  const { getDomainInfo } = process.binding('ub_app')
+  // eslint-disable-next-line node/no-deprecated-api
+  const { addEntityMethod, getDomainInfo } = process.binding('ub_app')
   // create scope for all domain objects
   const tempDomain = new UBDomain(getDomainInfo(true))
   tempDomain.eachEntity(entity => {
@@ -266,6 +276,10 @@ function initializeDomain () {
   // 2) fLog.Log(sllInfo, 'Check blob store "%" folder "%": folder exists', [fAppConfig.blobStores[i].name, fAppConfig.blobStores[i].path]);
 }
 
+/**
+ * @param namespacePath
+ * @return {object}
+ */
 function ns (namespacePath) {
   let root = global
   const parts = namespacePath.split('.')
