@@ -6,10 +6,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+- `UBA_COMMON.hasAdminRole` to replace the deprecated `UBA_COMMON.haveAdminRole`
+- `UBA_COMMON.isRoot` to check if the current user is root.  Useful for implementing security bypasses
+  needed for CLI scripts or migration scripts
 
 ### Changed
 
 ### Deprecated
+- `UBA_COMMON.haveAdminRole` method is deprecated (incorrect name) - use `hasAdminRole`
 
 ### Removed
 

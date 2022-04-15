@@ -1,3 +1,4 @@
+const {Session} = require('@unitbase/ub')
 /* global Session, nsha256 */
 const USERS = {
   ROOT: {
@@ -75,10 +76,19 @@ function isSuperUser () {
 }
 
 /**
- * Check logged in user have `admin` role
+ * Check logged in user is `root`
  * @returns {boolean}
  */
-function haveAdminRole () {
+function isRoot () {
+  const uID = Session.uData.userID
+  return (uID === USERS.ROOT.ID)
+}
+
+/**
+ * Check logged in user has `admin` role
+ * @returns {boolean}
+ */
+function hasAdminRole () {
   return Session.uData.roleIDs.includes(ROLES.ADMIN.ID)
 }
 
@@ -107,7 +117,7 @@ module.exports = {
     return nsha256('salt' + aPassword)
   },
   /**
-   * Do not allow assign of Everyone & Anonymous preudo-roles.
+   * Do not allow assign of Everyone & Anonymous pseudo-roles.
    * Allow assign `admins` role only by `admins` member.
    *
    *
@@ -126,18 +136,29 @@ module.exports = {
     if (role === ROLES.USER.ID) {
       throw new Error(`<<<${ROLES.USER.ID} pseudo-role is assigned automatically>>>`)
     }
-    if ((role === ROLES.ADMIN.ID) && (!haveAdminRole())) {
+    if ((role === ROLES.ADMIN.ID) && (!hasAdminRole())) {
       throw new Error(`<<<Only members with ${ROLES.ADMIN.NAME} role are allowed for assign a ${ROLES.ADMIN.NAME} role to other members>>>`)
     }
   },
   /**
-   * Check logged in user is a superuser (either `admin` or `root`)
+   * Check logged-in user is a superuser (either `admin` or `root`)
    * @returns {boolean}
    */
   isSuperUser: isSuperUser,
   /**
-   * Check logged in user have `admin` role
+   * Check logged-in user is `root`
    * @returns {boolean}
    */
-  haveAdminRole: haveAdminRole
+  isRoot: isRoot,
+  /**
+   * Check logged-in user has `admin` role
+   * @returns {boolean}
+   * @deprecated Use "hasAdminRole"
+   */
+  haveAdminRole: hasAdminRole,
+  /**
+   * Check logged-in user has `admin` role
+   * @returns {boolean}
+   */
+  hasAdminRole: hasAdminRole
 }
