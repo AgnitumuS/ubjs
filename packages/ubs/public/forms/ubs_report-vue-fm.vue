@@ -59,7 +59,7 @@
             width: '100%'
           }"
             :remove-default-buttons="['webcam', 'scan', 'scanSettings', 'add', 'remove']"
-            :readonly="true"
+            :readonly="false"
           />
         </el-tab-pane>
         <el-tab-pane :label="$ut('templatePanelTitle')">

@@ -18,7 +18,8 @@
           <li>Shift-Ctrl+G - Find previous</li>
           <li>Shift-Ctrl+F - Replace</li>
           <li>Shift-Ctrl+R - Replace all</li>
-          <li>Alt+F - Persistent search (dialog does not autoclose, enter to find next, Shift-Enter to find previous)
+          <li>
+            Alt+F - Persistent search (dialog does not autoclose, enter to find next, Shift-Enter to find previous)
           </li>
           <li>Alt+G - Jump to line</li>
         </ul>
@@ -33,9 +34,9 @@
           <li>Tab / Shift + Tab - If something is selected, indent/dedent it</li>
         </ul>
       </template>
-      <i class="u-icon-circle-question ub-code-mirror__help"></i>
+      <i class="u-icon-circle-question ub-code-mirror__help" />
     </el-tooltip>
-    <textarea ref="textarea"/>
+    <textarea ref="textarea" />
   </div>
 </template>
 
@@ -70,6 +71,7 @@ export default {
 
     /**
      * CodeMirror editor mode
+     *
      * @values application/javascript, application/x-javascript, text/javascript, application/json, application/x-json, text/yaml, script/x-vue, text/x-vue
      */
     editorMode: {
@@ -140,22 +142,22 @@ export default {
     // do not put _codeMirror inside data to prevent it observation
     // Vue initialize reactivity BEFORE created(), so all NEW object properties assigned here is not reactive
     const CodeMirror = await SystemJS.import('@unitybase/codemirror-full')
-    this._codeMirror = CodeMirror(
-        this.$el,
-        {
-          ...defaultOptions,
-      mode: this.editorMode,
+    this._codeMirror = CodeMirror.fromTextArea(
+      this.$refs.textarea,
+      {
+        ...defaultOptions,
+        mode: this.editorMode,
 
-      lint: Object.assign({ asi: true, esversion: 8 }, this.$UB.connection.appConfig.uiSettings.adminUI.linter),
-      readOnly: this.readonly,
+        lint: Object.assign({ asi: true, esversion: 8 }, this.$UB.connection.appConfig.uiSettings.adminUI.linter),
+        readOnly: this.readonly,
 
-      extraKeys: {
-        'Ctrl-Space': 'autocomplete',
-        'Ctrl-Q': this.showTemplates,
-        'Ctrl-B': this.doBeautify
-      },
-          ...this.options
-    })
+        extraKeys: {
+          'Ctrl-Space': 'autocomplete',
+          'Ctrl-Q': this.showTemplates,
+          'Ctrl-B': this.doBeautify
+        },
+        ...this.options
+      })
     let val
     if (this.src) {
       const resp = await this.$UB.get(this.src)
