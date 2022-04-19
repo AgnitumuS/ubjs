@@ -159,7 +159,7 @@ class DDLGenerator {
       this.createReference(conn, entity)
     }
     // load referenced object for comparator
-    this.relatedEntities.forEach((entityName) => {
+    for (const entityName of this.relatedEntities) {
       const entity = domain.get(entityName)
       if (alreadyTraversed.has(entity) || (entity.dsType !== UBDomain.EntityDataSourceType.Normal)) {
         return // continue
@@ -169,7 +169,7 @@ class DDLGenerator {
       if (tabDef) {
         tabDef.doComparision = false
       }
-    })
+    }
 
     const tablesByConnection = _.groupBy(
       this.referenceTableDefs,
@@ -335,14 +335,14 @@ class DDLGenerator {
     }
 
     if (entity.mixins.dataHistory) {
-      let keys = ['mi_dateTo']
+      const dateToKeys = ['mi_dateTo']
       if (entity.mixins.mStorage && entity.mixins.mStorage.safeDelete) {
-        keys.push('mi_deleteDate')
+        dateToKeys.push('mi_deleteDate')
       }
       tableDef.addIndex({
         name: formatName('IDX_', sqlAlias, '_DTODD', entity.connectionConfig.dialect),
         isUnique: false,
-        keys: keys
+        keys: dateToKeys
       })
       tableDef.addCheckConstr({
         name: 'CHK_' + sqlAlias + '_HIST',
@@ -350,15 +350,15 @@ class DDLGenerator {
         type: 'custom'
       })
 
-      keys = ['mi_dateFrom', 'mi_data_id']
+      const dateFromKeys = ['mi_dateFrom', 'mi_data_id']
       if (entity.mixins.mStorage && entity.mixins.mStorage.safeDelete) {
-        keys.push('mi_deleteDate')
-        tableDef.addIndex({
-          name: formatName('UIDX_', sqlAlias, '_HIST', entity.connectionConfig.dialect),
-          isUnique: true,
-          keys
-        })
+        dateFromKeys.push('mi_deleteDate')
       }
+      tableDef.addIndex({
+        name: formatName('UIDX_', sqlAlias, '_HIST', entity.connectionConfig.dialect),
+        isUnique: true,
+        keys: dateFromKeys
+      })
     }
 
     if (entity.attributes.ID) { // in case ID is mapped to non-uniq attribute - skip primary key generation. Example in tst_virtualID.meta
