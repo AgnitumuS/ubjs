@@ -1,0 +1,44 @@
+{
+  "caption": "Advanced Security",
+  "description": "Advanced security settings",
+  "documentation": "For any authentication type add binding of user to IP address. For CERT additionally adds a binding to device fingerprint",
+  "attributes": [
+    {
+      "name": "userID",
+      "caption": "User"
+    }, {
+      "name": "editCause",
+      "caption": "Cause of change",
+      "documentation": "Filled by supervisor to indicate cause of changes"
+    }, {
+      "name": "allowedIP",
+      "caption": "Allowed IP address",
+      "documentation": "The ID address from which the user is allowed access. If empty - allowed from any"
+    }, {
+      "name": "refreshIP",
+      "caption": "Refresh allowed IP",
+      "documentation": "If turned on will refresh allowed IP on firs user logon"
+    }, {
+      "name": "fp",
+      "caption": "Fingerprint",
+      "documentation": "Fingerprint of user device. If empty - not checked"
+    }, {
+      "name": "refreshFp",
+      "caption": "Refresh fingerprint",
+      "documentation": "If turned on will refresh Fingerprint of user device on firs user logon"
+    }, {
+      "name": "keyMediaName",
+      "caption": "Key media name",
+      "documentation": "Name of key media device"
+    }, {
+      "name": "refreshKeyMedia",
+      "caption": "Refresh key media name",
+      "documentation": "If turned on will refresh key media name of user private key device"
+    }, {
+      "name": "additional",
+      "caption": "Additional",
+      "description": "JSON with advanced settings",
+      "documentation": "This settings can be handled in Session.on login event"
+    }
+  ]
+}

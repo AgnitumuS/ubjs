@@ -1,0 +1,21 @@
+{
+  "caption": "Numerators (Reserve)",
+  "attributes": [
+    {
+      "name": "regKey",
+      "caption": "Registration key",
+      "description": "Registration key"
+    },
+    {
+      "name": "counter",
+      "caption": "Counter",
+      "description": "Counter"
+    },
+    {
+      "name": "reservedDate",
+      "caption": "Reserved date",
+      "description": "Reserved date for document"
+    }
+  ],
+  "description": "Reserved counters for registration keys"
+}

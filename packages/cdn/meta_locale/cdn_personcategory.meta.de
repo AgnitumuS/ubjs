@@ -1,0 +1,17 @@
+{
+  "caption": "Category of Persons",
+  "description": "Category of persons",
+  "documentation": "The directory stores a list of categories or physical persons",
+  "attributes": [
+    {
+      "name": "code",
+      "caption": "Code",
+      "description": "Code"
+    },
+    {
+      "name": "name",
+      "caption": "Name",
+      "description": "Name of category"
+    }
+  ]
+}

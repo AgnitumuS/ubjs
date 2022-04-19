@@ -1,0 +1,12 @@
+{
+  "orgEmployee": "Employee",
+  "orgUnit": "Org. unit",
+  "orgStaffUnit": "Org. staff unit",
+  "orgProfession": "Professions",
+  "orgOrganization": "Organizations",
+  "orgEmployeeOnStaff": "Employee on staff",
+  "orgTreeCanNotBeCyclical": "Tree can not be cyclical",
+  "orgDepartment": "Department",
+  "orgExecutorsGroup": "Executors Group",
+  "orgOrganizationalChart": "Organization Chart"
+}

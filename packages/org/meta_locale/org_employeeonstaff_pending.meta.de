@@ -1,0 +1,21 @@
+{
+  "caption": "Assignment With Pending Date",
+  "description": "Assignment with pending date",
+  "attributes": [
+    {
+      "name": "emponstaffID",
+      "caption": "Assignment",
+      "description": "Assignment"
+    },
+    {
+      "name": "startDate",
+      "caption": "Start",
+      "description": "Assignment start date"
+    },
+    {
+      "name": "endDate",
+      "caption": "End",
+      "description": "Assignment end date"
+    }
+  ]
+}

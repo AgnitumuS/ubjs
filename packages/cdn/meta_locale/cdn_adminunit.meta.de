@@ -1,0 +1,34 @@
+{
+  "caption": "Admin Unit",
+  "description": "Admin unit (country, region, city)",
+  "documentation": "Main parent for countries, regions and cities",
+  "attributes": [
+    {
+      "name": "parentAdminUnitID",
+      "caption": "Parent",
+      "description": "Parent"
+    },
+    {
+      "name": "code",
+      "caption": "Code",
+      "description": "Internal code"
+    },
+    {
+      "name": "name",
+      "caption": "Name"
+    },
+    {
+      "name": "fullName",
+      "caption": "Full name"
+    },
+    {
+      "name": "adminUnitType",
+      "caption": "Admin unit type",
+      "documentation": "String representation of unit's type for fast queries"
+    },
+    {
+      "name": "caption",
+      "caption": "Caption"
+    }
+  ]
+}

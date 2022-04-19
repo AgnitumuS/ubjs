@@ -1,0 +1,15 @@
+{
+  "caption": "Contact Types",
+  "description": "Contact types directory",
+  "attributes": [
+    {
+      "name": "code",
+      "caption": "Code"
+    },
+    {
+      "name": "name",
+      "caption": "Name",
+      "description": "Contact type name"
+    }
+  ]
+}

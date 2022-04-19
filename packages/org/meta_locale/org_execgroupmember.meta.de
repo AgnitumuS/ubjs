@@ -1,0 +1,14 @@
+{
+  "caption": "Executors for Executors Groups",
+  "description": "Executors who attached to group and used for executors auto-filling in resolutions on group addition",
+  "attributes": [
+    {
+      "name": "execGroupID",
+      "caption": "Executors group"
+    },
+    {
+      "name": "orgUnitID",
+      "caption": "Executor"
+    }
+  ]
+}

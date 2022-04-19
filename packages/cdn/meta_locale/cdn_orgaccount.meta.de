@@ -1,0 +1,36 @@
+{
+  "caption": "Settlement Accounts",
+  "description": "Organization's settlement accounts",
+  "attributes": [
+    {
+      "name": "organizationID",
+      "caption": "Organization",
+      "description": "Organization"
+    },
+    {
+      "name": "currencyID",
+      "caption": "Currency",
+      "description": "Currency of the account"
+    },
+    {
+      "name": "bankID",
+      "caption": "Bank",
+      "description": "Bank of the account"
+    },
+    {
+      "name": "code",
+      "caption": "Code",
+      "description": "Code of the account"
+    },
+    {
+      "name": "acctype",
+      "caption": "Type",
+      "description": "Type of the account"
+    },
+    {
+      "name": "description",
+      "caption": "Description",
+      "description": "Description"
+    }
+  ]
+}

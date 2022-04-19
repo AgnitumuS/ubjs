@@ -1,0 +1,25 @@
+{
+  "caption": "Organizational Chart",
+  "description": "Organizational Chart Diagrams",
+  "attributes": [
+    {
+      "name": "orgunitID",
+      "caption": "Root"
+    },
+    {
+      "name": "caption",
+      "caption": "Name",
+      "description": "Name"
+    },
+    {
+      "name": "isdefault",
+      "caption": "Default",
+      "description": "Default"
+    },
+    {
+      "name": "document",
+      "caption": "Organization chart",
+      "description": "Organization chart"
+    }
+  ]
+}

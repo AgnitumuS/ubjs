@@ -1,0 +1,20 @@
+{
+  "caption": "Standard Professions",
+  "description": "Dictionary of standard professions",
+  "attributes": [
+    {
+      "name": "code",
+      "caption": "Code",
+      "description": "Code"
+    },
+    {
+      "name": "name",
+      "caption": "Name",
+      "description": "Name of profession"
+    },
+    {
+      "name": "description",
+      "caption": "Caption"
+    }
+  ]
+}

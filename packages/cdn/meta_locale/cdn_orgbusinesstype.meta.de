@@ -1,0 +1,31 @@
+{
+  "caption": "Organization Types",
+  "description": "Organization types dictionary (LTD etc.)",
+  "attributes": [
+    {
+      "name": "code",
+      "caption": "Code",
+      "description": "Code of the organization type"
+    },
+    {
+      "name": "shortName",
+      "caption": "Acronim",
+      "description": "Acronim of the organization type"
+    },
+    {
+      "name": "name",
+      "caption": "Name",
+      "description": "Name of the organization type"
+    },
+    {
+      "name": "fullName",
+      "caption": "Description",
+      "description": "Description of the organization type"
+    },
+    {
+      "name": "isGovAuthority",
+      "caption": "Gov. authority",
+      "description": "Sign, that the organization of this type is a government authority"
+    }
+  ]
+}
