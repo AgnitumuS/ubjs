@@ -39,10 +39,6 @@
     "mStorage": {
       "simpleAudit": false,
       "safeDelete": false
-    },
-    "multitenancy": {
-      "enabled": true,
-      "rlsRule": "tenantAndCommon"
     }
   }
 }
