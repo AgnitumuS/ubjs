@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
+ - tinymce localization files: transformed to UTF8 instead of using codepoints in string for non-english characters
 
 ### Deprecated
 
