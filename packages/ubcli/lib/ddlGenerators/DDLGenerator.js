@@ -125,14 +125,13 @@ class DDLGenerator {
      * @type {Array<TableDefinition>}
      */
     this.referenceTableDefs = []
-    // this.connections = {}
     this.relatedEntities = []
     this.isUnsafe = false
   }
 
   /**
    * Generate DD SQL for entity list
-   * @param {Array<string>} names Entity names (may be regular expressions)
+   * @param {Array<string>} names Entity names (might be regular expressions)
    * @param {SyncConnection} conn
    * @param {boolean} [unsafe=false]
    * @returns {Object} DDL SQL
@@ -147,9 +146,12 @@ class DDLGenerator {
 
     const forGeneration = _.filter(domain.entities, (entity) => {
       for (const re of namesRe) {
-        // ignore DDL generation for External & Virtual entities
-        if (re.test(entity.name) && (entity.dsType === UBDomain.EntityDataSourceType.Normal) && !entity.isManyManyRef) {
+        if (re.test(entity.name)
+          // ignore DDL generation for External & Virtual entities
+          && (entity.dsType === UBDomain.EntityDataSourceType.Normal)
           // many-to-many storage tables are added by addManyTable
+          && !entity.isManyManyRef
+        ) {
           return true
         }
       }
@@ -164,7 +166,7 @@ class DDLGenerator {
     for (const entityName of this.relatedEntities) {
       const entity = domain.get(entityName)
       if (alreadyTraversed.has(entity) || (entity.dsType !== UBDomain.EntityDataSourceType.Normal)) {
-        return // continue
+        continue
       }
       const tabDef = this.createReference(conn, entity)
       alreadyTraversed.add(entity)

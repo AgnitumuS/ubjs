@@ -11,9 +11,26 @@ const _ = require('lodash')
 const { TableDefinition } = require('../AbstractSchema')
 const DBAbstract = require('./DBAbstract')
 
-/**
- * Created by pavel.mash on 10.12.2016.
- */
+const DBPostgresPolicies = {
+  PolicyTypes: {
+    tenantOnly: `(mi_tenantid = (current_setting('ub.tenantID'::text))::bigint)`,
+    tenantAndCommon:`(mi_tenantid = ANY (ARRAY[(0)::bigint, (current_setting('ub.tenantID'::text))::bigint]))`,
+    tenantCommonAndSystem: `(mi_tenantid = ANY (ARRAY[(0)::bigint, (1)::bigint, (current_setting('ub.tenantID'::text))::bigint]))`
+  },
+
+  /**
+   * @param {{permissive: 'PERMISSIVE'|'RESTRICTIVE', cmd: string, qual: string}} policy
+   * @returns {string}
+   */
+  getPolicyType (policy) {
+    for (const [type, sql] of Object.entries(this.PolicyTypes)) {
+      if (policy.qual === sql && policy.permissive === 'PERMISSIVE' && policy.cmd === 'ALL') {
+        return type
+      }
+    }
+  }
+}
+
 class DBPostgreSQL extends DBAbstract {
   /**
    * Load information from a database schema definition into this.dbTableDefs
@@ -40,7 +57,7 @@ from pg_catalog.pg_tables t where t.schemaname = current_schema`
       URLParams: { CONNECTION: this.dbConnectionConfig.name }
     })
 
-    // filter tables from a metadata if any
+    // filter tables matching metadata
     if (mTables.length) {
       dbTables = _.filter(dbTables, (dbTab) => _.findIndex(mTables, { _upperName: dbTab.name.toUpperCase() }) !== -1)
     }
@@ -235,6 +252,41 @@ ORDER BY index_id, column_position`
 
       // triggers - UB do not add a triggers, so skip it
 
+      const policiesSQL = `
+   select n.nspname as schema
+        , pol.polname as name
+        , case
+            when pol.polpermissive then 'PERMISSIVE'::text
+            else 'RESTRICTIVE'::text
+          end as permissive
+        , case pol.polcmd
+            when 'r'::"char" then 'SELECT'::text
+            when 'a'::"char" then 'INSERT'::text
+            when 'w'::"char" then 'UPDATE'::text
+            when 'd'::"char" then 'DELETE'::text
+            when '*'::"char" then 'ALL'::text
+            else NULL::text
+          end as cmd
+        , pg_get_expr(pol.polqual, pol.polrelid) as qual
+        , pg_get_expr(pol.polwithcheck, pol.polrelid) as withCheck
+     from pg_policy pol
+     join pg_class c on c.oid = pol.polrelid
+left join pg_namespace n on n.oid = c.relnamespace
+    where c.relname = LOWER(:('${asIsTable._upperName}'):)
+`
+
+      const policiesFromDb = this.conn.xhr({
+        endpoint: 'runSQL',
+        data: policiesSQL,
+        URLParams: { CONNECTION: this.dbConnectionConfig.name }
+      })
+      for (const /** @type {{policyName: string, text: string}} */ policyFromDb of policiesFromDb) {
+        asIsTable.addOther({
+          type: DBPostgresPolicies.getPolicyType(policyFromDb),
+          name: 'policy$' + policyFromDb.name
+        })
+      }
+
       this.dbTableDefs.push(asIsTable)
     }
 
@@ -405,11 +457,11 @@ ORDER BY index_id, column_position`
       // contain "tenants" mixin and, therefore, does not contain mi_tenantID.
       // Records in "uba_subject" for roles have mi_tenantID=0.
       this.DDL.others.statements.push(
-        `CREATE POLICY ${table.name}_policy ON ${table.name} USING (mi_tenantID in (0, current_setting('ub.tenantID')::bigint))`
+        `CREATE POLICY ${table.name}_policy ON ${table.name} USING ${DBPostgresPolicies.PolicyTypes.tenantAndCommon}`
       )
     } else {
       this.DDL.others.statements.push(
-        `CREATE POLICY ${table.name}_policy ON ${table.name} USING (mi_tenantID = current_setting('ub.tenantID')::bigint)`
+        `CREATE POLICY ${table.name}_policy ON ${table.name} USING ${DBPostgresPolicies.PolicyTypes.tenantOnly})`
       )
     }
   }
