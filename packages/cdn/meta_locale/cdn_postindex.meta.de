@@ -1,0 +1,20 @@
+{
+  "caption": "ZIP Codes",
+  "description": "ZIP codes",
+  "attributes": [
+    {
+      "name": "code",
+      "caption": "Index",
+      "description": "Index"
+    },
+    {
+      "name": "streetID",
+      "caption": "Street"
+    },
+    {
+      "name": "description",
+      "caption": "Description",
+      "description": "Description"
+    }
+  ]
+}

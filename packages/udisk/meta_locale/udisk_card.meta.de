@@ -1,0 +1,51 @@
+{
+  "caption": "Files",
+  "description": "Files",
+  "attributes": [
+    {
+      "name": "name",
+      "caption": "Name",
+      "description": "Name"
+    },
+    {
+      "name": "parentID",
+      "caption": "Folder",
+      "description": "Folder"
+    },
+    {
+      "name": "fcomment",
+      "caption": "Comment",
+      "description": "Comment"
+    },
+    {
+      "name": "isFolder",
+      "caption": "Is folder",
+      "description": "Is folder"
+    },
+    {
+      "name": "ownerID",
+      "caption": "owner",
+      "description": "owner"
+    },
+    {
+      "name": "fsize",
+      "caption": "Size",
+      "description": "Size"
+    },
+    {
+      "name": "contentType",
+      "caption": "Type",
+      "description": "Type"
+    },
+    {
+      "name": "isTemporary",
+      "caption": "Temporary",
+      "description": "Temporary"
+    },
+    {
+      "name": "fileData",
+      "caption": "File",
+      "description": "File"
+    }
+  ]
+}

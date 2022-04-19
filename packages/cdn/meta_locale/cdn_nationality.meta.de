@@ -1,0 +1,25 @@
+{
+  "caption": "Nationality",
+  "description": "Nationality",
+  "attributes": [
+    {
+      "name": "code",
+      "caption": "Code",
+      "description": "Nationality code"
+    },
+    {
+      "name": "name",
+      "caption": "Name",
+      "description": "Name of nationality"
+    },
+    {
+      "name": "nameM",
+      "caption": "Name(male)",
+      "description": "Nationality name for male"
+    },{
+      "name": "nameF",
+      "caption": "Name(female)",
+      "description": "Nationality name for male"
+    }
+  ]
+}

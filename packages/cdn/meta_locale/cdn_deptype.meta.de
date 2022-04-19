@@ -1,0 +1,16 @@
+{
+  "caption": "Department Types",
+  "description": "Department types dictionary",
+  "attributes": [
+    {
+      "name": "code",
+      "caption": "Code",
+      "description": "Code of the department type"
+    },
+    {
+      "name": "name",
+      "caption": "Name",
+      "description": "Name of the department type"
+    }
+  ]
+}

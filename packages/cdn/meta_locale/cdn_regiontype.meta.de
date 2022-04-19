@@ -1,0 +1,16 @@
+{
+  "caption": "Region Types",
+  "description": "Region types dictionary",
+  "attributes": [
+    {
+      "name": "code",
+      "caption": "Code",
+      "description": "Code"
+    },
+    {
+      "name": "name",
+      "caption": "Name",
+      "description": "Name of region type"
+    }
+  ]
+}

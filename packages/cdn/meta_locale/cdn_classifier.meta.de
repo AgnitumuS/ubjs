@@ -1,0 +1,25 @@
+{
+  "caption": "Classifiers",
+  "attributes": [
+    {
+      "name": "code",
+      "caption": "Code"
+    },
+    {
+      "name": "name",
+      "caption": "Name"
+    },
+    {
+      "name": "description",
+      "caption": "Description"
+    },
+    {
+      "name": "orderByAttr",
+      "caption": "Classifier items order"
+    },
+    {
+      "name": "ubql",
+      "caption": "UBQL (JSON)"
+    }
+  ]
+}

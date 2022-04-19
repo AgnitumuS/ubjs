@@ -1,0 +1,16 @@
+{
+  "caption": "City Types",
+  "description": "City types directory",
+  "attributes": [
+    {
+      "name": "code",
+      "caption": "Code",
+      "description": "Internal code of city type"
+    },
+    {
+      "name": "name",
+      "caption": "Name",
+      "description": "City type name"
+    }
+  ]
+}

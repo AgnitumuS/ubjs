@@ -1,0 +1,21 @@
+{
+  "caption": "Correspondent Indexes",
+  "description": "Correspondent indexes directory",
+  "attributes": [
+    {
+      "name": "code",
+      "caption": "Code",
+      "description": "Code of correspondent index"
+    },
+    {
+      "name": "name",
+      "caption": "Name",
+      "description": "Name of correspondent index"
+    },
+    {
+      "name": "fullName",
+      "caption": "Full name",
+      "description": "Full name of correspondent index"
+    }
+  ]
+}
