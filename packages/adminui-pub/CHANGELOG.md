@@ -6,16 +6,21 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
- - added Deutsch (`de`) locale (stub for a while)
 
 ### Changed
- - tinymce localization files: transformed to UTF8 instead of using codepoints in string for non-english characters
 
 ### Deprecated
 
 ### Removed
 
 ### Fixed
+
+## [5.22.9] - 2022-04-19
+### Added
+ - added Deutsch (`de`) locale (stub for a while)
+
+### Changed
+ - tinymce localization files: transformed to UTF8 instead of using codepoints in string for non-english characters
 
 ## [5.22.8] - 2022-04-14
 ## [5.22.7] - 2022-04-08

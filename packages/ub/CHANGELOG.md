@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.22.30] - 2022-04-19
 ## [5.22.29] - 2022-04-14
 ### Added
  - a new security option: `security.disabledAccounts`, which defines a regular expression
