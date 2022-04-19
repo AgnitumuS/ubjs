@@ -221,6 +221,12 @@ class DDLGenerator {
       caption: entity.description || entity.caption,
       multitenancy: (entity.mixins.multitenancy && (entity.mixins.multitenancy.enabled !== false))
     })
+    if (entity.mixins.multitenancy && (entity.mixins.multitenancy.enabled !== false)) {
+      tableDef.addPolicy({
+        type: entity.mixins.multitenancy.rlsRule || 'tenantOnly',
+        name: entityTableName + '_tenant'
+      })
+    }
 
     const defaultLang = conn.getAppInfo().defaultLang
 

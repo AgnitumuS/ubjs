@@ -72,6 +72,8 @@ class TableDefinition {
     /** @type {Array<FKAttributes>} */
     this.foreignKeys = []
     this.checkConstraints = []
+    /** @type {PolicyDefinition[]} */
+    this.policies = []
     // other
     this.othersNames = {}
     this.isIndexOrganized = false
@@ -174,7 +176,7 @@ class TableDefinition {
    */
 
   /**
-   * @param {FKAttributes} obj
+   * @param {{updateAction: *, references: *, keys: string[], name: *, isDisabled: boolean, deleteAction: *}} obj
    * @param {string} [checkName]
    * @returns {*}
    */
@@ -228,6 +230,42 @@ class TableDefinition {
 
   getCheckConstrByName (name) {
     return _.find(this.checkConstraints, { _upperName: name.toUpperCase() })
+  }
+
+
+  /**
+   * @typedef {Object} PolicyDefinition
+   * @property {string} name
+   * @property {string} type
+   * @property {string} _upperName
+   */
+
+  /**
+   * @param {PolicyDefinition} obj
+   * @returns {PolicyDefinition}
+   */
+  addPolicy (obj) {
+    obj._upperName = obj.name.toUpperCase()
+    this.policies.push(obj)
+    return obj
+  }
+
+  /**
+   * @param {string} name
+   * @returns {PolicyDefinition}
+   */
+  getPolicy (name) {
+    const upperName = name.toUpperCase()
+    return this.policies.find(p => p._upperName === upperName)
+  }
+
+  /**
+   * @param {string} name
+   * @returns {boolean}
+   */
+  existPolicy (name) {
+    const upperName = name.toUpperCase()
+    return this.policies.some(p => p._upperName === upperName)
   }
 
   addOther (obj) {

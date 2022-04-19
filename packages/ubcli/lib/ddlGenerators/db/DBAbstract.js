@@ -242,23 +242,46 @@ class DBAbstract {
   }
 
   /**
-   * Generate code for enabling a multitenancy for table
+   * Enable RLS for a table
    *
    * @abstract
    * @param {TableDefinition} table
    */
-  genCodeEnableMultitenancy (table) {
-    throw new Error('Multitenancy is not supported by this DB')
+  genCodeEnableRls (table) {
+    throw new Error('RLS is not supported by this DB')
   }
 
   /**
-   * Generate code for disabling a multitenancy for table
+   * Disable RLS for a table
    *
    * @abstract
    * @param {TableDefinition} table
    */
-  genCodeDisableMultitenancy (table) {
-    throw new Error('Multitenancy is not supported by this DB')
+  genCodeDisableRls (table) {
+    throw new Error('RLS is not supported by this DB')
+  }
+
+  /**
+   * Disable RLS for a table
+   *
+   * @abstract
+   * @param {TableDefinition} table
+   * @param {PolicyDefinition} policy
+   */
+  genCodeDropPolicy (table, policy) {
+    throw new Error('RLS is not supported by this DB')
+  }
+
+  /**
+   * Disable RLS for a table
+   *
+   * @abstract
+   * @param {TableDefinition} table
+   * @param {PolicyDefinition} policy
+   * @param {boolean} isAlter
+   */
+  genCodeCreateOrAlterPolicy (table, policy, isAlter) {
+    throw new Error('RLS is not supported by this DB')
   }
 
   /**
@@ -425,7 +448,7 @@ class DBAbstract {
 
       this.compareColumns(mustBe, asIs)
 
-      // drop PK if not equals or not exist in schema
+      // drop PK if not equals or not exists in schema
       if (asIs.primaryKey && !mustBe.existOther(asIs.primaryKey.name) &&
          (!mustBe.primaryKey ||
            !_.isEqual(asIs.primaryKey.keys.map((v) => v.toUpperCase()), mustBe.primaryKey.keys.map((v) => v.toUpperCase()))
@@ -438,7 +461,7 @@ class DBAbstract {
         }
       }
 
-      // drop FK if not found in schema by name or not equal by columnus
+      // drop FK if not found in schema by name or not equal by columns
       for (const asIsFK of asIs.foreignKeys) {
         if (mustBe.existOther(asIsFK.name)) continue
         const mustBeFK = mustBe.getFKByName(asIsFK.name)
@@ -482,6 +505,16 @@ class DBAbstract {
         }
       }
 
+      // drop policies
+      for (const asIsPolicy of asIs.policies) {
+        if (!mustBe.existPolicy(asIsPolicy.name)) {
+          this.genCodeDropPolicy(asIs, asIsPolicy)
+        }
+      }
+      if (!mustBe.policies.length && asIs.policies.length) {
+        this.genCodeDisableRls(asIs)
+      }
+
       // sequence
       // TODO - increase sequence value to indicate physical structure is changed
       // if (me.schema.sequences['S_' + asIs.name.toUpperCase()]){
@@ -489,17 +522,19 @@ class DBAbstract {
       // }
     }
 
-    // multitenancy
-    if (!asIs || (asIs.multitenancy !== mustBe.multitenancy)) {
-      if (mustBe.multitenancy) {
-        this.genCodeEnableMultitenancy(mustBe)
-      } else if (asIs) { // table exists with multitenancy
-        this.genCodeDisableMultitenancy(mustBe)
+    // Enable RLS, create and alter policies
+    if (mustBe.policies.length && (!asIs || !asIs.policies.length)) {
+      this.genCodeEnableRls(asIs)
+    }
+    for (const mustBePolicy of mustBe.policies) {
+      const asIsPolicy = asIs.getPolicy(mustBePolicy.name)
+      if (!asIsPolicy || asIsPolicy.type !== mustBePolicy.type) {
+        this.genCodeCreateOrAlterPolicy(mustBe, mustBePolicy, !!asIsPolicy)
       }
     }
 
     // create PK
-    if (mustBe.primaryKey && ((asIs && !asIs.primaryKey) || notEqualPK || !asIs)) {
+    if (mustBe.primaryKey && (!asIs || !asIs.primaryKey || notEqualPK)) {
       this.genCodeCreatePK(mustBe)
     }
 
