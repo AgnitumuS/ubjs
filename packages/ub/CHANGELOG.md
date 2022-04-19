@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
+- Turn on `multitenancy` mixin for `ub_migration` entity to keep per-tenant scripts
 
 ### Deprecated
 
