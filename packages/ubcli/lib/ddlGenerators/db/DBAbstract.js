@@ -410,7 +410,7 @@ class DBAbstract {
    */
   compareTableDefinitions (mustBe, asIs) {
     const notEqualPK = false
-    if (!asIs) { // table in database does not exists
+    if (!asIs) { // table in database does not exist
       this.genCodeCreateTable(mustBe)
 
       // todo rename genCodeSetCaption -> addDBObjectDescription
