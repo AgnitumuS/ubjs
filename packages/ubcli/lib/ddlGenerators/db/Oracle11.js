@@ -75,7 +75,8 @@ end;`,
     for (const tabDef of dbTables) {
       const asIsTable = new TableDefinition({
         name: tabDef.NAME,
-        caption: tabDef.CAPTION
+        caption: tabDef.CAPTION,
+        asIs: true
       })
 
       const columnSQL = `

@@ -53,6 +53,7 @@ class TableDefinition {
    * @param {String} config.name
    * @param {String} config.caption
    * @param {boolean} [config.multitenancy=false]
+   * @param {boolean} [config.asIs=false]
    */
   constructor (config) {
     /** @type UBEntity */
@@ -79,6 +80,7 @@ class TableDefinition {
     this.isIndexOrganized = false
     this.doComparision = true
     this.multitenancy = (config.multitenancy === true)
+    this.asIs = config.asIs
   }
 
   /**
@@ -125,7 +127,9 @@ class TableDefinition {
     obj._upperName = obj.name.toUpperCase()
     obj.indexType = obj.indexType || 'INDEX'
     if (obj.keys && obj.keys.length) {
-      if (this.multitenancy && obj.isUnique) obj.keys.push('mi_tenantID')
+      if (!this.asIs && this.multitenancy && obj.isUnique) {
+        obj.keys.push('mi_tenantID')
+      }
       obj.keys = obj.keys.map(name => name.toUpperCase())
     }
     if (checkName) {
@@ -237,7 +241,6 @@ class TableDefinition {
    * @typedef {Object} PolicyDefinition
    * @property {string} name
    * @property {string} type
-   * @property {string} _upperName
    */
 
   /**
@@ -245,7 +248,6 @@ class TableDefinition {
    * @returns {PolicyDefinition}
    */
   addPolicy (obj) {
-    obj._upperName = obj.name.toUpperCase()
     this.policies.push(obj)
     return obj
   }
@@ -255,8 +257,7 @@ class TableDefinition {
    * @returns {PolicyDefinition}
    */
   getPolicy (name) {
-    const upperName = name.toUpperCase()
-    return this.policies.find(p => p._upperName === upperName)
+    return this.policies.find(p => strIComp(p.name, name))
   }
 
   /**
@@ -264,8 +265,7 @@ class TableDefinition {
    * @returns {boolean}
    */
   existPolicy (name) {
-    const upperName = name.toUpperCase()
-    return this.policies.some(p => p._upperName === upperName)
+    return this.policies.some(p => strIComp(p.name, name))
   }
 
   addOther (obj) {

@@ -64,7 +64,8 @@ from pg_catalog.pg_tables t where t.schemaname = current_schema`
       const asIsTable = new TableDefinition({
         name: tabDef.name,
         caption: tabDef.caption,
-        multitenancy: tabDef.rowsecurity === 1
+        multitenancy: tabDef.rowsecurity === 1,
+        asIs: true
       })
 
       // Table Columns
