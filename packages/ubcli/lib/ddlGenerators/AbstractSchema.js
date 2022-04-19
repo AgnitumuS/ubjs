@@ -175,7 +175,7 @@ class TableDefinition {
 
   /**
    * @param {FKAttributes} obj
-   * @param checkName
+   * @param {string} [checkName]
    * @returns {*}
    */
   addFK (obj, checkName) {

@@ -3,27 +3,29 @@
  rewrite to ES6 & ubcli by pavel.mash 08.2016
  */
 const _ = require('lodash')
-const UBDomain = require('@unitybase/cs-shared').UBDomain
+const { UBDomain } = require('@unitybase/cs-shared')
 const { TableDefinition, strIComp } = require('./AbstractSchema')
 
 /**
- * Return name of a table for entity (depending of a mapping)
+ * Return name of the db table for an entity (depending on mapping)
  * @param {UBEntity} entity
  * @returns {string}
  */
 function getTableDBName (entity) {
-  return (entity.mapping && entity.mapping.selectName) ? entity.mapping.selectName : entity.name
+  return (entity.mapping && entity.mapping.selectName)
+    ? entity.mapping.selectName
+    : entity.name
 }
 
 /**
- * Creates the name of the foreign key as it should be in the database
+ * Create name of the foreign key as it should be in the database
  * @param {string} sourceTableName
  * @param {string} sourceColumnName
  * @param {string} destTableName
- * @param {string|DDLGenerator.dbDialectes} dialect
+ * @param {string|DDLGenerator.dbDialects} dialect
  * @return {string}
  */
-function genFKName (sourceTableName, sourceColumnName, destTableName, dialect = DDLGenerator.dbDialectes.AnsiSQL) {
+function genFKName (sourceTableName, sourceColumnName, destTableName, dialect = DDLGenerator.dbDialects.AnsiSQL) {
   const MAX_IDENTIFIER_LEN = DDLGenerator.MAX_DB_IDENTIFIER_LENGTHS[dialect]
   let prefix = 'FK_' + sourceTableName.toUpperCase() + '_'
   let colName = sourceColumnName.toUpperCase()
@@ -91,14 +93,14 @@ function createDefUniqueIndex (dialect, tableDef, sqlAlias, attrName, isHistory,
 }
 
 /**
- * Create a shorten name based on DDLGenerator.MAX_DB_IDENTIFIER_LENGTHS for a given DB dialect
+ * Create a short name based on DDLGenerator.MAX_DB_IDENTIFIER_LENGTHS for a given DB dialect
  * @param prefix
  * @param root
  * @param suffix
- * @param {string|DDLGenerator.dbDialectes} dialect One of DDLGenerator.dbDialectes
+ * @param {string|DDLGenerator.dbDialects} dialect One of DDLGenerator.dbDialects
  * @returns {string}
  */
-function formatName (prefix, root, suffix, dialect = DDLGenerator.dbDialectes.AnsiSQL) {
+function formatName (prefix, root, suffix, dialect = DDLGenerator.dbDialects.AnsiSQL) {
   const MAX_IDENTIFIER_LEN = DDLGenerator.MAX_DB_IDENTIFIER_LENGTHS[dialect]
   const totalLen = prefix.length + root.length + suffix.length
   let deltaLen
@@ -178,9 +180,9 @@ class DDLGenerator {
 
     for (const dbConnCfg of domain.connections) {
       if (tablesByConnection[dbConnCfg.name] && tablesByConnection[dbConnCfg.name].length) {
-        /** @type DBAbstract */
+        /** @type {function} */
         const DatabaseInfo = require(`./db/${dbConnCfg.dialect}`)
-        const maker = new DatabaseInfo(conn, dbConnCfg, tablesByConnection[dbConnCfg.name])
+        const maker = /** @type {DBAbstract} */ new DatabaseInfo(conn, dbConnCfg, tablesByConnection[dbConnCfg.name])
         console.log(`Loading database metadata for connection ${maker.dbConnectionConfig.name} (${maker.dbConnectionConfig.dialect})...`)
         console.time('Loaded in')
         maker.loadDatabaseMetadata()
@@ -322,7 +324,7 @@ class DDLGenerator {
     }
 
     if (entity.mixins.unity) {
-      const u = entity.mixins.unity
+      const u = /** @type {object} */ entity.mixins.unity
       this.relatedEntities.push(u.entity)
       const refTo = entity.domain.get(u.entity)
       tableDef.addFK({
@@ -336,7 +338,8 @@ class DDLGenerator {
 
     if (entity.mixins.dataHistory) {
       const dateToKeys = ['mi_dateTo']
-      if (entity.mixins.mStorage && entity.mixins.mStorage.safeDelete) {
+      const storageMixin = /** @type {object} */ entity.mixins.mStorage
+      if (storageMixin && storageMixin.safeDelete) {
         dateToKeys.push('mi_deleteDate')
       }
       tableDef.addIndex({
@@ -351,7 +354,7 @@ class DDLGenerator {
       })
 
       const dateFromKeys = ['mi_dateFrom', 'mi_data_id']
-      if (entity.mixins.mStorage && entity.mixins.mStorage.safeDelete) {
+      if (storageMixin && storageMixin.safeDelete) {
         dateFromKeys.push('mi_deleteDate')
       }
       tableDef.addIndex({
@@ -364,7 +367,7 @@ class DDLGenerator {
     if (entity.attributes.ID) { // in case ID is mapped to non-uniq attribute - skip primary key generation. Example in tst_virtualID.meta
       let createPK = true
       const m = entity.attributes.ID.mapping
-      if (m && m.expressionType === 'Field') {
+      if (m && m.expressionType === UBDomain.ExpressionType.Field) {
         if (entity.attributes[m.expression]) createPK = entity.attributes[m.expression].isUnique
       }
       if (createPK) {
@@ -495,7 +498,7 @@ class DDLGenerator {
               break
           }
         } else {
-          objDef = { name: dbKey, expression: dbExtDef[DDLGenerator.dbDialectes[dialect]] }
+          objDef = { name: dbKey, expression: dbExtDef[DDLGenerator.dbDialects[dialect]] }
           tableDef.addOther(objDef)
         }
       })
@@ -709,7 +712,7 @@ class DDLGenerator {
   }
 
   static isPostgre (dialect) {
-    return (dialect === DDLGenerator.dbDialectes.PostgreSQL)
+    return (dialect === DDLGenerator.dbDialects.PostgreSQL)
   }
 
   static isEqualStrings (a, b) {
@@ -742,7 +745,7 @@ DDLGenerator.dialectsPriority = {
 /**
  * @enum
  */
-DDLGenerator.dbDialectes = {
+DDLGenerator.dbDialects = {
   AnsiSQL: 'AnsiSQL',
   Oracle: 'Oracle',
   MSSQL: 'MSSQL',
