@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
+- `uba_subject` - add metadata for DDL generator for multitenant environments
 
 ### Deprecated
 

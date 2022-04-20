@@ -14,6 +14,8 @@ function ubMixinTransformation (domainJson, serverConfig) {
   const mt = serverConfig.security.multitenancy
   if (mt && (mt.enabled === true)) {
     addMultitenancyMixinAttributes(domainJson, serverConfig)
+  } else {
+    removeMultitenancyMixin(domainJson)
   }
   replaceEnvInMapping(domainJson, serverConfig)
   validateAttributesBlobStore(domainJson, serverConfig)
@@ -84,6 +86,18 @@ function addMultitenancyMixinAttributes (domainJson, serverConfig) {
         },
         defaultValue: dbDefault
       })
+    }
+  }
+}
+
+/**
+ * Disable multitenancy mixin in all entities
+ * @param {object<string, {modelName: string, meta: object, lang: object<string, object>}>} domainJson
+ */
+function removeMultitenancyMixin(domainJson) {
+  for (const { meta: entityMeta } of Object.values(domainJson)) {
+    if (entityMeta.mixins && entityMeta.mixins.multitenancy) {
+      delete entityMeta.mixins.multitenancy
     }
   }
 }

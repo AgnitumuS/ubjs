@@ -65,7 +65,8 @@ module.exports = function migrate (cfg) {
         defaultValue: NaN,
         param: 'tenantID',
         help: 'Tenant ID to initialize.  If not specified, all tenants will be iterated.'
-      }).add({
+      })
+      .add({
         short: 'p',
         long: 'progress',
         defaultValue: false,
@@ -117,11 +118,13 @@ function runMigrations (params) {
   console.log(`Found ${totalFiles} migration file(s) in ${Date.now() - d}ms`)
 
   // remove files for model versions prior to dbVersions
-  // for a "fresh" setup `ubcli initialize` fills ub_version table by models version on the moment of initialization
+  // for "fresh" setup, `ubcli initialize` fills ub_version table by models versions on the moment
+  // of the initialization
   let oldFilesSkipped = 0
   migrations.files = migrations.files.filter(f => {
     const fileModelVersion = f.name.substring(0, 9)
-    if (IS_VERSION_RE.test(fileModelVersion)) { // file should starts from 9 digits model version to which it migrate
+    if (IS_VERSION_RE.test(fileModelVersion)) {
+      // file name should start from 9 digits model version to which it migrates
       // - files intended for migrate to model versions prior to current DB state are skipped
       // - starting from 2021-11-17 files for current model version are NOT skipped (< instead of <=)
       //   this allows to add a new migration script and apply migration for current version many times
@@ -129,7 +132,6 @@ function runMigrations (params) {
       //   or rename existed script (if it supports re-execution) and change renamed one.
       if (fileModelVersion < dbVersions[f.model]) {
         oldFilesSkipped++
-        // console.debug(f)
         return false
       }
     }
