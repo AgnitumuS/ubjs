@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+ - republish Deutsch (`de`) locale (second try. prev. package publishing fails)
 
 ## [5.22.5] - 2022-04-20
 ### Fixed
