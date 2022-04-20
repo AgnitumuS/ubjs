@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.22.9] - 2022-04-20
 ## [5.22.8] - 2022-04-19
 ### Added
  - added Deutsch (`de`) locale (stub for a while)
