@@ -53,6 +53,7 @@ class TableDefinition {
    * @param {String} config.name
    * @param {String} config.caption
    * @param {boolean} [config.multitenancy=false]
+   * @param {boolean} [config.asIs=false]
    */
   constructor (config) {
     /** @type UBEntity */
@@ -72,11 +73,14 @@ class TableDefinition {
     /** @type {Array<FKAttributes>} */
     this.foreignKeys = []
     this.checkConstraints = []
+    /** @type {PolicyDefinition[]} */
+    this.policies = []
     // other
     this.othersNames = {}
     this.isIndexOrganized = false
     this.doComparision = true
     this.multitenancy = (config.multitenancy === true)
+    this.asIs = config.asIs
   }
 
   /**
@@ -123,7 +127,9 @@ class TableDefinition {
     obj._upperName = obj.name.toUpperCase()
     obj.indexType = obj.indexType || 'INDEX'
     if (obj.keys && obj.keys.length) {
-      if (this.multitenancy && obj.isUnique) obj.keys.push('mi_tenantID')
+      if (!this.asIs && this.multitenancy && obj.isUnique) {
+        obj.keys.push('mi_tenantID')
+      }
       obj.keys = obj.keys.map(name => name.toUpperCase())
     }
     if (checkName) {
@@ -174,8 +180,8 @@ class TableDefinition {
    */
 
   /**
-   * @param {FKAttributes} obj
-   * @param checkName
+   * @param {{updateAction: *, references: *, keys: string[], name: *, isDisabled: boolean, deleteAction: *}} obj
+   * @param {string} [checkName]
    * @returns {*}
    */
   addFK (obj, checkName) {
@@ -228,6 +234,38 @@ class TableDefinition {
 
   getCheckConstrByName (name) {
     return _.find(this.checkConstraints, { _upperName: name.toUpperCase() })
+  }
+
+
+  /**
+   * @typedef {Object} PolicyDefinition
+   * @property {string} name
+   * @property {string} type
+   */
+
+  /**
+   * @param {PolicyDefinition} obj
+   * @returns {PolicyDefinition}
+   */
+  addPolicy (obj) {
+    this.policies.push(obj)
+    return obj
+  }
+
+  /**
+   * @param {string} name
+   * @returns {PolicyDefinition}
+   */
+  getPolicy (name) {
+    return this.policies.find(p => strIComp(p.name, name))
+  }
+
+  /**
+   * @param {string} name
+   * @returns {boolean}
+   */
+  existPolicy (name) {
+    return this.policies.some(p => strIComp(p.name, name))
   }
 
   addOther (obj) {

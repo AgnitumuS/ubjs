@@ -14,6 +14,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+- Explicitly remove multitenancy mixin for every entity, if it is not enabled in the server 
+  configuration file
 
 ## [5.22.30] - 2022-04-19
 ## [5.22.29] - 2022-04-14

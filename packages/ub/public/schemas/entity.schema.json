@@ -326,7 +326,7 @@
             "properties": {
                 "mStorage": {
                     "type": "object",
-                    "description": "Provide CRUID operations for entity database persistent",
+                    "description": "Provide CRUD operations for entity database persistent",
                     "properties": {
                         "simpleAudit": {
                             "type": "boolean",
@@ -559,6 +559,23 @@
                             "type": "object",
                             "description": "List of attributes for truncate: {\"attr1\": {\"size\": 100 }, ....}",
                             "additionalProperties": true
+                        }
+                    }
+                },
+                "multitenancy": {
+                    "type": "object",
+                    "description": "Configure behavior of entity in multitenant environments",
+                    "properties": {
+                        "enabled": {
+                            "type": "boolean",
+                            "default": true,
+                            "description": "Specify whether entity shall have unique rows for tenants or common rows"
+                        },
+                        "rlsRule": {
+                            "type": "string",
+                            "enum": ["tenantOnly", "tenantAndCommon"],
+                            "default": "tenantOnly",
+                            "description": "Row visibility rule for tenants"
                         }
                     }
                 }

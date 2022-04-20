@@ -8,12 +8,16 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
+- Multitenancy: instead of enable/disable multitenancy,
+  compare RLS policies on tables and compare has/does not have RLS enable flag on-off.
 
 ### Deprecated
 
 ### Removed
 
 ### Fixed
+- Multitenant environments - fix all indexes recreation regardless of changes in indexes
+- History mixin - index creation for entities without safeDelete mixin
 
 ## [5.22.9] - 2022-04-19
 ## [5.22.8] - 2022-04-14

@@ -26,7 +26,8 @@ class DBSQLite3 extends DBAbstract {
     for (const tabDef of dbTables) {
       const asIsTable = new TableDefinition({
         name: tabDef.name,
-        caption: tabDef.caption
+        caption: tabDef.caption,
+        asIs: true
       })
       const primaryKeyFields = []
 
