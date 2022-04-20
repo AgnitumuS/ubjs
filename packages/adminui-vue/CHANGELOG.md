@@ -8,6 +8,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
+ - published version of package now EXCLUDES Roboto font for `-dev` mode,
+   unminified version of element-ui css (el-theme-compiled.css) and sources of ub-icons iconic fonts.
+   These changes reduce installed package size from 12.5mb to 8.4mb (4.7 MB -> 3.5 MB for tarball)
 
 ### Deprecated
 
