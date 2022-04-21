@@ -6,6 +6,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+ - allow `uba_user.getUserData` for `User` role
 
 ### Changed
 
