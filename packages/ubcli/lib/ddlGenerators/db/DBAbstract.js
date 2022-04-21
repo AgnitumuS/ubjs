@@ -524,10 +524,10 @@ class DBAbstract {
 
     // Enable RLS, create and alter policies
     if (mustBe.policies.length && (!asIs || !asIs.policies.length)) {
-      this.genCodeEnableRls(asIs)
+      this.genCodeEnableRls(mustBe)
     }
     for (const mustBePolicy of mustBe.policies) {
-      const asIsPolicy = asIs.getPolicy(mustBePolicy.name)
+      const asIsPolicy = asIs && asIs.getPolicy(mustBePolicy.name)
       if (!asIsPolicy || asIsPolicy.type !== mustBePolicy.type) {
         this.genCodeCreateOrAlterPolicy(mustBe, mustBePolicy, !!asIsPolicy)
       }
