@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+- Fix create tables in multitenant environments
 
 ## [5.22.10] - 2022-04-20
 ### Changed
