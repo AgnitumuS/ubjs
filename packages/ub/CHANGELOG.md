@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+- Do NOT add by default "multitenancy" mixin to  entities with Virtual and External datasource types
 
 ## [5.22.31] - 2022-04-20
 ### Fixed

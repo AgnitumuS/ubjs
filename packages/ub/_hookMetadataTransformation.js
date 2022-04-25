@@ -58,6 +58,11 @@ function addMultitenancyMixinAttributes (domainJson, serverConfig) {
   for (const entityName in domainJson) {
     const entityMeta = domainJson[entityName].meta
     if (entityMeta.mixins && entityMeta.mixins.multitenancy && entityMeta.mixins.multitenancy.enabled !== false) {
+      if ((entityMeta.dsType === 'External' || entityMeta.dsType === 'Virtual') && entityMeta.mixins.multitenancy.enabled !== true) {
+        // For Virtual and External dsTypes, default to disabled multitenancy
+        entityMeta.mixins.multitenancy.enabled = false
+        continue
+      }
       if (entityMeta.attributes.indexOf(a => a.name === 'mi_tenantID') !== -1) continue
       const conn = connCfgMap[entityMeta.connectionName] || defaultConn
       if (!conn) throw new Error(`Connection definition not found for entity ${entityName}`)
