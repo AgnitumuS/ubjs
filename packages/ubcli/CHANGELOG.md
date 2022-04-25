@@ -6,6 +6,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+## [5.22.11] - 2022-04-25
+### Added
 - `migrate` command new command line options:
   - `noUpdateVersion` flag, which allows executing migrations, but not update version in DB.
     This is useful for multistage migrations like in multi-tenant migration, and also for debug purposes.
@@ -13,12 +24,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
     or data migrations only or in complex migration scenarios, like multitenant migrations.
 - A new command `migrateTenants` to help deal with complexity with migration tenants.
   The command assumes the DDL stage of migration is already done and migrates tenants one by one.
-
-### Changed
-
-### Deprecated
-
-### Removed
 
 ### Fixed
 - Fix create tables in multitenant environments
