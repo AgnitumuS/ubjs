@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
+- Removed some `ub-migrate` warnings by removing obsolete method usages in custom yml formats.
 
 ### Deprecated
 

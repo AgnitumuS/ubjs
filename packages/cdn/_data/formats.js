@@ -32,13 +32,11 @@ module.exports = function (container) {
   const mdClassifierItem = new EntityFormat()
     .key('code')
     .caption('name')
-    .translatable('name')
     .fromContext('classifier')
     .wrapAsEntity('cdn_classifieritem')
   const mdClassifier = new EntityFormat()
     .key('code')
     .caption('name')
-    .translatable('name')
     .child(
       'items',
       {
