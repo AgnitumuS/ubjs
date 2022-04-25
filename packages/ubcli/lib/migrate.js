@@ -1,7 +1,7 @@
 /**
  *  Apply models migrations for application. See [Version migrations tutorial](https://unitybase.info/api/server-v5/tutorial-migrations.html)
  *
- * Usage from a command line:
+ * Usage from the command line:
 
  ubcli migrate -?
 
@@ -51,6 +51,18 @@ module.exports = function migrate (cfg) {
       .add({ short: 'noddl', long: 'noddl', defaultValue: false, help: 'skip execution of generateDDL' })
       .add({ short: 'ddlfor', long: 'ddlfor', param: 'ddlfor', defaultValue: '*', help: 'comma separated model names for DDL generator' })
       .add({ short: 'nodata', long: 'nodata', defaultValue: false, help: 'skip execution ub-migrate' })
+      .add({
+        short: 'nover',
+        long: 'noUpdateVersion',
+        defaultValue: false,
+        help: 'skip update versions of models'
+      })
+      .add({
+        short: 'noscripts',
+        long: 'noMigrationScripts',
+        defaultValue: false,
+        help: 'skip executing migration scripts'
+      })
       .add({ short: 'optimistic', long: 'optimistic', defaultValue: false, help: 'skip errors on execute DDL statement. BE CAREFUL! DO NOT USE ON PRODUCTION' })
       .add({ short: 'v', long: 'verbose', defaultValue: false, searchInEnv: true, help: 'Verbose mode' })
       .add({
@@ -78,7 +90,7 @@ module.exports = function migrate (cfg) {
     if (!cfg) return
   }
   cfg.user = 'root'
-  // increase receive timeout to 10 minutes - in case DB server is slow we can easy reach 30s timeout
+  // increase receive timeout to 10 minutes - in case DB server is slow we can easily reach 30s timeout
   http.setGlobalConnectionDefaults({ receiveTimeout: 600000 })
   runMigrations(cfg)
 }
@@ -96,6 +108,8 @@ const NORMALIZE_VERSION_RE = /^((\d{1,3})[._](\d{1,3})[._](\d{1,3}))/
 function runMigrations (params) {
   const serverConfig = argv.getServerConfiguration(false)
   let dbConnections = createDBConnectionPool(serverConfig.application.connections)
+  const multitenancyEnabled = serverConfig.security.multitenancy
+    && serverConfig.security.multitenancy.enabled
 
   let modelsToMigrate = serverConfig.application.domain.models
   if (params.models) { // migrate only specified models
@@ -104,8 +118,12 @@ function runMigrations (params) {
   }
 
   console.log('Loading application migration state from DB...')
-  createUbMigrateIfNotExists(dbConnections.DEFAULT) // allows beforeDDL script to be added into ub_migration table
+  // allows beforeDDL script to be added into ub_migration table
+  createUbMigrateIfNotExists(dbConnections.DEFAULT, multitenancyEnabled)
   let d = Date.now()
+  if (params.tenantID) {
+    dbConnections.DEFAULT.exec('SET ub.tenantID=' + params.tenantID)
+  }
   const { dbVersions, dbVersionIDs, appliedScripts } = getMigrationState(dbConnections.DEFAULT, modelsToMigrate)
   console.log(`Migration state (${appliedScripts.length} applied scripts for ${Object.keys(dbVersions).length} models) is loaded from ub_migration table in ${Date.now() - d}ms`)
   // console.debug('DBVersions=', dbVersions)
@@ -154,7 +172,7 @@ function runMigrations (params) {
   if (!shaIsEqual) {
     throw new Error('Some files are modified after been applied. Migration terminated')
   }
-  console.log(`${migrations.files.length} migration files is new and will be applied`)
+  console.log(`${migrations.files.length} migration files are new and will be applied`)
 
   // generateDDL stage
   /** @type ServerSession */
@@ -234,11 +252,11 @@ function runMigrations (params) {
   if (!params.nodata) {
     const ubMigratePath = require.resolve('@unitybase/ub-migrate')
     if (!ubMigratePath) {
-      console.warn('Skipped data sync because ub-migrate not found. Either add -nodata parameter or install a ub-migrate (npm i @unitybase/ub-migrate)')
+      console.warn('Skipped data sync because ub-migrate not found. Either add -nodata parameter or install ub-migrate (npm i @unitybase/ub-migrate)')
     } else {
       const ubMigrate = require('@unitybase/ub-migrate')
       if (typeof ubMigrate.exec !== 'function') {
-        console.warn('Skipped data sync because ub-migrate is outdated (require to be >= 5.17.0). Either add -nodata parameter or update a ub-migrate (npm update @unitybase/ub-migrate)')
+        console.warn('Skipped data sync because ub-migrate is outdated (require to be >= 5.17.0). Either add -nodata parameter or update ub-migrate (npm update @unitybase/ub-migrate)')
       } else {
         const paramsForUbMigrate = Object.assign({}, params)
         paramsForUbMigrate.silent = true
@@ -251,28 +269,36 @@ function runMigrations (params) {
     console.warn('Skip data sync (ub-migrate) stage (-nodata)')
   }
 
-  // call filterFiles hooks in reverse order
-  const initialFilesCnt = migrations.files.length
-  for (let i = migrations.hooks.length - 1; i >= 0; i--) {
-    if (typeof migrations.hooks[i].hook.filterFiles === 'function') {
-      if (params.verbose) console.log(`Call filterFiles hook for model '${migrations.hooks[i].model}'`)
-      migrations.hooks[i].hook.filterFiles({ conn, dbConnections, dbVersions, migrations })
+  if (!params.noMigrationScripts) {
+    // call filterFiles hooks in reverse order
+    const initialFilesCnt = migrations.files.length
+    for (let i = migrations.hooks.length - 1; i >= 0; i--) {
+      if (typeof migrations.hooks[i].hook.filterFiles === 'function') {
+        if (params.verbose) console.log(`Call filterFiles hook for model '${migrations.hooks[i].model}'`)
+        migrations.hooks[i].hook.filterFiles({ conn, dbConnections, dbVersions, migrations })
+      }
     }
+    if (params.verbose) console.log(`filterFiles hooks decline ${initialFilesCnt - migrations.files.length} files`)
+
+    // apply remains migration files (without beforeDDL* hooks)
+    runFiles(migrations.files, params, { conn, dbConnections, dbVersions, migrations })
+
+    // apply finalizing hooks
+    migrations.hooks.forEach(h => {
+      if (typeof h.hook.finalize === 'function') {
+        if (params.verbose) console.log(`Call finalize hook for model '${h.model}'`)
+        h.hook.finalize({ conn, dbConnections, dbVersions, migrations: migrations })
+      }
+    })
+  } else {
+    console.log('Migration scripts skipped because of "noMigrationScripts" option')
   }
-  if (params.verbose) console.log(`filterFiles hooks decline ${initialFilesCnt - migrations.files.length} files`)
 
-  // apply remains migration files (without beforeDDL* hooks)
-  runFiles(migrations.files, params, { conn, dbConnections, dbVersions, migrations })
-
-  // apply finalize hooks
-  migrations.hooks.forEach(h => {
-    if (typeof h.hook.finalize === 'function') {
-      if (params.verbose) console.log(`Call finalize hook for model '${h.model}'`)
-      h.hook.finalize({ conn, dbConnections, dbVersions, migrations: migrations })
-    }
-  })
-
-  updateVersionsInDB(conn, modelsToMigrate, { dbVersionIDs, dbVersions })
+  if (!params.noUpdateVersion) {
+    updateVersionsInDB(conn, modelsToMigrate, { dbVersionIDs, dbVersions })
+  } else {
+    console.log('Skipped update version because of "noUpdateVersion" flag')
+  }
 
   console.info('Migration success')
 }
@@ -286,7 +312,7 @@ function runFiles (filesToRun, params, { conn, dbConnections, dbVersions, migrat
     if (f.name.endsWith('.js')) {
       const jsMigrationModule = require(f.fullPath)
       if (typeof jsMigrationModule !== 'function') {
-        console.error(`File '${f.origName}' in model '${f.model}' do not exports a function. Skipped`)
+        console.error(`File '${f.origName}' in model '${f.model}' do not export a function. Skipped`)
       } else {
         jsMigrationModule({ conn, dbConnections, dbVersions, migrations })
       }
@@ -310,9 +336,19 @@ function runFiles (filesToRun, params, { conn, dbConnections, dbVersions, migrat
       console.warn(`Unknown extension for '${f.origName}' in model '${f.model}'`)
     }
 
-    // conn.insert cant be used because in beforeDDL hook conn is not defined
-    dbConnections.DEFAULT.exec('insert into ub_migration(ID, modelName, filePath, fileSha) VALUES(?, ?, ?, ?)',
-      [dbConnections.DEFAULT.genID(undefined), f.model, f.name, f.sha])
+    // conn.insert cannot be used because in beforeDDL hook conn is not defined
+    if (params.tenantID) {
+      dbConnections.DEFAULT.exec('SET ub.tenantID=' + params.tenantID)
+      dbConnections.DEFAULT.exec(
+        'insert into ub_migration(ID, modelName, filePath, fileSha, mi_tenantID) VALUES(?, ?, ?, ?, ?)',
+        [dbConnections.DEFAULT.genID(undefined), f.model, f.name, f.sha, params.tenantID]
+      )
+    } else {
+      dbConnections.DEFAULT.exec(
+        'insert into ub_migration(ID, modelName, filePath, fileSha) VALUES(?, ?, ?, ?)',
+        [dbConnections.DEFAULT.genID(undefined), f.model, f.name, f.sha]
+      )
+    }
     dbConnections.DEFAULT.commit()
     // conn.insert({
     //   entity: 'ub_migration',
@@ -329,11 +365,12 @@ function runFiles (filesToRun, params, { conn, dbConnections, dbVersions, migrat
 /**
  * Create ub_migration table if it does not exist
  * @param {DBConnection} dbConn
+ * @param {boolean} multitenancyEnabled
  */
-function createUbMigrateIfNotExists (dbConn) {
+function createUbMigrateIfNotExists (dbConn, multitenancyEnabled) {
   let exists = null
   try {
-    // fake select to ensure table is exists
+    // fake select to ensure table exists
     exists = dbConn.selectParsedAsObject('select modelName AS "modelName", filePath as "filePath", fileSha as "fileSha" from ub_migration where ID=0')
   } catch (e) {
     // table not exists
@@ -342,7 +379,8 @@ function createUbMigrateIfNotExists (dbConn) {
     const ubMigrateTableScript = path.join(__dirname, 'dbScripts', 'create_ub_migrate.sql')
     execSql({
       file: ubMigrateTableScript,
-      optimistic: true
+      optimistic: true,
+      multitenancyEnabled
     })
   }
 }
@@ -361,7 +399,7 @@ function getMigrationState (dbConn, modelsConfig) {
   try {
     const versions = dbConn.selectParsedAsObject('select ID as "ID", modelName AS "modelName", version as "version" from ub_version')
     versions.forEach(v => {
-      if (!r.dbVersions[v.modelName] || v.version > r.dbVersions[v.modelName]) { // old version of ub_migrate can produce a several row for same model - take a latest
+      if (!r.dbVersions[v.modelName] || v.version > r.dbVersions[v.modelName]) { // old version of ub_migrate can produce several rows for same model - take the latest
         r.dbVersions[v.modelName] = v.version
       }
       r.dbVersionIDs[v.modelName] = v.ID

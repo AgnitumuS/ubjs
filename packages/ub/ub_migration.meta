@@ -41,7 +41,8 @@
       "safeDelete": false
     },
     "multitenancy": {
-      "enabled": false
+      "enabled": true,
+      "rlsRule": "tenantAndCommon"
     }
   }
 }

@@ -50,13 +50,24 @@ The "tenant admin" connection config
 
 The second UB instance for multitenancy access should be configured to use a non-owner role.
 
-DB role "$UB_DB_MAIN_USER"_mt (we reconnect to use a naming convention ORLIG_ROLE_mt) is created as:
+DB role "$UB_DB_MAIN_USER"_mt (we reconnect to use a naming convention ORIG_ROLE_mt) is created as:
 ```
 CREATE ROLE "$UB_DB_MAIN_USER"_mt LOGIN PASSWORD '$UB_DB_MAIN_PWD' VALID UNTIL 'infinity';
 GRANT USAGE ON SCHEMA $UB_DB_MAIN_USER TO "$UB_DB_MAIN_USER"_mt;
-GRANT select, insert, update, delete on all tables in schema $UB_DB_MAIN_USER TO "$UB_DB_MAIN_USER"_mt;
-GRANT usage, select ON ALL SEQUENCES IN SCHEMA $UB_DB_MAIN_USER TO "$UB_DB_MAIN_USER"_mt;
-GRANT execute ON ALL FUNCTIONS IN SCHEMA $UB_DB_MAIN_USER TO "$UB_DB_MAIN_USER"_mt;
+GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA $UB_DB_MAIN_USER TO "$UB_DB_MAIN_USER"_mt;
+GRANT USAGE, SELECT ON ALL SEQUENCES IN SCHEMA $UB_DB_MAIN_USER TO "$UB_DB_MAIN_USER"_mt;
+GRANT EXECUTE ON ALL FUNCTIONS IN SCHEMA $UB_DB_MAIN_USER TO "$UB_DB_MAIN_USER"_mt;
+```
+
+NOTE!!! This will give permissions on currently existing objects in DB.  To ensure permissions
+will be automatically given on all objects created in the future, automatically, use the following query:
+```
+ALTER DEFAULT PRIVILEGES IN SCHEMA $UB_DB_MAIN_USER
+  GRANT SELECT, INSERT, UPDATE, DELETE ON TABLES TO "$UB_DB_MAIN_USER"_mt;
+ALTER DEFAULT PRIVILEGES IN SCHEMA $UB_DB_MAIN_USER
+  GRANT USAGE, SELECT ON SEQUENCES TO "$UB_DB_MAIN_USER"_mt;
+ALTER DEFAULT PRIVILEGES IN SCHEMA $UB_DB_MAIN_USER
+  GRANT EXECUTE ON FUNCTIONS TO "$UB_DB_MAIN_USER"_mt;
 ```
 
 Role can be dropped using

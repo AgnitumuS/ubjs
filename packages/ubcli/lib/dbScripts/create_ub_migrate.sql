@@ -1,10 +1,13 @@
 <% if (conn.dialect.startsWith('Oracle')) { %>
 create table ub_migration(
- ID NUMBER(19) not null,
- modelName NVARCHAR2(32) not null,
- filePath NVARCHAR2(256) not null,
- fileSha NVARCHAR2(64) not null,
- appliedAt DATE default CAST(sys_extract_utc(SYSTIMESTAMP) AS DATE) not null
+  ID NUMBER(19) not null,
+  <% if (cfg.multitenancyEnabled) { %>
+  mi_tenantID NUMBER(19) not null,
+  <% } %>
+  modelName NVARCHAR2(32) not null,
+  filePath NVARCHAR2(256) not null,
+  fileSha NVARCHAR2(64) not null,
+  appliedAt DATE default CAST(sys_extract_utc(SYSTIMESTAMP) AS DATE) not null
 );
 --
 alter table ub_migration add constraint PK_UB_MIGRATION PRIMARY KEY (ID);
@@ -12,6 +15,9 @@ alter table ub_migration add constraint PK_UB_MIGRATION PRIMARY KEY (ID);
 <% } else if (conn.dialect.startsWith('MSSQL')) { %>
 create table dbo.ub_migration(
 	ID BIGINT not null,
+    <% if (cfg.multitenancyEnabled) { %>
+    mi_tenantID BIGINT not null,
+    <% } %>
 	modelName NVARCHAR(32) not null,
 	filePath NVARCHAR(256) not null,
 	fileSha NVARCHAR(64) not null,
@@ -23,6 +29,9 @@ alter table dbo.ub_migration add constraint PK_UB_MIGRATION PRIMARY KEY CLUSTERE
 <% } else if (conn.dialect.startsWith('Postgre')) { %>
 create table ub_migration(
 	ID BIGINT not null,
+    <% if (cfg.multitenancyEnabled) { %>
+    mi_tenantID BIGINT not null,
+    <% } %>
 	modelName VARCHAR(32) not null,
 	filePath VARCHAR(256) not null,
 	fileSha VARCHAR(64) not null,
@@ -34,6 +43,9 @@ alter table ub_migration add constraint PK_UB_MIGRATION PRIMARY KEY (ID);
 <% } else { %>
 CREATE TABLE ub_migration (
 	ID BIGINT NOT NULL PRIMARY KEY,
+    <% if (cfg.multitenancyEnabled) { %>
+    mi_tenantID BIGINT not null,
+    <% } %>
 	modelName VARCHAR(32) NOT NULL, --Model code
 	filePath VARCHAR(256) NOT NULL, --file path (relative to model _migrate folder)
 	fileSha VARCHAR(64) NOT NULL, --SHA256 of file
