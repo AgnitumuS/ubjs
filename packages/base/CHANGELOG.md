@@ -6,6 +6,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+ - `argv.establishConnectionFromCmdLineAttributes` can accept additional headers, what will be added to
+  each HTTP request. So any ubcli command can be executed with additional headers. Example:
+```shell
+ubcli migrate -u root -headers "{\"X-Tenant-ID\": \"12\"}"
+```
 
 ### Changed
 
