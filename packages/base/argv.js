@@ -219,13 +219,20 @@ establishConnectionFromCmdLineAttributes._cmdLineParams = [
 /**
  * Perform check somebody listen on URL
  * @param {String} URL
+ * @param {string} headers
  * @return {boolean}
  */
-function checkServerStarted (URL) {
+function checkServerStarted (URL, headers) {
   const http = require('http')
   if (verboseMode) console.info('Check server is running...')
   try {
-    const resp = http.get({ URL: URL + '/getAppInfo', connectTimeout: 1000, receiveTimeout: 1000, sendTimeout: 1000 }) // dummy
+    const resp = http.get({
+      URL: URL + '/getAppInfo',
+      connectTimeout: 1000,
+      receiveTimeout: 1000,
+      sendTimeout: 1000,
+      headers: headers && headers !== '{}' ? JSON.parse(headers) : undefined
+    }) // dummy
     if (verboseMode) console.info('STATUS', resp.statusCode)
     return resp.statusCode === 200
   } catch (e) {}
