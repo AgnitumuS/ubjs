@@ -238,6 +238,7 @@
         class="u-table-entity__body__content"
         :columns="columns"
         :fixed-column-id="fixedColumnId"
+        :get-row-class="getRowClass"
         :pre-multi-selection-column-id="preMultiSelectionColumnId"
         :get-column-class="getColumnClass"
         :height="height"
@@ -313,7 +314,7 @@
         class="u-table-entity__body__content"
         :columns="cardColumns"
         :items="items"
-        :get-card-class="getRowClass"
+        :get-card-class="getCardClass"
         :before-add-selection="beforeAddSelection"
         :before-remove-selection="beforeRemoveSelection"
         :enable-multi-select="enableMultiSelect"
@@ -565,6 +566,18 @@ export default {
     },
 
     /**
+     * function that accept a row data as a parameter and returns a custom class names for row (<tr>)
+     *
+     * @param {object} row A table row data
+     */
+    getRowClass: {
+      type: Function,
+      default () {
+        return ''
+      }
+    },
+
+    /**
      * ID of the column what will be displayed before the multi selection column
      */
     preMultiSelectionColumnId: {
@@ -800,7 +813,7 @@ export default {
       return ''
     },
 
-    getRowClass (row) {
+    getCardClass (row) {
       return row.ID === this.selectedRowId ? 'selected' : ''
     },
 
