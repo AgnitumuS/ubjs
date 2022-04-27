@@ -65,7 +65,6 @@ function runMigrations (params) {
       {},
       params,
       {
-        host: 'http://' + t.URI,
         optimistic: false,
         noddl: true,
         noUpdateVersion: t.TID !== lastTenantID,

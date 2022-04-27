@@ -110,11 +110,31 @@ function runMigrations (params) {
   let dbConnections = createDBConnectionPool(serverConfig.application.connections)
   const multitenancyEnabled = serverConfig.security.multitenancy
     && serverConfig.security.multitenancy.enabled
+  if (params.tenantID && !multitenancyEnabled) {
+    throw new Error('tenantID parameter should only be used when multitenancy enabled')
+  }
 
   let modelsToMigrate = serverConfig.application.domain.models
   if (params.models) { // migrate only specified models
     const inModels = params.models.split(',')
     modelsToMigrate = modelsToMigrate.filter(m => inModels.includes(m.name))
+  }
+  if (params.tenantID) {
+    console.log('Configure tenant connection for tenant: %s', params.tenantID)
+    if (serverConfig.security.multitenancy.tenantIDHeader) {
+      const patchedHeaders = params.headers ? JSON.parse(params.headers) : {}
+      if (!patchedHeaders[serverConfig.security.multitenancy.tenantIDHeader]) {
+        patchedHeaders[serverConfig.security.multitenancy.tenantIDHeader] = params.tenantID.toString()
+        params.headers = JSON.stringify(patchedHeaders)
+      }
+    } else {
+      const tenantIDNum = +params.tenantID
+      const tenantCfg = serverConfig.security.multitenancy.tenants.find(t => t.TID === tenantIDNum)
+      if (!tenantCfg) {
+        throw new Error(`Tenant ${params.tenantID} does not exist`)
+      }
+      params.host = 'http://' + tenantCfg.URI
+    }
   }
 
   console.log('Loading application migration state from DB...')
