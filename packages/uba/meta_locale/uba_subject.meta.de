@@ -1,6 +1,6 @@
 {
-  "caption": "Administration Subjects",
-  "description": "Administration subjects",
+  "caption": "Verwaltungssubjekte",
+  "description": "Verwaltungssubjekte",
   "attributes": [
     {
       "name": "code",
@@ -8,13 +8,13 @@
     },
     {
       "name": "name",
-      "caption": "Login",
-      "description": "Login"
+      "caption": "Anmelden",
+      "description": "Anmelden"
     },
     {
       "name": "sType",
-      "caption": "Subject type",
-      "description": "Subject type"
+      "caption": "Subjekttyp",
+      "description": "Subjekttyp"
     }
   ]
 }

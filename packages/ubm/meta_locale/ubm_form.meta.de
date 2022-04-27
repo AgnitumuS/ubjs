@@ -1,47 +1,56 @@
 {
-  "caption": "Forms",
-  "description": "Definition of interface forms",
+  "caption": "Formulare",
+  "description": "Definition von Schnittstellenformularen",
   "attributes": [
     {
       "name": "code",
-      "caption": "Form code"
+      "caption": "Formularcode"
     },
     {
       "name": "description",
-      "caption": "Description"
+      "caption": "Beschreibung"
     },
     {
       "name": "caption",
-      "caption": "Form title"
+      "caption": "Formulartitel",
+      "description": "Leer lassen, um den Namen der Entität als Formulartitel zu verwenden"
     },
     {
       "name": "formType",
-      "caption": "Form type",
-      "description": "Form definition type (auto or custom)"
+      "caption": "Formulartyp",
+      "description": "Formulardefinitionstyp (automatisch oder benutzerdefiniert)"
     },
     {
       "name": "formDef",
-      "caption": "Form definition",
-      "description": "Form interface definition"
+      "caption": "Formulardefinition",
+      "description": "Formularschnittstellendefinition"
     },
     {
       "name": "formCode",
-      "caption": "Form script",
-      "description": "JS worm client logic"
+      "caption": "Formularskript",
+      "description": "JS-Worm-Client-Logik"
     },
     {
       "name": "model",
-      "caption": "Model"
+      "caption": "Modell",
+      "description": "Modell, in dem das Formular gespeichert wird",
+      "documentation": "Modell, in dem das Formular gespeichert wird. Wenn leer, wird das Entitätsmodell verwendet. Der Zweck dieses Attributs ist es, ein Formular für Entitäten aus anderen Modellen zu entwickeln"
     },
     {
       "name": "entity",
-      "caption": "Entity",
-      "description": "Entity code"
+      "caption": "Entität",
+      "description": "Entitätscode",
+      "documentation": "Dieser Wert wird für die Suche nach dem Standard-Entitätsformular verwendet"
     },
     {
       "name": "isDefault",
-      "caption": "Default",
-      "description": "Default entity form"
+      "caption": "Standard",
+      "description": "Standardentitätsformular",
+      "documentation": "Bei der AdminUI Ausführung von `doCommand.showForm` ohne Übergabe eines Formularcodes als Parameter sucht der Client nach einem Formular für die Entität, und wenn > 1 Formular vorhanden ist, wird das Formular mit isDefault=true ausgewählt"
+    },
+    {
+      "name": "ID",
+      "caption": "ID"
     }
   ]
 }

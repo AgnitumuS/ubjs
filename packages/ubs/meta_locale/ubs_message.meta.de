@@ -1,32 +1,32 @@
 {
-  "caption": "Messages",
-  "description": "System messages",
-  "documentation": "System messages",
+  "caption": "Nachrichten",
+  "description": "Systemnachrichten",
+  "documentation": "Systemnachrichten",
   "attributes": [
     {
       "name": "messageBody",
-      "caption": "Message"
+      "caption": "Nachricht"
     },
     {
       "name": "complete",
-      "caption": "Submitted"
+      "caption": "Abgesendet"
     },
     {
       "name": "messageType",
-      "caption": "Type"
+      "caption": "Typ"
     },
     {
       "name": "startDate",
-      "caption": "Valid from"
+      "caption": "Gültig ab"
     },
     {
       "name": "expireDate",
-      "caption": "Valid to"
+      "caption": "Gültig bis"
     },
     {
       "name": "recipients",
-      "caption": "Message recipients",
-      "description": "System messages recipients"
+      "caption": "Nachrichtenempfänger",
+      "description": "Empfänger von Systemnachrichten"
     }
   ]
 }

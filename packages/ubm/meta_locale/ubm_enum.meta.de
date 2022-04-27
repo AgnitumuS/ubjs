@@ -1,28 +1,30 @@
 {
-  "caption": "Enumerated Values",
-  "description": "Enumerated values",
+  "caption": "Enumerierte Werte",
+  "description": "Enumerierte Werte",
   "attributes": [
     {
       "name": "eGroup",
-      "caption": "Group",
+      "caption": "Gruppe",
       "description": ""
     },
     {
       "name": "code",
       "caption": "Code",
-      "description": "Value code"
+      "description": "Wertcode"
     },
     {
       "name": "shortName",
-      "caption": "Short name"
+      "caption": "Kurzname"
     },
     {
       "name": "name",
-      "caption": "Value name"
+      "caption": "Wertname"
     },
     {
       "name": "sortOrder",
-      "caption": "Order #"
+      "caption": "Bestellnummer",
+      "description": "Dieser Wert wird verwendet, um die Anzeigereihenfolge bei Auswahl auf der Benutzeroberfläche festzulegen (von klein nach groß)"
     }
-  ]
+  ],
+  "documentation": "Auf der Benutzeroberfläche verwendet zur Suche von Attributen mit dem Datentyp \"Enum\""
 }

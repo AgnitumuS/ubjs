@@ -1,56 +1,56 @@
 {
-  "caption": "Countries",
-  "description": "Countries directory",
+  "caption": "Länder",
+  "description": "Länderverzeichnis",
   "attributes": [
     {
       "name": "code",
       "caption": "Code",
-      "description": "Internal code"
+      "description": "Interner Code"
     },
     {
       "name": "name",
       "caption": "Name",
-      "description": "Name of the country"
+      "description": "Name des Landes"
     },
     {
       "name": "fullName",
-      "caption": "Full name",
-      "description": "Full official name of the country"
+      "caption": "Vollständiger Name",
+      "description": "Vollständiger offizieller Name des Landes"
     },
     {
       "name": "intCode",
-      "caption": "Digital code",
-      "description": "Digital code of the country"
+      "caption": "Digitaler Code",
+      "description": "Digitaler Code des Landes"
     },
     {
       "name": "symbol2",
-      "caption": "ISO code",
-      "description": "2-character code of the country by ISO classification"
+      "caption": "ISO-Code",
+      "description": "2-stelliger Code des Landes nach ISO-Klassifizierung"
     },
     {
       "name": "symbol3",
-      "caption": "IOC code",
-      "description": "3-character code of the country by IOC classification"
+      "caption": "IOC-Code",
+      "description": "3-stelliger Code des Landes nach IOC-Klassifizierung"
     },
     {
       "name": "description",
-      "caption": "Description",
-      "description": "Country description"
+      "caption": "Beschreibung",
+      "description": "Beschreibung des Landes"
     },
     {
       "name": "phoneCode",
-      "caption": "Phone code",
-      "description": "Country phone code"
+      "caption": "Telefonvorwahl",
+      "description": "Telefonvorwahl des Landes"
     },
     {
       "name": "currencyID",
-      "caption": "Currency",
-      "description": "Main currency of the country"
+      "caption": "Währung",
+      "description": "Hauptwährung des Landes"
     },
     {
       "name": "capitalID",
-      "caption": "Capital",
-      "description": "Capital of the country"
+      "caption": "Hauptstadt",
+      "description": "Hauptstadt des Landes"
     }
   ]
 }

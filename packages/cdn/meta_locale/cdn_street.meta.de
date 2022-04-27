@@ -1,16 +1,16 @@
 {
-  "caption": "List of Streets",
-  "description": "List of streets",
+  "caption": "Liste der Straßen",
+  "description": "Liste der Straßen",
   "attributes": [
     {
       "name": "name",
       "caption": "Name",
-      "description": "Street name"
+      "description": "Straßenname"
     },
     {
       "name": "fullName",
-      "caption": "Full name",
-      "description": "Street full name"
+      "caption": "Vollständiger Name",
+      "description": "Vollständiger Straßenname"
     },
     {
       "name": "code",
@@ -19,13 +19,13 @@
     },
     {
       "name": "streetType",
-      "caption": "Type",
-      "description": "Type"
+      "caption": "Typ",
+      "description": "Typ"
     },
     {
       "name": "cityID",
-      "caption": "City",
-      "description": "City"
+      "caption": "Stadt",
+      "description": "Stadt"
     }
   ]
 }

@@ -1,56 +1,56 @@
 {
-  "caption": "External Departments",
-  "description": "External departments dictionary",
+  "caption": "Externe Abteilungen",
+  "description": "Wörterbuch der externen Abteilungen",
   "attributes": [
     {
       "name": "code",
       "caption": "Code",
-      "description": "Code of the department"
+      "description": "Abteilungscode"
     },
     {
       "name": "name",
       "caption": "Name",
-      "description": "Name of the department"
+      "description": "Abteilungsname"
     },
     {
       "name": "fullName",
-      "caption": "Full name",
-      "description": "Full official name of the department"
+      "caption": "Vollständiger Name",
+      "description": "Vollständiger offizieller Abteilungsname"
     },
     {
       "name": "description",
-      "caption": "Description",
-      "description": "Description of the department"
+      "caption": "Beschreibung",
+      "description": "Abteilungsbeschreibung"
     },
     {
       "name": "nameGen",
-      "caption": "Name in genitive case",
-      "description": "Department name in genitive case"
+      "caption": "Name im Genitiv",
+      "description": "Abteilungsname im Genitiv"
     },
     {
       "name": "nameDat",
-      "caption": "Name in dative case",
-      "description": "Department name in dative case"
+      "caption": "Name im Dativ",
+      "description": "Abteilungsname im Dativ"
     },
     {
       "name": "fullNameGen",
-      "caption": "Full name in genitive case",
-      "description": "Department full official name in genitive case"
+      "caption": "Vollständiger Name im Genitiv",
+      "description": "Vollständiger offizieller Abteilungsname im Genitiv"
     },
     {
       "name": "fullNameDat",
-      "caption": "Full name in dative case",
-      "description": "Department full official name in dative case"
+      "caption": "Vollständiger Name im Dativ",
+      "description": "Vollständiger offizieller Abteilungsname im Dativ"
     },
     {
       "name": "depTypeID",
-      "caption": "Type",
-      "description": "Type of the department"
+      "caption": "Typ",
+      "description": "Abteilungstyp"
     },
     {
       "name": "organizationID",
-      "caption": "Organization",
-      "description": "Parent external organization"
+      "caption": "Organisation",
+      "description": "Übergeordnete externe Organisation"
     }
   ]
 }

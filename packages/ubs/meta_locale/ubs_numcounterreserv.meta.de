@@ -1,21 +1,26 @@
 {
-  "caption": "Numerators (Reserve)",
+  "caption": "Zähler (Reserve)",
   "attributes": [
     {
       "name": "regKey",
-      "caption": "Registration key",
-      "description": "Registration key"
+      "caption": "Registrierungsschlüssel",
+      "description": "Registrierungsschlüssel"
     },
     {
       "name": "counter",
-      "caption": "Counter",
-      "description": "Counter"
+      "caption": "Zähler",
+      "description": "Zähler"
     },
     {
       "name": "reservedDate",
-      "caption": "Reserved date",
-      "description": "Reserved date for document"
+      "caption": "Reserviertes Datum",
+      "description": "Reserviertes Dokumentdatum"
+    },
+    {
+      "name": "note",
+      "caption": "Hinweis",
+      "description": "Beschreibung der reservierten Nummer (Abteilungsname usw.)"
     }
   ],
-  "description": "Reserved counters for registration keys"
+  "description": "Reservierte Zähler für Registrierungsschlüssel"
 }

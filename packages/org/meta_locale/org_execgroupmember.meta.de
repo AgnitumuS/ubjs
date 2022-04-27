@@ -1,14 +1,14 @@
 {
-  "caption": "Executors for Executors Groups",
+  "caption": "Ausführende für Ausführenden-Gruppen",
   "description": "Executors who attached to group and used for executors auto-filling in resolutions on group addition",
   "attributes": [
     {
       "name": "execGroupID",
-      "caption": "Executors group"
+      "caption": "Ausführenden-Gruppe"
     },
     {
       "name": "orgUnitID",
-      "caption": "Executor"
+      "caption": "Ausführender"
     }
   ]
 }

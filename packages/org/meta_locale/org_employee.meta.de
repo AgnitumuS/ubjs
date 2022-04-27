@@ -1,47 +1,47 @@
 {
-  "caption": "Employees of Internal Organizations",
-  "description": "List of employees of internal organizations",
-  "documentation": "This dictionary contains list of departments.  Employee is assigned to staff units in org_employeeonstaff entity",
+  "caption": "Mitarbeiter von internen Organisationen",
+  "description": "Liste der Mitarbeiter von internen Organisationen",
+  "documentation": "Dieses Wörterbuch enthält eine Liste der Abteilungen.  Der Mitarbeiter ist Personaleinheiten in der Entität org_employeeonstaff zugeordnet",
   "attributes": [
     {
       "name": "code",
       "caption": "Code",
-      "description": "Employees internal code"
+      "description": "Interner Mitarbeitercode"
     },
     {
       "name": "userID",
-      "caption": "User",
-      "description": "User login"
+      "caption": "Benutzer",
+      "description": "Benutzeranmeldung"
     },
     {
       "name": "lastName",
-      "caption": "Last name",
-      "description": "Employee last name"
+      "caption": "Nachname",
+      "description": "Nachname des Mitarbeiters"
     },
     {
       "name": "firstName",
-      "caption": "First name",
-      "description": "Employee first name"
+      "caption": "Vorname",
+      "description": "Vorname des Mitarbeiters"
     },
     {
       "name": "middleName",
-      "caption": "Middle name",
-      "description": "Employee middle name"
+      "caption": "Zweiter Vorname",
+      "description": "Zweiter Vorname des Mitarbeiters"
     },
     {
       "name": "birthDate",
-      "caption": "Date of birth",
-      "description": "Date of birth"
+      "caption": "Geburtsdatum",
+      "description": "Geburtsdatum"
     },
     {
       "name": "description",
-      "caption": "Comment",
-      "description": "Comment on employee"
+      "caption": "Kommentar",
+      "description": "Kommentar zu Mitarbeiter"
     },
     {
       "name": "sexType",
-      "caption": "Gender",
-      "description": "Employee's gender"
+      "caption": "Geschlecht",
+      "description": "Geschlecht des Mitarbeiters"
     },
     {
       "name": "suffix",
@@ -50,113 +50,113 @@
     },
     {
       "name": "shortFIO",
-      "caption": "Last name with initials",
-      "description": "Example: Smith J.K."
+      "caption": "Nachname mit Initialen",
+      "description": "Beispiel: Smith J.K."
     },
     {
       "name": "fullFIO",
-      "caption": "Full name",
-      "description": "Example: Smith Jay Key"
+      "caption": "Vollständiger Name",
+      "description": "Beispiel: Smith Jay Key"
     },
     {
       "name": "apply",
-      "caption": "Treatment",
-      "description": "Describes how to treat to this person"
+      "caption": "Anrede",
+      "description": "Beschreibt, wie man die Person anspricht"
     },
     {
       "name": "lastNameGen",
-      "caption": "Last name in genitive",
-      "description": "Employee last name in genitive case"
+      "caption": "Nachname im Genitiv",
+      "description": "Nachname des Mitarbeiters im Genitiv"
     },
     {
       "name": "lastNameDat",
-      "caption": "Last name in dative",
-      "description": "Employee last name in dative case"
+      "caption": "Nachname im Dativ",
+      "description": "Nachname des Mitarbeiters im Dativ"
     },
     {
       "name": "firstNameGen",
-      "caption": "First name in genitive",
-      "description": "Employee first name in genitive case"
+      "caption": "Vornamen im Genitiv",
+      "description": "Vorname des Mitarbeiters im Genitiv"
     },
     {
       "name": "firstNameDat",
-      "caption": "First name in dative",
-      "description": "Employee first name in dative case"
+      "caption": "Vorname im Dativ",
+      "description": "Vorname des Mitarbeiters im Dativ"
     },
     {
       "name": "middleNameGen",
-      "caption": "Middle name in genitive",
-      "description": "Employee middle name in genitive case"
+      "caption": "Zweiter Vorname im Genitiv",
+      "description": "Zweiter Vorname des Mitarbeiters im Genitiv"
     },
     {
       "name": "middleNameDat",
-      "caption": "Middle name in dative",
-      "description": "Employee middle name in dative case"
+      "caption": "Zweiter Vorname im Dativ",
+      "description": "Zweiter Vorname des Mitarbeiters im Dativ"
     },
     {
       "name": "shortFIOGen",
-      "caption": "Short name in genitive",
-      "description": "Employee short name in genitive case"
+      "caption": "Kurzname im Genitiv",
+      "description": "Kurzname des Mitarbeiters im Genitiv"
     },
     {
       "name": "shortFIODat",
-      "caption": "Short name in dative",
-      "description": "Employee short name in dative case"
+      "caption": "Kurzname im Dativ",
+      "description": "Kurzname des Mitarbeiters im Dativ"
     },
     {
       "name": "fullFIOGen",
-      "caption": "Full name in genitive",
-      "description": "Employee full name in genitive case"
+      "caption": "Vollständiger Name im Genitiv",
+      "description": "Vollständiger Name des Mitarbeiters im Genitiv"
     },
     {
       "name": "fullFIODat",
-      "caption": "Full name in dative",
-      "description": "Employee full name in dative case"
+      "caption": "Vollständiger Name im Dativ",
+      "description": "Vollständiger Name des Mitarbeiters im Dativ"
     },
     {
       "name": "applyGen",
-      "caption": "Treatment in genitive",
-      "description": "Describes how to treat to this person in genitive case"
+      "caption": "Anrede im Genitiv",
+      "description": "Beschreibt, wie diese Person im Genitiv anzureden ist"
     },
     {
       "name": "applyDat",
-      "caption": "Treatment in dative",
-      "description": "Describes how to treat to this person in dative case"
+      "caption": "Anrede im Dativ",
+      "description": "Beschreibt, wie diese Person im Dativ anzureden ist"
     },
     {
       "name": "facsimile",
-      "caption": "Facsimile",
-      "description": "Employee signature image"
+      "caption": "Faksimile",
+      "description": "Mitarbeitersignaturabbild"
     },
     {
       "name": "lastNameObj",
-      "caption": "Last name in objective",
-      "description": "Employee last name in objective case"
+      "caption": "Nachname im Objektiv",
+      "description": "Nachname des Mitarbeiters im Objektiv"
     },
     {
       "name": "firstNameObj",
-      "caption": "First name in objective",
-      "description": "Employee first name in objective case"
+      "caption": "Vorname im Objektiv",
+      "description": "Vorname des Mitarbeiters im Objektiv"
     },
     {
       "name": "middleNameObj",
-      "caption": "Middle name in objective",
-      "description": "Employee middle name in objective case"
+      "caption": "Zweiter Vorname im Objektiv",
+      "description": "Zweiter Vorname des Mitarbeiters im Objektiv"
     },
     {
       "name": "shortFIOObj",
-      "caption": "Short name in objective",
-      "description": "Employee short name in objective case"
+      "caption": "Kurzname im Objektiv",
+      "description": "Kurzname des Mitarbeiters im Objektiv"
     },
     {
       "name": "fullFIOObj",
-      "caption": "Full name in objective",
-      "description": "Employee full name in objective case"
+      "caption": "Vollständiger Name im Objektiv",
+      "description": "Vollständiger Name des Mitarbeiters im Objektiv"
     },
     {
       "name": "applyObj",
-      "caption": "Treatment in objective",
-      "description": "Describes how to treat to this person in objective case"
+      "caption": "Anrede im Objektiv",
+      "description": "Beschreibt, wie diese Person im Objektiv anzureden ist"
     }
   ]
 }

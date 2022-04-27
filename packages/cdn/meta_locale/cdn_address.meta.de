@@ -1,18 +1,19 @@
 {
-  "caption": "Addresses",
-  "description": "Addresses directory",
+  "caption": "Adressen",
+  "description": "Adressverzeichnis",
   "attributes": [
     {
       "name": "addressType",
-      "caption": "Address type"
+      "caption": "Adresstyp"
     },
     {
       "name": "value",
-      "caption": "Address"
+      "caption": "Adresse"
     },
     {
       "name": "subjectID",
-      "caption": "Subject"
+      "caption": "Besitzer",
+      "documentation": "Referenz zu Adressbesitzer. Hier gibt es keine Datenbankbeschränkungen, da nicht alle Entitäten bekannt sind, die Kontakte speichern wollen. Entitätsentwickler müssen Kontakte in beforedelete manuell entfernen."
     }
   ]
 }

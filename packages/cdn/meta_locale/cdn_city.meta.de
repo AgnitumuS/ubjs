@@ -1,44 +1,44 @@
 {
-  "caption": "Cities",
-  "description": "Cities directory",
+  "caption": "Städte",
+  "description": "Städteverzeichnis",
   "attributes": [
     {
       "name": "parentAdminUnitID",
-      "caption": "Parent"
+      "caption": "Übergeordnetes Element"
     },
     {
       "name": "code",
       "caption": "Code",
-      "description": "City code"
+      "description": "Kurzbezeichnung der Stadt"
     },
     {
       "name": "name",
       "caption": "Name",
-      "description": "City name"
+      "description": "Name der Stadt"
     },
     {
       "name": "caption",
-      "caption": "Caption"
+      "caption": "Titel"
     },
     {
       "name": "description",
-      "caption": "Description",
-      "description": "City description"
+      "caption": "Beschreibung",
+      "description": "Beschreibung der Stadt"
     },
     {
       "name": "postalCode",
-      "caption": "Postal code",
-      "description": "City postal code"
+      "caption": "Postleitzahl",
+      "description": "Postleitzahl der Stadt"
     },
     {
       "name": "phoneCode",
-      "caption": "Phone code",
-      "description": "City phone code"
+      "caption": "Telefonvorwahl",
+      "description": "Telefonvorwahl der Stadt"
     },
     {
       "name": "cityTypeID",
-      "caption": "Type",
-      "description": "City type"
+      "caption": "Typ",
+      "description": "Stadttyp"
     }
   ]
 }

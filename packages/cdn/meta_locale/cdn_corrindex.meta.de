@@ -1,21 +1,21 @@
 {
-  "caption": "Correspondent Indexes",
-  "description": "Correspondent indexes directory",
+  "caption": "Korrespondentenindizes",
+  "description": "Verzeichnis der Korrespondenzindizes",
   "attributes": [
     {
       "name": "code",
       "caption": "Code",
-      "description": "Code of correspondent index"
+      "description": "Code des Korrespondenzindex"
     },
     {
       "name": "name",
       "caption": "Name",
-      "description": "Name of correspondent index"
+      "description": "Name des Korrespondentenindex"
     },
     {
       "name": "fullName",
-      "caption": "Full name",
-      "description": "Full name of correspondent index"
+      "caption": "Vollständiger Name",
+      "description": "Vollständiger Name des Korrespondentenindex"
     }
   ]
 }

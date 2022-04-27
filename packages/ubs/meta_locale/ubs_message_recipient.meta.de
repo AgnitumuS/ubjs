@@ -1,19 +1,19 @@
 {
-  "caption": "Message Recipients",
-  "description": "System messages recipients",
-  "documentation": "System messages recipient",
+  "caption": "Nachrichtenempfänger",
+  "description": "Empfänger von Systemnachrichten",
+  "documentation": "Empfänger von Systemnachrichten",
   "attributes": [
     {
       "name": "messageID",
-      "caption": "Message"
+      "caption": "Nachricht"
     },
     {
       "name": "userID",
-      "caption": "User"
+      "caption": "Benutzer"
     },
     {
       "name": "acceptDate",
-      "caption": "Accept date"
+      "caption": "Datum akzeptieren"
     }
   ]
 }

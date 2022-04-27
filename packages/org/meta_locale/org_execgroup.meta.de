@@ -1,36 +1,36 @@
 {
-  "caption": "Executors Groups",
-  "description": "List of typical executors groups for tasks executors",
+  "caption": "Ausführenden-Gruppen",
+  "description": "Liste der typischen Ausführenden-Gruppen für die Ausführenden von Aufgaben",
   "attributes": [
     {
       "name": "parentID",
-      "caption": "Parent unit",
-      "description": "Parent unit of group"
+      "caption": "Übergeordnete Einheit",
+      "description": "Übergeordnete Einheit der Gruppe"
     },
     {
       "name": "code",
       "caption": "Code",
-      "description": "Code of the group"
+      "description": "Gruppencode"
     },
     {
       "name": "groupType",
-      "caption": "Type",
-      "description": "Type of group"
+      "caption": "Typ",
+      "description": "Gruppentyp"
     },
     {
       "name": "name",
-      "caption": "Name of the group",
-      "description": "Name of the group"
+      "caption": "Gruppenname",
+      "description": "Gruppenname"
     },
     {
       "name": "nameGen",
-      "caption": "Name in genitive case",
-      "description": "Department name in genitive case"
+      "caption": "Name im Genitiv",
+      "description": "Abteilungsname im Genitiv"
     },
     {
       "name": "nameDat",
-      "caption": "Name in dative case",
-      "description": "Department name in dative case"
+      "caption": "Name im Dativ",
+      "description": "Abteilungsname im Dativ"
     }
   ]
 }

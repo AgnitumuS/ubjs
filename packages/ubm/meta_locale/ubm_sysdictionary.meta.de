@@ -1,8 +1,17 @@
 {
-  "caption": "System Dictionaries",
+  "caption": "Systemwörterbücher",
   "attributes": [
-    {"name": "code", "caption": "Code"},
-    {"name": "name", "caption": "Name"},
-    {"name": "ubql", "caption": "UBQL (JSON)"}
+    {
+      "name": "code",
+      "caption": "Code"
+    },
+    {
+      "name": "name",
+      "caption": "Name"
+    },
+    {
+      "name": "ubql",
+      "caption": "UBQL (JSON)"
+    }
   ]
 }

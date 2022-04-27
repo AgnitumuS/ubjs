@@ -1,17 +1,17 @@
 {
-  "caption": "Admin Unit",
-  "description": "Admin unit (country, region, city)",
-  "documentation": "Main parent for countries, regions and cities",
+  "caption": "Verwaltungseinheit",
+  "description": "Verwaltungseinheit (Land, Region, Stadt)",
+  "documentation": "Übergeordnetes Hauptelement für Länder, Regionen und Städte",
   "attributes": [
     {
       "name": "parentAdminUnitID",
-      "caption": "Parent",
-      "description": "Parent"
+      "caption": "Übergeordnetes Element",
+      "description": "Übergeordnetes Element"
     },
     {
       "name": "code",
       "caption": "Code",
-      "description": "Internal code"
+      "description": "Interner Code"
     },
     {
       "name": "name",
@@ -19,16 +19,16 @@
     },
     {
       "name": "fullName",
-      "caption": "Full name"
+      "caption": "Vollständiger Name"
     },
     {
       "name": "adminUnitType",
-      "caption": "Admin unit type",
-      "documentation": "String representation of unit's type for fast queries"
+      "caption": "Typ der Verwaltungseinheit",
+      "documentation": "String-Darstellung des Typs der Einheit für schnelle Abfragen"
     },
     {
       "name": "caption",
-      "caption": "Caption"
+      "caption": "Titel"
     }
   ]
 }

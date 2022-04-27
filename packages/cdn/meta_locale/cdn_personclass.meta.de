@@ -1,7 +1,7 @@
 {
-  "caption": "Person Classification",
-  "description": "Person classification",
-  "documentation": "Internal classification of persons",
+  "caption": "Klassifizierung der Person",
+  "description": "Klassifizierung der Personen",
+  "documentation": "Interne Klassifizierung von Personen",
   "attributes": [
     {
       "name": "code",
@@ -11,7 +11,7 @@
     {
       "name": "name",
       "caption": "Name",
-      "description": "Name of category"
+      "description": "Name der Kategorie"
     }
   ]
 }

@@ -1,16 +1,16 @@
 {
-  "caption": "Staffunit Types",
-  "description": "Staffunit types dictionary",
+  "caption": "Typen von Personaleinheiten",
+  "description": "Wörterbuch der Personaleinheiten",
   "attributes": [
     {
       "name": "code",
       "caption": "Code",
-      "description": "Code of the staffunit type"
+      "description": "Code des Personaleinheitentyps"
     },
     {
       "name": "name",
       "caption": "Name",
-      "description": "Name of the staffunit type"
+      "description": "Name des Personaleinheitentyps"
     }
   ]
 }

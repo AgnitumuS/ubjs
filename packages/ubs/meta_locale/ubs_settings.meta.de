@@ -1,36 +1,36 @@
 {
-  "caption": "Settings",
-  "description": "Application settings",
+  "caption": "Einstellungen",
+  "description": "Anwendungseinstellungen",
   "attributes": [
     {
       "name": "settingKey",
-      "caption": "Key",
-      "description": "Setting key"
+      "caption": "Schlüssel",
+      "description": "Schlüssel der Einstellung"
     },
     {
       "name": "name",
       "caption": "Name",
-      "description": "Setting name"
+      "description": "Name der Einstellung"
     },
     {
       "name": "description",
-      "caption": "Description",
-      "description": "Description"
+      "caption": "Beschreibung",
+      "description": "Beschreibung"
     },
     {
       "name": "type",
-      "caption": "Type",
-      "description": "Value type"
+      "caption": "Typ",
+      "description": "Werttyp"
     },
     {
       "name": "settingValue",
-      "caption": "Value",
-      "description": "Value"
+      "caption": "Wert",
+      "description": "Wert"
     },
     {
       "name": "defaultValue",
-      "caption": "Default value",
-      "description": "Default value"
+      "caption": "Standardwert",
+      "description": "Standardwert"
     }
   ]
 }

@@ -1,3 +1,24 @@
 {
-  "caption": "Applied Files"
+  "caption": "Angewandte Migrationen",
+  "description": "Migrationsskripte, die auf die aktuelle Anwendung angewandt wurden",
+  "attributes": [
+    {
+      "name": "modelName",
+      "caption": "Modell",
+      "description": "Modellcode"
+    },
+    {
+      "name": "filePath",
+      "caption": "Dateipfad",
+      "description": "Dateipfad (relativ zum Modell _Migrationsordner)"
+    },
+    {
+      "name": "fileSha",
+      "caption": "SHA256 der Datei"
+    },
+    {
+      "name": "appliedAt",
+      "caption": "Angewandt am"
+    }
+  ]
 }

@@ -1,0 +1,38 @@
+{
+  "caption": "BLOB-Verlauf",
+  "description": "Datei-BLOB-Verlauf",
+  "documentation": "Speicherung historischer Daten für alle dateibasierten BLOB-Speicher",
+  "attributes": [
+    {
+      "name": "instance",
+      "caption": "InstanceID"
+    },
+    {
+      "name": "entity",
+      "caption": "Entität"
+    },
+    {
+      "name": "attribute",
+      "caption": "Attribut"
+    },
+    {
+      "name": "revision",
+      "caption": "Revision",
+      "documentation": "Revisionsnummer"
+    },
+    {
+      "name": "permanent",
+      "caption": "isPermanent",
+      "documentation": "1 wenn wir diese Revision nicht im Zuge der Verlaufsrotation löschen"
+    },
+    {
+      "name": "createdAt",
+      "caption": "Erstellt am"
+    },
+    {
+      "name": "blobInfo",
+      "caption": "blobInfo",
+      "documentation": "Inhalt des historischen Dokumentattributs"
+    }
+  ]
+}

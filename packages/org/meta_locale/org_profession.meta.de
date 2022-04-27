@@ -1,45 +1,45 @@
 {
-  "caption": "Positions",
-  "description": "List of positions",
+  "caption": "Positionen",
+  "description": "Positionsliste",
   "attributes": [
     {
       "name": "code",
       "caption": "Code",
-      "description": "Code of position"
+      "description": "Positionscode"
     },
     {
       "name": "name",
       "caption": "Name",
-      "description": "Position name"
+      "description": "Positionsname"
     },
     {
       "name": "fullName",
-      "caption": "Full name",
-      "description": "Position full name"
+      "caption": "Vollständiger Name",
+      "description": "Vollständiger Positionsname"
     },
     {
       "name": "nameGen",
-      "caption": "Name in genitive case",
-      "description": "Position name in genitive case"
+      "caption": "Name im Genitiv",
+      "description": "Positionsname im Genitiv"
     },
     {
       "name": "nameDat",
-      "caption": "Name in dative case",
-      "description": "Position name in dative case"
+      "caption": "Name im Dativ",
+      "description": "Positionsname im Dativ"
     },
     {
       "name": "fullNameGen",
-      "caption": "Full name in genitive case",
-      "description": "Position full name in genitive case"
+      "caption": "Vollständiger Name im Genitiv",
+      "description": "Vollständiger Positionsname im Genitiv"
     },
     {
       "name": "description",
-      "caption": "Caption"
+      "caption": "Titel"
     },
     {
       "name": "fullNameDat",
-      "caption": "Full name in dative case",
-      "description": "Position full name in dative case"
+      "caption": "Vollständiger Name im Dativ",
+      "description": "Vollständiger Positionsnamen im Dativ"
     }
   ]
 }

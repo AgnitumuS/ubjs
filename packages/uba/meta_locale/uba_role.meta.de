@@ -1,27 +1,27 @@
 {
-  "caption": "System Roles",
-  "description": "Administering subsystem roles",
+  "caption": "Systemrollen",
+  "description": "Verwalten von Subsystemrollen",
   "attributes": [
     {
       "name": "name",
-      "caption": "Role",
-      "description": "Role"
+      "caption": "Rolle",
+      "description": "Rolle"
     },
     {
       "name": "description",
-      "caption": "Description",
-      "description": "Description"
+      "caption": "Beschreibung",
+      "description": "Beschreibung"
     },
     {
       "name": "sessionTimeout",
-      "caption": "Session duration",
-      "description": "Time after which the session is deleted by timeout (in minutes)"
+      "caption": "Dauer der Sitzung",
+      "description": "Zeit, nach der die Sitzung wegen Zeitüberschreitung gelöscht wird (in Minuten)"
     },
     {
       "name": "allowedAppMethods",
-      "caption": "Which application level methods are allowed",
+      "caption": "Welche Methoden auf Anwendungsebene sind erlaubt",
       "documentation": "",
-      "description": "Which application level methods are allowed"
+      "description": "Welche Methoden auf Anwendungsebene sind erlaubt"
     }
   ]
 }

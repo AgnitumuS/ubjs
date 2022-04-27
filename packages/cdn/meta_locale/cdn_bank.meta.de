@@ -1,49 +1,50 @@
 {
-  "caption": "Bank Branches",
-  "description": "Bank branches directory",
+  "caption": "Bankfilialen",
+  "description": "Bankfilialenverzeichnis",
   "attributes": [
     {
       "name": "MFO",
-      "caption": "Bank code",
-      "description": "Bank branch code"
+      "caption": "Bankleitzahl",
+      "description": "Bankleitzahl der Filiale"
     },
     {
       "name": "code",
-      "caption": "Organization code",
-      "description": "Bank organization code"
+      "caption": "Organisationscode",
+      "description": "Organisationscode der Bank"
     },
     {
       "name": "name",
       "caption": "Name",
-      "description": "Name without quotes and ownership. For searching data."
+      "description": "Name ohne Anführungszeichen und Besitz. Zur Datensuche."
     },
     {
       "name": "fullName",
-      "caption": "Full name",
-      "description": "Full official bank name . For displaying in reports."
+      "caption": "Vollständiger Name",
+      "description": "Vollständiger offizieller Name der Bank. Zur Anzeige in Berichten."
     },
     {
       "name": "phones",
-      "caption": "Phones"
+      "caption": "Telefone"
     },
     {
       "name": "address",
-      "caption": "Address"
+      "caption": "Adresse"
     },
     {
       "name": "countryID",
-      "caption": "Country",
-      "description": "Registration country"
+      "caption": "Land",
+      "description": "Land der Registrierung"
     },
     {
       "name": "cityID",
-      "caption": "City",
-      "description": "City"
+      "caption": "Stadt",
+      "description": "Stadt"
     },
     {
       "name": "description",
-      "caption": "Description",
-      "description": "Description"
+      "caption": "Beschreibung",
+      "description": "Beschreibung",
+      "documentation": "Beschreibung"
     }
   ]
 }

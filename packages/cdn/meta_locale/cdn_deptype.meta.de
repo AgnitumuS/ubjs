@@ -1,16 +1,16 @@
 {
-  "caption": "Department Types",
-  "description": "Department types dictionary",
+  "caption": "Abteilungstypen",
+  "description": "Wörterbuch der Abteilungstypen",
   "attributes": [
     {
       "name": "code",
       "caption": "Code",
-      "description": "Code of the department type"
+      "description": "Code des Abteilungstyps"
     },
     {
       "name": "name",
       "caption": "Name",
-      "description": "Name of the department type"
+      "description": "Name des Abteilungstyps"
     }
   ]
 }

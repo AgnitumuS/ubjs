@@ -1,51 +1,51 @@
 {
-  "caption": "Regions",
-  "description": "Regions dictionary",
+  "caption": "Regionen",
+  "description": "Wörterbuch der Regionen",
   "attributes": [
     {
       "name": "regionTypeID",
-      "caption": "Type",
-      "description": "Type of region"
+      "caption": "Typ",
+      "description": "Regionentyp"
     },
     {
       "name": "name",
       "caption": "Name",
-      "description": "Name of region"
+      "description": "Name der Region"
     },
     {
       "name": "fullName",
-      "caption": "Full name",
-      "description": "Full name of region"
+      "caption": "Vollständiger Name",
+      "description": "Vollständiger Name der Region"
     },
     {
       "name": "description",
-      "caption": "Description",
-      "description": "Description of region"
+      "caption": "Beschreibung",
+      "description": "Beschreibung der Region"
     },
     {
       "name": "phoneCode",
-      "caption": "Phone code",
-      "description": "Phone code of region"
+      "caption": "Telefonvorwahl",
+      "description": "Telefonvorwahl der Region"
     },
     {
       "name": "centerID",
-      "caption": "Center",
-      "description": "Center of region"
+      "caption": "Zentrum",
+      "description": "Zentrum der Region"
     },
     {
       "name": "parentAdminUnitID",
-      "caption": "Parent",
-      "description": "Parent"
+      "caption": "Übergeordnetes Element",
+      "description": "Übergeordnetes Element"
     },
     {
       "name": "code",
       "caption": "Code",
-      "description": "Internal code"
+      "description": "Interner Code"
     },
     {
       "name": "caption",
-      "caption": "Caption",
-      "description": "Caption"
+      "caption": "Titel",
+      "description": "Titel"
     }
   ]
 }

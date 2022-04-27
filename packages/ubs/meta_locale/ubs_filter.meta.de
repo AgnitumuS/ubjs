@@ -1,32 +1,33 @@
 {
-  "caption": "Numerators",
-  "description": "Stored UI filters",
-  "documentation": "doCmd.showList.autofilter use this entity to store user filters definition",
+  "caption": "Zähler",
+  "description": "Gespeicherte UI-Filter",
+  "documentation": "doCmd.showList.autofilter verwendet diese Entität zur Speicherung von Benutzerfilterdefinitionen",
   "attributes": [
     {
       "name": "code",
       "caption": "Code",
-      "description": "Code of filter group"
+      "description": "Filtergruppencode"
     },
     {
       "name": "name",
       "caption": "Name",
-      "description": "Filter name"
+      "description": "Filtername"
     },
     {
       "name": "filter",
-      "caption": "Filter definition",
-      "description": "filter"
+      "caption": "Filterdefinition",
+      "description": "Filter"
     },
     {
       "name": "isGlobal",
-      "caption": "Is global?",
-      "description": "Is this filter accessible for all users"
+      "caption": "Ist global?",
+      "description": "Haben alle Benutzer Zugriff auf diesen Filter",
+      "documentation": "Haben alle Benutzer Zugriff auf diesen Filter"
     },
     {
       "name": "owner",
-      "caption": "Filter owner",
-      "description": "Filter owner"
+      "caption": "Besitzer des Filters",
+      "description": "Besitzer des Filters"
     }
   ]
 }

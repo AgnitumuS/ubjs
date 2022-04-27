@@ -1,162 +1,162 @@
 {
-  "caption": "Physical Persons",
-  "description": "Physical persons dictionary",
-  "documentation": "The directory stores a list of persons (physical persons)",
+  "caption": "Natürliche Personen",
+  "description": "Wörterbuch der natürlichen Personen",
+  "documentation": "Das Verzeichnis enthält eine Liste von (natürlichen) Personen",
   "attributes": [
     {
       "name": "lastName",
-      "caption": "Last name",
-      "description": "Last name of the person"
+      "caption": "Nachname",
+      "description": "Nachname der Person"
     },
     {
       "name": "firstName",
-      "caption": "First name",
-      "description": "First name of the person"
+      "caption": "Vorname",
+      "description": "Vorname der Person"
     },
     {
       "name": "middleName",
-      "caption": "Middle name",
-      "description": "Middle name of the person"
+      "caption": "Zweiter Vorname",
+      "description": "Zweiter Vorname der Person"
     },
     {
       "name": "birthDate",
-      "caption": "Birthday",
-      "description": "Birthday of the person"
+      "caption": "Geburtstag",
+      "description": "Geburtstag der Person"
     },
     {
       "name": "description",
-      "caption": "Description",
-      "description": "Description of the person"
+      "caption": "Beschreibung",
+      "description": "Beschreibung der Person"
     },
     {
       "name": "sexType",
-      "caption": "Gender",
-      "description": "Person's gender"
+      "caption": "Geschlecht",
+      "description": "Geschlecht der Person"
     },
     {
       "name": "suffix",
       "caption": "Suffix",
-      "description": "Suffix of the person"
+      "description": "Suffix der Person"
     },
     {
       "name": "shortFIO",
-      "caption": "Short name",
-      "description": "Example: Antonov I.P."
+      "caption": "Kurzname",
+      "description": "Beispiel: Antonow I.P."
     },
     {
       "name": "fullFIO",
-      "caption": "Full name",
-      "description": "Example: Antonov Ivan Petrovich"
+      "caption": "Vollständiger Name",
+      "description": "Beispiel: Antonow Iwan Petrowitsch"
     },
     {
       "name": "apply",
-      "caption": "Apply",
-      "description": "Apply to the person"
+      "caption": "Anwenden",
+      "description": "Auf Person anwenden"
     },
     {
       "name": "photo",
-      "caption": "Photo",
-      "description": "Person's photo"
+      "caption": "Foto",
+      "description": "Foto der Person"
     },
     {
       "name": "lastNameGen",
-      "caption": "Last name in genitive",
-      "description": "Person's last name in genitive case"
+      "caption": "Nachname im Genitiv",
+      "description": "Nachname der Person im Genitiv"
     },
     {
       "name": "lastNameDat",
-      "caption": "Last name in dative",
-      "description": "Person's last name in dative case"
+      "caption": "Nachname im Dativ",
+      "description": "Nachname der Person im Dativ"
     },
     {
       "name": "firstNameGen",
-      "caption": "First name in genitive",
-      "description": "Person's first name in genitive case"
+      "caption": "Vornamen im Genitiv",
+      "description": "Vorname der Person im Genitiv"
     },
     {
       "name": "firstNameDat",
-      "caption": "First name in dative",
-      "description": "Person's first name in dative case"
+      "caption": "Vorname im Dativ",
+      "description": "Vorname der Person im Dativ"
     },
     {
       "name": "middleNameGen",
-      "caption": "Middle name in genitive",
-      "description": "Person's middle name in genitive case"
+      "caption": "Zweiter Vorname im Genitiv",
+      "description": "Zweiter Vorname der Person im Genitiv"
     },
     {
       "name": "middleNameDat",
-      "caption": "Middle name in dative",
-      "description": "Person's middle name in dative case"
+      "caption": "Zweiter Vorname im Dativ",
+      "description": "Zweiter Vorname der Person im Dativ"
     },
     {
       "name": "shortFIOGen",
-      "caption": "Short name in genitive",
-      "description": "Person's short name in genitive case"
+      "caption": "Kurzname im Genitiv",
+      "description": "Kurzname der Person im Genitiv"
     },
     {
       "name": "shortFIODat",
-      "caption": "Short name in dative",
-      "description": "Person's short name in dative case"
+      "caption": "Kurzname im Dativ",
+      "description": "Kurzname der Person im Dativ"
     },
     {
       "name": "fullFIOGen",
-      "caption": "Full name in genitive",
-      "description": "Person's full name in genitive case"
+      "caption": "Vollständiger Name im Genitiv",
+      "description": "Vollständiger Name der Person im Genitiv"
     },
     {
       "name": "fullFIODat",
-      "caption": "Full name in dative",
-      "description": "Person's full name in dative case"
+      "caption": "Vollständiger Name im Dativ",
+      "description": "Vollständiger Name der Person im Dativ"
     },
     {
       "name": "applyGen",
-      "caption": "Apply in genitive",
-      "description": "Apply to the person in genitive case"
+      "caption": "Im Genitiv anwenden",
+      "description": "Auf die Person im Genitiv anwenden"
     },
     {
       "name": "applyDat",
-      "caption": "Apply in dative",
-      "description": "Apply to the person in dative case"
+      "caption": "Im Dativ anwenden",
+      "description": "Auf die Person im Dativ anwenden"
     },
     {
       "name": "regionID",
       "caption": "Region",
-      "description": "Person's region"
+      "description": "Region der Person"
     },
     {
       "name": "identCard",
-      "caption": "Identity card",
-      "description": "Person's identity card"
+      "caption": "Personalausweis",
+      "description": "Personalausweis der Person"
     },
     {
       "name": "workPlacePos",
-      "caption": "Place of work, position",
-      "description": "Place of work, position"
+      "caption": "Arbeitsplatz, Position",
+      "description": "Arbeitsplatz, Position"
     },
     {
       "name": "socialstatusID",
-      "caption": "Social status",
-      "description": "Social status position"
+      "caption": "Sozialer Status",
+      "description": "Soziale Stellung"
     },
     {
       "name": "categoryID",
-      "caption": "Category",
-      "description": "Category position"
+      "caption": "Kategorie",
+      "description": "Kategorie"
     },
     {
       "name": "nationality",
-      "caption": "Nationality",
-      "description": "Nationality"
+      "caption": "Staatsangehörigkeit",
+      "description": "Staatsangehörigkeit"
     },
     {
       "name": "resident",
-      "caption": "Resident?",
-      "description": "Is person a resident of our country"
+      "caption": "Ansässig?",
+      "description": "Ist die Person in unserem Land ansässig"
     },
     {
       "name": "classID",
-      "caption": "Person classification",
-      "description": "Person classification"
+      "caption": "Klassifizierung der Personen",
+      "description": "Klassifizierung der Personen"
     }
   ]
 }

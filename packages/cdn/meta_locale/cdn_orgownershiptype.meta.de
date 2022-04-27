@@ -1,26 +1,26 @@
 {
-  "caption": "Types of Ownership",
-  "description": "Types of ownership",
+  "caption": "Besitztypen",
+  "description": "Besitztypen",
   "attributes": [
     {
       "name": "code",
       "caption": "Code",
-      "description": "Code of the ownership type"
+      "description": "Code des Besitztyps"
     },
     {
       "name": "shortName",
-      "caption": "Acronim",
-      "description": "Acronim of the ownership type"
+      "caption": "Abkürzung",
+      "description": "Abkürzung des Besitztyps"
     },
     {
       "name": "name",
       "caption": "Name",
-      "description": "Name of the ownership type"
+      "description": "Name des Besitztyps"
     },
     {
       "name": "fullName",
-      "caption": "Full name",
-      "description": "Full name of the ownership type"
+      "caption": "Vollständiger Name",
+      "description": "Vollständiger Name des Besitztyps"
     }
   ]
 }

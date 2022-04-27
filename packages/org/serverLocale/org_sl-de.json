@@ -1,5 +1,5 @@
 {
-  "notAssigned": "Not assigned",
+  "notAssigned": "Nicht zugewiesen",
   "errAlreadyAssigned": "<<<This staff unit is already assigned>>>",
   "errUserWithMultiplePermanentStaffUnitsNotAllowed": "<<<Impossible to logon, because the employee has multiple permanent assignments. Please contact your system administrator.>>>",
   "AccessDeny": "Access deny"

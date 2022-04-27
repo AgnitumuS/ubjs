@@ -1,3 +1,20 @@
 {
-  "caption": "Models Versions"
+  "caption": "Modellversionen",
+  "description": "Aktuelle Anwendungsmodellversionen. Von Migrations-Hooks zur Ausführung benutzerdefinierter Aktionen verwendet. Durch das Migrationsszenario nach erfolgreicher Migration aktualisiert",
+  "attributes": [
+    {
+      "name": "modelName",
+      "caption": "Modell",
+      "description": "Modellcode"
+    },
+    {
+      "name": "version",
+      "caption": "Version",
+      "description": "Modellversion als Zeichenkette im Format XXXYYYZZZ, mit: XXX-Hauptversion, YYY-Nebenversion ZZZ-Patch. Alle Teile werden mit Nullen zur Dreistelligkeit ergänzt; Beispiel: 2.15.1 = 002015001"
+    },
+    {
+      "name": "appliedAt",
+      "caption": "Angewandt am"
+    }
+  ]
 }

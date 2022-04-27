@@ -1,14 +1,19 @@
 {
-  "caption": "Contacts",
-  "description": "Contacts directory",
+  "caption": "Kontakte",
+  "description": "Kontaktverzeichnis",
   "attributes": [
     {
       "name": "contactTypeID",
-      "caption": "Contact type"
+      "caption": "Kontakttyp"
     },
     {
       "name": "value",
-      "caption": "Contact"
+      "caption": "Kontakt"
+    },
+    {
+      "name": "subjectID",
+      "caption": "Besitzer",
+      "documentation": "Referenz zu Kontaktbesitzer. Hier gibt es keine Datenbankbeschränkungen, da nicht alle Entitäten bekannt sind, die Kontakte speichern wollen. Entitätsentwickler müssen Kontakte in delete:before manuell entfernen."
     }
   ]
 }

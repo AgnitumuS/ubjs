@@ -1,27 +1,27 @@
 {
-  "caption": "Organization Units",
-  "description": "List of organization units",
-  "documentation": "Dictionary which is composed of organizations (org_organization), departments (org_department) and staff units (org_staffunit) by Unity mixin. Dictionary is self-referential, which allows to build a hierarchy of all organizational units in one tree",
+  "caption": "Organisationseinheiten",
+  "description": "Liste der Organisationseinheiten",
+  "documentation": "Wörterbuch, das von Unity Mixin aus Organisationen (org_organization), Abteilungen (org_department) und Personaleinheiten (org_staffunit) zusammengestellt wird. Das Wörterbuch ist selbstreferentiell, was den Aufbau einer Hierarchie aller Organisationseinheiten in einem Baum ermöglicht",
   "attributes": [
     {
       "name": "parentID",
-      "caption": "Parent",
-      "description": "Parent"
+      "caption": "Übergeordnetes Element",
+      "description": "Übergeordnetes Element"
     },
     {
       "name": "code",
-      "caption": "Internal code",
-      "description": "Organization unit internal code"
+      "caption": "Interner Code",
+      "description": "Interner Code der Organisationseinheit"
     },
     {
       "name": "caption",
-      "caption": "Caption",
-      "description": "Caption"
+      "caption": "Titel",
+      "description": "Titel"
     },
     {
       "name": "unitType",
-      "caption": "Org. unit type",
-      "description": "Organization unit type"
+      "caption": "Typ der Personaleinheit",
+      "description": "Typ der Organisationseinheit"
     }
   ]
 }

@@ -1,7 +1,7 @@
 {
-  "caption": "Users Sessions",
-  "description": "Logged-in user sessions list",
-  "documentation": "Read-only access to server-side sessions list of logged-in users",
+  "caption": "Benutzersitzungen",
+  "description": "Liste der aktiven Benutzersitzungen",
+  "documentation": "Schreibgeschützter Zugriff auf die serverseitige Sitzungsliste der angemeldeten Benutzer",
   "attributes": [
     {
       "name": "ID",
@@ -9,41 +9,42 @@
     },
     {
       "name": "userID",
-      "caption": "User"
+      "caption": "Benutzer"
     },
     {
       "name": "userName",
-      "caption": "Login"
+      "caption": "Anmelden",
+      "description": "Benutzeranmeldung in Kleinbuchstaben"
     },
     {
       "name": "remoteIP",
-      "caption": "IP address",
-      "description": "IP address user login from"
+      "caption": "IP-Adresse",
+      "description": "IP-Adresse der Benutzeranmeldung"
     },
     {
       "name": "isPasswordExpired",
-      "caption": "Password expired",
-      "description": "True in case user need to change password because of expiration"
+      "caption": "Kennwort ist abgelaufen",
+      "description": "Wahr, wenn der Benutzer sein Kennwort wegen Ablaufs ändern muss"
     },
     {
       "name": "isLocked",
-      "caption": "Is locked",
-      "description": "Blocked because the maximum number of incorrect password entries has exceeded 'UBA.passwordPolicy.maxInvalidAttempts' parameter value"
+      "caption": "Ist gesperrt",
+      "description": "Blockiert, weil die maximale Anzahl der falschen Kennworteingaben den Wert des Parameters 'UBA.passwordPolicy.maxInvalidAttempts' überschritten hat"
     },
     {
       "name": "serverTimeDelta",
-      "caption": "Time delta",
-      "description": "Delta between client and server time"
+      "caption": "Zeitdifferenz",
+      "description": "Differenz zwischen Client- und Serverzeit"
     },
     {
       "name": "createdAt",
-      "caption": "Created at",
-      "description": "Session creation time"
+      "caption": "Erstellt am",
+      "description": "Erstellungszeitpunkt der Sitzung"
     },
     {
       "name": "accessedAt",
-      "caption": "Accessed at",
-      "description": "Last time the user accessed the server"
+      "caption": "Zugriff um",
+      "description": "Letzter Zugriff des Benutzers auf den Server"
     }
   ]
 }

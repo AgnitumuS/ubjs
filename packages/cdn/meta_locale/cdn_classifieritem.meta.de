@@ -1,21 +1,21 @@
-﻿{
-  "caption": "Сlassifier Item",
+{
+  "caption": "Klassifizierungselement",
   "attributes": [
     {
       "name": "code",
-      "caption": "System code"
+      "caption": "Systemcode"
     },
     {
       "name": "parentID",
-      "caption": "Parent"
+      "caption": "Übergeordnetes Element"
     },
     {
       "name": "classifierID",
-      "caption": "Classifier"
+      "caption": "Klassifikator"
     },
     {
       "name": "hierarchyLevel",
-      "caption": "Level"
+      "caption": "Ebene"
     },
     {
       "name": "name",
