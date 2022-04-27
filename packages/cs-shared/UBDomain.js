@@ -172,11 +172,12 @@ UBDomain.prototype.has = function (entityCode) {
 }
 
 /**
-* @callback domainEntitiesIteratorCallback
-* @param {UBEntity} entity
-* @param {string} entityCode
-* @param {Object<string, UBEntity>} entities
-*/
+ * Callback for UBDomain.forEach iterator
+ * @callback domainEntitiesIteratorCallback
+ * @param {UBEntity} entity
+ * @param {string} entityCode
+ * @param {Object<string, UBEntity>} entities
+ */
 
 /**
  * Iterates over domain entities and invokes `callBack` for each entity.
