@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.22.16] - 2022-04-27
 ## [5.22.15] - 2022-04-20
 ### Changed
  - published version of package now EXCLUDES Roboto font for `-dev` mode,
