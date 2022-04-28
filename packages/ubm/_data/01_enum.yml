@@ -4,7 +4,7 @@ $context:
 UBA_RULETYPE:
 - A:
     en: Allow
-    de: Allow
+    de: Erlauben
     ru: Allow
     tg: Allow
     uk: Allow
@@ -13,7 +13,7 @@ UBA_RULETYPE:
     az: İcazə vermək
 - C:
     en: Complements
-    de: Complements
+    de: Ergänzen
     ru: Complements
     tg: Complements
     uk: Complements
@@ -22,7 +22,7 @@ UBA_RULETYPE:
     az: Complements
 - D:
     en: Deny
-    de: Deny
+    de: Ablehnen
     ru: Deny
     tg: Deny
     uk: Deny
@@ -33,7 +33,7 @@ UBA_RULETYPE:
 FORM_TYPE:
 - auto:
     en: UB form
-    de: UB form
+    de: UB-Formular
     ru: UB form
     tg: UB form
     uk: UB form
@@ -42,7 +42,7 @@ FORM_TYPE:
     az: UB form
 - custom:
     en: Pure ExtJS form
-    de: Pure ExtJS form
+    de: Reines ExtJS-Formular
     ru: Pure ExtJS form
     tg: Pure ExtJS form
     uk: Pure ExtJS form
@@ -51,7 +51,7 @@ FORM_TYPE:
     az: Pure ExtJS form
 - vue:
     en: VueJS form
-    de: VueJS form
+    de: VueJS-Formular
     ru: VueJS form
     tg: VueJS form
     uk: VueJS form
@@ -60,7 +60,7 @@ FORM_TYPE:
     az: VueJS form
 - module:
     en: Any module what exports mount()
-    de: Any module what exports mount()
+    de: Jedes Modul, das mount() exportiert
     ru: Any module that exports mount()
     tg: Any module that exports mount()
     uk: Any module that exports mount()
@@ -71,7 +71,7 @@ FORM_TYPE:
 CMD_TYPE:
 - showList:
     en: Show list
-    de: Show list
+    de: Liste anzeigen
     ru: Show list
     tg: Show list
     uk: Show list
@@ -80,7 +80,7 @@ CMD_TYPE:
     az: Siyahını göstər
 - showForm:
     en: Show form
-    de: Show form
+    de: Formular anzeigen
     ru: Show form
     tg: Show form
     uk: Show form
@@ -89,7 +89,7 @@ CMD_TYPE:
     az: Formanı göstər
 - runCode:
     en: Code execution
-    de: Code execution
+    de: Ausführung des Codes
     ru: Code execution
     tg: Code execution
     uk: Code execution
@@ -100,7 +100,7 @@ CMD_TYPE:
 UBA_USER_GENDER:
 - male:
     en: Male
-    de: Male
+    de: Männlich
     ru: Мужчина
     tg: Мард
     uk: Чоловік
@@ -109,7 +109,7 @@ UBA_USER_GENDER:
     az: Kişi
 - female:
     en: Female
-    de: Female
+    de: Weiblich
     ru: Женщина
     tg: Зан
     uk: Жінка
@@ -120,7 +120,7 @@ UBA_USER_GENDER:
 UBM_QUERY_TYPE:
 - classifier:
     en: Classifier
-    de: Classifier
+    de: Klassifikator
     ru: Классификатор
     tg: Тасниф
     uk: Класифікатор
@@ -129,7 +129,7 @@ UBM_QUERY_TYPE:
     az: Təsnifatçı
 - sysDict:
     en: System Dictionary
-    de: System Dictionary
+    de: Systemwörterbuch
     ru: Системный справочник
     tg: Истиноди система
     uk: Системний довідник

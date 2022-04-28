@@ -8,6 +8,7 @@ adm_desktop:
   - adm_folder_UBQ:
       caption:
         en: Mesages Queue
+        de: Nachrichten-Warteschlange
         ru: Очереди сообщений
         uk: Черги повідомлень
         tg: Навбати паёмҳо

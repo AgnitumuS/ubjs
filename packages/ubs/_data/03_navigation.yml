@@ -8,6 +8,7 @@ adm_desktop:
   - adm_folder_UI:
       caption:
         en: UI
+        de: Benutzeroberfläche
         ka: მომხმარებლის ინტერფეისი
         ru: Интерфейс
         tg: Интерфейс
@@ -43,6 +44,7 @@ adm_desktop:
       access: Supervisor
       caption:
         en: Misc
+        de: Sonstiges
         uk: Різне
         ru: Разное
         ka: სხვადასხვა

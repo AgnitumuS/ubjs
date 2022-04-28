@@ -4,7 +4,7 @@ $context:
 CDN_EMPLOYEEONSTAFFTYPE:
   - PERMANENT:
       en: Permanent
-      de: Permanent
+      de: Unbefristet
       ru: Постоянный
       uk: Постійний
       tg: Доимӣ
@@ -12,7 +12,7 @@ CDN_EMPLOYEEONSTAFFTYPE:
       az: Daimi
   - TEMPORARY:
       en: Acting
-      de: Acting
+      de: Befristet
       ru: вр.и.о.
       uk: т.в.о.
       tg: м.и.в.
@@ -20,7 +20,7 @@ CDN_EMPLOYEEONSTAFFTYPE:
       az: v.i.e
   - ASSISTANT:
       en: Assistant
-      de: Assistant
+      de: Assistent
       ru: Ассистент
       uk: Асистент
       tg: Ёрдамчи
@@ -30,7 +30,7 @@ CDN_EMPLOYEEONSTAFFTYPE:
 ORG_UNITTYPE:
   - ORG:
       en: Internal Organization
-      de: Internal Organization
+      de: Interne Organisation
       ru: Внутренняя организация
       uk: Внутрішня організація
       tg: Ташкилот
@@ -38,7 +38,7 @@ ORG_UNITTYPE:
       az: Təşkilat
   - DEP:
       en: Internal Department
-      de: Internal Department
+      de: Interne Abteilung
       ru: Внутреннее подразделение
       uk: Внутрішній підрозділ
       tg: Шӯъба
@@ -46,7 +46,7 @@ ORG_UNITTYPE:
       az: Bölmə
   - STAFF:
       en: Staff Unit
-      de: Staff Unit
+      de: Personaleinheit
       ru: Штатная единица
       uk: Штатна одиниця
       tg: Кормандон
@@ -54,7 +54,7 @@ ORG_UNITTYPE:
       az: Şəxsi heyət
   - EXECGROUP:
       en: Executors Group
-      de: Executors Group
+      de: Ausführenden-Gruppe
       ru: Группа исполнителей
       uk: Група виконавців
       tg: Гурӯҳҳои рассомон
@@ -64,7 +64,7 @@ ORG_UNITTYPE:
 EXECGROUP_TYPE:
   - '*':
       en: Main
-      de: Main
+      de: Allgemein
       ru: Общая
       uk: Загальна
       tg: Main

@@ -1,30 +1,30 @@
 UB.i18nExtend({
-  "NMInstallExtensionFirefox": "<p>To use this application Firefox extension <b>\"UBExtension\"</b> must be installed.</p> " +
-    "<p>Follow <a href=\"https://addons.mozilla.org/addon/ub-extension/\" target=\"_blank\">ADD EXTENSION</a> " +
-    " to go to the Firefox add-ons</p>" +
-    "<p> At the add-on window click button <b>+Add to Firefox</b></p>" +
-    "<p>Confirm adding a new extension.</p>" +
-    "<p>After installing the extension <b>restart your browser!</b></p>",
-  "NMInstallExtensionChrome": "<p>Chrome extension <b>\"UBExtension\"</b> must be installed.</p> " +
-    "<p>Follow <a href=\"https://unitybase-info.translate.goog/news/setup-ubextension-without-using-the-google-store.html?_x_tr_sl=uk&_x_tr_tl=en&_x_tr_hl=uk&_x_tr_pto=nui\" target=\"_blank\">setup instruction</a>.</p>" +
-    "<p><b>Restart the browser after installation!</b></p>",
-  "NMInstallExtensionOpera": "<p>To use this application Opera extension <b>\"UBExtension\"</b> must be installed.</p> " +
-    "<p>Follow <a href=\"models/adminui-pub/ub-extension/UBExtension.crx\" target=\"_blank\">DOWNLOAD EXTENSION</a> link.</p>" +
-    "<p>After extension is downloaded you can see \"unknown source\" warning in the upper part of your Opera browser. " +
-    "Press \"Go\" button on the message bar - Opera open extension page. On this page you must found \"UBExtension\" and press \"Install\" button twice</p> " +
-    "<p>After this installation is complete and better to restart your browser.</p>",
-  "NMUpdateExtensionChrome": "<p>To continue you need to update your browser<b>{0}</b> up to version <i>{2}</i>.</p> " +
-    "<p>Usually Google Chrome updating extensions automatically. Try to close/open browser. " +
-    " For manually updating go to the Google store<a href=\"https://chrome.google.com/webstore/detail/ubextension/{3}\" target=\"_blank\">and follow this link</a> </p>",
-  "NMUpdateExtensionOpera": "<p>The new version <i>{2}</i> of the <b>{0}</b> is available and should be installed.</p> " +
-    "Read <a href=\"models/adminui-pub/ub-extension/extensionUpdateInstructionOpera.html\" target=\"_blank\">update instruction</a> " +
-    " and follow <a href=\"https://chrome.google.com/webstore/detail/ubextension/{3}\" target=\"_blank\">UPDATE</a>. <p>After update is complete - restart your browser.</p>",
-  "NMInstallFeature": "<p>To use this feature <b>{0}</b> must be installed.</p> " +
-    "<p>Follow <a href=\"{3}\" target=\"_blank\">DOWNLOAD SETUP</a>. After download is complete, run the install and follow the prompts.</p>" +
-    "<p>After the installation is complete, restart your browser.</p>",
-  "NMUpdateFeature": "<p>The new version <i>{1}</i> of the application <b>{0}</b> is available and should be installed.</p> " +
-    "<p>Follow <a href=\"{3}\" target=\"_blank\">DOWNLOAD UPDATE SETUP</a>. After the download is complete, run the install and follow the prompts.</p>" +
-    "<p>After the update is complete, restart your browser.</p>"
+  "NMInstallExtensionFirefox": "<p>Um diese Anwendung zu nutzen muss die Firefox-Erweiterung <b>\"UBExtension\"</b> installiert sein.</p> " +
+    "<p>Über <a href=\"https://addons.mozilla.org/addon/ub-extension/\" target=\"_blank\">ERWEITERUNG HINZUFÜGEN</a> " +
+    " gelangen Sie zu den Firefox Add-ons</p>" +
+    "<p> Klicken Sie im Add-on-Fenster auf die Schaltfläche <b>+Add to Firefox</b></p>" +
+    "<p>Bestätigen Sie das Hinzufügen der neuen Erweiterung.</p>" +
+    "<p>Starten Sie Ihren Browser neu <b>nachdem Sie die Erweiterung installiert haben!</b></p>",
+  "NMInstallExtensionChrome": "<p>Die Chrome-Erweiterung <b>\"UBExtension\"</b> muss installiert sein.</p> " +
+    "<p>Folgen Sie <a href=\"https://unitybase-info.translate.goog/news/setup-ubextension-without-using-the-google-store.html?_x_tr_sl=uk&_x_tr_tl=en&_x_tr_hl=uk&_x_tr_pto=nui\" target=\"_blank\">zur Setup-Anleitung</a>.</p>" +
+    "<p><b>Starten Sie den Browser nach der Installation neu!</b></p>",
+  "NMInstallExtensionOpera": "<p>Um diese Anwendung zu nutzen, muss die Opera-Erweiterung <b>\"UBExtension\"</b> installiert sein.</p> " +
+    "<p>Folgen Sie dem Link <a href=\"models/adminui-pub/ub-extension/UBExtension.crx\" target=\"_blank\">ERWEITERUNG HERUNTERLADEN</a>.</p>" +
+    "<p>Nach dem Download der Erweiterung wird im oberen Teil Ihres Opera Browsers die Warnung \"Unbekannte Quelle\" angezeigt. " +
+    "Drücken Sie die Schaltfläche \"Go\" in der Nachrichtenleiste – Opera öffnet die Erweiterungsseite. Gehen Sie auf dieser Seite zu \"UBExtension\" und betätigen Sie die Schaltfläche \"Installieren\" doppelt</p> " +
+    "<p>Danach ist die Installation abgeschlossen und ein Neustart des Browsers zu empfehlen.</p>",
+  "NMUpdateExtensionChrome": "<p>Um fortzufahren, müssen Sie Ihren Browser<b>{0}</b> auf Version <i>{2}</i> updaten.</p> " +
+    "<p>Google Chrome aktualisiert Erweiterungen standardmäßig automatisch. Versuchen Sie, den Browser zu schließen/zu öffnen. " +
+    " Gehen Sie für eine manuelle Aktualisierung zum Google Store<a href=\"https://chrome.google.com/webstore/detail/ubextension/{3}\" target=\"_blank\">und folgen Sie diesem Link</a> </p>",
+  "NMUpdateExtensionOpera": "<p>Die neue Version <i>{2}</i> von <b>{0}</b> ist verfügbar und sollte installiert werden.</p> " +
+    "Lesen Sie <a href=\"models/adminui-pub/ub-extension/extensionUpdateInstructionOpera.html\" target=\"_blank\"> die Update-Anleitung</a> " +
+    "und folgen Sie <a href=\"https://chrome.google.com/webstore/detail/ubextension/{3}\" target=\"_blank\">UPDATE</a>. <p>Starten Sie Ihren Browser nach Abschluss der Aktualisierung neu.</p>",
+  "NMInstallFeature": "<p>Um diese Funktion nutzen zu können, muss <b>{0}</b> installiert sein.</p> " +
+    "<p>Folgen Sie <a href=\"{3}\" target=\"_blank\">SETUP HERUNTERLADEN</a>. Nachdem der Download abgeschlossen ist, führen Sie die Installation aus und folgen Sie den Anweisungen.</p>" +
+    "<p>Nach Abschluss der Installation starten Sie Ihren Browser neu.</p>",
+  "NMUpdateFeature": "<p>Die neue Version <i>{1}</i> der Anwendung <b>{0}</b> ist verfügbar und sollte installiert werden.</p> " +
+    "<p>Folgen Sie <a href=\"{3}\" target=\"_blank\">UPDATE SETUP HERUNTERLADEN</a>. Nachdem der Download abgeschlossen ist, führen Sie die Installation aus und folgen Sie den Anweisungen.</p>" +
+    "<p>Nachdem das Update abgeschlossen ist, starten Sie Ihren Browser neu.</p>"
 })
 if (typeof Ext !== 'undefined') {
   Ext.onReady(function () {
