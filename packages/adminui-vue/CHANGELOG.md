@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
+ - `UTableEntityRoot`: support new property: `get-row-class`, which returns a custom class names for row (<tr>)
 
 ### Deprecated
 
