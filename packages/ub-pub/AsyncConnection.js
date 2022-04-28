@@ -2233,9 +2233,9 @@ UBConnection.prototype.userCanChangePassword = function () {
  * @param cfg
  * @param {string} cfg.host Server host
  * @param {string} [cfg.path='/'] API path - the same as in Server config `httpServer.path`
- * @param cfg.onCredentialRequired Callback for requesting a user credentials. See {@link UBConnection} constructor `requestAuthParams` parameter description
+ * @param {authParamsCallback} cfg.onCredentialRequired Callback for requesting a user credentials. See {@link authParamsCallback} description for details
  * @param {boolean} [cfg.allowSessionPersistent=false] For a non-SPA browser client allow to persist a Session in the local storage between reloading of pages.
- *  In case user is logged out by server this persistent dos't work and UBConnection will call onCredentialRequired handler,
+ *  In case user is logged out by server this persistent don't work and UBConnection will call onCredentialRequired handler,
  *  so user will be prompted for credentials
  * @param [cfg.onAuthorizationFail] Callback for authorization failure. See {@link event:authorizationFail} event.
  * @param [cfg.onAuthorized] Callback for authorization success. See {@link event:authorized} event.

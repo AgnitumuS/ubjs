@@ -335,7 +335,7 @@ conn.then(function(conn){
    * @param cfg
    * @param {string} cfg.host Server host
    * @param {string} [cfg.path] API path - the same as in Server config `httpServer.path`
-   * @param cfg.onCredentialRequired Callback for requesting a user credentials. See {@link UBConnection} constructor `requestAuthParams` parameter description
+   * @param {authParamsCallback} cfg.onCredentialRequired Callback for requesting a user credentials. See {@link authParamsCallback} description for details
    * @param {boolean} [cfg.allowSessionPersistent=false] For a non-SPA browser client allow to persist a Session in the local storage between reloading of pages.
    *  In case user logged out by server side this type persistent not work and UBConnection will call onCredentialRequired handler,
    *  so user will be prompted for credentials
