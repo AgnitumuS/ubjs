@@ -19,9 +19,9 @@ build-doc:
 #    - cd inetpub
 #    - tar --exclude-vcs --exclude-backups -zc --dereference -f ../uidoc.tar.gz .
 #    - cd ..
-#    - scp -P 2222 ./uidoc.tar.gz         gitlab-builder@registry.unitybase.info:/home/ub-service/website/unitybase-info/inetPub
+#    - scp ./uidoc.tar.gz         gitlab-builder@10.23.4.53:/home/ub-service/website/unitybase-info/inetPub
 #    - cd ../..
-    - rsync -avz -e "ssh -p 2222" docs/* gitlab-builder@registry.unitybase.info:/home/ub-service/website/unitybase-info/inetPub/api
+    - rsync -avz -e "ssh" docs/* gitlab-builder@10.23.4.53:/home/ub-service/website/unitybase-info/inetPub/api
   when: manual
   only:
     - master
