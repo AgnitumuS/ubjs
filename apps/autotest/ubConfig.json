@@ -280,7 +280,7 @@
 				"dialect": "SQLite3",
 				"databaseName": "%UB_APPDATA%localdb/DB.sqlite3",
 //				"replicatedAs": "main_repl",
-				"supportLang": ["en", "uk"],
+				"supportLang": %UB_SUPPORT_LANG||["en", "uk"]%, // env replacer test
 				"advSettings": "Synchronous=Off",
 				"statementMaxMemoryMb": 1
 			},
@@ -349,7 +349,7 @@
 			},
 			{
 				"name": "simple",
-				"path": "%UB_APPDATA%stores/documents/simple",
+				"path": "%UB_APPDATA||./%stores/documents/simple", // default ./ added for test only!
 				"isDefault": true,
 				"historyDepth": 2,
 				"storeSize": "Hourly",
