@@ -8,12 +8,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
-- `migrate` command, when supplied with the "tenantID" parameter, will automatically set
-  tenant host or tenantIDHeader, depending on server configuration
 
 ### Deprecated
 
 ### Removed
+
+### Fixed
+
+## [5.22.13] - 2022-04-29
+### Changed
+- `migrate` command, when supplied with the "tenantID" parameter, will automatically set
+  tenant host or tenantIDHeader, depending on server configuration
 
 ### Fixed
 - check if server started in ubcli - account for tenantIDHeader

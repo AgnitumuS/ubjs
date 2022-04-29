@@ -14,6 +14,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+
+## [5.22.5] - 2022-04-29
+### Fixed
 - check if server started in ubcli - account for tenantIDHeader
 
 ## [5.22.4] - 2022-04-27
