@@ -6,6 +6,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+ - added Deutsch (`de`) locale translations
 
 ### Changed
 
@@ -599,6 +600,3 @@ exports.reportCode = {
 ## [4.1.20] - 2017-05-17
 ### Changed
 - add ability to pass a <a href> onclick event to HTML report
-
-
-

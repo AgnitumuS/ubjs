@@ -6,6 +6,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+ - added Deutsch (`de`) locale translations
 
 ### Changed
 
@@ -428,4 +429,3 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Changed
 - localization for cdn_orgaccount
-

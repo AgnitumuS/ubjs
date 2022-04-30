@@ -6,6 +6,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+ - added Deutsch (`de`) locale translations
 
 ### Changed
 
@@ -467,6 +468,3 @@ if (UBA_COMMON.isSuperUser()) return
 ## [4.0.37] - 2017-09-21
 ### Added
  - org_ograccount entity for storing bank's accounts for our organizations  
-
-
-

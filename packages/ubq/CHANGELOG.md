@@ -6,6 +6,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+ - added Deutsch (`de`) locale translations
 
 ### Changed
 
@@ -322,4 +323,3 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [4.2.1] - 2017-03-30
 ### Fixed
  - allow use mail over SSL
-
