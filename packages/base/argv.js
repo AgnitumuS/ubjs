@@ -137,6 +137,7 @@ function serverSessionFromCmdLineAttributes (config) {
  * @param {String} [config.host]
  * @param {String} [config.user]
  * @param {String} [config.pwd]
+ * @param {String} [config.headers] Stringified object with default HTTP request headers
  * @param {Boolean} [config.forceStartServer=false] If we sure local server not started - start it without checking. Faster because check take near 2 sec.
  * @param {number} [config.timeout=30000] Receive timeout in ms
  * @return {ServerSession}
@@ -178,7 +179,11 @@ function establishConnectionFromCmdLineAttributes (config) {
   if (config.timeout) {
     http.setGlobalConnectionDefaults({ receiveTimeout: parseInt(config.timeout, 10) })
   }
-  const conn = serverSession.connection = new SyncConnection({ URL: serverSession.HOST })
+  const connOptions = { URL: serverSession.HOST }
+  if (config.headers && config.headers !== '{}') {
+    connOptions.headers = JSON.parse(config.headers)
+  }
+  const conn = serverSession.connection = new SyncConnection(connOptions)
   const appInfo = conn.getAppInfo()
   // allow anonymous login in case no UB auth method for application
   if (config.user === 'root') {
@@ -207,19 +212,27 @@ establishConnectionFromCmdLineAttributes._cmdLineParams = [
   { short: 'u', long: 'user', param: 'userName', searchInEnv: true, help: 'User name' },
   { short: 'p', long: 'pwd', param: 'password', defaultValue: '-', searchInEnv: true, help: 'User password. Required for non-root' },
   { short: 'cfg', long: 'cfg', param: 'localServerConfig', defaultValue: 'ubConfig.json', searchInEnv: true, help: 'Path to the UB server config' },
-  { short: 'timeout', long: 'timeout', param: 'timeout', defaultValue: 120000, searchInEnv: true, help: 'HTTP Receive timeout in ms' }
+  { short: 'timeout', long: 'timeout', param: 'timeout', defaultValue: 120000, searchInEnv: true, help: 'HTTP Receive timeout in ms' },
+  { short: 'headers', long: 'headers', param: 'headers', defaultValue: '{}', searchInEnv: true, help: 'default HTTP requests headers' }
 ]
 
 /**
  * Perform check somebody listen on URL
  * @param {String} URL
+ * @param {string} headers
  * @return {boolean}
  */
-function checkServerStarted (URL) {
+function checkServerStarted (URL, headers) {
   const http = require('http')
   if (verboseMode) console.info('Check server is running...')
   try {
-    const resp = http.get({ URL: URL + '/getAppInfo', connectTimeout: 1000, receiveTimeout: 1000, sendTimeout: 1000 }) // dummy
+    const resp = http.get({
+      URL: URL + '/getAppInfo',
+      connectTimeout: 1000,
+      receiveTimeout: 1000,
+      sendTimeout: 1000,
+      headers: headers && headers !== '{}' ? JSON.parse(headers) : undefined
+    }) // dummy
     if (verboseMode) console.info('STATUS', resp.statusCode)
     return resp.statusCode === 200
   } catch (e) {}

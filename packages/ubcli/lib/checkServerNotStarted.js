@@ -15,7 +15,7 @@ module.exports = function initialize (cfg) {
     cfg = opts.parseVerbose({}, true)
     if (!cfg) return
   }
-  if (argv.checkServerStarted(cfg.host)) {
+  if (argv.checkServerStarted(cfg.host, cfg.headers)) {
     throw new Error(`Somebody listen on ${cfg.host}. If this is UnityBase server - please, shut down it`)
   }
 }

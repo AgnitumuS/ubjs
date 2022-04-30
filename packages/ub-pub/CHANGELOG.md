@@ -15,6 +15,16 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.22.9] - 2022-04-29
+## [5.22.8] - 2022-04-27
+### Added
+ - `UB.connect` function can accept optional `defHeaders: Object` parameter - such headers will be added
+ to each xhr request for this connection (after adding headers from UB.xhr.defaults).
+ Object keys is header names. Example:
+```javascript
+ const conn = UB.connect({ubHost, onCredentialRequired, defHeaders: {"X-Tenant-ID": "12"}})
+```
+
 ## [5.22.7] - 2022-04-20
 ### Fixed
  - republish Deutsch (`de`) locale (third try. prev. package publishing fails)

@@ -84,6 +84,19 @@ function parseAndTranslateUBErrorMessage (errMsg) {
 const LDS = ((typeof window !== 'undefined') && window.localStorage) ? window.localStorage : false
 
 /**
+ * Called by UBConnection on first authorized request.
+ *
+ * Must return promise what resolves to object with `authSchema` and other schema-depending authorization parameters,
+ * for example for UB schema: `{authSchema: 'UB', login: login, password: password }`
+ *
+ * For anonymous requests (when authorization is turned off for application) should return promise, resolved to `{authSchema: 'None'}`
+ *
+ * @callback authParamsCallback
+ * @param {UBConnection} conn
+ * @param {boolean} isRepeat true in case first auth request is invalid (wrong credentials returned in previous callback result)
+ */
+
+/**
  * @classdesc
  *
  * Connection to the UnityBase server (for asynchronous client like NodeJS or Browser)
@@ -115,7 +128,7 @@ const LDS = ((typeof window !== 'undefined') && window.localStorage) ? window.lo
  // Anonymous connect. Allow access to entity methods, granted by ELS rules to `Anonymous` role
  // Request below will be success if we grant a `ubm_navshortcut.select` to `Anonymous` on the server side
  let conn = new UBConnection({
-   host: 'http://127.0.0.1:888'
+   host: 'http://127.0.0.1:8888'
  })
  conn.query({entity: 'ubm_navshortcut', method: 'select', fieldList: ['ID', 'name']}).then(UB.logDebug)
 
@@ -132,16 +145,12 @@ const LDS = ((typeof window !== 'undefined') && window.localStorage) ? window.lo
  * @mixes EventEmitter
  * @param {Object} connectionParams connection parameters
  * @param {String} connectionParams.host UnityBase server host
- * @param {String} [connectionParams.appName='/'] UnityBase application to connect to
- * @param {Function} [connectionParams.requestAuthParams] Handler to log in.
- *      Must return promise & fulfill it by authorization parameters: {authSchema: authType, login: login, password: password }
- *          for openIDConnect must be fulfilled with  {data: uData, secretWord: ???}
- *      Called with arguments: {UBConnection} conn, {Boolean} isRepeat;
- *      isRepeat === true in case first auth request is invalid.
- *
- *      For Anonymous requests can be either omitted, or return promise, resolved to  `{authSchema: 'None'}`
+ * @param {String} [connectionParams.appName='/'] UnityBase application to connect to (obsolete)
+ * @param {authParamsCallback} [connectionParams.requestAuthParams] Auth parameters callback
  * @param {String} [connectionParams.protocol] either 'https' or 'http' (default)
  * @param {boolean} [connectionParams.allowSessionPersistent=false] See {@link connect} for details
+ * @param {object} [connectionParams.defHeaders] XHR request headers, what will be added to each xhr request for this connection
+ *    (after adding headers from UB.xhr.defaults). Object keys is header names. Example: `{"X-Tenant-ID": "12"}`
  */
 function UBConnection (connectionParams) {
   const host = connectionParams.host || 'http://localhost:8881'
@@ -273,7 +282,15 @@ function UBConnection (connectionParams) {
   this.uiTag = ''
 
   /**
-   * Is user currently logged in. There is no guaranty what session actually exist in server.
+   * Additional headers what will be added to each XHR request
+   *
+   * @type {object|{}}
+   */
+  this.defHeaders = connectionParams.defHeaders || {}
+
+  /**
+   * Is user currently logged in. There is no guaranty what session actually exist in server
+   *
    * @returns {boolean}
    */
   this.isAuthorized = function () {
@@ -281,7 +298,8 @@ function UBConnection (connectionParams) {
   }
   /**
    * Return current user logon name or 'anonymous' in case not logged in
-   * @returns {String}
+   *
+   * @returns {string}
    */
   this.userLogin = function () {
     return this.userData('login')
@@ -289,7 +307,7 @@ function UBConnection (connectionParams) {
 
   /**
    * Return current user language or 'en' in case not logged in
-   * @returns {String}
+   * @returns {string}
    */
   this.userLang = function () {
     return this.userData('lang')
@@ -299,7 +317,8 @@ function UBConnection (connectionParams) {
    * Return custom data for logged in user, or {lang: 'en', login: 'anonymous'} in case not logged in
    *
    * If key is provided - return only key part of user data. For a list of possible keys see
-   * <a href="../server-v5/namespace-Session.html#uData">Session.uData</a> in server side documentation.
+   * <a href="../server-v5/namespace-Session.html#uData">Session.uData</a> in server side documentation
+   *
    * @example
 
 $App.connection.userData('lang');
@@ -851,7 +870,7 @@ UBConnection.prototype.checkChannelEncryption = function (session, cfg) {
  */
 UBConnection.prototype.xhr = function (config) {
   const me = this
-  const cfg = Object.assign({ headers: {} }, config)
+  const cfg = Object.assign({ headers: this.defHeaders }, config)
   const url = cfg.url
   let promise
 
@@ -2213,10 +2232,10 @@ UBConnection.prototype.userCanChangePassword = function () {
  * @private
  * @param cfg
  * @param {string} cfg.host Server host
- * @param {string} [cfg.path] API path - the same as in Server config `httpServer.path`
- * @param cfg.onCredentialRequired Callback for requesting a user credentials. See {@link UBConnection} constructor `requestAuthParams` parameter description
+ * @param {string} [cfg.path='/'] API path - the same as in Server config `httpServer.path`
+ * @param {authParamsCallback} cfg.onCredentialRequired Callback for requesting a user credentials. See {@link authParamsCallback} description for details
  * @param {boolean} [cfg.allowSessionPersistent=false] For a non-SPA browser client allow to persist a Session in the local storage between reloading of pages.
- *  In case user is logged out by server this persistent dos't work and UBConnection will call onCredentialRequired handler,
+ *  In case user is logged out by server this persistent don't work and UBConnection will call onCredentialRequired handler,
  *  so user will be prompted for credentials
  * @param [cfg.onAuthorizationFail] Callback for authorization failure. See {@link event:authorizationFail} event.
  * @param [cfg.onAuthorized] Callback for authorization success. See {@link event:authorized} event.
@@ -2226,6 +2245,8 @@ UBConnection.prototype.userCanChangePassword = function () {
  *  Usually on this stage application inject some scripts required for authentication (locales, cryptography etc).
  *  Should return a promise then done
  * @param [cfg.onGotApplicationDomain]
+ * @param {object} [cfg.defHeaders] XHR request headers, what will be added to each xhr request for this connection
+   (after adding headers from UB.xhr.defaults). Object keys is header names. Example: `{"X-Tenant-ID": "12"}`
  * @param {Object} [ubGlobal=null]
  * @return {Promise<UBConnection>}
  */
@@ -2236,7 +2257,8 @@ function connect (cfg, ubGlobal = null) {
     host: config.host,
     appName: config.path || '/',
     requestAuthParams: config.onCredentialRequired,
-    allowSessionPersistent: cfg.allowSessionPersistent
+    allowSessionPersistent: cfg.allowSessionPersistent,
+    defHeaders: config.defHeaders
   })
   // inject connection instance to global UB just after connection creation
   if (ubGlobal) ubGlobal.connection = connection

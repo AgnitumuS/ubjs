@@ -15,6 +15,18 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.22.5] - 2022-04-29
+### Fixed
+- check if server started in ubcli - account for tenantIDHeader
+
+## [5.22.4] - 2022-04-27
+### Added
+ - `argv.establishConnectionFromCmdLineAttributes` can accept additional headers, what will be added to
+  each HTTP request. So any ubcli command can be executed with additional headers. Example:
+```shell
+ubcli migrate -u root -headers "{\"X-Tenant-ID\": \"12\"}"
+```
+
 ## [5.22.3] - 2022-03-25
 ## [5.22.2] - 2022-01-24
 ## [5.22.1] - 2022-01-14
