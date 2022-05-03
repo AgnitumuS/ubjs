@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
+- `UTableEntityRoot`: added custom class support for card view mode (<u-card>)
 
 ### Deprecated
 
