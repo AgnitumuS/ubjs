@@ -190,7 +190,7 @@ export default {
       }]
       buttons.push(...this.mainPanelButtons)
 
-      if (this.$UB.connection.domain.isEntityMethodsAccessible('ubm_form', 'update')) {
+      if (window && window.UB_DEV_MODE && this.$UB.connection.domain.isEntityMethodsAccessible('ubm_form', 'update')) {
         buttons.push({
           icon: 'u-icon-wrench',
           label: 'formConstructor',
