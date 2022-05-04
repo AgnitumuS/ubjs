@@ -6,18 +6,23 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
- - `window.UB_DEV_MODE` global variable. If true - `Form constructor` menu item is visible in form toolbar menu,
-  in case user have access to `ubm_form.update`. For UI in `-dev` mode enabled by default.
-  For production mode is disabled and can be enabled from developer console.
 
 ### Changed
-- `UTableEntityRoot`: added custom class support for card view mode (<u-card>)
 
 ### Deprecated
 
 ### Removed
 
 ### Fixed
+
+## [5.22.18] - 2022-05-04
+### Added
+ - `window.UB_DEV_MODE` global variable. If true - `Form constructor` menu item is visible in form toolbar menu,
+  in case user have access to `ubm_form.update`. For UI in `-dev` mode enabled by default.
+  For production mode is disabled and can be enabled from developer console.
+
+### Changed
+- `UTableEntityRoot`: added custom class support for card view mode (<u-card>)
 
 ## [5.22.17] - 2022-04-29
 ### Changed
