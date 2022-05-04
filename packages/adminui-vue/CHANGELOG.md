@@ -14,6 +14,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+ - `USelectMultiple`: improve fetching of the selected options:
+  * wait for the previous promise to prevent parallel incorrect fetching,
+  * watch for stringified value, not just value to prevent fetching for the same value but with the different array pointer
 
 ## [5.22.18] - 2022-05-04
 ### Added
