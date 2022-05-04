@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
   For production mode is disabled and can be enabled from developer console.
 
 ### Changed
+- `UTableEntityRoot`: added custom class support for card view mode (<u-card>)
 
 ### Deprecated
 
