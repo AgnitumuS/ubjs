@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+- `UAutoField`: allow to pass `required: false` (as in UFormRow) to manually turn off field mandatory (and asterisk)
 
 ## [5.22.18] - 2022-05-04
 ### Added

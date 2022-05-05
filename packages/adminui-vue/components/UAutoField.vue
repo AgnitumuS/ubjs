@@ -72,7 +72,7 @@ export default {
     },
 
     isRequired () {
-      if (this.required !== undefined && this.required !== false) {
+      if (this.required !== undefined) {
         return this.required
       }
       return (
