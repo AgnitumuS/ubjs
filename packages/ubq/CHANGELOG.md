@@ -8,7 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 - Ability to disable mailer scheduler, either by:
   - setting `App.serverConfig.application.customSettings.mailerConfig.enableScheduler = false`
-  - using environment variable `UB_MAILER_SCHEDULER=false`
+  - using environment variable `UB_USE_MAIL_SCHEDULER=false`
   This allows having full SMTP config, so that manual
   call of email sending work, but turn off just the scheduler,
   without overriding it.
