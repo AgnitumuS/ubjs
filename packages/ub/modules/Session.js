@@ -332,6 +332,26 @@ Object.defineProperty(Session, 'tenantID', {
 })
 
 /**
+ * Set new tenant ID, fire `enterConnectionContext` for App object for all `active` connections
+ *
+ * Return original tenantID.
+ *
+ * **WARNING** - original tenantID should be set back, better in try...finally block
+ * @example
+const origTID = Session.setTempTenantID(5)
+try {
+  // do something in new tenant ID context
+} finally {
+ Session.setTempTenantID(origTID)
+}
+ * @param {number} newTenantID new tenantID
+ * @returns {number} original tenantID
+ */
+Session.setTempTenantID = function (newTenantID) {
+  return sessionBinding.setTempTenantID(newTenantID)
+}
+
+/**
  * Fires just after user successfully logged-in but before auth response is written to client.
  * Model developer can subscribe to this event and add some model specific data to Session.uData.
  *

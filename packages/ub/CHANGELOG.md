@@ -6,6 +6,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+ - new `Session.setTempTenantID(newTenantID)` method - allow switch tenant ID "on the fly" (require server 5.22.8)
 
 ### Changed
 
