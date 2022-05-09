@@ -2,6 +2,7 @@
   "application": {
     "customSettings": {
       "mailerConfig": {
+        "enableScheduler": %UB_USE_MAIL_SCHEDULER||true%,
         "targetHost": "%UB_SMTP_HOST%",
         "targetPort": "%UB_SMTP_PORT||25%",
         "fromAddr": "%UB_SMTP_FROMADDR||no-reply@fake.com%",
