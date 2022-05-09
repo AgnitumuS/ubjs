@@ -395,4 +395,6 @@ me.entity.addMethod('reloadConfig')
  */
 me.reloadConfig = function (ctx) {
   App.reloadConfig()
+  const prevTID = Session.setTempTenantID(12)
+  console.log(`tenantID switched from ${prevTID}`)
 }
