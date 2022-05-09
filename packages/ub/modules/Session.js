@@ -258,10 +258,10 @@ Session.runAsAdmin = function (func) {
   return result
 }
 /**
- * Call function as a specified user. `runAs*` functions allow maximum of 2 level depth of recursion.
+ * Call a function as the specified user. `runAs*` functions allow maximum of 2 level depth of recursion.
  *
  * New session will be created. Will fire `login` event.
- * @param userID ID of  user
+ * @param userID ID of a user
  * @param func Function to be called in user's session.
  * @returns {*}
  */
@@ -330,6 +330,16 @@ Object.defineProperty(Session, 'tenantID', {
     return sessionBinding.tenantID()
   }
 })
+
+/**
+ * Switch current execution context tenantID.
+ * Can be used for tenant administration functions
+ *
+ * @param {number} newTenantID
+ */
+Session.switchTenantForContext = function (newTenantID) {
+  sessionBinding.setTempTenantID(newTenantID)
+}
 
 /**
  * Fires just after user successfully logged-in but before auth response is written to client.
