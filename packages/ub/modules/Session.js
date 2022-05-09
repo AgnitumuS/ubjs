@@ -352,6 +352,25 @@ Session.setTempTenantID = function (newTenantID) {
 }
 
 /**
+ * Run a function in another tenant
+ * @param {number} tenantID
+ * @param {function} func
+ * @return {*} Return result returned by the function
+ */
+Session.runInTenant = function (tenantID, func) {
+  const oldTenantID = Session.tenantID
+  let result
+  try {
+    sessionBinding.setTempTenantID(tenantID)
+    result = func()
+  } finally {
+    sessionBinding.setTempTenantID(oldTenantID)
+  }
+  return result
+}
+
+
+/**
  * Fires just after user successfully logged-in but before auth response is written to client.
  * Model developer can subscribe to this event and add some model specific data to Session.uData.
  *
@@ -362,7 +381,7 @@ Session.setTempTenantID = function (newTenantID) {
  * most useful information to the uData - {@link namespace:Session.uData Session.uData} documentation.
  * Never override `uData` using `Session.uData = {...}`, in this case you delete uData properties,
  * defined in other application models.
- * Instead define or remove properties using `Session.uData.myProperty = ...`
+ * Instead, define or remove properties using `Session.uData.myProperty = ...`
  * or use `delete Session.uData.myProperty` if you need to un-define something.
  *
  * Example below add `someCustomProperty` to Session.uData. See also a real life example in `@unitybase/org/org.js`
@@ -383,14 +402,14 @@ Session.on('login', function (req) {
  * Fires in case new user registered in system and authentication schema support
  * "registration" feature.
  *
- * Currently only CERT and UB schemas support this feature.
+ * Currently, only CERT and UB schemas support this feature.
  *
  * For CERT schema user registered means `auth` endpoint is called with registration=1 parameter.
  *
  * For UB schema user registered means 'publicRegistration' endpoint has been called and user confirmed
  * registration by email otp.
  *
- * Inside event handler server-side Session object is in INCONSISTENT state and you must not use it!!
+ * Inside event handler server-side Session object is in INCONSISTENT state, and you must not use it!!
  * Only parameter (stringified object), passed to event is valid user-relative information.
  *
  * For CERT schema parameter is look like
