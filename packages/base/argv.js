@@ -162,7 +162,7 @@ function establishConnectionFromCmdLineAttributes (config) {
     }
     serverSession.__serverStartedByMe = true
   } else {
-    const serverStarted = checkServerStarted(serverSession.HOST)
+    const serverStarted = checkServerStarted(serverSession.HOST, config.headers)
     if (serverStarted) {
       if (verboseMode) console.info('Server is running - use started server instance')
     } else {

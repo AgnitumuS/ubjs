@@ -15,6 +15,19 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+ - `UAutoField`: allow to pass `required: false` (as in UFormRow) to manually turn off field mandatory (and asterisk)
+ - `USelectMultiple`: improve fetching of the selected options:
+  * wait for the previous promise to prevent parallel incorrect fetching,
+  * watch for stringified value, not just value to prevent fetching for the same value but with the different array pointer
+
+## [5.22.18] - 2022-05-04
+### Added
+ - `window.UB_DEV_MODE` global variable. If true - `Form constructor` menu item is visible in form toolbar menu,
+  in case user have access to `ubm_form.update`. For UI in `-dev` mode enabled by default.
+  For production mode is disabled and can be enabled from developer console.
+
+### Changed
+- `UTableEntityRoot`: added custom class support for card view mode (<u-card>)
 
 ## [5.22.17] - 2022-04-29
 ### Changed

@@ -325,6 +325,10 @@ export default {
         handler: () => this.showMore()
       }
       return [...this.additionalButtons, moreButton]
+    },
+
+    valueStr() {
+      return JSON.stringify(this.value)
     }
   },
 
@@ -332,10 +336,19 @@ export default {
     /**
      * Update tags when value is changed
      */
-    value: {
+    valueStr: {
       immediate: true,
-      async handler (value) {
-        this.displayedOptions = await this.getFormattedOptions(value)
+      async handler () {
+        if (this._pendingPromise) {
+          await this._pendingPromise
+        }
+
+        this._pendingPromise = this.getFormattedOptions(this.value)
+        try {
+          this.displayedOptions = await this._pendingPromise
+        } finally {
+          this._pendingPromise = null
+        }
       }
     }
   },

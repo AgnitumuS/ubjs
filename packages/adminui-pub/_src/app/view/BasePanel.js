@@ -2289,7 +2289,7 @@ Ext.define('UB.view.BasePanel', {
       scope: me
     })
 
-    if ($App.domainInfo.isEntityMethodsAccessible('ubm_form', methodNames.UPDATE)) {
+    if (window && window.UB_DEV_MODE && $App.domainInfo.isEntityMethodsAccessible('ubm_form', methodNames.UPDATE)) {
       me.actions[actions.formConstructor] = new Ext.Action({
         actionId: actions.formConstructor,
         scale: 'medium',

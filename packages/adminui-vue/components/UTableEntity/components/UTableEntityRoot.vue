@@ -814,7 +814,9 @@ export default {
     },
 
     getCardClass (row) {
-      return row.ID === this.selectedRowId ? 'selected' : ''
+      const customClasses = this.getRowClass(row)
+      const selectedClass = row.ID === this.selectedRowId ? 'selected' : ''
+      return [selectedClass, customClasses].filter(c => c).join(' ')
     },
 
     async scrollIntoView () {

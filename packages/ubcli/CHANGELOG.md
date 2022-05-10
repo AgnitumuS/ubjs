@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.22.14] - 2022-05-04
 ## [5.22.13] - 2022-04-29
 ### Changed
 - `migrate` command, when supplied with the "tenantID" parameter, will automatically set
