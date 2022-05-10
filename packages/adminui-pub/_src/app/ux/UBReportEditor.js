@@ -7,7 +7,10 @@ const _ = require('lodash')
 Ext.define('UB.ux.UBReportEditor', {
   extend: 'UB.ux.UBTinyMCETextArea',
   alias: 'widget.ubreporteditor',
-
+  /**
+   * Enable UBReport template editor (visual editor for mustache tags used by report builder)
+   */
+  enableTemplateEditor: true,
   statics: {
     portrait: { width: 793 },
     landscape: { width: 1121 },
@@ -344,7 +347,9 @@ Ext.define('UB.ux.UBReportEditor', {
     this.lastFrameHeight = '100%'
     this.callParent(arguments)
     this.tinyMCEConfig.plugins.push('paste') // add ability to paste MS Word, for example
-    this.tinyMCEConfig.plugins.push('templateEditor') // add row template in ReportBuilder
+    if (this.enableTemplateEditor) {
+      this.tinyMCEConfig.plugins.push('templateEditor') // add row template in ReportBuilder
+    }
   },
 
   onStartSetup: function (ed) {
