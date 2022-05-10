@@ -1,6 +1,6 @@
 {
-  "errUnableToPerformThisOperation": "<<<Unable to perform this operation. Contact the administrator>>>",
-  "errNoRightsForInsUpdateGovOrg": "<<<You cannot perform this operation, because you don't have rights for adding/updating organization with government authority>>>",
-  "errNotExsistsOKPO": "<<<Not exists OKPO code>>>",
-  "errMustContainsOnly8Or10Symbols": "<<<Code must contains only 8 or 10 symbols>>>"
+  "errUnableToPerformThisOperation": "<<<Dieser Vorgang kann nicht durchgeführt werden. Bitte wenden Sie sich an den Administrator.>>>",
+  "errNoRightsForInsUpdateGovOrg": "<<<Sie können diesen Vorgang nicht durchführen, da Sie keine Rechte zum Hinzufügen/Ändern von staatlichen Organisationen haben>>>",
+  "errNotExsistsOKPO": "<<<Kein OKPO-Code angegeben >>>",
+  "errMustContainsOnly8Or10Symbols": "<<<Der Code darf nur 8 oder 10 Zeichen enthalten>>>"
 }

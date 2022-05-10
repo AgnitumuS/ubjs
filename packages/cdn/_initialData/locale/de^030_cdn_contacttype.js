@@ -10,11 +10,11 @@ module.exports = function (session) {
     keyAttribute: 'code',
     localization: [
       { keyValue: 'email', execParams: { name: 'E-mail' } },
-      { keyValue: 'legalAddr', execParams: { name: 'Juristische Adresse' } },
-      { keyValue: 'actualAddr', execParams: { name: 'Actual address' } },
+      { keyValue: 'legalAddr', execParams: { name: 'Firmensitz' } },
+      { keyValue: 'actualAddr', execParams: { name: 'Hausanschrift' } },
       { keyValue: 'phone', execParams: { name: 'Telefon' } },
-      { keyValue: 'mobPhone', execParams: { name: 'Mobile' } },
-      { keyValue: 'filName', execParams: { name: 'Filial number' } }
+      { keyValue: 'mobPhone', execParams: { name: 'Mobiltelefon' } },
+      { keyValue: 'filName', execParams: { name: 'Nummer der Filiale' } }
     ]
   }
   loader.localizeEntity(session, localizationConfig, __filename)

@@ -1,0 +1,9 @@
+code;name
+smallcity;Stadt (bis 50.000 Ew.)
+middlecity;Stadt (50.000-100.000 Ew.)
+bigcity;Stadt (100.000-250.000 Ew.)
+verybigcity;Stadt (250.000-500.000 Ew.)
+extrabigcity;Stadt (500.000-1 Mio. Ew.)
+millioncity;Stadt (über 1 Mio. Ew.)
+townlikevillage;Größere Ortschaft (ab 2.000 Ew.)
+village;Dorf (bis 2.000 Ew.)

@@ -1,0 +1,180 @@
+name;intCode;code3;curMult
+Albanischer Lek;8;ALL;100
+Ukrainische Griwna;980;UAH;100
+Australischer Dollar;36;AUD;100
+Bahama-Dollar;44;BSD;100
+Bahrain-Dinar;48;BHD;1000
+Thailändischer Baht;764;THB;100
+Tongaischer Pa‘anga;776;TOP;100
+Trinidad-und-Tobago-Dollar;780;TTD;100
+Belarussischer Rubel;933;BYN;100
+Bulgarischer Lev;975;BGN;100
+Kongo-Franc;976;CDF;100
+Konvertierbare Mark von Bosnien und Herzegowina;977;BAM;100
+Koreanischer Won;410;KRW;1
+Kuwait-Dinar;414;KWD;1000
+Hongkong-Dollar;344;HKD;100
+Dänische Krone;208;DKK;100
+Dominikanischer Peso;214;DOP;100
+El-Salvador-Colón;222;SVC;100
+Äthiopischer Birr;230;ETB;100
+Eritreischer Nakfa;232;ERN;100
+Falkland-Pfund;238;FKP;100
+Fidschi-Dollar;242;FJD;100
+Dschibuti-Franc;262;DJF;1
+Gambischer Dalasi;270;GMD;100
+Gibraltar-Pfund;292;GIP;100
+Guatemaltekischer Quetzal;320;GTQ;100
+Guinea-Franc;324;GNF;1
+Guyana-Dollar;328;GYD;100
+Haitianischer Gourde;332;HTG;100
+Honduranische Lempira;340;HNL;100
+US-Dollar;840;USD;100
+Uruguayischer Peso;858;UYU;100
+Euro;978;EUR;100
+Mexican Unidad De Inversion;979;MXV;100
+Ägyptisches Pfund;818;EGP;100
+Japanischer Yen;392;JPY;1
+Polnischer Zloty;985;PLN;100
+Indische Rupie;356;INR;100
+Indonesische Rupiah;360;IDR;100
+Iranischer Rial;364;IRR;100
+Kanadischer Dollar;124;CAD;100
+Kap-Verde-Escudo;132;CVE;100
+Kaiman-Dollar;136;KYD;100
+Sri-Lanka--Rupie;144;LKR;100
+Chilenischer Peso;152;CLP;1
+Kroatische Kuna;191;HRK;100
+Kubanischer Peso;192;CUP;100
+Mexikanischer Peso;484;MXN;100
+Mongolischer Tugrik;496;MNT;100
+Moldauischer Leu;498;MDL;100
+Neuer israelischer Schekel;376;ILS;100
+Jamaika-Dollar;388;JMD;100
+Neuseeländischer Dollar;554;NZD;100
+Nicaraguanischer Córdoba Oro;558;NIO;100
+Nigerianischer Naira;566;NGN;100
+Norwegische Krone;578;NOK;100
+Russischer Rubel;643;RUB;100
+Ruanda-Franc;646;RWF;1
+St.-Helena-Pfund;654;SHP;100
+Dobra von São Tomé und Príncipe;930;STN;100
+Neuer rumänischer Leu;946;RON;100
+WIR Euro;947;CHE;100
+WIR Franc;948;CHW;100
+Singapur-Dollar;702;SGD;100
+SZR (Sonderziehungsrechte);960;XDR;0
+Silber (Feinunze);961;XAG;0
+Platin (Feinunze);962;XPT;0
+Testcode;963;XTS;0
+Palladium (Feinunze);964;XPD;0
+ADB Rechnungseinheit;965;XUA;0
+Sambischer Kwacha;967;ZMW;100
+Suriname-Dollar;968;SRD;100
+Madagassischer Ariary;969;MGA;100
+Kolumbianische Unidad de Valor Real;970;COU;100
+Afghanischer Afghani;971;AFN;100
+Kasachischer Tenge;398;KZT;100
+Jordanischer Dinar;400;JOD;1000
+Kenia-Schilling;404;KES;100
+Nordkoreanischer Won;408;KPW;100
+Türkische Lira;949;TRY;100
+CFA Franc BEAC;950;XAF;1
+Ostkaribischer Dollar;951;XCD;100
+CFA Franc BCEAO;952;XOF;1
+CFP Franc;953;XPF;1
+European Composite Unit EURCO;955;XBA;0
+European Monetary Unit EMU-6;956;XBB;0
+Europäische Rechnungseinheit EUA-9;957;XBC;0
+Europäische Rechnungseinheit EUA-17;958;XBD;0
+Gold (Feinunze);959;XAU;0
+Ungarischer Forint;348;HUF;100
+Isländische Krone;352;ISK;1
+Pfund Sterling;826;GBP;100
+Tansania-Schilling;834;TZS;100
+Tschechische Krone;203;CZK;100
+Schwedische Krone;752;SEK;100
+Schweizer Franken;756;CHF;100
+Syrisches Pfund;760;SYP;100
+Chinesischer Yuan;156;CNY;100
+Kolumbianischer Peso;170;COP;100
+Komoren-Franc;174;KMF;1
+Costa-Rica-Colón;188;CRC;100
+Aserbaidschanischer Manat;944;AZN;100
+Algerischer Dinar;12;DZD;100
+Argentinischer Peso;32;ARS;100
+Brasilianischer Real;986;BRL;100
+Chilenische Unidad de Fomento;990;CLF;10000
+Einheitliches System des regionalen Ausgleichs Sucre;994;XSU;0
+US-Dollar (nächster Tag);997;USN;100
+Ohne Währung;999;XXX;0
+Armenischer Dram;51;AMD;100
+Barbados-Dollar;52;BBD;100
+Bermuda-Dollar;60;BMD;100
+Bhutanischer Ngultrum;64;BTN;100
+Bolivianischer Boliviano;68;BOB;100
+Botswanischer Pula;72;BWP;100
+Belize-Dollar;84;BZD;100
+Salomonen-Dollar;90;SBD;100
+Brunei-Dollar;96;BND;100
+Myanmar-Kyat;104;MMK;100
+Burundi-Franc;108;BIF;1
+Kambodschanischer Riel;116;KHR;100
+VAE-Dirham;784;AED;100
+Vietnamesischer Dong;704;VND;1
+Somalia-Schilling;706;SOS;100
+Irakischer Dinar;368;IQD;1000
+Georgischer Lari;981;GEL;100
+Bolivianischer Mvdol;984;BOV;100
+Libanesisches Pfund;422;LBP;100
+Lesothischer Loti;426;LSL;100
+Liberianischer Dollar;430;LRD;100
+Libyscher Dinar;434;LYD;1000
+Macau-Pataca;446;MOP;100
+Malawi-Kwacha;454;MWK;100
+Malaysischer Ringgit;458;MYR;100
+Maledivische Rufiyaa;462;MVR;100
+Mauretanische Ouguiya;929;MRU;100
+Mauritius-Rupie;480;MUR;100
+Marokkanischer Dirham;504;MAD;100
+Omanischer Rial;512;OMR;1000
+Namibia-Dollar;516;NAD;100
+Nepalesische Rupie;524;NPR;100
+Antillen-Gulden;532;ANG;100
+Aruba-Florin;533;AWG;100
+Vanuatuischer Vatu;548;VUV;1
+Neuer Taiwan-Dollar;901;TWD;100
+Uruguayische Unidad Previsional;927;UYW;10000
+Kubanischer Peso convertible;931;CUC;100
+Simbabwe-Dollar;932;ZWL;100
+Pakistanische Rupie;586;PKR;100
+Panamaischer Balboa;590;PAB;100
+Papua-neuguineischer Kina;598;PGK;100
+Paraguayischer Guarani;600;PYG;1
+Peruanischer Nuevo Sol;604;PEN;100
+Philippinischer Peso;608;PHP;100
+Katar-Riyal;634;QAR;100
+Südafrikanischer Rand;710;ZAR;100
+Südsudanesisches Pfund;728;SSP;100
+Eswatinischer Lilangeni;748;SZL;100
+Saudi-Riyal;682;SAR;100
+Seychellen-Rupie;690;SCR;100
+Sierra-leonischer Leone;694;SLL;100
+Serbischer Dinar;941;RSD;100
+Mosambikanischer Metical;943;MZN;100
+Kirgisischer Som;417;KGS;100
+Laotischer Kip;418;LAK;100
+Tadschikischer Somoni;972;TJS;100
+Angolanischer Kwanza;973;AOA;100
+Bangladeschischer Taka;50;BDT;100
+Tunesischer Dinar;788;TND;1000
+Uganda-Schilling;800;UGX;1
+Mazedonischer Denar;807;MKD;100
+Neuer Turkmenischer Manat;934;TMT;100
+Ghanaischer Cedi;936;GHS;100
+Venezolanischer Bolivar;928;VES;100
+Sudanesisches Pfund;938;SDG;100
+Uruguay Peso En Unidades Indexadas;940;UYI;1
+Usbekischer So‘m;860;UZS;100
+Samoanischer Tala;882;WST;100
+Jemen-Rial;886;YER;100
