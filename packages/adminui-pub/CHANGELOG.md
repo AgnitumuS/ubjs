@@ -8,6 +8,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
+ - `UB.ux.UBReportEditor`: new property `enableTemplateEditor` - enable UBReport template editor (visual editor for
+   mustache tags used by report builder). `true` by default for compatibility
 
 ### Deprecated
 
