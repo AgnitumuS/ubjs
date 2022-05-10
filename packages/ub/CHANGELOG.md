@@ -6,9 +6,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
- - new `Session.setTempTenantID(newTenantID)` method - allow switch tenant ID "on the fly" (require server 5.22.8)
- - new `Session.runInTenant(tenantID, func)` method - allow execution code in context of another tenant
- - added Deutsch (`de`) locale translations
 
 ### Changed
 
@@ -17,6 +14,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+
+## [5.22.36] - 2022-05-10
+### Added
+ - new `Session.setTempTenantID(newTenantID)` method - allow switch tenant ID "on the fly" (require server 5.22.8)
+ - new `Session.runInTenant(tenantID, func)` method - allow execution code in context of another tenant
+ - added Deutsch (`de`) locale translations
 
 ## [5.22.35] - 2022-05-04
 ## [5.22.34] - 2022-04-29

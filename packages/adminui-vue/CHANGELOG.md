@@ -6,13 +6,18 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
- - added Deutsch (`de`) locale translations
 
 ### Changed
 
 ### Deprecated
 
 ### Removed
+
+### Fixed
+
+## [5.22.19] - 2022-05-10
+### Added
+ - added Deutsch (`de`) locale translations
 
 ### Fixed
  - `UAutoField`: allow to pass `required: false` (as in UFormRow) to manually turn off field mandatory (and asterisk)

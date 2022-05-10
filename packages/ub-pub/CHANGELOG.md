@@ -6,7 +6,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
- - added Deutsch (`de`) locale translations
 
 ### Changed
 
@@ -15,6 +14,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+
+## [5.22.10] - 2022-05-10
+### Added
+ - added Deutsch (`de`) locale translations
 
 ## [5.22.9] - 2022-04-29
 ## [5.22.8] - 2022-04-27

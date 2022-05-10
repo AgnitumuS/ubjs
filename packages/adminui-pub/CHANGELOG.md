@@ -6,17 +6,22 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
- - added Deutsch (`de`) locale translations
 
 ### Changed
- - `UB.ux.UBReportEditor`: new property `enableTemplateEditor` - enable UBReport template editor (visual editor for
-   mustache tags used by report builder). `true` by default for compatibility
 
 ### Deprecated
 
 ### Removed
 
 ### Fixed
+
+## [5.22.17] - 2022-05-10
+### Added
+ - added Deutsch (`de`) locale translations
+
+### Changed
+ - `UB.ux.UBReportEditor`: new property `enableTemplateEditor` - enable UBReport template editor (visual editor for
+   mustache tags used by report builder). `true` by default for compatibility
 
 ## [5.22.16] - 2022-05-04
 ### Added
