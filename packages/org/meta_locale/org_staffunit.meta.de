@@ -1,62 +1,62 @@
 {
-  "caption": "Staff Units",
-  "description": "List of staff units",
-  "documentation": "This dictionary contains list of staff units. Each staff unit links to org_unit by Unity mixin",
+  "caption": "Personaleinheiten",
+  "description": "Verzeichnis der Personaleinheiten",
+  "documentation": "Wörterbuch enthält Liste der Personaleinheiten. Jede Personaleinheit verlinkt mit org_unit durch Unity Mixin",
   "attributes": [
     {
       "name": "parentID",
-      "caption": "Parent",
-      "description": "Parent"
+      "caption": "Übergeordnetes Element",
+      "description": "Übergeordnetes Element"
     },
     {
       "name": "code",
-      "caption": "Internal code",
-      "description": "Staff unit internal code"
+      "caption": "Interner Code",
+      "description": "Interner Code der Personaleinheit"
     },
     {
       "name": "name",
-      "caption": "Staff unit name",
-      "description": "Name of staff unit without the quotes and abbreviations"
+      "caption": "Name der Personaleinheit",
+      "description": "Name der Personaleinheit ohne Anführungszeichen und Abkürzungen"
     },
     {
       "name": "fullName",
-      "caption": "Full name",
-      "description": "Staff unit full name"
+      "caption": "Vollständiger Name",
+      "description": "Vollständiger Name der Personaleinheit"
     },
     {
       "name": "description",
-      "caption": "Staff unit description",
-      "description": "Staff unit description"
+      "caption": "Beschreibung der Personaleinheit",
+      "description": "Beschreibung der Personaleinheit"
     },
     {
       "name": "nameGen",
-      "caption": "Staff unit name in genitive case",
-      "description": "Name of staff unit without the quotes and abbreviations in genitive case"
+      "caption": "Name der Personaleinheit im Genitiv",
+      "description": "Name der Personaleinheit ohne Anführungszeichen und Abkürzungen im Genitiv"
     },
     {
       "name": "nameDat",
-      "caption": "Staff unit name in dative case",
-      "description": "Name of staff unit without the quotes and abbreviations in dative case"
+      "caption": "Name der Personaleinheit im Dativ",
+      "description": "Name der Personaleinheit ohne Anführungszeichen und Abkürzungen im Dativ"
     },
     {
       "name": "fullNameGen",
-      "caption": "Full name in genitive case",
-      "description": "Staff unit full name in genitive case"
+      "caption": "Vollständiger Name im Genitiv",
+      "description": "Vollständiger Name der Personaleinheit im Genitiv"
     },
     {
       "name": "fullNameDat",
-      "caption": "Full name in dative case",
-      "description": "Full name in dative case"
+      "caption": "Vollständiger Name im Dativ",
+      "description": "Vollständiger Name im Dativ"
     },
     {
       "name": "caption",
-      "caption": "Caption",
-      "description": "Caption"
+      "caption": "Titel",
+      "description": "Titel"
     },
     {
       "name": "professionExtID",
-      "caption": "Profession",
-      "description": "Profession"
+      "caption": "Beruf",
+      "description": "Beruf"
     },
     {
       "name": "professionID",
@@ -65,18 +65,18 @@
     },
     {
       "name": "staffUnitTypeID",
-      "caption": "Staff unit type",
-      "description": "Staff unit type"
+      "caption": "Typ der Personaleinheit",
+      "description": "Typ der Personaleinheit"
     },
     {
       "name": "subordinationLevel",
-      "caption": "Subordination level",
-      "description": "If level is lower - then staff unit is more important"
+      "caption": "Unterstellungsebene",
+      "description": "Bei niedrigerer Ebene ist Personaleinheit wichtiger"
     },
     {
       "name": "isBoss",
-      "caption": "Boss",
-      "description": "Boss"
+      "caption": "Chef",
+      "description": "Chef"
     }
   ]
 }

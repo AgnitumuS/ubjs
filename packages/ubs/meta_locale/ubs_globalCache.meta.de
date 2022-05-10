@@ -1,0 +1,19 @@
+{
+  "caption": "Serverseitiger Cache",
+  "description": "Serverseitiger globaler Cache",
+  "documentation": "Schreibgeschützter Zugriff auf den serverseitigen globalen Cache (für Entwickler)",
+  "attributes": [
+    {
+      "name": "ID",
+      "caption": "ID"
+    },
+    {
+      "name": "key",
+      "caption": "Schlüssel"
+    },
+    {
+      "name": "value",
+      "caption": "Wert"
+    }
+  ]
+}

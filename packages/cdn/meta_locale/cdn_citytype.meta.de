@@ -1,16 +1,16 @@
 {
-  "caption": "City Types",
-  "description": "City types directory",
+  "caption": "Stadttypen",
+  "description": "Stadttypenverzeichnis",
   "attributes": [
     {
       "name": "code",
       "caption": "Code",
-      "description": "Internal code of city type"
+      "description": "Interner Code des Stadttyps"
     },
     {
       "name": "name",
       "caption": "Name",
-      "description": "City type name"
+      "description": "Name des Stadttyps"
     }
   ]
 }

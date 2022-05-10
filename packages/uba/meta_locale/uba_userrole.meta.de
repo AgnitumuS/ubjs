@@ -1,14 +1,14 @@
 {
-  "caption": "User Roles",
-  "description": "Roles assigned to user",
+  "caption": "Benutzerrollen",
+  "description": "Dem Benutzer zugewiesene Rollen",
   "attributes": [
     {
       "name": "userID",
-      "caption": "User"
+      "caption": "Benutzer"
     },
     {
       "name": "roleID",
-      "caption": "Role"
+      "caption": "Rolle"
     }
   ]
 }

@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
   This allows having full SMTP config, so that manual
   call of email sending work, but turn off just the scheduler,
   without overriding it.
+ - added Deutsch (`de`) locale translations
 
 ### Changed
 
@@ -329,4 +330,3 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [4.2.1] - 2017-03-30
 ### Fixed
  - allow use mail over SSL
-

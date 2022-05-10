@@ -1,21 +1,22 @@
 {
-  "caption": "Assignment With Pending Date",
-  "description": "Assignment with pending date",
+  "caption": "Zuweisung mit ausstehendem Datum",
+  "description": "Zuweisung mit ausstehendem Datum",
   "attributes": [
     {
       "name": "emponstaffID",
-      "caption": "Assignment",
-      "description": "Assignment"
+      "caption": "Zuweisung",
+      "description": "Zuweisung"
     },
     {
       "name": "startDate",
       "caption": "Start",
-      "description": "Assignment start date"
+      "description": "Startdatum der Zuweisung"
     },
     {
       "name": "endDate",
-      "caption": "End",
-      "description": "Assignment end date"
+      "caption": "Ende",
+      "description": "Enddatum der Zuweisung"
     }
-  ]
+  ],
+  "documentation": "Entität, die Links zu Zuweisungen mit ausstehendem Datum enthält"
 }

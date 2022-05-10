@@ -1,6 +1,6 @@
 {
-  "caption": "Standard Professions",
-  "description": "Dictionary of standard professions",
+  "caption": "Standardberufe",
+  "description": "Wörterbuch der Standardberufe",
   "attributes": [
     {
       "name": "code",
@@ -10,11 +10,11 @@
     {
       "name": "name",
       "caption": "Name",
-      "description": "Name of profession"
+      "description": "Berufsbezeichnung"
     },
     {
       "name": "description",
-      "caption": "Caption"
+      "caption": "Titel"
     }
   ]
 }

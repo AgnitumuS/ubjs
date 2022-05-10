@@ -1,6 +1,6 @@
 {
-  "caption": "Shortcuts",
-  "description": "Metadata for build navbars",
+  "caption": "Verknüpfungen",
+  "description": "Metadaten für die Erstellung von Navigationsleisten",
   "attributes": [
     {
       "name": "desktopID",
@@ -8,38 +8,52 @@
     },
     {
       "name": "parentID",
-      "caption": "Shortcut folder"
+      "caption": "Verknüpfungsordner"
     },
     {
       "name": "code",
-      "caption": "Code"
+      "caption": "Code",
+      "documentation": "Eindeutiger Verknüpfungscode. Für Versionsupgrade verwendet"
     },
     {
       "name": "isFolder",
-      "caption": "Is folder?"
+      "caption": "Ist Ordner?"
     },
     {
       "name": "caption",
-      "caption": "Shortcut caption"
+      "caption": "Verknüpfungstitel"
     },
     {
       "name": "cmdCode",
-      "caption": "Command code"
+      "caption": "Befehlscode"
     },
     {
       "name": "inWindow",
-      "caption": "In new window",
-      "description": "Display in new window"
+      "caption": "In neuem Fenster",
+      "description": "In neuem Fenster anzeigen"
     },
     {
       "name": "isCollapsed",
-      "caption": "Collapse",
-      "description": "Show collapsed at the first start"
+      "caption": "Reduzieren",
+      "description": "Bei ersten Start reduziert anzeigen",
+      "documentation": "Ist sinnvoll, wenn isFolder = true ist"
     },
     {
       "name": "displayOrder",
-      "caption": "Order #",
-      "description": "Display order (in current node)"
+      "caption": "Bestellnummer",
+      "description": "Reihenfolge anzeigen (im aktuellen Knoten)"
+    },
+    {
+      "name": "iconCls",
+      "caption": "Symbol (CSS-Klasse)"
+    },
+    {
+      "name": "description",
+      "caption": "Beschreibung der Verknüpfung"
+    },
+    {
+      "name": "keywords",
+      "caption": "Suchbegriffe"
     }
   ]
 }

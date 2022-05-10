@@ -6,6 +6,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+ - added Deutsch (`de`) locale translations
 
 ### Changed
  - `UB.ux.UBReportEditor`: new property `enableTemplateEditor` - enable UBReport template editor (visual editor for

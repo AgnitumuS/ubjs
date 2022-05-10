@@ -1,5 +1,5 @@
 {
-  "caption": "Administering of Desktops",
+  "caption": "Desktopverwaltung",
   "attributes": [
     {
       "name": "instanceID",
@@ -7,7 +7,7 @@
     },
     {
       "name": "admSubjID",
-      "caption": "Admin subject"
+      "caption": "Verwaltungssubjekt"
     }
   ]
 }

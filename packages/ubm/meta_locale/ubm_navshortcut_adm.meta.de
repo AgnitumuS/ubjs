@@ -1,14 +1,15 @@
 {
-  "caption": "Administering of Navigation Panel",
-  "description": "Description",
+  "caption": "Verwaltung des Navigationspanels",
+  "description": "Beschreibung",
   "attributes": [
     {
       "name": "instanceID",
-      "caption": "Shortcut"
+      "caption": "Verknüpfung"
     },
     {
       "name": "admSubjID",
-      "caption": "Subject of administration"
+      "caption": "Verwaltungssubjekt"
     }
-  ]
+  ],
+  "documentation": "Diese Entität wird vom RLS-Makro $.currentUserOrUserGroupInAdmSubtable verwendet"
 }

@@ -1,91 +1,91 @@
 {
-  "caption": "External Organizations",
-  "description": "List of external organizations",
+  "caption": "Externe Organisationen",
+  "description": "Liste der externen Organisationen",
   "attributes": [
     {
       "name": "code",
-      "caption": "Internal code",
-      "description": "Organization internal code"
+      "caption": "Interner Code",
+      "description": "Organisationsinterner Code"
     },
     {
       "name": "OKPOCode",
       "caption": "CCEO",
-      "description": "Common classifier of enterprises and organizations (CCEO)"
+      "description": "Gemeinsamer Klassifikator für Unternehmen und Organisationen (CCEO)"
     },
     {
       "name": "taxCode",
-      "caption": "Tax number",
-      "description": "Tax number"
+      "caption": "Steuernummer",
+      "description": "Steuernummer"
     },
     {
       "name": "vatCode",
-      "caption": "VAT number",
-      "description": "VAT (value-added tax) registration certificate number"
+      "caption": "USt.-ID-Nr.",
+      "description": "Nummer der USt.-Registrierungsurkunde (USt.)"
     },
     {
       "name": "name",
-      "caption": "Organization name",
-      "description": "Name of organization without the quotes and abbreviations"
+      "caption": "Name der Organisation",
+      "description": "Name der Organisation ohne Anführungszeichen und Abkürzungen"
     },
     {
       "name": "fullName",
-      "caption": "Organization full name",
-      "description": "Full name of organization, as it's specified in the certificate of registration"
+      "caption": "Vollständiger Name der Organisation",
+      "description": "Vollständiger Name der Organisation wie in der Registrierungsurkunde angegeben"
     },
     {
       "name": "nameGen",
-      "caption": "Name in genitive case",
-      "description": "Organization name in genitive case"
+      "caption": "Name im Genitiv",
+      "description": "Name der Organisation im Genitiv"
     },
     {
       "name": "nameDat",
-      "caption": "Name in dative case",
-      "description": "Organization name in dative case"
+      "caption": "Name im Dativ",
+      "description": "Name der Organisation im Dativ"
     },
     {
       "name": "fullNameGen",
-      "caption": "Full name in genitive case",
-      "description": "Full name of organization, as it's specified in the certificate of registration, in genitive case"
+      "caption": "Vollständiger Name im Genitiv",
+      "description": "Vollständiger Name der Organisation wie in der Registrierungsurkunde angegeben im Genitiv"
     },
     {
       "name": "fullNameDat",
-      "caption": "Full name in dative case",
-      "description": "Full name of organization, as it's specified in the certificate of registration, in dative case"
+      "caption": "Vollständiger Name im Dativ",
+      "description": "Vollständiger Name der Organisation wie in der Registrierungsurkunde angegeben im Dativ"
     },
     {
       "name": "description",
-      "caption": "Organization description",
-      "description": "Organization description"
+      "caption": "Beschreibung der Organisation",
+      "description": "Beschreibung der Organisation"
     },
     {
       "name": "orgBusinessTypeID",
-      "caption": "Organization type",
-      "description": "Organization type"
+      "caption": "Organisationstyp",
+      "description": "Organisationstyp"
     },
     {
       "name": "orgOwnershipTypeID",
-      "caption": "Ownership type",
-      "description": "Ownership type"
+      "caption": "Besitzertyp",
+      "description": "Besitzertyp"
     },
     {
       "name": "corrIndexID",
-      "caption": "Index of correspondent",
-      "description": "Index of correspondent"
+      "caption": "Korrespondentenindex",
+      "description": "Korrespondentenindex"
     },
     {
       "name": "addrText",
-      "caption": "Addressee formulation",
-      "description": "Formulation of the recipient, that will appear in the formation of PDF outgoing document"
+      "caption": "Adressatenformulierung",
+      "description": "Formulierung des Empfängers, der im ausgehenden PDF-Dokument erscheint"
     },
     {
       "name": "caption",
-      "caption": "Caption",
-      "description": "Caption"
+      "caption": "Titel",
+      "description": "Titel"
     },
     {
       "name": "countryID",
-      "caption": "Country",
-      "description": "Country"
+      "caption": "Land",
+      "description": "Land"
     }
   ]
 }

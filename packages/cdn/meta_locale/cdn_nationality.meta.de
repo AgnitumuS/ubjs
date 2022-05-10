@@ -1,25 +1,26 @@
 {
-  "caption": "Nationality",
-  "description": "Nationality",
+  "caption": "Staatsangehörigkeit",
+  "description": "Staatsangehörigkeit",
   "attributes": [
     {
       "name": "code",
       "caption": "Code",
-      "description": "Nationality code"
+      "description": "Staatsangehörigkeitscode"
     },
     {
       "name": "name",
       "caption": "Name",
-      "description": "Name of nationality"
+      "description": "Name der Staatsangehörigkeit"
     },
     {
       "name": "nameM",
-      "caption": "Name(male)",
-      "description": "Nationality name for male"
-    },{
+      "caption": "Name (männlich)",
+      "description": "Name der Staatsangehörigkeit für Männer"
+    },
+    {
       "name": "nameF",
-      "caption": "Name(female)",
-      "description": "Nationality name for male"
+      "caption": "Name (weiblich)",
+      "description": "Name der Staatsangehörigkeit für Männer"
     }
   ]
 }

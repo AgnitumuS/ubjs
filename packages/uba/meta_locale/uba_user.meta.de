@@ -1,75 +1,79 @@
 {
-  "caption": "Users",
-  "description": "Users",
+  "caption": "Benutzer",
+  "description": "Benutzer",
   "attributes": [
     {
       "name": "name",
-      "caption": "Login",
-      "description": "User login in lower case"
+      "caption": "Anmelden",
+      "description": "Benutzeranmeldung in Kleinbuchstaben"
     },
     {
       "name": "description",
-      "caption": "Description"
+      "caption": "Beschreibung",
+      "description": "Zusätzliche Beschreibung des Benutzerkontos"
     },
     {
       "name": "firstName",
-      "caption": "First Name"
+      "caption": "Vorname"
     },
     {
       "name": "lastName",
-      "caption": "Last Name"
+      "caption": "Nachname"
     },
     {
       "name": "fullName",
-      "caption": "Full Name"
+      "caption": "Vollständiger Name"
     },
     {
       "name": "gender",
-      "caption": "User gender"
+      "caption": "Geschlecht des Benutzers"
     },
     {
       "name": "email",
-      "caption": "Email",
-      "description": "User email (could be used for notifications)"
+      "caption": "E-Mail",
+      "description": "Benutzer-E-Mail (kann für Benachrichtigungen verwendet werden)"
     },
     {
       "name": "phone",
-      "caption": "Phone",
-      "description": "User phone (could be used for sms)"
+      "caption": "Telefon",
+      "description": "Benutzertelefon (kann für SMS verwendet werden)"
     },
     {
       "name": "avatar",
       "caption": "Avatar",
-      "description": "User avatar image (recommended 128x128)"
+      "description": "Avatarbild des Benutzers (empfohlen 128x128)"
     },
     {
       "name": "uPasswordHashHexa",
-      "caption": "Password hash",
-      "description": "Password hash"
+      "caption": "Kennwort-Hash",
+      "description": "Kennwort-Hash",
+      "documentation": "PasswordHashHexa := Session._buildPasswordHash(login, plainPwd)"
     },
     {
       "name": "disabled",
-      "caption": "Disabled",
-      "description": "Disabled"
+      "caption": "Deaktiviert",
+      "description": "Deaktiviert"
     },
     {
       "name": "isPending",
-      "caption": "Registration pending",
-      "description": "The user is waiting for confirmation of registration"
+      "caption": "Registrierung ausstehend",
+      "description": "Der Benutzer wartet auf die Bestätigung der Registrierung"
     },
     {
       "name": "uData",
       "caption": "uData",
-      "description": "Additional  data"
+      "description": "Zusätzliche Daten",
+      "documentation": "Beliebiges gültiges JSON-Objekt. Diese Daten werden als Ergebnis der Authentifizierungsmethode an den Client-Teil übertragen. Auch verfügbar in Server-Methoden via Session.uData"
     },
     {
       "name": "trustedIP",
-      "caption": "trusted IPs"
+      "caption": "vertrauenswürdige IPs",
+      "documentation": "Durch Semikolon getrennte Liste der erlaubten IPs für das UBIP-Authentifizierungsschema. Warnung! Wir empfehlen die Verwendung ausschließlich für IPs aus der DMZ"
     },
     {
       "name": "lastPasswordChangeDate",
-      "caption": "Last password change date",
-      "description": "Last password change date"
+      "caption": "Datum der letzten Kennwortänderung",
+      "description": "Datum der letzten Kennwortänderung"
     }
   ]
 }

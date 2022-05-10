@@ -1,28 +1,37 @@
 {
   "caption": "Desktops",
-  "description": "Application desktops",
+  "description": "Anwendungsdesktops",
   "attributes": [
     {
       "name": "caption",
-      "caption": "Desktop name"
+      "caption": "Desktopname"
     },
     {
       "name": "code",
-      "caption": "Code"
+      "caption": "Code",
+      "documentation": "Eindeutiger Desktopcode. Für Versionsupgrade verwendet"
     },
     {
       "name": "url",
       "caption": "URL",
-      "description": "Static server page URL which is displayed in screen centre of selected desktop"
+      "description": "Statische Serverseiten-URL, die in der Bildschirmmitte des ausgewählten Desktops angezeigt wird"
     },
     {
       "name": "isDefault",
-      "caption": "By default?"
+      "caption": "Standardmäßig?"
     },
     {
       "name": "displayOrder",
-      "caption": "Order #",
-      "description": "Display order"
+      "caption": "Bestellnummer",
+      "description": "Bestellung anzeigen"
+    },
+    {
+      "name": "description",
+      "caption": "Desktopbeschreibung"
+    },
+    {
+      "name": "iconCls",
+      "caption": "Desktopsymbol"
     }
   ]
 }

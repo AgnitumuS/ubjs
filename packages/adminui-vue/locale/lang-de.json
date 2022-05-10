@@ -2,190 +2,190 @@
   "el": {
     "colorpicker": {
       "confirm": "OK",
-      "clear": "Clear"
+      "clear": "Löschen"
     },
     "datepicker": {
-      "now": "Now",
-      "today": "Today",
-      "cancel": "Cancel",
-      "clear": "Clear",
+      "now": "Jetzt",
+      "today": "Heute",
+      "cancel": "Abbrechen",
+      "clear": "Löschen",
       "confirm": "OK",
-      "selectDate": "Select date",
-      "selectTime": "Select time",
-      "startDate": "from",
-      "startTime": "from",
-      "endDate": "to",
-      "endTime": "to",
-      "prevYear": "Previous Year",
-      "nextYear": "Next Year",
-      "prevMonth": "Previous Month",
-      "nextMonth": "Next Month",
+      "selectDate": "Datum auswählen",
+      "selectTime": "Zeit auswählen",
+      "startDate": "von",
+      "startTime": "von",
+      "endDate": "bis",
+      "endTime": "bis",
+      "prevYear": "Vorheriges Jahr",
+      "nextYear": "Nächstes Jahr",
+      "prevMonth": "Vorheriger Monat",
+      "nextMonth": "Nächster Monat",
       "year": "",
-      "month1": "January",
-      "month2": "February",
-      "month3": "March",
+      "month1": "Januar",
+      "month2": "Februar",
+      "month3": "März",
       "month4": "April",
-      "month5": "May",
-      "month6": "June",
-      "month7": "July",
+      "month5": "Mai",
+      "month6": "Juni",
+      "month7": "Juli",
       "month8": "August",
       "month9": "September",
-      "month10": "October",
+      "month10": "Oktober",
       "month11": "November",
-      "month12": "December",
+      "month12": "Dezember",
       "weeks": {
-        "sun": "Sun",
-        "mon": "Mon",
-        "tue": "Tue",
-        "wed": "Wed",
-        "thu": "Thu",
-        "fri": "Fri",
-        "sat": "Sat"
+        "sun": "So",
+        "mon": "Mo",
+        "tue": "Di",
+        "wed": "Mi",
+        "thu": "Do",
+        "fri": "Fr",
+        "sat": "Sa"
       },
       "months": {
         "jan": "Jan",
         "feb": "Feb",
-        "mar": "Mar",
+        "mar": "Mär",
         "apr": "Apr",
-        "may": "May",
+        "may": "Mai",
         "jun": "Jun",
         "jul": "Jul",
         "aug": "Aug",
         "sep": "Sep",
-        "oct": "Oct",
+        "oct": "Okt",
         "nov": "Nov",
-        "dec": "Dec"
+        "dec": "Dez"
       },
       "format": {
-        "date": "MM/dd/yyyy",
-        "daterange": "MM/dd/yyyy",
-        "datetime": "MM/dd/yyyy HH:mm",
-        "firstDayOfWeek": 7
+        "date": "dd/MM/yyyy",
+        "daterange": "dd/MM/yyyy",
+        "datetime": "dd/MM/yyyy HH:mm",
+        "firstDayOfWeek": "7"
       }
     },
     "select": {
-      "loading": "Loading",
-      "noMatch": "No matching data",
-      "noData": "No data",
-      "placeholder": "Select"
+      "loading": "Lädt",
+      "noMatch": "Keine übereinstimmenden Daten",
+      "noData": "Keine Daten",
+      "placeholder": "Auswählen"
     },
     "cascader": {
-      "noMatch": "No matching data",
-      "loading": "Loading",
-      "placeholder": "Select"
+      "noMatch": "Keine übereinstimmenden Daten",
+      "loading": "Lädt",
+      "placeholder": "Auswählen"
     },
     "pagination": {
-      "goto": "Go to",
-      "pagesize": "/page",
-      "total": "Total {total}",
+      "goto": "Gehe zu",
+      "pagesize": "/Seite",
+      "total": "Gesamt {total}",
       "pageClassifier": ""
     },
     "messagebox": {
-      "title": "Message",
+      "title": "Nachricht",
       "confirm": "OK",
-      "cancel": "Cancel",
-      "error": "Illegal input"
+      "cancel": "Abbrechen",
+      "error": "Unzulässige Eingabe"
     },
     "upload": {
-      "deleteTip": "press delete to remove",
-      "delete": "Delete",
-      "preview": "Preview",
-      "continue": "Continue"
+      "deleteTip": "Drücken Sie zum Entfernen auf \"Löschen\"",
+      "delete": "Löschen",
+      "preview": "Vorschau",
+      "continue": "Weiter"
     },
     "table": {
-      "emptyText": "No Data",
-      "confirmFilter": "Confirm",
-      "resetFilter": "Reset",
-      "clearFilter": "All",
-      "sumText": "Sum"
+      "emptyText": "Keine Daten",
+      "confirmFilter": "Bestätigen",
+      "resetFilter": "Zurücksetzen",
+      "clearFilter": "Alle",
+      "sumText": "Summe"
     },
     "tree": {
-      "emptyText": "No Data"
+      "emptyText": "Keine Daten"
     },
     "transfer": {
-      "noMatch": "No matching data",
-      "noData": "No data",
+      "noMatch": "Keine übereinstimmenden Daten",
+      "noData": "Keine Daten",
       "titles": [
-        "List 1",
-        "List 2"
+        "Liste 1",
+        "Liste 2"
       ],
-      "filterPlaceholder": "Enter keyword",
-      "noCheckedFormat": "{total} items",
-      "hasCheckedFormat": "{checked}/{total} checked"
+      "filterPlaceholder": "Schlüsselwort eingeben",
+      "noCheckedFormat": "{total} Elemente",
+      "hasCheckedFormat": "{checked}/{total} überprüft"
     }
   },
-  "supportMailToTitle": "Send error to support",
-  "isRequiredFieldFmt": "{0} is required",
-  "linkCopiedText": "Link copied to clipboard",
-  "createdEntityCaption": "Created",
-  "updatedEntityCaption": "Updated",
-  "searchByDateRange": "Date range",
-  "forAllTime": "For all time",
-  "lastMonth": "Last Month",
-  "lastQuarter": "Last quarter",
-  "last6Month": "Last 6 month",
-  "thisYear": "This year",
-  "successfullySaved": "Successfully saved",
-  "formWasRefreshed": "Form was refreshed",
-  "recordDeletedSuccessfully": "Record deleted successfully",
-  "selectedValueWasDeleted": "Selected value was deleted",
-  "value is out of date": "value is out of date",
-  "recordWasDeleted": "Record was deleted",
-  "validationError": "Unable to save.<br>Error in fields:<br>{0}",
-  "formCrashTitle": "Form was crashed",
-  "formCrashBody": "Something going wrong please reload form or contact system administrator",
-  "selectDate": "Select date",
-  "selectDateAndTime": "Select date and time",
-  "Add": "Add",
-  "Continue": "Continue",
+  "supportMailToTitle": "Fehler an Support senden",
+  "isRequiredFieldFmt": "{0} ist erforderlich",
+  "linkCopiedText": "Link in die Zwischenablage kopiert",
+  "createdEntityCaption": "Erstellt",
+  "updatedEntityCaption": "Aktualisiert",
+  "searchByDateRange": "Datumsbereich",
+  "forAllTime": "Unbegrenzt",
+  "lastMonth": "Letzter Monat",
+  "lastQuarter": "Letztes Quartal",
+  "last6Month": "Letzte 6 Monate",
+  "thisYear": "Dieses Jahr",
+  "successfullySaved": "Erfolgreich gespeichert",
+  "formWasRefreshed": "Das Formular wurde aktualisiert",
+  "recordDeletedSuccessfully": "Eintrag erfolgreich gelöscht",
+  "selectedValueWasDeleted": "Ausgewählter Wert wurde gelöscht",
+  "value is out of date": "Wert ist veraltet",
+  "recordWasDeleted": "Eintrag wurde gelöscht",
+  "validationError": "Speichern nicht möglich.<br>Fehler in den Feldern:<br>{0}",
+  "formCrashTitle": "Das Formular ist abgestürzt",
+  "formCrashBody": "Ein Fehler ist aufgetreten, bitte laden Sie das Formular neu oder kontaktieren Sie den Systemadministrator",
+  "selectDate": "Datum auswählen",
+  "selectDateAndTime": "Datum und Uhrzeit auswählen",
+  "Add": "Hinzufügen",
+  "Continue": "Weiter",
   "sidebar": {
     "desktopSelector": {
-      "title": "Desktop selection"
+      "title": "Desktop-Auswahl"
     }
   },
   "table": {
     "filter": {
       "list": {
-        "title": "Filters"
+        "title": "Filter"
       },
-      "conditionPlaceholder": "Condition",
-      "valueLabel": "Value",
+      "conditionPlaceholder": "Bedingung",
+      "valueLabel": "Wert",
       "date": {
-        "from": "from",
-        "to": "to",
-        "valuePlaceholder": "Select date"
+        "from": "von",
+        "to": "bis",
+        "valuePlaceholder": "Datum auswählen"
       },
-      "columnPlaceholder": "Column"
+      "columnPlaceholder": "Spalte"
     },
     "pagination": {
-      "outOf": "out of",
-      "nextPage": "Next page",
-      "prevPage": "Previous page"
+      "outOf": "von",
+      "nextPage": "Nächste Seite",
+      "prevPage": "Vorherige Seite"
     },
-    "columnLabel": "Column",
+    "columnLabel": "Spalte",
     "viewMode": {
-      "label": "View mode",
-      "card": "Card",
-      "table": "Table"
+      "label": "Ansichtsmodus",
+      "card": "Karte",
+      "table": "Tabelle"
     },
     "sort": {
-      "label": "Sort",
+      "label": "Sortieren",
       "direction": {
-        "label": "Direction",
-        "asc": "Ascending",
-        "desc": "Descending",
-        "none": "None"
+        "label": "Richtung",
+        "asc": "Aufsteigend",
+        "desc": "Absteigend",
+        "none": "Keine"
       }
     },
     "summary": {
-      "menuText": "Show totals",
-      "header": "Totals for \"{forTitle:i18n}\"",
-      "totalRowCount": "Total row count",
-      "columnSummaries": "Column summaries",
-      "SUM": "sum",
-      "MIN": "minimum",
-      "MAX": "maximum",
-      "AVG": "average"
+      "menuText": "Gesamtsummen anzeigen",
+      "header": "Gesamtsummen für \"{forTitle:i18n}\"",
+      "totalRowCount": "Gesamtzeilenzahl",
+      "columnSummaries": "Spaltenzusammenfassungen",
+      "SUM": "Summe",
+      "MIN": "minimal",
+      "MAX": "maximal",
+      "AVG": "Durchschnitt"
     }
   },
   "sizeUnits": {
@@ -197,95 +197,95 @@
   },
   "fileInput": {
     "manyFilesTable": {
-      "label": "Label",
-      "size": "Size",
-      "type": "Type",
-      "uploadDate": "Upload date"
+      "label": "Etikett",
+      "size": "Größe",
+      "type": "Typ",
+      "uploadDate": "Upload-Datum"
     },
     "dropZone": {
-      "caption": "Drop file(s) here or click to upload",
-      "acceptError": "Invalid file(s) type",
-      "selectedFiles": "Selected"
+      "caption": "Dateien hier ablegen oder zum Hochladen anklicken",
+      "acceptError": "Ungültige(r) Dateityp(en)",
+      "selectedFiles": "Ausgewählt"
     }
   },
   "select": {
-    "valueIsUndefined": "Value \"{0}\" not found in entity \"{1}\"",
-    "dictionaryAdding": "Adding new record",
-    "dictionaryAddingChoices": "Element <strong>\"{text}\"</strong> is not found in the dictionary \"{entity}\". Choose: <ul><li><strong>Continue</strong> to select another record</li> <li><strong>Add</strong> to add a new record with text \"{text}\"</li> <li><strong>Edit</strong> to define additional attributes</li> </ul>",
-    "recordAddedSuccessfully": "Record added successfully"
+    "valueIsUndefined": "Wert \"{0}“ in Entität \"{1}\" nicht gefunden",
+    "dictionaryAdding": "Hinzufügen eines neuen Eintrags",
+    "dictionaryAddingChoices": "Element <strong>\"{Text}\"</strong> im Wörterbuch \"{entity}\" nicht gefunden. Wählen Sie: <ul><li><strong>Fortfahren</strong>, um einen weiteren Eintrag auszuwählen</li> <li><strong>Hinzufügen</strong>, um einen neuen Eintrag mit dem Text \"{Text}“ hinzuzufügen</li> <li><strong>Bearbeiten</strong>, um zusätzliche Attribute zu definieren</li> </ul>",
+    "recordAddedSuccessfully": "Eintrag erfolgreich hinzugefügt"
   },
   "tableRegister": {
-    "hideDetails": "Hide details"
+    "hideDetails": "Details ausblenden"
   },
   "chat": {
-    "emptyMessage": "No messages yet...",
-    "inputPlaceholder": "Enter a message",
-    "copyNotification": "Message successfully copied in clipboard",
-    "removeMessageDialog": "Remove message \"{0}\"",
-    "removeMessageNotification": "Message successfully deleted"
+    "emptyMessage": "Noch keine Nachrichten...",
+    "inputPlaceholder": "Geben Sie eine Nachricht ein",
+    "copyNotification": "Nachricht erfolgreich in Zwischenablage kopiert",
+    "removeMessageDialog": "Nachricht \"{0}\" entfernen",
+    "removeMessageNotification": "Nachricht erfolgreich gelöscht"
   },
   "aclRlsInfo": {
-    "subject": "Subject",
+    "subject": "Besitzer",
     "name": "Name"
   },
   "UFile": {
     "webcam": {
       "webcamLabel": "Webcam",
-      "pictureLabel": "Picture",
-      "emptyPicturePlaceholder": "Your picture",
-      "takePictureButton": "Take picture",
-      "takeAnotherPictureButton": "Take another",
-      "intoPicture": "As picture",
-      "intoPdf": "As PDF",
-      "addPage": "Add as page",
+      "pictureLabel": "Bild",
+      "emptyPicturePlaceholder": "Ihr Bild",
+      "takePictureButton": "Foto machen",
+      "takeAnotherPictureButton": "Anderes verwenden",
+      "intoPicture": "Als Bild",
+      "intoPdf": "Als PDF",
+      "addPage": "Als Seite hinzufügen",
       "resolution": {
         "low": "1280x720 (~1Mb)",
         "fullHD": "1920x1080 (~3Mb)",
         "4K": "3840x2160 (~8Mb)"
       },
       "error": {
-        "NotReadableError": "Access to webcam disabled by operation system settings",
-        "NotFoundError": "Cannot see any webcam devices",
-        "NotAllowedError": "Access to webcam disabled. Turn it on in browser settings"
+        "NotReadableError": "Zugriff auf Webcam durch Betriebssystemeinstellungen deaktiviert",
+        "NotFoundError": "Es wurden keine Webcam-Geräte gefunden",
+        "NotAllowedError": "Zugriff auf Webcam deaktiviert. Aktivieren Sie diese in den Browsereinstellungen"
       }
     },
-    "addButtonTooltip": "Add",
+    "addButtonTooltip": "Hinzufügen",
     "downloadButtonTooltip": "Download",
-    "previewButtonTooltip": "Preview",
-    "removeButtonTooltip": "Remove",
-    "scanButtonTooltip": "Scan",
-    "scanSettingsButtonTooltip": "Scan settings",
-    "webcamButtonTooltip": "Take image from webcam",
-    "fullscreenButtonTooltip": "Full screen preview"
+    "previewButtonTooltip": "Vorschau",
+    "removeButtonTooltip": "Entfernen",
+    "scanButtonTooltip": "Scannen",
+    "scanSettingsButtonTooltip": "Scan-Einstellungen",
+    "webcamButtonTooltip": "Bild mit Webcam aufnehmen",
+    "fullscreenButtonTooltip": "Vollbild-Vorschau"
   },
   "UNavbar": {
-    "allTabsButton": "All opened tabs"
+    "allTabsButton": "Alle geöffneten Tabs"
   },
   "USelectEntity": {
     "dropdown": {
-      "moreButton": "More"
+      "moreButton": "Mehr"
     }
   },
   "UTable": {
-    "noData": "No data"
+    "noData": "Keine Daten"
   },
   "UCron": {
-    "second": "second",
-    "minute": "minute",
-    "hour": "hour",
-    "day": "day",
-    "month": "month",
-    "dayOfWeek": "day of week",
-    "every": "every",
-    "everySecond": "second(s)",
-    "everyMinute": "minute(s)",
-    "everyHour": "hour(s)",
-    "everyDay": "day(s)",
-    "everyMonth": "month(s)",
-    "chooseOneOrMany": "choose one or many",
+    "second": "Sekunde",
+    "minute": "Minute",
+    "hour": "Stunde",
+    "day": "Tag",
+    "month": "Monat",
+    "dayOfWeek": "Wochentag",
+    "every": "alle",
+    "everySecond": "Sekunde(n)",
+    "everyMinute": "Minute(n)",
+    "everyHour": "Stunde(n)",
+    "everyDay": "Tag(e)",
+    "everyMonth": "Monat(e)",
+    "chooseOneOrMany": "Bitte wählen Sie mindestens einen Eintrag",
     "specific": "specific",
-    "between": "between",
-    "expression": "Cron expression",
+    "between": "zwischen",
+    "expression": "Cron-Ausdruck",
     "interpretation": "Interpretation"
   }
 }

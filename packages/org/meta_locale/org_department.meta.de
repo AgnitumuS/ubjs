@@ -1,67 +1,67 @@
 {
-  "caption": "Internal Departments",
-  "description": "Internal departments",
-  "documentation": "This dictionary contains list of departments. Each department links to org_unit by Unity mixin",
+  "caption": "Interne Abteilungen",
+  "description": "Interne Abteilungen",
+  "documentation": "Dieses Wörterbuch enthält eine Liste der Abteilungen. Jede Abteilung verlinkt mit org_unit über Unity Mixin",
   "attributes": [
     {
       "name": "parentID",
-      "caption": "Parent",
-      "description": "Parent"
+      "caption": "Übergeordnetes Element",
+      "description": "Übergeordnetes Element"
     },
     {
       "name": "code",
-      "caption": "Internal code",
-      "description": "Internal code"
+      "caption": "Interner Code",
+      "description": "Interner Code"
     },
     {
       "name": "name",
-      "caption": "Department name",
-      "description": "Name of department without the quotes and abbreviations"
+      "caption": "Abteilungsname",
+      "description": "Abteilungsname ohne Anführungszeichen und Abkürzungen"
     },
     {
       "name": "fullName",
-      "caption": "Department full name",
-      "description": "Department full name"
+      "caption": "Vollständiger Abteilungsname",
+      "description": "Vollständiger Abteilungsname"
     },
     {
       "name": "description",
-      "caption": "Department description",
-      "description": "Department description"
+      "caption": "Abteilungsbeschreibung",
+      "description": "Abteilungsbeschreibung"
     },
     {
       "name": "nameGen",
-      "caption": "Department name in genitive case",
-      "description": "Department name without the quotes and abbreviations in genitive case"
+      "caption": "Abteilungsname im Genitiv",
+      "description": "Abteilungsname ohne Anführungszeichen und Abkürzungen im Genitiv"
     },
     {
       "name": "nameDat",
-      "caption": "Department name in dative case",
-      "description": "Department name without the quotes and abbreviations in dative case"
+      "caption": "Abteilungsname im Dativ",
+      "description": "Abteilungsname ohne Anführungszeichen und Abkürzungen im Dativ"
     },
     {
       "name": "fullNameGen",
-      "caption": "Department full name in genitive case",
-      "description": "Department full name in genitive case"
+      "caption": "Vollständiger Abteilungsname im Genitiv",
+      "description": "Vollständiger Abteilungsname im Genitiv"
     },
     {
       "name": "fullNameDat",
-      "caption": "Department full name in dative case",
-      "description": "Department full name in dative case"
+      "caption": "Vollständiger Abteilungsname im Dativ",
+      "description": "Vollständiger Abteilungsname im Dativ"
     },
     {
       "name": "depTypeID",
-      "caption": "Department type",
-      "description": "Department type"
+      "caption": "Abteilungstyp",
+      "description": "Abteilungstyp"
     },
     {
       "name": "isClerical",
-      "caption": "Clerical?",
-      "description": "Clerical unit mark"
+      "caption": "Büroeinheit?",
+      "description": "Kennzeichnung als Büroeinheit"
     },
     {
       "name": "caption",
-      "caption": "Caption",
-      "description": "Caption"
+      "caption": "Titel",
+      "description": "Titel"
     }
   ]
 }

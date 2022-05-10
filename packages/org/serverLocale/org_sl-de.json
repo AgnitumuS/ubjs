@@ -1,6 +1,6 @@
 {
-  "notAssigned": "Not assigned",
-  "errAlreadyAssigned": "<<<This staff unit is already assigned>>>",
-  "errUserWithMultiplePermanentStaffUnitsNotAllowed": "<<<Impossible to logon, because the employee has multiple permanent assignments. Please contact your system administrator.>>>",
-  "AccessDeny": "Access deny"
+  "notAssigned": "Nicht zugewiesen",
+  "errAlreadyAssigned": "<<<Es gibt bereits eine Zuweisung für diese Personaleinheit>>>",
+  "errUserWithMultiplePermanentStaffUnitsNotAllowed": "<<<Anmeldung am System nicht möglich, weil der Mitarbeiter mehrere permanente Zuweisungen hat. Bitte wenden Sie sich an den Administrator.>>>",
+  "AccessDeny": "Unzureichende Rechte für den Vorgang"
 }

@@ -1,19 +1,19 @@
 {
-  "externalOrganizations_title": "Organizations",
-  "physPerson_title": "Phis. person",
-  "locality_title": "Locality",
-  "contact_title": "Contact",
-  "department_title": "Department of external organization",
-  "employee_title": "Employee of an external organization",
-  "profession_title": "Profession",
+  "externalOrganizations_title": "Organisationen",
+  "physPerson_title": "Natürliche Person",
+  "locality_title": "Ort",
+  "contact_title": "Kontakt",
+  "department_title": "Abteilung der externen Organisation",
+  "employee_title": "Mitarbeiter einer externen Organisation",
+  "profession_title": "Beruf",
   "region_title": "Region",
-  "ClassifTypePanelClassifiersTitle": "Classification values",
+  "ClassifTypePanelClassifiersTitle": "Klassifizierungswerte",
   "classifier": {
-    "caption": "Classifier",
-    "description": "Classifier record"
+    "caption": "Klassifikator",
+    "description": "Klassifikatoreintrag"
   },
   "classifieritem": {
-    "caption": "Classifier item",
-    "description": "Classifier item record"
+    "caption": "Klassifikatorelement",
+    "description": "Klassifikatorelementeintrag"
   }
 }

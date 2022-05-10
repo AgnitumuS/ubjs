@@ -4,6 +4,7 @@ $context:
 org_desktop:
   caption:
     en: Organizational Structure
+    de: Organisationsstruktur
     uk: Орг. структура
     ru: Орг. структура
     ka: ორგანიზაციული სტრუქტურა
@@ -12,6 +13,7 @@ org_desktop:
     az: Təş. Struktur
   description:
     en: Departments, Positions, Employees, Appointments,...
+    de: Abteilungen, Positionen, Mitarbeiter, Funktionen,...
     uk: Департаменти, посади, службовці, призначення,...
     ru: Отделы, должности, сотрудники, назначения,...
     ka: განყოფილებები, თანამდებობები, თანამშრომლები, დანიშვნები, ...
@@ -23,6 +25,7 @@ org_desktop:
   - org_folder_internal:
       caption:
         en: Org Internal
+        de: Organisationsintern
         uk: Орг. структура
         ru: Орг. структура
         ka: შიდა ორგანიზება
@@ -107,6 +110,7 @@ org_desktop:
       - org_employeeonstaff_all:
           caption:
             en: Assignment history
+            de: Zuweisungsverlauf
             uk: Історія призначень
             ru: История назначений
             ka: დავალების ისტორია
@@ -228,6 +232,7 @@ org_desktop:
   - org_folder_dict:
       caption:
         en: Additional
+        de: Zusätzlich
         uk: Додатково
         ru: Дополнительно
         ka: დამატებითი

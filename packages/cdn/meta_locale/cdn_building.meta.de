@@ -1,14 +1,14 @@
 {
-  "caption": "List of Buildings",
-  "description": "List of buildings",
+  "caption": "Gebäudeliste",
+  "description": "Gebäudeliste",
   "attributes": [
     {
       "name": "streetID",
-      "caption": "Street"
+      "caption": "Straße"
     },
     {
       "name": "postIndexID",
-      "caption": "Zip"
+      "caption": "PLZ"
     },
     {
       "name": "code",
@@ -17,13 +17,13 @@
     },
     {
       "name": "description",
-      "caption": "Description",
-      "description": "Description"
+      "caption": "Beschreibung",
+      "description": "Beschreibung"
     },
     {
       "name": "buildingType",
-      "caption": "Type",
-      "description": "Type"
+      "caption": "Typ",
+      "description": "Typ"
     }
   ]
 }

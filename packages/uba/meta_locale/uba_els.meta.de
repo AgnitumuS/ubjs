@@ -1,41 +1,43 @@
 {
-  "caption": "Entity Level Security(ELS)",
-  "description": "Describe, which role have access permissions to Entities methods",
-  "documentation": "Administering of entity level. The system checks the access by the rule \"Allowed and NOT Prohibited\"",
+  "caption": "Sicherheit auf Entitätsebene (ELS)",
+  "description": "Beschreiben, welche Rollen Zugriffsrechte für die Methoden der Entitäten haben",
+  "documentation": "Verwaltung der Entitätsebene. Das System prüft den Zugriff anhand der Regel \"Erlaubt und NICHT verboten\"",
   "attributes": [
     {
       "name": "code",
-      "caption": "Rule code",
-      "description": "Code for ELS rule"
+      "caption": "Regelcode",
+      "description": "Code für ELS-Regel",
+      "documentation": "Dieses Feld wird bei Migrationen für die automatische Aktualisierung der Regeln verwendet. Es wird empfohlen, den Modellcode als Regelpräfix zu verwenden.\nWir setzen dieses Attribut nicht auf eindeutig, da einige externe Modelle denselben Code für verschiedene Regeln verwenden.\nAber alle UnityBase-Modelle setzen dieses Attribut auf einen eindeutigen Wert"
     },
     {
       "name": "description",
-      "caption": "Description",
-      "description": "Rule description"
+      "caption": "Beschreibung",
+      "description": "Regelbeschreibung"
     },
     {
       "name": "disabled",
-      "caption": "Disabled",
-      "description": "Rule is disabled"
+      "caption": "Deaktiviert",
+      "description": "Regel ist deaktiviert"
     },
     {
       "name": "entityMask",
-      "caption": "Entity mask"
+      "caption": "Entitätsmaske",
+      "documentation": "<h4>Maskiert Platzhalter (<strong>um Sicherheitsprobleme zu vermeiden, empfehlen wir dringend, den vollen Methodennamen anstelle der Maske zu verwenden</strong>):</h4> <ul>\n<li>*Entspricht beliebigen zusammenhängenden Zeichen</li>\n<li>? Entspricht einem beliebigen einzelnen Zeichen</li>\n<li>[abc] Entspricht a oder b oder c an dieser Stelle</li>\n<li>[^abc] Entspricht allem außer a oder b oder c an dieser Stelle</li>\n<li>[!abc] Entspricht allem außer a oder b oder c an dieser Stelle</li>\n<li>[a-e] Entspricht a bis e an dieser Stelle</li>\n<li>[abcx-z] Entspricht a oder b oder c oder x oder y oder z, ebenso wie [a-cx-z]</li>\n</ul> Beispiel: [iu]* entspricht jeder Zeichenfolge, die entweder mit 'i' oder 'u' beginnt, wie: 'insert', 'inner', 'update',..."
     },
     {
       "name": "methodMask",
-      "caption": "Method mask",
-      "description": "Method mask"
+      "caption": "Methodenmaske",
+      "description": "Methodenmaske"
     },
     {
       "name": "ruleType",
-      "caption": "Rule type",
-      "description": "Rule type"
+      "caption": "Regeltyp",
+      "description": "Regeltyp"
     },
     {
       "name": "ruleRole",
-      "caption": "Role",
-      "description": "Role for which the rule applies"
+      "caption": "Rolle",
+      "description": "Rolle, für die die Regel gilt"
     }
   ]
 }

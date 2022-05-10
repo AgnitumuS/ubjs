@@ -1,31 +1,33 @@
 {
-  "caption": "One-Time Passwords",
-  "description": "One-time passwords",
+  "caption": "Einmalkennwörter",
+  "description": "Einmalkennwörter",
   "attributes": [
     {
       "name": "otp",
-      "caption": "OTP",
-      "description": "Generated one time password"
+      "caption": "Einmalkennwort",
+      "description": "Generiertes Einmalkennwort"
     },
     {
       "name": "userID",
-      "caption": "User",
-      "description": "User for which password was generated"
+      "caption": "Benutzer",
+      "description": "Benutzer, für den das Kennwort generiert wurde"
     },
     {
       "name": "uData",
       "caption": "uData",
-      "description": "Additional  data"
+      "description": "Zusätzliche Daten",
+      "documentation": "Beliebiges gültiges JSON-Objekt. Diese Daten werden als Ergebnis der Authentifizierungsmethode an den Client-Teil übertragen. Auch verfügbar in Server-Methoden via Session.uData"
     },
     {
       "name": "expiredDate",
-      "caption": "Expired date",
-      "description": "Expired date"
+      "caption": "Abgelaufenes Datum",
+      "description": "Abgelaufenes Datum"
     },
     {
       "name": "otpKind",
-      "caption": "Otp kind",
-      "description": "Kind of otp(Email, SMS etc)"
+      "caption": "Art des Einmalkennworts",
+      "description": "Art des Einmalkennworts (E-Mail, SMS usw.)"
     }
-  ]
+  ],
+  "documentation": "Generierung und Überprüfung von Einmalkennwörtern"
 }

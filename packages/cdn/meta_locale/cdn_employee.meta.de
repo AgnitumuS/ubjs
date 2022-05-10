@@ -1,36 +1,36 @@
 {
-  "caption": "Employees of External Organizations",
-  "description": "List of employees of external organizations",
+  "caption": "Mitarbeiter von externen Organisationen",
+  "description": "Liste der Mitarbeiter von externen Organisationen",
   "attributes": [
     {
       "name": "lastName",
-      "caption": "Last name",
-      "description": "Employee last name"
+      "caption": "Nachname",
+      "description": "Nachname des Mitarbeiters"
     },
     {
       "name": "firstName",
-      "caption": "First name",
-      "description": "Employee first name"
+      "caption": "Vorname",
+      "description": "Vorname des Mitarbeiters"
     },
     {
       "name": "middleName",
-      "caption": "Middle name",
-      "description": "Employee middle name"
+      "caption": "Zweiter Vorname",
+      "description": "Zweiter Vorname des Mitarbeiters"
     },
     {
       "name": "description",
-      "caption": "Description",
-      "description": "Employee description"
+      "caption": "Beschreibung",
+      "description": "Beschreibung des Mitarbeiters"
     },
     {
       "name": "sexType",
-      "caption": "Gender",
-      "description": "Employee's gender"
+      "caption": "Geschlecht",
+      "description": "Geschlecht des Mitarbeiters"
     },
     {
       "name": "uniqNum",
-      "caption": "Employee number",
-      "description": "Employee number"
+      "caption": "Nummer des Mitarbeiters",
+      "description": "Nummer des Mitarbeiters"
     },
     {
       "name": "suffix",
@@ -39,93 +39,93 @@
     },
     {
       "name": "shortFIO",
-      "caption": "Last name with initials",
-      "description": "Example: A.O. Ivanov"
+      "caption": "Nachname mit Initialen",
+      "description": "Beispiel: A.O. Iwanow"
     },
     {
       "name": "fullFIO",
-      "caption": "Full name",
-      "description": "Example: Anton Olegovich Ivanov"
+      "caption": "Vollständiger Name",
+      "description": "Beispiel: Anton Olegowitsch Iwanow"
     },
     {
       "name": "apply",
-      "caption": "Treatment",
-      "description": "Describes how to treat to this person"
+      "caption": "Anrede",
+      "description": "Beschreibt, wie man die Person anspricht"
     },
     {
       "name": "lastNameGen",
-      "caption": "Last name in genitive",
-      "description": "Employee last name in genitive case"
+      "caption": "Nachname im Genitiv",
+      "description": "Nachname des Mitarbeiters im Genitiv"
     },
     {
       "name": "lastNameDat",
-      "caption": "Last name in dative",
-      "description": "Employee last name in dative case"
+      "caption": "Nachname im Dativ",
+      "description": "Nachname des Mitarbeiters im Dativ"
     },
     {
       "name": "firstNameGen",
-      "caption": "First name in genitive",
-      "description": "Employee first name in genitive case"
+      "caption": "Vornamen im Genitiv",
+      "description": "Vorname des Mitarbeiters im Genitiv"
     },
     {
       "name": "firstNameDat",
-      "caption": "First name in dative",
-      "description": "Employee first name in dative case"
+      "caption": "Vorname im Dativ",
+      "description": "Vorname des Mitarbeiters im Dativ"
     },
     {
       "name": "middleNameGen",
-      "caption": "Middle name in genitive",
-      "description": "Employee middle name in genitive case"
+      "caption": "Zweiter Vorname im Genitiv",
+      "description": "Zweiter Vorname des Mitarbeiters im Genitiv"
     },
     {
       "name": "middleNameDat",
-      "caption": "Middle name in dative",
-      "description": "Employee middle name in dative case"
+      "caption": "Zweiter Vorname im Dativ",
+      "description": "Zweiter Vorname des Mitarbeiters im Dativ"
     },
     {
       "name": "shortFIOGen",
-      "caption": "Short name in genitive",
-      "description": "Employee short name in genitive case"
+      "caption": "Kurzname im Genitiv",
+      "description": "Kurzname des Mitarbeiters im Genitiv"
     },
     {
       "name": "shortFIODat",
-      "caption": "Short name in dative",
-      "description": "Employee short name in dative case"
+      "caption": "Kurzname im Dativ",
+      "description": "Kurzname des Mitarbeiters im Dativ"
     },
     {
       "name": "fullFIOGen",
-      "caption": "Full name in genitive",
-      "description": "Employee full name in genitive case"
+      "caption": "Vollständiger Name im Genitiv",
+      "description": "Vollständiger Name des Mitarbeiters im Genitiv"
     },
     {
       "name": "fullFIODat",
-      "caption": "Full name in dative",
-      "description": "Employee full name in dative case"
+      "caption": "Vollständiger Name im Dativ",
+      "description": "Vollständiger Name des Mitarbeiters im Dativ"
     },
     {
       "name": "applyGen",
-      "caption": "Treatment in genitive",
-      "description": "Describes how to treat to this person in genitive case"
+      "caption": "Anrede im Genitiv",
+      "description": "Beschreibt, wie diese Person im Genitiv anzureden ist"
     },
     {
       "name": "applyDat",
-      "caption": "Treatment in dative",
-      "description": "Describes how to treat to this person in dative case"
+      "caption": "Anrede im Dativ",
+      "description": "Beschreibt, wie diese Person im Dativ anzureden ist"
     },
     {
       "name": "departmentID",
-      "caption": "Department",
-      "description": "Department of external organization, which employee belongs"
+      "caption": "Abteilung",
+      "description": "Abteilung der externen Organisation, zu der der Mitarbeiter angehört"
     },
     {
       "name": "organizationID",
-      "caption": "Organization",
-      "description": "External organization, which employee belongs"
+      "caption": "Organisation",
+      "description": "Externe Organisation, zu der der Mitarbeiter angehört"
     },
     {
       "name": "addrText",
-      "caption": "Addressee formulation",
-      "description": "Formulation of the recipient, that will appear in the formation of outgoing document"
+      "caption": "Adressatenformulierung",
+      "description": "Formulierung des Empfängers, der im ausgehenden Dokument erscheint"
     }
   ]
 }

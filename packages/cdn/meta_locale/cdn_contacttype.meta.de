@@ -1,6 +1,6 @@
 {
-  "caption": "Contact Types",
-  "description": "Contact types directory",
+  "caption": "Kontakttypen",
+  "description": "Kontakttypenverzeichnis",
   "attributes": [
     {
       "name": "code",
@@ -9,7 +9,7 @@
     {
       "name": "name",
       "caption": "Name",
-      "description": "Contact type name"
+      "description": "Name des Kontakttyps"
     }
   ]
 }

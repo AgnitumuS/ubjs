@@ -1,31 +1,32 @@
 {
-  "caption": "Currencies",
-  "description": "Currencies dictionary",
+  "caption": "Währungen",
+  "description": "Währungswörterbuch",
   "attributes": [
     {
       "name": "intCode",
-      "caption": "Digital code",
-      "description": "Digital code of currency"
+      "caption": "Digitaler Code",
+      "description": "Digitaler Währungscode"
     },
     {
       "name": "code3",
-      "caption": "3-character code",
-      "description": "3-character code of currency"
+      "caption": "3-stelliger Code",
+      "description": "3-stelliger Währungscode"
     },
     {
       "name": "name",
       "caption": "Name",
-      "description": "Name of currency"
+      "description": "Name der Währung"
     },
     {
       "name": "curMult",
-      "caption": "Default multiplicity",
-      "description": "Default multiplicity"
+      "caption": "Standard-Multiplizität",
+      "description": "Standard-Multiplizität"
     },
     {
       "name": "description",
-      "caption": "Description",
-      "description": "Description"
+      "caption": "Beschreibung",
+      "description": "Beschreibung",
+      "documentation": "Beschreibung"
     }
   ]
 }

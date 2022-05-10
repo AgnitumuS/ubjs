@@ -1,15 +1,15 @@
 {
-  "caption": "Report Templates",
-  "description": "Report templates",
+  "caption": "Berichtvorlagen",
+  "description": "Berichtvorlagen",
   "attributes": [
     {
       "name": "model",
-      "caption": "Model",
-      "description": "Model code where to store report"
+      "caption": "Modell",
+      "description": "Code des Modells, wo der Bericht gespeichert werden soll"
     },
     {
       "name": "report_code",
-      "caption": "Report code"
+      "caption": "Berichtcode"
     },
     {
       "name": "name",
@@ -17,13 +17,17 @@
     },
     {
       "name": "template",
-      "caption": "Template",
-      "description": "Template"
+      "caption": "Vorlage",
+      "description": "Vorlage"
     },
     {
       "name": "code",
-      "caption": "Javascript code",
-      "description": "Javascript code"
+      "caption": "Javascript-Code",
+      "description": "Javascript-Code"
+    },
+    {
+      "name": "ID",
+      "caption": "ID"
     }
   ]
 }

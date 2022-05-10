@@ -1,12 +1,12 @@
 {
-  "caption": "User Groups",
-  "description": "User groups",
+  "caption": "Benutzergruppen",
+  "description": "Benutzergruppen",
   "attributes": [
     {
       "name": "code",
       "caption": "Code",
-      "description": "Group code",
-      "documentation": "Unique group code. Used by APIs and scripts"
+      "description": "Gruppencode",
+      "documentation": "Eindeutiger Gruppencode. Von APIs und Skripten verwendet"
     },
     {
       "name": "name",
@@ -14,7 +14,7 @@
     },
     {
       "name": "description",
-      "caption": "Description"
+      "caption": "Beschreibung"
     }
   ]
 }

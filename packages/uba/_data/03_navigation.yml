@@ -6,6 +6,7 @@ adm_desktop:
   access: Supervisor
   caption:
     en: Administration
+    de: Verwaltung
     uk: Адміністрування
     ru: Администрирование
     ka: ადმინისტრატორი
@@ -15,6 +16,7 @@ adm_desktop:
     az: Administration
   description:
     en: User Management, UI Settings, Logs (Audit Trail, Security, Queue)
+    de: Benutzerverwaltung, Einstellungen der Benutzeroberfläche, Protokolle (Überwachungspfad, Sicherheit, Warteschlange)
     uk: Керування користувачами, налаштування інтерфейсу, журнали (аудит, безпека, черга)
     ru: Управление пользователями, настройки интерфейса, журналы (аудит, безопасность, очередь)
     ka: მომხმარებლის მენეჯმენტი, ინტერფეისის პარამეტრები, ჟურნალი (აუდიტის ბილიკი, დაცვა, რიგები)
@@ -28,6 +30,7 @@ adm_desktop:
       access: Supervisor
       caption:
         en: Groups and Users
+        de: Gruppen und Benutzer
         uk: Користувачі
         ru: Пользователи
         ka: ჯგუფები და მომხმარებლები
@@ -125,6 +128,7 @@ adm_desktop:
       access: Supervisor
       caption:
         en: Security
+        de: Sicherheit
         uk: Безпека
         ru: Безопасность
         ka: უსაფრთხოება
@@ -241,7 +245,7 @@ adm_desktop:
                   'userName', 'remoteIP',
                   {id: 'accessedAt', sortable: false, filterable: false, format: ({ value }) => UB.formatter.formatDate(value, 'dateTimeFull')},
                   {id: 'createdAt', sortable: false, filterable: false, format: ({ value }) => UB.formatter.formatDate(value, 'dateTimeFull')},
-                  'isPasswordExpired', 'isLocked', 'serverTimeDelta' 
+                  'isPasswordExpired', 'isLocked', 'serverTimeDelta'
                 ]
               }
             }
@@ -249,6 +253,7 @@ adm_desktop:
           access: Supervisor
           caption:
             en: Security Dashboard
+            de: Sicherheits-Dashboard
             uk: Консоль безпеки
             ru: Консоль безопасности
             ka: უსაფრთხოების დაფა
@@ -267,6 +272,7 @@ adm_desktop:
       displayOrder: 25
       caption:
         en: Migrations
+        de: Migrationen
         uk: Міграції
         ru: Миграции
         az: Miqrasiya
@@ -280,6 +286,7 @@ adm_desktop:
             access: Admin
             caption:
               en: Models Versions
+              de: Modellversionen
               uk: Версії моделей
               ru: Версии моделей
               az: Model versiyaları

@@ -1,6 +1,6 @@
 {
-  "caption": "ZIP Codes",
-  "description": "ZIP codes",
+  "caption": "Postleitzahlen",
+  "description": "Postleitzahlen",
   "attributes": [
     {
       "name": "code",
@@ -9,12 +9,12 @@
     },
     {
       "name": "streetID",
-      "caption": "Street"
+      "caption": "Straße"
     },
     {
       "name": "description",
-      "caption": "Description",
-      "description": "Description"
+      "caption": "Beschreibung",
+      "description": "Beschreibung"
     }
   ]
 }

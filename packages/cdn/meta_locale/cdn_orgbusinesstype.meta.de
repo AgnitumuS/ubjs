@@ -1,31 +1,31 @@
 {
-  "caption": "Organization Types",
-  "description": "Organization types dictionary (LTD etc.)",
+  "caption": "Organisationstypen",
+  "description": "Wörterbuch der Organisationstypen (LTD usw.)",
   "attributes": [
     {
       "name": "code",
       "caption": "Code",
-      "description": "Code of the organization type"
+      "description": "Code des Organisationstyps"
     },
     {
       "name": "shortName",
-      "caption": "Acronim",
-      "description": "Acronim of the organization type"
+      "caption": "Abkürzung",
+      "description": "Abkürzung des Organisationstyps"
     },
     {
       "name": "name",
       "caption": "Name",
-      "description": "Name of the organization type"
+      "description": "Name des Organisationstyps"
     },
     {
       "name": "fullName",
-      "caption": "Description",
-      "description": "Description of the organization type"
+      "caption": "Beschreibung",
+      "description": "Beschreibung des Organisationstyps"
     },
     {
       "name": "isGovAuthority",
-      "caption": "Gov. authority",
-      "description": "Sign, that the organization of this type is a government authority"
+      "caption": "Staatliche Behörde",
+      "description": "Zeichen, dass die Organisation dieses Typs eine staatliche Behörde ist"
     }
   ]
 }

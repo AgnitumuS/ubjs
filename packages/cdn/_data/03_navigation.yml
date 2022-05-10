@@ -5,6 +5,7 @@ cdn_desktop:
   access: User
   caption:
     en: Common Dictionaries
+    de: Gemeinsame Wörterbücher
     uk: Загальні довідники
     ru: Общие справочники
     ka: საერთო ლექსიკონო
@@ -14,6 +15,7 @@ cdn_desktop:
     az: Ümumi soraqçalaq
   description:
     en: Directories of Subjects, Addresses, Other Classifiers
+    de: Verzeichnisse von Subjekten, Adressen und anderen Klassifikatoren
     uk: Довідники суб'єктів, адрес, інші класифікатори
     ru: Справочники субъектов, адресов, прочие классификаторы
     ka: საგნების, მისამართების, სხვა კლასიფიკატორების დირექტორიები
@@ -27,6 +29,7 @@ cdn_desktop:
       access: User
       caption:
         en: Territorial
+        de: Territorial
         uk: Адмін. поділ
         ru: Админ. деление
         ka: ტერიტორია
@@ -130,6 +133,7 @@ cdn_desktop:
       access: User
       caption:
         en: Subjects
+        de: Verwaltungssubjekte
         uk: Суб'єкти
         ru: Субъекты
         ka: თემა ან საგანი
@@ -242,6 +246,7 @@ cdn_desktop:
       access: User
       caption:
         en: Miscellaneous
+        de: Sonstiges
         uk: Різне
         ru: Разное
         ka: სხვადასხვა

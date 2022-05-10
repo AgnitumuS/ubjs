@@ -1,6 +1,6 @@
 {
-  "caption": "Organizational Chart",
-  "description": "Organizational Chart Diagrams",
+  "caption": "Organigramm",
+  "description": "Organigramme",
   "attributes": [
     {
       "name": "orgunitID",
@@ -13,13 +13,13 @@
     },
     {
       "name": "isdefault",
-      "caption": "Default",
-      "description": "Default"
+      "caption": "Standard",
+      "description": "Standard"
     },
     {
       "name": "document",
-      "caption": "Organization chart",
-      "description": "Organization chart"
+      "caption": "Organigramm",
+      "description": "Organigramm"
     }
   ]
 }

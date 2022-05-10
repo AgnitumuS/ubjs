@@ -1,16 +1,22 @@
 {
-  "caption": "Registration Key Counter",
-  "description": "Registration key counter",
+  "caption": "Registrierungsschlüsselzähler",
+  "description": "Registrierungsschlüsselzähler",
   "attributes": [
     {
       "name": "regKey",
-      "caption": "Registration key",
-      "description": "Registration key"
+      "caption": "Registrierungsschlüssel",
+      "description": "Registrierungsschlüssel"
     },
     {
       "name": "counter",
-      "caption": "Counter",
-      "description": "Counter"
+      "caption": "Zähler",
+      "description": "Zähler"
+    },
+    {
+      "name": "fakeLock",
+      "caption": "doNotUse",
+      "description": "Intern verwendet",
+      "documentation": "Dieses Attribut wird verwendet, um Zeilen auf DB-Ebene zu sperren, indem eine vorgetäuschte Aktualisierung gesendet wird, um die Anweisung zum Auswählen für die Aktualisierung zu emulieren."
     }
   ]
 }

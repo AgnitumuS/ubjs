@@ -1,11 +1,11 @@
 {
-  "caption": "ER Diagrams",
-  "description": "Entity relation diagrams",
+  "caption": "ER-Diagramme",
+  "description": "Entitätsbeziehungsdiagramme",
   "attributes": [
     {
       "name": "model",
-      "caption": "Model",
-      "description": "Model"
+      "caption": "Modell",
+      "description": "Modell"
     },
     {
       "name": "name",
@@ -13,8 +13,12 @@
     },
     {
       "name": "document",
-      "caption": "Entity diagram",
-      "description": "Entity diagram"
+      "caption": "Entitätsdiagramm",
+      "description": "Entitätsdiagramm"
+    },
+    {
+      "name": "ID",
+      "caption": "ID"
     }
   ]
 }

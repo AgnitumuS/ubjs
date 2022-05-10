@@ -1,14 +1,14 @@
 {
-  "caption": "User Group Membership",
-  "description": "User memberships in groups",
+  "caption": "Mitgliedschaft in der Benutzergruppe",
+  "description": "Mitgliedschaften von Benutzern in Gruppen",
   "attributes": [
     {
       "name": "userID",
-      "caption": "User"
+      "caption": "Benutzer"
     },
     {
       "name": "groupID",
-      "caption": "Group"
+      "caption": "Gruppe"
     }
   ]
 }

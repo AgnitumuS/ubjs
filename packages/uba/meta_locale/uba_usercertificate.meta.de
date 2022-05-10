@@ -1,38 +1,60 @@
 {
-  "caption": "User Certificates",
-  "description": "User certificates",
+  "caption": "Benutzerzertifikate",
+  "description": "Benutzerzertifikate",
   "attributes": [
     {
       "name": "userID",
-      "caption": "User"
+      "caption": "Benutzer"
     },
     {
       "name": "issuer_serial",
-      "caption": "Issuer serial number"
+      "caption": "Seriennummer des Ausstellers",
+      "description": "Ausstellertag des Zertifikats"
     },
     {
       "name": "issuer_cn",
-      "caption": "Issuer caption"
+      "caption": "Ausstellertitel"
     },
     {
       "name": "serial",
-      "caption": "Serial number"
+      "caption": "Seriennummer",
+      "description": "Seriennummer des Zertifikats"
     },
     {
       "name": "certificate",
-      "caption": "Certificate"
+      "caption": "Zertifikat",
+      "description": "Binärdaten des Zertifikats"
     },
     {
       "name": "description",
-      "caption": "Description"
+      "caption": "Beschreibung"
     },
     {
       "name": "disabled",
-      "caption": "Disabled"
+      "caption": "Deaktiviert",
+      "description": "deaktiviert"
     },
     {
       "name": "revoked",
-      "caption": "Revoked"
+      "caption": "Annulliert",
+      "description": "Annulliert"
+    },
+    {
+      "name": "certParsed",
+      "caption": "Zertifikatinhalt",
+      "description": "Geparstes Zertifikat im JSON-Format",
+      "documentation": "JSON-Darstellung des Zertifikats. Wird vom Server beim Aktualisieren/Einfügen aus dem Attribut \"Zertifikat“ ausgefüllt, wenn iit-crypto verfügbar ist"
+    },
+    {
+      "name": "isForSigning",
+      "caption": "Zum Signieren",
+      "description": "Ist dieses Zertifikat für Signiervorgänge anwendbar"
+    },
+    {
+      "name": "revocationDate",
+      "caption": "Datum der Annullierung",
+      "description": "Datum der Annullierung"
     }
-  ]
+  ],
+  "documentation": "für die Zertifikatsauthentifizierung verwendet "
 }

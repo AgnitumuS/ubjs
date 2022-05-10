@@ -1,44 +1,52 @@
 {
-  "caption": "Advanced Security",
-  "description": "Advanced security settings",
-  "documentation": "For any authentication type add binding of user to IP address. For CERT additionally adds a binding to device fingerprint",
+  "caption": "Erweiterte Sicherheit",
+  "description": "Erweiterte Sicherheitseinstellungen",
+  "documentation": "Für jeden Authentifizierungstyp eine Bindung des Benutzers an die IP-Adresse hinzufügen. Denn CERT fügt zusätzlich eine Bindung an den Geräte-Fingerabdruck hinzu",
   "attributes": [
     {
       "name": "userID",
-      "caption": "User"
-    }, {
+      "caption": "Benutzer"
+    },
+    {
       "name": "editCause",
-      "caption": "Cause of change",
-      "documentation": "Filled by supervisor to indicate cause of changes"
-    }, {
+      "caption": "Ursache der Veränderung",
+      "documentation": "Durch Supervisor ausgefüllt, um die Ursache der Änderungen anzugeben"
+    },
+    {
       "name": "allowedIP",
-      "caption": "Allowed IP address",
-      "documentation": "The ID address from which the user is allowed access. If empty - allowed from any"
-    }, {
+      "caption": "Erlaubte IP-Adresse",
+      "documentation": "IP-Adresse, von der aus dem Benutzer der Zugriff erlaubt wird. Wenn leer - von überall erlaubt"
+    },
+    {
       "name": "refreshIP",
-      "caption": "Refresh allowed IP",
-      "documentation": "If turned on will refresh allowed IP on firs user logon"
-    }, {
+      "caption": "Erlaubte IP aktualisieren",
+      "documentation": "Bei Aktivierung wird die erlaubte IP bei der ersten Benutzeranmeldung aktualisiert"
+    },
+    {
       "name": "fp",
-      "caption": "Fingerprint",
-      "documentation": "Fingerprint of user device. If empty - not checked"
-    }, {
+      "caption": "Fingerabdruck",
+      "documentation": "Fingerabdruck des Benutzergeräts. Wenn leer - keine Prüfung"
+    },
+    {
       "name": "refreshFp",
-      "caption": "Refresh fingerprint",
-      "documentation": "If turned on will refresh Fingerprint of user device on firs user logon"
-    }, {
+      "caption": "Fingerabdruck aktualisieren",
+      "documentation": "Wenn diese Option aktiviert ist, wird der Fingerabdruck des Geräts bei der ersten Anmeldung des Benutzers aktualisiert"
+    },
+    {
       "name": "keyMediaName",
-      "caption": "Key media name",
-      "documentation": "Name of key media device"
-    }, {
+      "caption": "Name des Schlüsselmediums",
+      "documentation": "Name des Schlüsselmediengeräts"
+    },
+    {
       "name": "refreshKeyMedia",
-      "caption": "Refresh key media name",
-      "documentation": "If turned on will refresh key media name of user private key device"
-    }, {
+      "caption": "Name des Schlüsselmediums aktualisieren",
+      "documentation": "Ist diese Option aktiviert, wird der Name des Geräts, auf dem sich der privaten Schlüssel des Benutzers befindet, aktualisiert"
+    },
+    {
       "name": "additional",
-      "caption": "Additional",
-      "description": "JSON with advanced settings",
-      "documentation": "This settings can be handled in Session.on login event"
+      "caption": "Zusätzlich",
+      "description": "JSON mit erweiterten Einstellungen",
+      "documentation": "Diese Einstellungen können im Anmeldeereignis Session.on bearbeitet werden"
     }
   ]
 }

@@ -1,5 +1,5 @@
 {
-  "caption": "Classifiers",
+  "caption": "Klassifikatoren",
   "attributes": [
     {
       "name": "code",
@@ -11,11 +11,12 @@
     },
     {
       "name": "description",
-      "caption": "Description"
+      "caption": "Beschreibung"
     },
     {
       "name": "orderByAttr",
-      "caption": "Classifier items order"
+      "caption": "Reihenfolge der Klassifikatorelemente",
+      "description": "Sortierreihenfolge der Klassifikatorelemente"
     },
     {
       "name": "ubql",

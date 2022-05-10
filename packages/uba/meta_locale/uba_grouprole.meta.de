@@ -1,14 +1,14 @@
 {
-  "caption": "Group Roles",
-  "description": "Roles assigned to groups",
+  "caption": "Gruppenrollen",
+  "description": "Gruppen zugewiesene Rollen",
   "attributes": [
     {
       "name": "groupID",
-      "caption": "Group"
+      "caption": "Gruppe"
     },
     {
       "name": "roleID",
-      "caption": "Role"
+      "caption": "Rolle"
     }
   ]
 }

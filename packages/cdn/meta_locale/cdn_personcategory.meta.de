@@ -1,7 +1,7 @@
 {
-  "caption": "Category of Persons",
-  "description": "Category of persons",
-  "documentation": "The directory stores a list of categories or physical persons",
+  "caption": "Personenkategorie",
+  "description": "Personenkategorie",
+  "documentation": "Das Verzeichnis enthält eine Liste von Kategorien oder natürlichen Personen",
   "attributes": [
     {
       "name": "code",
@@ -11,7 +11,7 @@
     {
       "name": "name",
       "caption": "Name",
-      "description": "Name of category"
+      "description": "Name der Kategorie"
     }
   ]
 }

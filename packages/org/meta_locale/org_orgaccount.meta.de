@@ -1,36 +1,36 @@
 {
-  "caption": "Settlement Accounts",
-  "description": "Settlement accounts for internal organizations",
+  "caption": "Abrechnungskonten",
+  "description": "Verrechnungskonten für interne Organisationen",
   "attributes": [
     {
       "name": "organizationID",
-      "caption": "Organization",
-      "description": "Organization"
+      "caption": "Organisation",
+      "description": "Organisation"
     },
     {
       "name": "currencyID",
-      "caption": "Currency",
-      "description": "Currency of the account"
+      "caption": "Währung",
+      "description": "Kontowährung"
     },
     {
       "name": "bankID",
       "caption": "Bank",
-      "description": "Bank of the account"
+      "description": "Kontoführende Bank"
     },
     {
       "name": "code",
       "caption": "Code",
-      "description": "Code of the account (account number)"
+      "description": "Kontocode (Kontonummer)"
     },
     {
       "name": "description",
-      "caption": "Description",
-      "description": "Description"
+      "caption": "Beschreibung",
+      "description": "Beschreibung"
     },
     {
       "name": "acctype",
-      "caption": "Type",
-      "description": "Type of the account"
+      "caption": "Typ",
+      "description": "Typ des Kontos"
     }
   ]
 }

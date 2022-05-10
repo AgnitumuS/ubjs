@@ -1,21 +1,22 @@
 {
-  "caption": "Language List",
+  "caption": "Sprachenliste",
   "attributes": [
     {
       "name": "code",
-      "caption": "ISO 639-1 code"
+      "caption": "Code nach ISO 639-1"
     },
     {
       "name": "languageName",
-      "caption": "Language name"
+      "caption": "Name der Sprache"
     },
     {
       "name": "nativeName",
-      "caption": "Native name (Endonym)"
+      "caption": "Einheimischer Name (Endonym)"
     },
     {
       "name": "isRTL",
-      "caption": "Is right-to-left"
+      "caption": "Ist rechts-nach-links"
     }
-  ]
+  ],
+  "description": "Sprachenverzeichnis nach ISO-639-1"
 }

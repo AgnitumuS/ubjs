@@ -1,54 +1,62 @@
 {
-  "caption": "Audit Trail",
+  "caption": "Überwachungspfad",
   "attributes": [
     {
       "name": "entity",
-      "caption": "Entity"
+      "caption": "Entität"
     },
     {
       "name": "entityinfo_id",
-      "caption": "Instance ID"
+      "caption": "Instanz ID"
     },
     {
       "name": "actionType",
-      "caption": "Action",
-      "description": "Action"
+      "caption": "Aktion",
+      "description": "Aktion"
     },
     {
       "name": "actionUser",
-      "caption": "User",
-      "description": "User"
+      "caption": "Benutzer",
+      "description": "Benutzer",
+      "documentation": "uba_user.ID. Datentyp Entität wird hier wegen der riesigen Prüftabelle nicht verwendet; wir möchten sie in eine andere DB verschieben und keine Einschränkungen haben"
     },
     {
       "name": "actionUserName",
-      "documentation": "User login at the time of audit recording",
-      "caption": "Login"
+      "documentation": "Benutzeranmeldung zum Zeitpunkt der Überprüfungsaufzeichnung",
+      "caption": "Anmelden"
     },
     {
       "name": "actionTime",
-      "caption": "Action time",
-      "description": "Action time"
+      "caption": "Zeit der Aktion",
+      "description": "Zeit der Aktion"
     },
     {
       "name": "remoteIP",
-      "caption": "Remote IP"
+      "caption": "Remote-IP",
+      "documentation": "Remote-IP-Adresse des Anrufers. NULL bei localhost"
     },
     {
       "name": "fromValue",
-      "caption": "Old values"
+      "caption": "Alte Werte"
     },
     {
       "name": "toValue",
-      "caption": "New values"
+      "caption": "Neue Werte"
     },
     {
       "name": "parentEntity",
-      "caption": "Parent entity name"
+      "caption": "Name der übergeordneten Entität"
     },
     {
       "name": "parentEntityInfo_id",
-      "caption": "Parent instance ID"
+      "caption": "ID der übergeordneten Instanz"
+    },
+    {
+      "name": "request_id",
+      "caption": "ID anfordern",
+      "documentation": "Eindeutige Anfrage-ID. Kann verwendet werden, um alle Operationen einer Anfrage rückgängig zu machen"
     }
   ],
-  "description": "Data changes audit"
+  "description": "Überprüfung von Datenänderungen",
+  "documentation": "Alle DML-Anweisungen für Entität mit Mixin 'audit' werden hier protokolliert"
 }

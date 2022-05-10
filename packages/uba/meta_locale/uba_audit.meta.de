@@ -1,57 +1,58 @@
 {
-  "caption": "Security Audit",
+  "caption": "Sicherheitsüberprüfung",
   "attributes": [
     {
       "name": "entity",
-      "caption": "Entity"
+      "caption": "Entität"
     },
     {
       "name": "entityinfo_id",
-      "caption": "Instance ID"
+      "caption": "Instanz ID"
     },
     {
       "name": "actionType",
-      "caption": "Action",
-      "description": "Action"
+      "caption": "Aktion",
+      "description": "Aktion"
     },
     {
       "name": "actionUser",
-      "caption": "User",
-      "description": "User"
+      "caption": "Benutzer",
+      "description": "Benutzer"
     },
     {
       "name": "actionTime",
-      "caption": "Action time",
-      "description": "Action time"
+      "caption": "Zeit der Aktion",
+      "description": "Zeit der Aktion"
     },
     {
       "name": "remoteIP",
-      "caption": "Remote IP",
-      "description": "Caller remote IP address"
+      "caption": "Remote-IP",
+      "description": "Remote-IP-Adresse des Anrufers"
     },
     {
       "name": "fromValue",
-      "caption": "Old values"
+      "caption": "Alte Werte"
     },
     {
       "name": "toValue",
-      "caption": "New values"
+      "caption": "Neue Werte"
     },
     {
       "name": "targetUser",
-      "caption": "Target user",
-      "description": "The user name for which the data has changed"
+      "caption": "Zielbenutzer",
+      "description": "Benutzername, für den sich die Daten geändert haben"
     },
     {
       "name": "targetGroup",
-      "caption": "Target group",
-      "description": "The group name for which the data has changed"
+      "caption": "Zielgruppe",
+      "description": "Gruppenname, für den sich die Daten geändert haben"
     },
     {
       "name": "targetRole",
-      "caption": "Target role",
-      "description": "The role name for which the data has changed"
+      "caption": "Zielrolle",
+      "description": "Rollenname, für den sich die Daten geändert haben"
     }
   ],
-  "description": "Security changes audit"
+  "description": "Überprüfung von Sicherheitsänderungen",
+  "documentation": "Alle Änderungen an UBA-Modell-Entitäten (mit Ausnahme von uba_als & uba_subject) + Ereignisse im Zusammenhang mit der Benutzeranmeldung werden hier protokolliert"
 }
