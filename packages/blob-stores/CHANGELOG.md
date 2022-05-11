@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+ - note in JSDoc what `App.blobStores.putContent` can accept content as Buffer (in addition to ArrayBuffer|String|THTTPRequest) 
 
 ## [5.22.6] - 2022-05-04
 ## [5.22.5] - 2022-04-29

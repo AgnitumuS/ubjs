@@ -510,7 +510,7 @@ function setDocumentEndpoint (req, resp) {
  }, Buffer.from(prm.signature, 'base64'))
 
  * @param {BlobStoreRequest} request
- * @param {ArrayBuffer|String|THTTPRequest} content
+ * @param {ArrayBuffer|Buffer|String|THTTPRequest} content
  * @return {BlobStoreItem}
  */
 function putContent (request, content) {
