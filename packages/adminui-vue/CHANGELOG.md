@@ -8,6 +8,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
+ - `UDialog`: width of the dialog box is extended up to `540px` in order to keep
+   all dialog buttons on the same level. Some buttons may have too long captions
+   (as for the `de` locale).
 
 ### Deprecated
 
