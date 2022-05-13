@@ -244,6 +244,44 @@ class ClientRepository extends CustomRepository {
   selectById (ID, fieldAliases) {
     return this.where('[ID]', '=', ID).selectSingle(fieldAliases)
   }
+
+  /**
+   * Asynchronously run request, constructed by Repository. Return promise, resolved
+   * to columunar (each attribute values is a separate array) representation.
+   *
+   * Useful for data analysis \ graph
+   *
+   * @example
+await UB.Repository('req_request')
+   .attrs('department.name', 'COUNT([ID])')
+   .groupBy('department.name').select({'department.name': 'department', 'COUNT([ID])': 'requestCount'})
+// {
+//   'department': ["Electricity of Kiev", "Water utility of Kiev"],
+//   'requestCount': [5, 44]
+// }
+
+   * @param {object} [fieldAliases] Optional object to change attribute names to column name.
+   *   Object key is attribute name (as it in .attr) and value is preferred column name
+   * @return {Promise<{}>} Promise of object with keys = column name and value - array of attribute values
+   */
+  selectColumunar (fieldAliases = {}) {
+    return this.selectAsArray().then(resp => {
+      const { fields, data } = resp.resultData
+      const rArr = resp.resultData.fields.map(f => []) // array of empty arrays
+      const FC = fields.length
+      for (let i = 0, L = data.length; i < L; i++) {
+        for (let j = 0; j < FC; j++) {
+          rArr[j].push(data[i][j])
+        }
+      }
+      const res = {}
+      for (let j = 0; j < FC; j++) {
+        const rfn = fieldAliases[fields[j]] || fields[j]
+        res[rfn] = rArr[j]
+      }
+      return res
+    })
+  }
 }
 
 module.exports = ClientRepository
