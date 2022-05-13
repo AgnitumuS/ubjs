@@ -61,7 +61,7 @@
             </select>
           </span>
           <span class="cron__start__item">
-            {{ `and` }}
+            {{ `${$ut('UCron.and')}` }}
             <select
               v-model="betweenSeconds[1]"
               :disabled="!betweenSeconds[0] && betweenSeconds[0] !== 0"

@@ -286,6 +286,7 @@
     "specific": "specific",
     "between": "between",
     "expression": "cron expression",
-    "interpretation": "interpretation"
+    "interpretation": "interpretation",
+    "and": "və"
   }
 }

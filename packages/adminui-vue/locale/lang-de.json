@@ -286,6 +286,7 @@
     "specific": "specific",
     "between": "zwischen",
     "expression": "Cron-Ausdruck",
-    "interpretation": "Interpretation"
+    "interpretation": "Interpretation",
+    "and": "und"
   }
 }
