@@ -10,7 +10,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ```javascript
 await UB.Repository('req_request')
    .attrs('department.name', 'COUNT([ID])')
-   .groupBy('department.name').select({'department.name': 'department', 'COUNT([ID])': 'requestCount'})
+   .groupBy('department.name').selectColumunar({'department.name': 'department', 'COUNT([ID])': 'requestCount'})
 // {
 //   'department': ["Electricity of Kiev", "Water utility of Kiev"],
 //   'requestCount': [5, 44]
