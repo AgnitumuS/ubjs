@@ -208,14 +208,12 @@ export default {
       this.observer = new MutationObserver(() => this.checkAndUpdatePopupPosition())
 
       setTimeout(() => {
-        if (!this.visible) {
-          return
+        if (this.$refs.dropdown) {
+          this.observer.observe(this.$refs.dropdown, {
+            childList: true,
+            subtree: true
+          })
         }
-
-        this.observer.observe(this.$refs.dropdown, {
-          childList: true,
-          subtree: true
-        })
       }, 0)
     },
 
