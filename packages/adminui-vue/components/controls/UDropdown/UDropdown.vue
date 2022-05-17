@@ -208,7 +208,7 @@ export default {
       this.observer = new MutationObserver(() => this.checkAndUpdatePopupPosition())
 
       setTimeout(() => {
-        if (this.$refs.dropdown) {
+        if (this.$refs.dropdown) { // for slow clients this.$refs.dropdown can be undefined on this stage
           this.observer.observe(this.$refs.dropdown, {
             childList: true,
             subtree: true
