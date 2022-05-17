@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - `UDialog`: width of the dialog box is extended up to `540px` in order to keep
    all dialog buttons on the same level. Some buttons may have too long captions
    (as for the `de` locale).
+ - `UDropdown`: fixed `Uncaught TypeError: Failed to execute 'observe' on 'MutationObserver'` for slow client machine
 
 ### Deprecated
 
