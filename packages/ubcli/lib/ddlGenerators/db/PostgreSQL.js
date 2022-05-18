@@ -13,8 +13,25 @@ const DBAbstract = require('./DBAbstract')
 
 const DBPostgresPolicies = {
   PolicyTypes: {
-    tenantOnly: `(mi_tenantid = (current_setting('ub.tenantID'::text))::bigint)`,
-    tenantAndCommon:`(mi_tenantid = ANY (ARRAY[(0)::bigint, (current_setting('ub.tenantID'::text))::bigint]))`
+    tenantOnly: {
+      cmd: 'ALL',
+      sql: `(mi_tenantid = (current_setting('ub.tenantID'::text))::bigint)`
+    },
+
+    tenantAndCommon: {
+      cmd: 'ALL',
+      sql: `(mi_tenantid = ANY (ARRAY[(0)::bigint, (current_setting('ub.tenantID'::text))::bigint]))`,
+    },
+
+    systemTenantUsers: {
+      cmd: 'ALL',
+      sql: `((current_setting('ub.tenantID'::text))::bigint = ANY (ARRAY[(0)::bigint, (1)::bigint]))`,
+    },
+
+    everybody: {
+      cmd: 'SELECT',
+      sql: 'true'
+    }
   },
 
   /**
@@ -22,11 +39,12 @@ const DBPostgresPolicies = {
    * @returns {string}
    */
   getPolicyType (policy) {
-    for (const [type, sql] of Object.entries(this.PolicyTypes)) {
-      if (policy.qual === sql && policy.permissive === 'PERMISSIVE' && policy.cmd === 'ALL') {
+    for (const [type, { cmd, sql }] of Object.entries(this.PolicyTypes)) {
+      if (policy.qual === sql && policy.permissive === 'PERMISSIVE' && policy.cmd === cmd) {
         return type
       }
     }
+    console.warn('Cannot find policy type: %j', policy)
   }
 }
 
@@ -189,7 +207,7 @@ WHERE
 
       // indexes
       const indexesSQL =
-`SELECT 
+        `SELECT 
   i.indexrelid as index_id,
   UPPER(c.relname) as index_name,
   CASE WHEN i.indisunique THEN 1 ELSE 0 END as is_unique, 
@@ -312,7 +330,7 @@ left join pg_namespace n on n.oid = c.relnamespace
 
   /** @override */
   genCodeSetCaption (tableName, column, value, oldValue) {
-    if (value) value = value.replace(/'/g, "''")
+    if (value) value = value.replace(/'/g, '\'\'')
     if (!value && !oldValue) return // prevent create empty comments
     const result = `comment on ${column ? 'column' : 'table'} ${tableName}${column ? '.' : ''}${column || ''} is '${value}'`
     this.DDL.caption.statements.push(result)
@@ -465,9 +483,10 @@ left join pg_namespace n on n.oid = c.relnamespace
 
   genCodeCreateOrAlterPolicy (table, policy, isAlter) {
     const mainSQL = isAlter ? 'ALTER POLICY' : 'CREATE POLICY'
-    const policySQL = DBPostgresPolicies.PolicyTypes[policy.type]
+    const { sql, cmd } = DBPostgresPolicies.PolicyTypes[policy.type]
+    const cmdSQL = isAlter || cmd === 'ALL' ? '' : 'FOR ' + cmd + ' '
     this.DDL.others.statements.push(
-      `${mainSQL} ${policy.name} ON ${table.name} USING ${policySQL}`
+      `${mainSQL} ${policy.name} ON ${table.name} ${cmdSQL}USING ${sql}`
     )
   }
 
@@ -573,15 +592,16 @@ left join pg_namespace n on n.oid = c.relnamespace
         case 'currentDate':
           return 'timezone(\'utc\'::text, now())'
         case 'maxDate':
-          return "'9999-12-31 00:00:00'::timestamp without time zone"
+          return '\'9999-12-31 00:00:00\'::timestamp without time zone'
         default:
           throw new Error(`Unknown expression "${val}" for default value of ${table ? table.name : '?'}.${column ? column.name : '?'}`)
       }
     }
+
     if (!column) return dateTimeExpression(macro)
 
     if (column.isBoolean) return ((macro === 'TRUE') || (macro === '1')) ? '1' : '0'
-    if (column.isString) return "'" + macro + "'"
+    if (column.isString) return '\'' + macro + '\''
     if (column.dataType === 'DATETIME') return dateTimeExpression(macro)
     return macro
   }
@@ -594,19 +614,32 @@ left join pg_namespace n on n.oid = c.relnamespace
    */
   uniTypeToDataBase (dataType) {
     switch (dataType) {
-      case 'NVARCHAR': return 'VARCHAR'
-      case 'VARCHAR': return 'VARCHAR'
-      case 'INTEGER': return 'INTEGER'
-      case 'BIGINT': return 'BIGINT'
-      case 'FLOAT': return 'NUMERIC'
-      case 'CURRENCY': return 'NUMERIC'
-      case 'BOOLEAN': return 'SMALLINT'
-      case 'DATETIME': return 'TIMESTAMP' // 'TIMESTAMP WITH TIME ZONE'
-      case 'TEXT': return 'TEXT'
-      case 'DOCUMENT': return 'VARCHAR'
-      case 'BLOB': return 'BYTEA'
-      case 'JSON': return 'JSONB'
-      default: return dataType
+      case 'NVARCHAR':
+        return 'VARCHAR'
+      case 'VARCHAR':
+        return 'VARCHAR'
+      case 'INTEGER':
+        return 'INTEGER'
+      case 'BIGINT':
+        return 'BIGINT'
+      case 'FLOAT':
+        return 'NUMERIC'
+      case 'CURRENCY':
+        return 'NUMERIC'
+      case 'BOOLEAN':
+        return 'SMALLINT'
+      case 'DATETIME':
+        return 'TIMESTAMP' // 'TIMESTAMP WITH TIME ZONE'
+      case 'TEXT':
+        return 'TEXT'
+      case 'DOCUMENT':
+        return 'VARCHAR'
+      case 'BLOB':
+        return 'BYTEA'
+      case 'JSON':
+        return 'JSONB'
+      default:
+        return dataType
     }
   }
 
@@ -630,19 +663,32 @@ left join pg_namespace n on n.oid = c.relnamespace
         } else {
           return 'BIGINT'
         }
-      case 'INT8': return 'BIGINT'
-      case 'INT4': return 'INTEGER'
-      case 'SMALLINT': return 'BOOLEAN'
-      case 'TIMESTAMP': return 'DATETIME'
-      case 'TIMESTAMP WITH TIME ZONE': return 'TIMESTAMP WITH TIME ZONE'
-      case 'TIMESTAMP WITHOUT TIME ZONE': return 'DATETIME'
-      case 'DATE': return 'DATE'
-      case 'CHARACTER VARYING': return 'NVARCHAR'
-      case 'VARCHAR': return 'NVARCHAR'
-      case 'TEXT': return 'TEXT'
-      case 'BYTEA': return 'BLOB'
-      case 'JSONB': return 'JSON'
-      default: return dataType
+      case 'INT8':
+        return 'BIGINT'
+      case 'INT4':
+        return 'INTEGER'
+      case 'SMALLINT':
+        return 'BOOLEAN'
+      case 'TIMESTAMP':
+        return 'DATETIME'
+      case 'TIMESTAMP WITH TIME ZONE':
+        return 'TIMESTAMP WITH TIME ZONE'
+      case 'TIMESTAMP WITHOUT TIME ZONE':
+        return 'DATETIME'
+      case 'DATE':
+        return 'DATE'
+      case 'CHARACTER VARYING':
+        return 'NVARCHAR'
+      case 'VARCHAR':
+        return 'NVARCHAR'
+      case 'TEXT':
+        return 'TEXT'
+      case 'BYTEA':
+        return 'BLOB'
+      case 'JSONB':
+        return 'JSON'
+      default:
+        return dataType
     }
   }
 

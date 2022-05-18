@@ -112,8 +112,12 @@ function runDDLGenerator (conn, autorun, inEntities, inModelsCSV, outputPath, op
   })
   console.log(`Checking congruence of domain metadata and database structure for ${entityNames.length} entities...`)
 
+  const serverConfig = argv.getServerConfiguration(false)
+  const multitenancyEnabled = serverConfig.security.multitenancy
+    && serverConfig.security.multitenancy.enabled
+
   const Generator = require('./ddlGenerators/DDLGenerator')
-  const ddlResult = new Generator().generateDDL(entityNames, conn, true)
+  const ddlResult = new Generator(multitenancyEnabled).generateDDL(entityNames, conn, true)
   const dbConnNames = Object.keys(ddlResult)
 
   for (const connectionName of dbConnNames) {

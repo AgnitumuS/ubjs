@@ -120,13 +120,14 @@ function formatName (prefix, root, suffix, dialect = DDLGenerator.dbDialects.Ans
 }
 
 class DDLGenerator {
-  constructor () {
+  constructor (multitenancyEnabled) {
     /**
      * @type {Array<TableDefinition>}
      */
     this.referenceTableDefs = []
     this.relatedEntities = []
     this.isUnsafe = false
+    this.multitenancyEnabled = multitenancyEnabled
   }
 
   /**
@@ -221,10 +222,22 @@ class DDLGenerator {
       caption: entity.description || entity.caption,
       multitenancy: (entity.mixins.multitenancy && (entity.mixins.multitenancy.enabled !== false))
     })
-    if (entity.mixins.multitenancy && (entity.mixins.multitenancy.enabled !== false)) {
+    if (tableDef.multitenancy) {
       tableDef.addPolicy({
         type: entity.mixins.multitenancy.rlsRule || 'tenantOnly',
         name: entityTableName + '_tenant'
+      })
+    } else if (
+      this.multitenancyEnabled &&
+      entity.connectionName === 'main' // need to avoid attempts to generate DDL for fts connections
+    ) {
+      tableDef.addPolicy({
+        type: 'systemTenantUsers',
+        name: entityTableName + '_systemTenant'
+      })
+      tableDef.addPolicy({
+        type: 'everybody',
+        name: entityTableName + '_userTenant'
       })
     }
 
@@ -410,12 +423,14 @@ class DDLGenerator {
     const IS_SQL_SERVER = DDLGenerator.isMSSQL(dialect)
     const IS_ORACLE = DDLGenerator.isOracle(dialect)
     const isHistory = entity.mixins.dataHistory
+
     function formatBrackets (stringToFormat, ...values) {
       const FORMAT_RE = /{(\d+)}/g
       return stringToFormat.replace(FORMAT_RE, function (m, i) {
         return values[i]
       })
     }
+
     if (entity.dbKeys) {
       dbKeys = entity.dbKeys
       _.forEach(dbKeys, (fields, dbKey) => {
