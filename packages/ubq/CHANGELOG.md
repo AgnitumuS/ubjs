@@ -6,8 +6,16 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+- Support for schedulers in multitenant mode:
+  - do not pass "runAsID", because user ID is different in every tenant,
+    for non-multitenant environments, nothing changes, runAsID still passed
+  - if "runAs" passed to a job, but "runAsID" is not (which is possible for multitenant environments only),
+    load "runAsID" before job execution
+  - iterate tenants per scheduler job, inside `ubq_messages.executeSchedulerTask`
 
 ### Changed
+- Schedulers: for schedulers with invalid commands, instead of recording failed records into `ubq_runstat`,
+  just make a record in UB log
 
 ### Deprecated
 

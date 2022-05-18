@@ -33,6 +33,9 @@ function startSchedulers () {
   App.globalCachePut(GC_KEYS.UBQ_SCHEDULER_INITIALIZED, 'yes')
   console.debug('SCHEDULER: executing UBQ.initializeSchedulers')
 
+  const multitenancyConfig = App.serverConfig.security.multitenancy
+  const multitenancyEnabled = multitenancyConfig && multitenancyConfig.enabled
+
   /** @type {Array<ubq_scheduler_ns>} */
   const schedulers = UB.Repository('ubq_scheduler').attrs('*').selectAsObject()
   for (let i = 0, l = schedulers.length; i < l; i++) {
@@ -50,26 +53,34 @@ function startSchedulers () {
         continue
       }
     }
-    if (!usersIDs.hasOwnProperty(item.runAs)) {
-      const uID = UB.Repository('uba_user').attrs('ID').where('name', '=', item.runAs).selectScalar()
-      if (uID) {
-        usersIDs[item.runAs] = uID
-      }
-    }
-    if (!usersIDs[item.runAs]) {
-      console.error('SCHEDULER: Task owner', item.runAs, 'not found in uba_user. Item', item.name, 'DISABLED')
-      continue
-    }
-    cfgForWorker.push({
+
+    const workerItem = {
       name: item.name,
       cron: item.cron,
       command: item.command,
       module: item.module,
       singleton: item.singleton,
       runAs: item.runAs,
-      runAsID: usersIDs[item.runAs],
       logSuccessful: item.logSuccessful
-    })
+    }
+    if (!multitenancyEnabled) {
+      // Skip setting "runAsID" for multitenant environments, because ID is different in every tenant
+      if (!usersIDs.hasOwnProperty(item.runAs)) {
+        const uID = UB.Repository('uba_user')
+          .attrs('ID')
+          .where('name', '=', item.runAs)
+          .selectScalar()
+        if (uID) {
+          usersIDs[item.runAs] = uID
+        }
+      }
+      if (!usersIDs[item.runAs]) {
+        console.error('SCHEDULER: Task owner', item.runAs, 'not found in uba_user. Item', item.name, 'DISABLED')
+        continue
+      }
+      workerItem.runAsID = usersIDs[item.runAs]
+    }
+    cfgForWorker.push(workerItem)
   }
 
   let workerPath = require.resolve('./modules/schedulerWorker.js')

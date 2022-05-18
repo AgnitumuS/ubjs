@@ -1,6 +1,4 @@
-﻿const UB = require('@unitybase/ub')
-const App = UB.App
-const Session = require('@unitybase/ub').Session
+﻿const { App, Session, DataStore, Repository } = require('@unitybase/ub')
 const { uba_common, GC_KEYS } = require('@unitybase/base')
 /* global ubq_messages */
 // eslint-disable-next-line camelcase
@@ -13,7 +11,7 @@ me.entity.addMethod('executeSchedulerTask')
 me.entity.addMethod('addqueue')
 me.entity.addMethod('success')
 
-const statInst = UB.DataStore('ubq_runstat')
+const statInst = DataStore('ubq_runstat')
 
 /**
  * Mark queue task as successfully executed
@@ -25,11 +23,14 @@ const statInst = UB.DataStore('ubq_runstat')
  * @memberOfModule @unitybase/ubq
  */
 me.success = function (ctxt) {
-  ctxt.dataStore.execSQL('update ubq_messages set completeDate = :completeDate: where ID = :ID:', { completeDate: new Date(), ID: ctxt.mParams.ID })
+  ctxt.dataStore.execSQL('update ubq_messages set completeDate = :completeDate: where ID = :ID:', {
+    completeDate: new Date(),
+    ID: ctxt.mParams.ID
+  })
   return true
 }
 
-const UBQ_STORE = UB.DataStore('ubq_messages')
+const UBQ_STORE = DataStore('ubq_messages')
 /**
  * Add item to queue.
  *
@@ -94,9 +95,62 @@ function getFnFromNS (path) {
   return typeof root === 'function' ? root : undefined
 }
 
+function runTask (task, taskName, entryPoint) {
+  try {
+    const runAsID = Number.isInteger(task.runAsID)
+      ? task.runAsID
+      : Repository('uba_user')
+        .attrs('ID')
+        .where('name', '=', task.runAs)
+        .selectScalar()
+
+    if (!runAsID) {
+      console.warn('SCHEDULER: task %s, runAs user %s does not exist', taskName, task.runAs)
+      return false
+    }
+
+    const logText = task.runAs === uba_common.USERS.ADMIN.NAME
+      ? Session.runAsAdmin(entryPoint)
+      : Session.runAsUser(runAsID, entryPoint)
+    App.dbCommit()
+    return { logText }
+  } catch (e) {
+    App.dbRollback()
+    return { err: e.toString() }
+  }
+}
+
+function runAndLogTask (task, schedulerName, entryPoint) {
+  const statParams = {
+    appName: HOST_NAME,
+    schedulerName,
+    startTime: new Date()
+  }
+
+  const { err, logText } = runTask(task, schedulerName, entryPoint)
+
+  statParams.endTime = new Date()
+  statParams.resultError = err ? 1 : 0
+  if (statParams.resultError) {
+    statParams.resultErrorMsg = err
+  }
+  if (logText) {
+    statParams.logText = logText
+  }
+
+  if (task.logSuccessful || statParams.resultError) {
+    statInst.run('insert', {
+      execParams: statParams
+    })
+    App.dbCommit()
+  }
+
+  console.debug('SCHEDULER: end a task %j with result %j', task, statParams)
+}
+
 /**
  * REST endpoint for executing a scheduler task.
- * Queue worker will sent the tasks in async mode to this endpoint according to a schedulers.
+ * Queue worker will send the tasks in async mode to this endpoint according to a schedulers.
  * Endpoint wait a POST requests from a local IP with JSON in body:
  *
  *      {
@@ -114,7 +168,7 @@ function getFnFromNS (path) {
  *
  * - If command executed success, record with resultError===0 will be written to `ubq_runstat` entity.
  * - If command executed **with exception**, record with resultError===1 will be written to `ubq_runstat` entity,
- * Exception text will be written written to `ubq_runstat.resultErrorMsg`.
+ * Exception text will be written to `ubq_runstat.resultErrorMsg`.
  *
  * @method executeSchedulerTask
  * @param {null} nullCtxt
@@ -126,75 +180,55 @@ function getFnFromNS (path) {
  * @return {Boolean}
  */
 me.executeSchedulerTask = function executeSchedulerTask (nullCtxt, req, resp) {
-  let logText, err
-  let statParams
-
   if ((Session.userID !== uba_common.USERS.ROOT.ID) || (App.localIPs.indexOf(Session.callerIP) === -1)) {
     throw new Error('SCHEDULER: remote or non root execution is not allowed')
   }
 
+  const multitenancyConfig = App.serverConfig.security.multitenancy
+  const multitenancyEnabled = multitenancyConfig && multitenancyConfig.enabled
+
   const task = JSON.parse(req.read())
   const taskName = task.schedulerName || 'unknownTask'
   const isSingleton = (task.singleton !== false)
-  const runAsID = task.runAsID
-  if (isSingleton && (App.globalCacheGet(`${GC_KEYS.UBQ_TASK_RUNNING_}${taskName}`) === '1')) {
-    console.warn('SCHEDULER: task %s is already running', taskName)
-    return false
-  }
+
+  const GLOBAL_CACHE_KEY = `${GC_KEYS.UBQ_TASK_RUNNING_}${taskName}`
   if (isSingleton) {
-    App.globalCachePut(`${GC_KEYS.UBQ_TASK_RUNNING_}${taskName}`, '1')
+    if (App.globalCacheGet(GLOBAL_CACHE_KEY) === '1') {
+      console.warn('SCHEDULER: task %s is already running', taskName)
+      return false
+    }
+    App.globalCachePut(GLOBAL_CACHE_KEY, '1')
   }
-  err = ''
+
   try {
     console.debug('SCHEDULER: got a task %j', task)
-    const startTime = new Date()
+
     let entryPoint
     if (task.command) {
       entryPoint = getFnFromNS(task.command)
     } else if (task.module) {
       entryPoint = require(task.module)
     }
-
     if (!entryPoint) {
-      err = `SCHEDULER: invalid command (function ${task.command || task.module} not found)`
+      console.error('SCHEDULER: invalid command: function %s not found', task.command || task.module)
+      return false
+    }
+
+    if (multitenancyEnabled) {
+      for (const { TID } of App.serverConfig.security.multitenancy.tenants) {
+        console.log('SCHEDULER: task "%s", switch to tenant %d', taskName, TID)
+        Session.setTempTenantID(TID)
+        runAndLogTask(task, taskName, entryPoint)
+      }
     } else {
-      try {
-        if (runAsID === uba_common.USERS.ADMIN.ID) {
-          logText = Session.runAsAdmin(entryPoint)
-        } else {
-          logText = Session.runAsUser(runAsID, entryPoint)
-        }
-        App.dbCommit()
-      } catch (e) {
-        err = e.toString()
-        App.dbRollback()
-      }
+      runAndLogTask(task, taskName, entryPoint)
     }
-    const endTime = new Date()
-    if (task.logSuccessful || err !== '') {
-      statParams = {
-        appName: HOST_NAME,
-        schedulerName: taskName,
-        startTime: startTime,
-        endTime: endTime,
-        resultError: err === '' ? 0 : 1
-      }
-      if (err !== '') {
-        statParams.resultErrorMsg = err
-      }
-      if (logText) {
-        statParams.logText = logText
-      }
-      statInst.run('insert', {
-        execParams: statParams
-      })
-    }
+
   } finally {
     if (isSingleton) {
-      App.globalCachePut(`${GC_KEYS.UBQ_TASK_RUNNING_}${taskName}`, '0')
+      App.globalCachePut(GLOBAL_CACHE_KEY, '0')
     }
   }
   resp.statusCode = 200
-  console.debug('SCHEDULER: end a task %j with result %j', task, statParams)
   App.logout()
 }
