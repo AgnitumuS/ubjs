@@ -6,6 +6,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+- DDL generator for multitenant environment, PostgreSQL: generate SQL policies
+  for non-tenant entities, so that all operations except SELECT would be forbidden
+  for non-system tenant users
 
 ### Changed
 
