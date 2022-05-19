@@ -30,7 +30,8 @@ const DBPostgresPolicies = {
 
     everybody: {
       cmd: 'SELECT',
-      sql: 'true'
+      sql: '(true)', // this is what need to be used to execute
+      sqlToCompare: 'true'  // this value comes, when policy text is loaded from db
     }
   },
 
@@ -39,8 +40,8 @@ const DBPostgresPolicies = {
    * @returns {string}
    */
   getPolicyType (policy) {
-    for (const [type, { cmd, sql }] of Object.entries(this.PolicyTypes)) {
-      if (policy.qual === sql && policy.permissive === 'PERMISSIVE' && policy.cmd === cmd) {
+    for (const [type, { cmd, sql, sqlToCompare }] of Object.entries(this.PolicyTypes)) {
+      if (policy.qual === (sqlToCompare || sql) && policy.permissive === 'PERMISSIVE' && policy.cmd === cmd) {
         return type
       }
     }
@@ -136,7 +137,7 @@ from pg_catalog.pg_tables t where t.schemaname = current_schema`
       // foreign key
       // Zeos 7.2 serialize BOOL to false/true instead of 0/1, so transform it manually
       const foreignKeysSQL =
-`SELECT 
+        `SELECT 
   ct.conname as foreign_key_name,
   case when ct.condeferred then 1 else 0 end AS is_disabled,
   (SELECT a.attname FROM pg_attribute a WHERE a.attnum = ct.conkey[1] AND a.attrelid = ct.conrelid) as constraint_column_name,
