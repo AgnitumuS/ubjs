@@ -229,7 +229,9 @@ class DDLGenerator {
       })
     } else if (
       this.multitenancyEnabled &&
-      entity.connectionName === 'main' // need to avoid attempts to generate DDL for fts connections
+      entity.connectionName === 'main' && // need to avoid attempts to generate DDL for fts connections
+      !entity.isManyManyRef && // workaround of problem that ManyManyRef entities do not have mi_tenantID
+      !entity.name.endsWith('_acl') // workaround of problem that aclRls mixin does not add mi_tenantID
     ) {
       tableDef.addPolicy({
         type: 'systemTenantUsers',
