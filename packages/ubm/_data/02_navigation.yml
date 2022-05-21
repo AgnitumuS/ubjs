@@ -18,6 +18,15 @@ adm_desktop:
       iconCls: u-icon-image
       displayOrder: 30
       items:
+      - ubm_ui_settings:
+          caption: {$i18n: ubs_settings}
+          iconCls: u-icon-desktop-administrator
+          displayOrder: 10
+          cmd: >
+            {
+              cmdType: 'showForm',
+              formCode: 'ubm_desktop-uiSettings'
+            }
       - ubm_enum:
           caption: {$i18n: ubm_enum}
           iconCls: fas fa-list-ol

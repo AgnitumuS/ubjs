@@ -744,7 +744,7 @@
             },
             "customerModels": {
               "type": "string",
-              "description": "Colon separated folder names (sub-folders of %UB_APPHOME%cmodels/ folder) of customer models. This models will be added to domain models after vendorModels during server startup. Example \"ksc\" "
+              "description": "Colon separated folder names (sub-folders of %UB_APPDATA%cmodels/ folder) of customer models. This models will be added to domain models after vendorModels during server startup. Example \"ksc\" "
             },
             "implicitlyAddedMixins": {
               "type": "array",
@@ -1052,12 +1052,17 @@
             },
             "themeName": {
               "type": "string",
-              "description": "UI theme name. Can be name of a folder in the `inetPub\\themes\\` folder",
+              "description": "*DEPRECATED* UI theme name. Can be name of a folder in the `inetPub\\themes\\` folder",
               "default": "UBGrayTheme"
+            },
+            "customTheme": {
+              "type": "string",
+              "description": "Custom UI theme name. See [Customizing UI tutorial](https://unitybase.info/api/server-v5/tutorial-customizing_ui.html) for details",
+              "default": ""
             },
             "loginURL": {
               "type": "string",
-              "description": "A custom login page.  If specified, unauthorized users will be redirected to this page"
+              "description": "A custom login page. If specified, unauthorized users will be redirected to this page"
             },
             "registrationURL": {
               "type": "string",

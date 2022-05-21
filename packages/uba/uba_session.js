@@ -23,6 +23,9 @@ me.select = function (ctx) {
   ctx.dataStore.currentDataName = 'select'
   if (!_App.sessionsList) throw new UB.UBAbort('<<<Upgrade your UB server version >= 5.21>>>')
   const arrData = JSON.parse(_App.sessionsList())
+  if (arrData[0] && arrData[0].length > sessionsFieldList.length) { // tenantID
+    sessionsFieldList.push('tenantID')
+  }
   const filteredData = LocalDataStore.doFilterAndSort({
     data: arrData,
     fields: sessionsFieldList,

@@ -8,6 +8,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
+ - `App.reloadConfig` will:
+   - replace content of App.serverConfig JS variable with a new one
+   - reset compiled index.html, so changes from `uiSettings` ubConfig section will be applied for new index page (app name for example) 
 
 ### Deprecated
 

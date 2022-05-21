@@ -242,7 +242,7 @@ adm_desktop:
                 columns: [
                   'ID',
                   {id: 'userID', label: 'user ID', isLookup: false},
-                  'userName', 'remoteIP',
+                  'userName', 'remoteIP', 'tenantID',
                   {id: 'accessedAt', sortable: false, filterable: false, format: ({ value }) => UB.formatter.formatDate(value, 'dateTimeFull')},
                   {id: 'createdAt', sortable: false, filterable: false, format: ({ value }) => UB.formatter.formatDate(value, 'dateTimeFull')},
                   'isPasswordExpired', 'isLocked', 'serverTimeDelta'

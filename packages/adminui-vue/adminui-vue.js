@@ -225,10 +225,11 @@ const Sidebar = require('./components/sidebar/USidebar.vue').default
 function addVueSidebar () {
   const SidebarConstructor = Vue.extend(Sidebar)
   // eslint-disable-next-line no-new
-  new SidebarConstructor({
+  return new SidebarConstructor({
     el: '#sidebar-placeholder'
   })
 }
+module.exports.SidebarInstance = null
 
 const Relogin = require('./components/relogin/URelogin.vue').default
 function replaceDefaultRelogin () {
@@ -269,7 +270,7 @@ if (window.$App) {
 
   window.$App.on('applicationReady', () => {
     replaceDefaultRelogin()
-    addVueSidebar()
+    module.exports.SidebarInstance = addVueSidebar()
     const UNavbarDefaultSlot = require('./components/navbarSlotDefault/UNavbarDefaultSlot.vue').default
     /**
      * Additional components can be added to the Sidebar and NavBar using this event

@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+ - added form and method for changing UI settings. Current implementation allow to customize following `uiSetting.adminUI` props:
+  'loginWindowTopLogo', 'sidebarLogo', 'sidebarLogoBig', 'applicationTitle', 'supportMailTo', 'customTheme'.
+   
+  Navigation shortcut is in `Administrative -> UI -> Settings`
 
 ### Changed
 

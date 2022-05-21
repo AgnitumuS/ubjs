@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+  - added support for `uiSettings.adminUI.customTheme` while generation an index page.
+    See [Customizing UI tutorial](https://unitybase.info/api/server-v5/tutorial-customizing_ui.html) for details
 
 ### Changed
 

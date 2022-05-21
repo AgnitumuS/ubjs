@@ -6,8 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+ - `uba_session.tenantID` attribute added. Show tenant for logged-in user. For non-tenant environment shows 0 (server 5.22.9 is required)
 
 ### Changed
+  - `uba_session` for tenant user contains only sessions from the same tenant (server 5.22.9 is required)
 
 ### Deprecated
 

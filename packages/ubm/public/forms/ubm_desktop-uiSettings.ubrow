@@ -1,0 +1,8 @@
+{
+ "formType": "vue",
+ "isDefault": false,
+ "entity": "ubm_desktop",
+ "description": "UI settings (theme, logo)",
+ "caption": "UI settings",
+ "formCode": "ubm_desktop-uiSettings-fm.vue"
+}

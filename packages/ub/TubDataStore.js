@@ -36,12 +36,12 @@ const LocalDataStore = csShared.LocalDataStore
  var ds = UB.DataStore('my_entity')
 
  // init empty (rowCount=0) dataStore with provided fields.
- // In case keyMap is omitted we consider it contain one attribute 'ID'
+ // In case keyMap is omitted we consider it contains one attribute 'ID'
  ds.initialize([]) // the same as ds.initialize([], ['ID'])
  ds.initialize([], ['ID', 'name', {from: 'AGE', to: 'age'}])
 
  // Initialize dataStore from array-of-object representation
- // Resulting datstore will contain 3 field: ID, nam, age (in order, they listen in keyMap array).
+ // Resulting dataStore will contain 3 field: ID, nam, age (in order, they listen in keyMap array).
  // During initialization we convert fiend name 'AGE' -> age;
  ds.initialize([
      {ID: 10, name: 'Jon', AGE: 10},
