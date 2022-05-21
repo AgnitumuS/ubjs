@@ -242,7 +242,7 @@ module.exports.default = {
       } finally {
         // me.unmask()
       }
-    },
+    }
   }
 }
 </script>

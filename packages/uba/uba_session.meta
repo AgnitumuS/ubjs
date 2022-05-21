@@ -36,6 +36,13 @@
       "description": "IP address user login from"
     },
     {
+      "name": "tenantID",
+      "caption": "Tenant",
+      "dataType": "BigInt",
+      "allowNull": false,
+      "description": "Logged in user tenant ID (for multi-tenant environments)"
+    },
+    {
       "name": "isPasswordExpired",
       "caption": "Password expired",
       "dataType": "Boolean",

@@ -87,6 +87,9 @@
       },
       "using_unitybase_modules": {
         "title": "Using UnityBase modules"
+      },
+      "customizing_ui": {
+        "title": "Customizing UI"
       }
     }
   },

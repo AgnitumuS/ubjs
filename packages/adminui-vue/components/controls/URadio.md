@@ -55,3 +55,28 @@
   };
 </script>
 ```
+
+## Items prop names
+
+```vue
+<template>
+  <div>
+    Choice user's: {{ choice }}
+    <u-radio v-model="choice" :items="items" id-prop="name" label-prop="description" />
+  </div>
+</template>
+
+<script>
+  export default {
+    data() {
+      return {
+        choice: 'second',
+        items: [
+          { name: 'first', description: 'first' },
+          { name: 'second', description: 'second' }
+        ]
+      };
+    }
+  };
+</script>
+```

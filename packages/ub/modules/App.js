@@ -634,10 +634,31 @@ ServerApp.logLeave = appBinding.logLeave
 
 /**
  * Partially reload server config - the same as -HUP signal for process
+ *   + set JS variable `App.serverConfig` to new config
+ *   + reset generated index page (uiSettings block of config)
  *
  * @method
+ * @return {boolean} true is config s valid and successfully reloaded
  */
-ServerApp.reloadConfig = appBinding.reloadConfig
+ServerApp.reloadConfig = function () {
+  appBinding.reloadConfig()
+  const arrData = JSON.parse(_App.globalCacheList()) // [['ID', 'key', 'keyValue'],...]
+  const compiledIndexes = arrData.filter(r => r[1].startsWith(base.GC_KEYS.COMPILED_INDEX_)).map(r => r[1])
+  compiledIndexes.forEach(cIdxKey => {
+    this.globalCachePut(cIdxKey, null) // reset compiled index page
+  })
+  console.debug('Compiled index page resets for', compiledIndexes)
+  let result = true
+  try {
+    const newServerCfg = argv.getServerConfiguration()
+    ServerApp.serverConfig = newServerCfg
+    console.debug('App.serverConfig reloaded')
+  } catch (e) {
+    result = false
+    console.error(e.message, e)
+  }
+  return result
+}
 
 /**
  * Observe a file system operation time (exposed as prometheus `unitybase_fs_operation_duration_seconds` histogram).

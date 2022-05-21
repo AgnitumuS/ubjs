@@ -132,5 +132,14 @@
     return window.UB.inject('models/adminui-pub/themes/{{uiSettings.adminUI.themeName}}/{{uiSettings.adminUI.themeName}}-debug.js')
   })
 </script>
+
+{{#customThemeCSS}}
+  <link rel="stylesheet" type="text/css" href="{{customThemeCSS}}"/>
+{{/customThemeCSS}}
+
+{{#customThemeJS}}
+  <script type="text/javascript" nonce="{{cspNonce}} src="{{customThemeJS}}">
+{{/customThemeJS}}
+
 </body>
 </html>

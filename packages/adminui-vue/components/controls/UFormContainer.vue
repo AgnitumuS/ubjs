@@ -10,7 +10,7 @@
 
 <script>
 /**
- * A properties provider for child `u-form-row` components. Can set a focus to the first element
+ * A property's provider for child `u-form-row` components. Can set a focus to the first element
  */
 export default {
   name: 'UFormContainer',

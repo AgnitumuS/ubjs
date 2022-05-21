@@ -1,0 +1,55 @@
+:root {
+    --hs-sidebar: 217, 57%;
+    --hs-text: 60,4%;
+    --l-text-label: 11%;
+    --l-sidebar-default: 41%;
+}
+
+body, html {
+    font-family: 'Proba Pro', sans-serif;
+    color: hsl(var(--hs-text), var(--l-text-default));
+}
+
+/*.u-form-row__label {
+  font-size: 22px;
+}*/
+
+.el-input__inner {
+    border: 1px solid #C2C5CB;
+    /*box-sizing: border-box;
+    border-radius: 8px !important;
+
+    font-style: normal;
+    font-weight: normal;
+    font-size: 18px;
+
+    height: 48px !important;
+    line-height: 23px !important;*/
+}
+
+.el-menu-item i {
+    color: #ffffff;
+}
+
+.el-submenu__title i {
+    color: #ffffff;
+}
+
+.x-tab-default-top-active {
+    border-bottom: 0 solid white !important;
+    background-color: white !important;
+}
+.x-tab-default-top {
+    border-bottom: 3px solid #cacaca;/*#41b772;*/
+    background-color: #f0f3f3;
+}
+
+fieldset {
+    border: 1px solid #a3adc2;
+    border-radius: 4px;
+    margin-bottom: 15px;
+}
+legend {
+    color: #303036;
+    font-size: 14px;
+}

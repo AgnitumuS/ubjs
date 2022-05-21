@@ -6,23 +6,23 @@ not-checked
       v-for="(item, index) in items"
       :key="index"
       class="u-radio"
-      :style="{ display: item.label ? '' : 'flex' }"
-      @click="currentValue = item.id"
+      :style="{ display: item[labelProp] ? '' : 'flex' }"
+      @click="currentValue = item[idProp]"
     >
       <input
         v-model="currentValue"
         class="u-radio__input"
         type="radio"
         :name="name"
-        :value="item.id"
+        :value="item[idProp]"
       >
       <span
         class="u-radio__label"
         :class="{ 'u-radio__label--left': labelPosition === 'left' }"
-        :style="{ width: item.label ? '' : '26px' }"
-      >{{ item.label }}</span>
+        :style="{ width: item[labelProp] ? '' : '26px' }"
+      >{{ item[labelProp] }}</span>
       <!-- @slot name of slot - it is value `id` field from item -->
-      <slot :name="item.id" />
+      <slot :name="item[idProp]" />
     </label>
   </span>
 </template>
@@ -39,25 +39,39 @@ export default {
   },
   props: {
     /**
-     * Item of array should have `id` field
+     * Property name of element in items to be used as id
+     */
+    idProp: {
+      type: String,
+      default: 'id'
+    },
+    /**
+     * Property name of element in items to be used as label
+     */
+    labelProp: {
+      type: String,
+      default: 'label'
+    },
+    /**
+     * Array of available options. Each item should be an object with at last 2 properties `id` and `label`
      */
     items: {
       type: Array,
       default: () => [],
       validator (value) {
         if (!value.length) return true
-        return !value.some((item) => item.id === undefined)
+        return !value.some((item) => item[this.idProp] === undefined)
       }
     },
     /**
-     * Name for groups of radio. MUST be defined to use more whe one groups of radio in page
+     * Group name. MUST be defined to use more when one group of radio in page
      */
     name: {
       type: String,
-      default: 'defaultName'
+      default: 'uradio'
     },
     /**
-     * Value should be equal one of field `id` from `items`
+     * Selected item ID
      */
     value: {
       type: [String, Boolean, Number],
@@ -83,9 +97,9 @@ export default {
   watch: {
     currentValue (e) {
       /**
-       * Triggers when the user change state of radio
+       * Triggers when user change selected item
        *
-       * @param value `id` field from choiced item
+       * @param value `id` value of selected item
        */
       this.$emit('change', e)
     }

@@ -122,5 +122,14 @@
     return System.import('@unitybase/adminui-pub/themes/{{uiSettings.adminUI.themeName}}/{{uiSettings.adminUI.themeName}}.js')
   })
 </script>
+
+{{#customThemeCSS}}
+<link rel="stylesheet" type="text/css" href="{{customThemeCSS}}"/>
+{{/customThemeCSS}}
+
+{{#customThemeJS}}
+  <script type="text/javascript" nonce="{{cspNonce}} src="{{customThemeJS}}">
+{{/customThemeJS}}
+
 </body>
 </html>
