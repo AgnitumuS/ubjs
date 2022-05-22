@@ -226,6 +226,23 @@ module.exports = function (session) {
   })
 
   displayOrder = displayOrder + 10
+  console.log('\t\t\tcreate `Vue test` shortcut')
+  conn.insert({
+    fieldList: ['ID'],
+    entity: 'ubm_navshortcut',
+    execParams: {
+      desktopID: desktopID,
+      code: 'tst_document-chart',
+      caption: 'UChart test form',
+      displayOrder: displayOrder,
+      cmdCode: JSON.stringify({
+        cmdType: 'showForm',
+        formCode: 'tst_document-chart'
+      }, null, '\t')
+    }
+  })
+
+  displayOrder = displayOrder + 10
   console.log('\t\t\tcreate `tst_multiselect` shortcut')
   conn.insert({
     fieldList: ['ID'],
