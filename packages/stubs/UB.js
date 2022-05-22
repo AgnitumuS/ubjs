@@ -469,16 +469,16 @@ Either use a absolute path ("/clientRequire/models/${model.name}/PathToYourDevSc
       result.application.domain.customerModels = ''
     }
     const cModelsArr = result.application.domain.customerModels.split(':').filter(m => !!m) // exclude empty values ''.split(':') => ['']
-    if (cModelsArr.indexOf('STNGS') === -1) { // if STNGS model not added manually - add it in case folder for settings exists
-      const userSettingsPath = path.join(cModelsRoot, 'STNGS')
+    if (cModelsArr.indexOf('cust') === -1) { // if cust model not added manually - add it in case folder for settings exists
+      const userSettingsPath = path.join(cModelsRoot, 'cust')
       if (fs.existsSync(userSettingsPath)) {
-        cModelsArr.push('STNGS')
+        cModelsArr.push('cust')
         result.application.domain.customerModels = cModelsArr.join(':')
       }
     }
     addModels(result.application.domain.customerModels, cModelsRoot)
 
-    // path to STNGS model - this model will be merged AFTER all other partials
+    // path to cust model - this model will be merged AFTER all other partials
     // this allows override parameters from main ubConfig.json
     let stngsPath, stngsPartialContent
     // for models without name - read it from package.json
@@ -516,7 +516,7 @@ Either use a absolute path ("/clientRequire/models/${model.name}/PathToYourDevSc
       // partials
       const partialFN = path.join(p, 'ubConfig-partial.json')
       if (fs.existsSync(partialFN)) {
-        if (model.name === 'STNGS') {
+        if (model.name === 'cust') {
           stngsPath = partialFN
         }
         partials.push(partialFN)
@@ -550,7 +550,7 @@ Either use a absolute path ("/clientRequire/models/${model.name}/PathToYourDevSc
       lodashMergeWith(configFromPartials, result, mergeNamedCollections)
       result = configFromPartials
     }
-    if (stngsPartialContent) { // merge STNGS model partial with priority over ubConfig
+    if (stngsPartialContent) { // merge cust model partial with priority over ubConfig
       lodashMergeWith(result, stngsPartialContent, mergeNamedCollections)
     }
 

@@ -16,28 +16,28 @@ In 5.22.9 following `uiSetting.adminUI` parameters can be changed:
 About `customTheme` - a feature for customising CSS see paragraph below
 
 ## Prepare app to be customization ready
-Feature is enabled in case special customer model with name `STNGS` is found in domain.
+Feature is enabled in case special customer model with name `cust` is found in domain.
 
-> server automatically adds `STNGS` model into `application.domain.customerModels` in case it found folder `$UB_APPDATA/cmodels/STNGS`
+> server automatically adds `cust` model into `application.domain.customerModels` in case it found folder `$UB_APPDATA/cmodels/cust`
 
 For application what uses [UnityBase lifecycle scripts](https://unitybase.info/api/server-v5/tutorial-production_env.html#lifecycle)
-`ub-deploy` etc. folder and files for `STNGS` model is created automatically.
+`ub-deploy` etc. folder and files for `cust` model is created automatically.
 
-For whom who uses Windows or Docker-based setup `STNGS` folder should be created manually:
+For whom who uses Windows or Docker-based setup `cust` folder should be created manually:
 
 ```shell
-# add STNGS model for user settings if not already added
-if [ ! -d "$UB_APPDATA/cmodels/STNGS" ]; then
-  mkdir -p "$UB_APPDATA"/cmodels/STNGS/public
-  cat > "$UB_APPDATA"/cmodels/STNGS/package.json << EOF
+# add cust model for user settings if not already added
+if [ ! -d "$UB_APPDATA/cmodels/cust" ]; then
+  mkdir -p "$UB_APPDATA"/cmodels/cust/public
+  cat > "$UB_APPDATA"/cmodels/cust/package.json << EOF
 {
-   "name": "STNGS",
+   "name": "cust",
    "version": "1.0.0",
    "description": "Application settings, what can be customized by user",
    "repository": "",
    "config": {
      "ubmodel": {
-       "name": "STNGS"
+       "name": "cust"
      }
    },
    "public": false,
@@ -46,22 +46,22 @@ if [ ! -d "$UB_APPDATA/cmodels/STNGS" ]; then
    "license": "(GPL-3.0 OR LGPL-3.0 OR MPL-2.0)"
  }
 EOF
-  touch "$UB_APPDATA"/cmodels/STNGS/index.js
-  echo "{}" >> "$UB_APPDATA"/cmodels/STNGS/ubConfig-partial.json
+  touch "$UB_APPDATA"/cmodels/cust/index.js
+  echo "{}" >> "$UB_APPDATA"/cmodels/cust/ubConfig-partial.json
   chown -R unitybase:unitybase "$UB_APPDATA"
 fi
 ```
 
 ## Implementation details
 
-Customization feature is implemented using partial config `ubConfig-partial.json` from STNGS model.
+Customization feature is implemented using partial config `ubConfig-partial.json` from `cust` model.
 Server-side config merging mechanism apply this partial after all other partials are merged into main ubConfig,
-so STNGS model have a priority.
+so `cust` model have a priority.
 
 In fact customization can be added for any settings, even for parameters outside of `uiSetting` section.
 To do this should be implemented:
   - UI form for setting - see out implementation in `@unitybase/ubm/public/forms/ubm_desktop-uiSettings-fm.vue`
-  - server side method what modify a STNGS partial - see `changeUISettings` method in `@unitybase/ubm/ubm_desktop.js`
+  - server side method what modify a `cust` partial - see `changeUISettings` method in `@unitybase/ubm/ubm_desktop.js`
 
 ## Custom theme
 

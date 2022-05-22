@@ -41,9 +41,9 @@ function dataURI2Blob (dataUri) {
  * @published
  */
 me.changeUISettings = function changeUISettings (ctx) {
-  const settingsModel = App.domainInfo.models.STNGS
+  const settingsModel = App.domainInfo.models.cust
   if (!settingsModel) {
-    throw new UB.UBAbort('There is no place to store user settings: STNGS model not registered in domain (added automatically if folder \'cmodel/STNGS\' exists')
+    throw new UB.UBAbort('There is no place to store user settings: \'cust\' model not registered in domain (added automatically if folder \'cmodel/cust\' exists')
   }
   const partialPath = path.join(settingsModel.realPath, 'ubConfig-partial.json')
   const partial = fs.existsSync(partialPath)
@@ -58,7 +58,7 @@ me.changeUISettings = function changeUISettings (ctx) {
     ].forEach(pn => {
       delete partial.uiSettings.adminUI[pn]
     })
-    console.log('STNGS model partial config is reset to default values')
+    console.log('\'cust\' model partial config is reset to default values')
   } else {
     const newS = JSON.parse(ctx.mParams.uiSettings)
     function dataURLSave (prmName) {
@@ -71,7 +71,7 @@ me.changeUISettings = function changeUISettings (ctx) {
         path.join(settingsModel.realPublicPath, fn),
         cnt.content
       )
-      partial.uiSettings.adminUI[`${prmName}URL`] = `/models/STNGS/${fn}`
+      partial.uiSettings.adminUI[`${prmName}URL`] = `/models/cust/${fn}`
     }
 
     function strSave (inPrmName) {
