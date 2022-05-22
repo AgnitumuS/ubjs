@@ -10,9 +10,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ```javascript
 const { SidebarInstance } = require('@unitybase/adminui-vue')
 SidebarInstance.isCollapsed = true
-``` 
-
+```
  - `URadio`: `id` and `label` properties names can be customized 
+ - `UChart` - a new component for drawing data in a graphical form. Look in the [docs](https://unitybase.info/api/adminui-vue/index.html#/Presentational/UChart)
 
 ### Changed
  - `UDialog`: width of the dialog box is extended up to `540px` in order to keep

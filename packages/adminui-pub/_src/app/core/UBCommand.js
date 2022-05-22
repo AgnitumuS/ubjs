@@ -30,7 +30,7 @@ Ext.define('UB.core.UBCommand', {
     commandType: {
       showList: 'showList',
       showForm: 'showForm',
-      showReport: 'showReport'
+      showReport: 'showReport',
     },
 
     errCode: {
