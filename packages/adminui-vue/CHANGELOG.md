@@ -6,6 +6,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+## [5.22.20] - 2022-05-22
+### Added
  - sidebar (instance of USidebar component) is exported as `SidebarInstance`. Example below collapse sidebar programmatically:
 ```javascript
 const { SidebarInstance } = require('@unitybase/adminui-vue')
@@ -19,10 +30,6 @@ SidebarInstance.isCollapsed = true
    all dialog buttons on the same level. Some buttons captions are too long 
    (as for the `de` locale).
  - `UDropdown`: fixed `Uncaught TypeError: Failed to execute 'observe' on 'MutationObserver'` for slow client machine
-
-### Deprecated
-
-### Removed
 
 ### Fixed
 - `UCron` - fixed localization

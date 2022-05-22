@@ -6,6 +6,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+## [5.22.11] - 2022-05-22
+### Added
  - new method `ClientRepository.selectColumunar` - Useful for data analysis \ graph
 ```javascript
 await UB.Repository('req_request')
@@ -16,14 +27,6 @@ await UB.Repository('req_request')
 //   'requestCount': [5, 44]
 // }
 ```
-
-### Changed
-
-### Deprecated
-
-### Removed
-
-### Fixed
 
 ## [5.22.10] - 2022-05-10
 ### Added

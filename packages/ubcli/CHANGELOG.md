@@ -6,10 +6,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
-- DDL generator for multitenant environment, PostgreSQL: generate SQL policies
-  for non-tenant entities, so that all operations except SELECT would be forbidden
-  for non-system tenant users
-  - temporarily hardcoded skipping of aclRls and ManyManyRef entities
 
 ### Changed
 
@@ -18,6 +14,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+
+## [5.22.16] - 2022-05-22
+### Added
+- DDL generator for multitenant environment, PostgreSQL: generate SQL policies
+  for non-tenant entities, so that all operations except SELECT would be forbidden
+  for non-system tenant users
+  - temporarily hardcoded skipping of aclRls and ManyManyRef entities
 
 ## [5.22.15] - 2022-05-10
 ## [5.22.14] - 2022-05-04

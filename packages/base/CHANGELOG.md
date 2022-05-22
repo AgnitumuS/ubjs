@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.22.7] - 2022-05-22
 ## [5.22.6] - 2022-05-04
 ### Fixed
 - check if server started in ubcli - account for tenantIDHeader in case when forceStartServer option is false

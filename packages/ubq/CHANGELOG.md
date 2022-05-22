@@ -6,6 +6,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+## [5.22.14] - 2022-05-22
+### Added
 - Support for schedulers in multitenant mode:
   - do not pass "runAsID", because user ID is different in every tenant,
     for non-multitenant environments, nothing changes, runAsID still passed
@@ -16,12 +27,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Changed
 - Schedulers: for schedulers with invalid commands, instead of recording failed records into `ubq_runstat`,
   just make a record in UB log
-
-### Deprecated
-
-### Removed
-
-### Fixed
 
 ## [5.22.13] - 2022-05-10
 ### Added
