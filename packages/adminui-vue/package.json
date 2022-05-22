@@ -49,6 +49,7 @@
     "@unitybase/pdf": "^5.2.6",
     "@unitybase/systemjs-plugin-vue-ub": "^1.4.3",
     "@unitybase/ub-pub": "^5.22.10",
+    "chart.js": "^3.7.1",
     "element-ui": "2.13.0",
     "jdenticon": "^3.1.1",
     "js-beautify": "^1.14.0",

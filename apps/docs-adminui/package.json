@@ -9,10 +9,10 @@
     "../../packages/*"
   ],
   "scripts": {
-    "watch": "NODE_ENV=development vue-styleguidist --config ./build/styleguidist.config.js server",
+    "watch": "vue-styleguidist --config ./build/dev.config.js server",
     "build:prod": "rm -rf ./inetpub/build/*.* && vue-styleguidist --config ./build/styleguidist.config.js build && npm run build:after",
     "build:debugerr": "NODE_OPTIONS='--stack-trace-limit=10000' vue-styleguidist --config ./build/styleguidist.config.js build",
-    "build:dev": "NODE_ENV=development vue-styleguidist --config ./build/styleguidist.config.js build && npm run build:after",
+    "build:dev": "vue-styleguidist --config ./build/dev.config.js build && npm run build:after",
     "build:after": "ln -sf ../img ./inetpub",
     "ubapp": "ub -env ./ubConfig-dev.env",
     "dev": "gnome-terminal -x npm run ubapp; npm run watch"
@@ -29,6 +29,7 @@
     "@unitybase/uba": "^5.22.13",
     "@unitybase/ubm": "^5.22.17",
     "@unitybase/ubs": "^5.22.16",
+    "chart.js": "^3.7.1",
     "file-saver": "^1.3.3",
     "jdenticon": "^3.1.1",
     "js-beautify": "^1.14.0",

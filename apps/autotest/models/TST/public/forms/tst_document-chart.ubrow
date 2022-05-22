@@ -1,0 +1,8 @@
+{
+ "formType": "vue",
+ "isDefault": false,
+ "entity": "tst_document",
+ "description": "Chart test",
+ "caption": "Chart test",
+ "formCode": "tst_document-chart-fm.vue"
+}

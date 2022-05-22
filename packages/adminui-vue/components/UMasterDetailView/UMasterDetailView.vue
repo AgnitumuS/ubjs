@@ -7,7 +7,8 @@
         v-bind="$attrs"
         :before-initial-load="onInitialLoad"
         :class="{
-          'u-table-register__view__preview-form-mode': viewMode === 'previewForm'
+          'u-table-register__view__preview-form-mode':
+            viewMode === 'previewForm'
         }"
         v-on="$listeners"
         @change-row="selectedRowId = $event"
@@ -22,7 +23,6 @@
             v-bind="scope"
           />
         </template>
-
         <template #contextMenuDetails="scope">
           <slot
             v-bind="scope"
@@ -45,7 +45,6 @@
             </template>
           </slot>
         </template>
-
         <template #toolbarDropdownAppend="scope">
           <slot
             v-bind="scope"
@@ -67,13 +66,11 @@
               </u-dropdown-item>
             </template>
           </slot>
-
           <slot
             v-bind="scope"
             name="toolbarDropdownAppend"
           />
         </template>
-
         <template #toolbarDropdownViewMode="scope">
           <slot
             name="toolbarDropdownViewMode"
@@ -95,7 +92,6 @@
           </slot>
         </template>
       </u-table-entity>
-
       <template v-if="detailsVisible">
         <div class="u-table-register__divider">
           <div class="u-table-register__divider-title">
@@ -108,10 +104,8 @@
             <i class="u-icon-eye-slash" />
             {{ $ut('tableRegister.hideDetails') }}
           </button>
-
           <div class="u-table-register__divider-line" />
         </div>
-
         <u-table-entity
           ref="detailsTable"
           class="u-table-register__details"
@@ -121,7 +115,6 @@
         />
       </template>
     </div>
-
     <preview-form
       v-if="viewMode === 'previewForm'"
       :id="selectedRowId"
@@ -147,9 +140,7 @@ export default {
     PreviewForm: require('./PreviewForm.vue').default
   },
 
-  mixins: [
-    require('./localStorageMixin')
-  ],
+  mixins: [require('./localStorageMixin')],
 
   data () {
     return {
@@ -157,19 +148,23 @@ export default {
       selectedDetail: null,
       detailsVisible: false,
       selectedRowId: null,
-      viewModeButtons: [{
-        code: 'table',
-        label: 'table.viewMode.table',
-        icon: 'u-icon-grid'
-      }, {
-        code: 'card',
-        label: 'table.viewMode.card',
-        icon: 'u-icon-attributes'
-      }, {
-        code: 'previewForm',
-        label: 'showPreview',
-        icon: 'u-icon-window-left'
-      }],
+      viewModeButtons: [
+        {
+          code: 'table',
+          label: 'table.viewMode.table',
+          icon: 'u-icon-grid'
+        },
+        {
+          code: 'card',
+          label: 'table.viewMode.card',
+          icon: 'u-icon-attributes'
+        },
+        {
+          code: 'previewForm',
+          label: 'showPreview',
+          icon: 'u-icon-window-left'
+        }
+      ],
       viewMode: null
     }
   },
@@ -192,7 +187,7 @@ export default {
 
     details () {
       const thisEntity = $App.domainInfo.get(this.entityName)
-      return thisEntity.getDetailsForUI().map(attr => {
+      return thisEntity.getDetailsForUI().map((attr) => {
         return { entity: attr.entity.name, attribute: attr.name }
       })
     },
@@ -203,8 +198,10 @@ export default {
 
     columns () {
       return this.schema
-        .filterAttribute(a => a.defaultView && a.code !== this.selectedDetail.attribute)
-        .map(a => a.code)
+        .filterAttribute(
+          (a) => a.defaultView && a.code !== this.selectedDetail.attribute
+        )
+        .map((a) => a.code)
     }
   },
 
@@ -235,12 +232,11 @@ export default {
 
     repository () {
       const columns = Array.from(
-        new Set(
-          this.columns.concat(this.selectedDetail.attribute)
-        )
+        new Set(this.columns.concat(this.selectedDetail.attribute))
       )
 
-      return this.$UB.Repository(this.selectedDetail.entity)
+      return this.$UB
+        .Repository(this.selectedDetail.entity)
         .attrs(columns)
         .where(this.selectedDetail.attribute, '=', this.selectedRowId)
     },
@@ -253,15 +249,13 @@ export default {
       this.$refs.masterTable.$el.focus()
     },
 
-    refreshMasterTable: throttle(
-      50,
-      true,
-      function () {
-        this.$refs.detailsTable.$store.dispatch('refresh')
-      }),
+    refreshMasterTable: throttle(50, true, function () {
+      this.$refs.detailsTable.$store.dispatch('refresh')
+    }),
 
     formatDetailLabel ({ entity, attribute }) {
-      const hasSameEntity = this.details.filter(d => d.entity === entity).length > 1
+      const hasSameEntity =
+        this.details.filter((d) => d.entity === entity).length > 1
       if (hasSameEntity) {
         const attributeLabelText = this.$ut(`${entity}.${attribute}`)
         const attributeLabel = ` (${attributeLabelText})`
@@ -302,7 +296,10 @@ export default {
   flex-shrink: 0;
 }
 
-.u-table-register__view__preview-form-mode > .u-table-entity__head .u-button .u-button__label {
+.u-table-register__view__preview-form-mode
+  > .u-table-entity__head
+  .u-button
+  .u-button__label {
   display: none;
 }
 

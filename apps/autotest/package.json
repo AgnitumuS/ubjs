@@ -49,6 +49,7 @@
     "@unitybase/udisk": "^5.22.13",
     "@unitybase/xlsx": "^5.22.6",
     "asn1js": "^2.0.19",
+    "chart.js": "^3.7.1",
     "codemirror": "^5.64.0",
     "cronstrue": "^1.123.0",
     "element-ui": "^2.13.0",
