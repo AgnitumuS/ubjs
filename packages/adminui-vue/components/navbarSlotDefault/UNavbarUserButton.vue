@@ -217,7 +217,7 @@ export default {
         })
 
         window.localStorage.setItem(this.$UB.LDS_KEYS.PREFERRED_LOCALE, lang)
-        this.$UB.core.UBApp.logout()
+        this.$UB.core.UBApp.logout({ reason: 'changelang' })
       }
     }
   }

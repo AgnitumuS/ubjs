@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+ - added call to `connection.logout()` on `window.pagehide` event (in addition to `window.onbeforeunload`).
+   This adds reaction on more cases of how user can leave a web page (F5, Ctrl+F5, back, close tab, close browser)
 
 ### Changed
 

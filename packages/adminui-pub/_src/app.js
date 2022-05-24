@@ -562,9 +562,16 @@ function launchApp () {
       window.toLog = null
       window.onerror = null
       if ($App.connection) {
-        $App.connection.logout()
+        UB.xhr.allowRequestReiteration()
+        $App.connection.logout({ reason: 'beforeunload' }).catch(e => console.error(e))
       }
     }
+    window.addEventListener('pagehide', event => {
+      if ($App.connection && !event.persisted) { // event.persisted === false if page actually closed/reloaded
+        UB.xhr.allowRequestReiteration()
+        $App.connection.logout({ reason: 'pagehide' }).catch(e => console.error(e))
+      }
+    }, false)
     // totally disable context menu for cases we do not handle it on application logic layer
     document.addEventListener('contextmenu', function (e) {
       e.preventDefault()

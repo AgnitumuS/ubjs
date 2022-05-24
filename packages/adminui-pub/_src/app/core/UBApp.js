@@ -992,9 +992,13 @@ $App.dialog('makeChangesSuccessfulTitle', 'makeChangesSuccessfullyBody')
 
   /**
    * Logout active user. Reload page.
+   * @param {object} [reasonParams={}]
    */
-  logout: function () {
-    const p = this.connection ? this.connection.logout() : Promise.resolve(true)
+  logout: function (reasonParams) {
+    if (!reasonParams) {
+      reasonParams = { reason: 'useraction' }
+    }
+    const p = this.connection ? this.connection.logout(reasonParams) : Promise.resolve(true)
     p.catch(() => true).then(function () {
       // MPV TODO Secure browser
       // if (UB.isSecureBrowser) {

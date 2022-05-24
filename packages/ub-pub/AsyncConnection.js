@@ -536,7 +536,7 @@ $App.connection.userLang()
       }
       const clientNonce = me.authMock
         ? SHA256('1234567890abcdef').toString()
-        : SHA256(new Date().toISOString().substr(0, 16)).toString()
+        : SHA256(new Date().toISOString().slice(0, 16)).toString()
       request.params.clientNonce = clientNonce
       if (resp.data.connectionID) {
         request.params.connectionID = resp.data.connectionID
@@ -566,7 +566,8 @@ $App.connection.userLang()
         }
         pwdHash = SHA256('salt' + authParams.password).toString()
         const appForAuth = appName === '/' ? '/' : appName.replace(/\//g, '')
-        pwdForAuth = SHA256(appForAuth.toLowerCase() + serverNonce + clientNonce + authParams.login + pwdHash).toString()
+        if (request.params.userName) request.params.userName = request.params.userName.toLowerCase() // uba_user stores name in lower case
+        pwdForAuth = SHA256(appForAuth.toLowerCase() + serverNonce + clientNonce + request.params.userName + pwdHash).toString()
         secretWord = pwdHash
       }
       request.params.password = pwdForAuth
@@ -1915,12 +1916,13 @@ UBConnection.prototype.crc32 = UBSession.prototype.crc32
 
 /**
  * Log out user from server
+ * @param {object} [reasonParams={}]
  */
-UBConnection.prototype.logout = function () {
+UBConnection.prototype.logout = function (reasonParams = {}) {
   if (this.allowSessionPersistent) LDS.removeItem(this.__sessionPersistKey)
   if (!this.isAuthorized()) return Promise.resolve(true)
 
-  let logoutPromise = this.post('logout', {})
+  let logoutPromise = this.post('logout', {}, { params: reasonParams })
   if (this._pki) { // unload encryption private key
     const me = this
     logoutPromise = logoutPromise.then(
