@@ -532,6 +532,10 @@ export default {
   background: var(--cell-selected);
 }
 
+.u-table tr.selected td.selected {
+  cursor: pointer;
+}
+
 .u-table__multiple__cell {
   cursor: pointer;
   text-align: center;
