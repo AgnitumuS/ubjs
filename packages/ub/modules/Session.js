@@ -467,7 +467,7 @@ Session.on('loginFailed', function(shouldLock, userName){
  * Fires in case of any security violation:
  *
  *  - user is blocked or not exists (in uba_user)
- *  - user provide wrong credential (password, domain, encripted secret key, certificate etc)
+ *  - user provide wrong credential (password, domain, encrypted secret key, certificate etc.)
  *  - for 2-factor auth schemas - too many sessions in pending state (max is 128)
  *  - access to endpoint "%" deny for user (endpoint name not present in uba_role.allowedAppMethods for eny user roles)
  *  - password for user is expired (see ubs_settings UBA.passwordPolicy.maxDurationDays key)
@@ -541,7 +541,10 @@ function fillGroupIDsLimit () {
       if (group) {
         GROUP_IDS_LIMIT.push(group.ID)
       } else {
-        console.warn(`Group with code "${groupCode}" listed in appConfig.security.limitGroupsTo but not found in uba_group`)
+        console.warn(
+          'Group with code "%s" listed in appConfig.security.limitGroupsTo but not found in uba_group',
+          groupCode
+        )
       }
     })
   }
@@ -553,7 +556,10 @@ function fillGroupIDsLimit () {
       if (group) {
         GROUP_IDS_EXCLUDE.push(group.ID)
       } else {
-        console.warn(`Group with code "${groupCode}" listed in appConfig.security.excludeGroups but not found in uba_group`)
+        console.warn(
+          'Group with code "%s" listed in appConfig.security.excludeGroups but not found in uba_group',
+          groupCode
+        )
       }
     })
   }
@@ -578,7 +584,11 @@ Session._getRBACInfo = function (userID) {
       uData = JSON.parse(userInfo.uData)
       if (!uData.lang) uData.lang = App.serverConfig.application.defaultLang
     } catch (e) {
-      console.error(`Invalid uData attribute content for user ${userInfo.name}: "${userInfo.uData}". Must be valid JSON`)
+      console.error(
+        'Invalid uData attribute content for user %s: "%s". Must be valid JSON',
+        userInfo.name,
+        userInfo.uData
+      )
     }
   }
   uData.userID = userID
@@ -599,6 +609,11 @@ Session._getRBACInfo = function (userID) {
   } else {
     roleNamesArr.push(UBA_COMMON.ROLES.USER.NAME)
     uData.roleIDs.push(UBA_COMMON.ROLES.USER.ID)
+  }
+  if (Session.tenantID > 1) {
+    // Multitenant mode, and the current tenant is not the system tenant
+    roleNamesArr.push(UBA_COMMON.ROLES.TENANT_USER.NAME)
+    uData.roleIDs.push(UBA_COMMON.ROLES.TENANT_USER.ID)
   }
   fillGroupIDsLimit()
   const roles = Repository('uba_role')
@@ -627,10 +642,10 @@ Session._getRBACInfo = function (userID) {
     .logic('(([userHasRole]) OR ([groupHasRole]))')
     .selectAsObject()
 
-  roles.forEach(role => {
+  for (const role of roles) {
     uData.roleIDs.push(role.ID)
     roleNamesArr.push(role.name)
-  })
+  }
   // if (Session.userID === UBA_COMMON.USERS.ADMIN.ID) {
   //   // Admin account is a special account, which is used in scenarios like application initialization, when
   //   // database is not fully created yet.

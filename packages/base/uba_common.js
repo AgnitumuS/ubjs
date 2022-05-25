@@ -1,4 +1,6 @@
 /* global Session, nsha256 */
+const argv = require('./argv')
+
 const USERS = {
   ROOT: {
     ID: 7,
@@ -64,6 +66,20 @@ const ROLES = {
     TIMEOUT: 100
   }
 }
+
+const serverConfig = argv.getServerConfiguration()
+const multitenancyConfig = serverConfig.security.multitenancy
+const multitenancyEnabled = multitenancyConfig && multitenancyConfig.enabled
+if (multitenancyEnabled) {
+  ROLES.TENANT_USER = {
+    ID: 100,
+    NAME: 'TenantUser',
+    ENDPOINTS: '',
+    DESCR: 'TenantUser build-in role',
+    TIMEOUT: 30
+  }
+}
+
 
 /**
  * Check logged in user is a superuser (either `admin` or `root`)

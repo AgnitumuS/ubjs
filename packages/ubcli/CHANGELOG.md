@@ -8,6 +8,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
+- `migrate` command: migration scripts and finalize hooks now accept `tenantID` parameter,
+  so that logic might be executed depending on tenant ID (system / non system tenant logic separation)
 
 ### Deprecated
 

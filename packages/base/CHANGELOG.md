@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+- A new built-in role in the `uba_common` module: `TenantUser`, added for multi-tenant
+  environments only
 
 ### Changed
 
