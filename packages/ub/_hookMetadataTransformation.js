@@ -10,6 +10,7 @@ module.exports = ubMixinTransformation
  * @param {object} serverConfig
  */
 function ubMixinTransformation (domainJson, serverConfig) {
+  addManyRefEntities(domainJson, serverConfig)
   addImplicitlyAddedMixins(domainJson, serverConfig)
   const mt = serverConfig.security.multitenancy
   if (mt && (mt.enabled === true)) {
@@ -23,7 +24,7 @@ function ubMixinTransformation (domainJson, serverConfig) {
 
 /**
  * Add implicitlyAddedMixins for each entity where such mixin not disabled
- * @param {object<string, {modelName: string, meta: object, lang: object<string, object>}>} domainJson
+ * @param {object<string, {modelName: string, meta: object, langs: object<string, object>}>} domainJson
  * @param {object} serverConfig
  */
 function addImplicitlyAddedMixins (domainJson, serverConfig) {
@@ -42,8 +43,58 @@ function addImplicitlyAddedMixins (domainJson, serverConfig) {
 }
 
 /**
+ * Add entities for storing data for attributes of type "Many" (`associationManyData`)
+ * @param {object<string, {modelName: string, meta: object, langs: object<string, object>}>} domainJson
+ * @param {object} serverConfig
+ */
+function addManyRefEntities (domainJson, serverConfig) {
+  for (const entityName in domainJson) {
+    const entityMeta = domainJson[entityName].meta
+    for (const attr of entityMeta.attributes) {
+      if (attr.dataType !== 'Many') continue
+      if (domainJson[attr.associationManyData]) continue // many data entity already added
+      console.debug('Start adding Many for ', attr, 'of', entityMeta)
+      const addedManyEntity = {
+        code: attr.associationManyData,
+        name: attr.associationManyData,
+        isManyManyRef: true,
+        connectionName: entityMeta.connectionName,
+        attributes: [{
+          name: 'sourceID',
+          caption: 'sourceID',
+          dataType: 'Entity',
+          associatedEntity: entityName,
+          cascadeDelete: (entityMeta.mixins && entityMeta.mixins.mStorage && !entityMeta.mixins.mStorage.safeDelete),
+          allowNull: false
+        }, {
+          name: 'destID',
+          caption: 'destID',
+          dataType: 'Entity',
+          associatedEntity: attr.associatedEntity,
+          cascadeDelete: attr.cascadeDelete,
+          allowNull: false
+        }],
+        mixins: {
+          audit: {
+            enabled: (entityMeta.mixins && entityMeta.mixins.audit && entityMeta.mixins.audit.enabled),
+            parentIdentifier: 'sourceID',
+            parentEntity: entityName
+          }
+        }
+      }
+      domainJson[attr.associationManyData] = {
+        modelName: domainJson[entityName].modelName,
+        meta: addedManyEntity,
+        langs: null
+      }
+      console.debug('Added many entity ', JSON.stringify(domainJson[attr.associationManyData]), null, '  ')
+    }
+  }
+}
+
+/**
  * Add mi_tenantID for each entity with multi-tenancy
- * @param {object<string, {modelName: string, meta: object, lang: object<string, object>}>} domainJson
+ * @param {object<string, {modelName: string, meta: object, langs: object<string, object>}>} domainJson
  * @param {object} serverConfig
  */
 function addMultitenancyMixinAttributes (domainJson, serverConfig) {

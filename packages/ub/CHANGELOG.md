@@ -6,9 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+ - data storage entities for "Many" attributes now added by metadata transformation hook of @unitybase/ub model (instead native server code)
 
 ### Changed
-- Add `TenantUser` built-in role on login of every user, if user is logged in any tenant except
+ - Add `TenantUser` built-in role on login of every user, if user is logged in any tenant except
   the system tenant
 
 ### Deprecated
