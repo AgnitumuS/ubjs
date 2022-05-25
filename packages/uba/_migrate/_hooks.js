@@ -32,7 +32,7 @@ function buildExpectedEls(conn) {
       // Workaround for UB issue: ACL and Many entities do not have multitenancy mixin yet
       continue
     }
-    if (ei.dsType === 'Virtual' || ei.dsType === 'External') {
+    if (ei.dsType === 'External') {
       continue
     }
     if (!ei.mixins.multitenancy || ei.mixins.multitenancy.enabled === false) {
