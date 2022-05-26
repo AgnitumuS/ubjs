@@ -255,7 +255,6 @@
         @click-head-cell="showSortDropdown"
         @click-cell="select"
         @contextmenu="showContextMenu"
-        @dblclick-row="onSelect($event.row.ID, $event.row)"
         @change-active-row="activeRowChangeHandler"
       >
         <template
@@ -324,7 +323,6 @@
         @remove-selected="$emit('remove-selected', $event)"
         @click="select"
         @contextmenu="showContextMenu"
-        @dblclick="onSelect($event.row.ID, $event.row)"
         @change-active-row="activeRowChangeHandler"
       >
         <slot
