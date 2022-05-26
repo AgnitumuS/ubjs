@@ -1,8 +1,8 @@
 <template>
   <div
     v-loading="loading"
+    class="u-table-entity"
     :class="{
-      'u-table-entity': true,
       'u-table-entity__bordered': bordered
     }"
     tabindex="1"
@@ -917,6 +917,10 @@ export default {
   display: flex;
   flex-direction: column;
   overflow: auto;
+}
+
+.u-table-entity .u-table tr.selected td.selected, .u-table-entity .u-card-grid .u-card.selected {
+  cursor: pointer;
 }
 
 .u-table-entity__bordered {
