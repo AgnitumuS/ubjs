@@ -6,7 +6,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
-- Migration hook for dynamically creating ELS rules for TenantUser role
 
 ### Changed
 
@@ -15,6 +14,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+
+## [5.22.15] - 2022-05-26
+### Added
+- Migration hook for dynamically creating ELS rules for TenantUser role
 
 ## [5.22.14] - 2022-05-22
 ### Added

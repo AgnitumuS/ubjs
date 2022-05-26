@@ -6,6 +6,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+## [5.22.17] - 2022-05-26
+### Added
  - access to `process` (in addition to server config and current connection config) is added into `ubcli execSql` template engine.
   This made possible to use environment variables in templates, for example in migrate SQL scripts:
 ```
@@ -19,12 +30,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Changed
 - `migrate` command: migration scripts and finalize hooks now accept `tenantID` parameter,
   so that logic might be executed depending on tenant ID (system / non system tenant logic separation)
-
-### Deprecated
-
-### Removed
-
-### Fixed
 
 ## [5.22.16] - 2022-05-22
 ### Added

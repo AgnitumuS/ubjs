@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.22.21] - 2022-05-26
 ## [5.22.20] - 2022-05-22
 ### Added
  - sidebar (instance of USidebar component) is exported as `SidebarInstance`. Example below collapse sidebar programmatically:

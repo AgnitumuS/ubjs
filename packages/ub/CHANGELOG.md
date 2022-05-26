@@ -8,14 +8,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
-- Add `TenantUser` built-in role on login of every user, if user is logged in any tenant except
-  the system tenant
 
 ### Deprecated
 
 ### Removed
 
 ### Fixed
+
+## [5.22.38] - 2022-05-26
+### Changed
+- Add `TenantUser` built-in role on login of every user, if user is logged in any tenant except
+  the system tenant
 
 ## [5.22.37] - 2022-05-22
 ### Changed
