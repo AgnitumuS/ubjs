@@ -917,7 +917,7 @@ export default {
   overflow: auto;
 }
 
-.u-table-entity .u-table tr.selected td.selected, .u-table-entity .u-card-grid .u-card.selected {
+.u-table-entity .u-table tr.selected, .u-table-entity .u-card-grid .u-card.selected {
   cursor: pointer;
 }
 
