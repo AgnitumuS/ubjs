@@ -724,6 +724,11 @@ export default {
     },
 
     select ({ row, column }) {
+      // this is to open the edit form with one click when the row is already selected
+      if (row.ID === this.$store.state.selectedRowId) {
+        this.onSelect(row.ID, row)
+        return
+      }
       if (column !== undefined) {
         this.SELECT_COLUMN(column.id)
       }

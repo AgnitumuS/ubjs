@@ -125,7 +125,7 @@
         @dblclick="$emit('dblclick-row', { row })"
         @click="onTableRowClickHandler(rowIndex)"
         @keydown.space="handlerSelection(row, $event)"
-        @focus="hoverIndex = rowIndex"
+        @focus="focusHandler(rowIndex)"
       >
         <td
           v-if="preMultiSelectionColumn"
@@ -373,6 +373,7 @@ export default {
   },
 
   methods: {
+
     getAlignClass (align = 'left') {
       return `u-table__cell__align-${align}`
     },
