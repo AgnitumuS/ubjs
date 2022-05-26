@@ -44,7 +44,7 @@
         @keydown.up="toArrowPressHandler($event, 'up')"
         @keydown.left="toArrowPressHandler($event, 'up')"
         @click="cardClickHandler(rowIndex, $event)"
-        @focus="focusHandler(rowIndex)"
+        @focus="focusHandler(rowIndex, $event)"
         @keydown.space="handlerSelection(row, $event)"
         @dblclick="$emit('dblclick', { row })"
         @contextmenu="contextMenuEventHandler($event,row)"

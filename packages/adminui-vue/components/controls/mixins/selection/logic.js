@@ -31,12 +31,8 @@ module.exports = {
     }
   },
   methods: {
-    // WARNING: this is to open the edit form with one click when the row is already selected
-    focusHandler (rowIndex) {
-      if (this.hoverIndex === rowIndex) return
-      setTimeout(() => {
-        this.hoverIndex = rowIndex
-      }, 100)
+    focusHandler (rowIndex, event) {
+      this.onTableRowClickHandler(rowIndex, event)
     },
     // used in UCardView
     cardClickHandler (rowIndex, event) {
@@ -95,7 +91,7 @@ module.exports = {
       /**
        * Triggers when the user removes or adds a selection
        *
-       * @param {array<number>} selectedIDs an array that includes all currently selected values
+       * @param {Array<number>} selectedIDs an array that includes all currently selected values
        */
       this.$emit('selected', this.curSelection)
     },
@@ -105,7 +101,7 @@ module.exports = {
       const temp = new Set(this.curSelection)
       if (!allSelected) {
         const addedCache = []
-        items.forEach(el => {
+        items.forEach((el) => {
           const value = el[multiSelectKeyAttr]
           if (!temp.has(value)) {
             temp.add(value)
@@ -147,13 +143,13 @@ module.exports = {
        *
        * @deprecated - exist for backward copability. Use contextmenu menu event and check column available field
        */
-      if (col) this.$emit('contextmenu-cell', { event: $event, row, column: col })
+      if (col) { this.$emit('contextmenu-cell', { event: $event, row, column: col }) }
     },
     getSelectionRows () {
       const { items, multiSelectKeyAttr } = this
       const rows = []
       const temp = new Set(this.curSelection)
-      items.forEach(el => {
+      items.forEach((el) => {
         const value = el[multiSelectKeyAttr]
         if (temp.has(value)) {
           temp.delete(value)
@@ -246,7 +242,15 @@ module.exports = {
         this.arrowWithShiftHandler(startRow, direction)
       }
     },
-    onTableRowClickHandler (rowIndex) {
+    onTableRowClickHandler (rowIndex, event) {
+      // WARNING: when you click on a row, the events focus and click go one after another. This is necessary so that you can distinguish the first click from the second click on the same row
+      if (event.type === 'focus' && !this.focusTiemout) {
+        this.focusTiemout = setTimeout(() => {
+          this.onTableRowClickHandler(rowIndex, event)
+        }, 100)
+        return
+      }
+      this.focusTiemout = clearTimeout(this.focusTiemout)
       const row = this.items[rowIndex]
       this.$emit('click', { row })
       this.$emit('click-row', { row })
