@@ -6,6 +6,15 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+ - access to `process` (in addition to server config and current connection config) is added into `ubcli execSql` template engine.
+  This made possible to use environment variables in templates, for example in migrate SQL scripts:
+```
+<% if (conn.dialect.startsWith('SQLite')) { %>
+  create synonym rep_reportResult for rep_reportResult@<%= process.env.LINKED_DB %>;
+<% } else { %>
+  -- do nothing
+<% } %>
+```
 
 ### Changed
 - `migrate` command: migration scripts and finalize hooks now accept `tenantID` parameter,
