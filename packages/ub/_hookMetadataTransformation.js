@@ -53,7 +53,6 @@ function addManyRefEntities (domainJson, serverConfig) {
     for (const attr of entityMeta.attributes) {
       if (attr.dataType !== 'Many') continue
       if (domainJson[attr.associationManyData]) continue // many data entity already added
-      console.debug('Start adding Many for ', attr, 'of', entityMeta)
       const addedManyEntity = {
         code: attr.associationManyData,
         name: attr.associationManyData,
@@ -87,7 +86,6 @@ function addManyRefEntities (domainJson, serverConfig) {
         meta: addedManyEntity,
         langs: null
       }
-      console.debug('Added many entity ', JSON.stringify(domainJson[attr.associationManyData]), null, '  ')
     }
   }
 }
