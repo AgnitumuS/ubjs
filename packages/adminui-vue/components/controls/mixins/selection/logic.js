@@ -244,10 +244,11 @@ module.exports = {
     },
     onTableRowClickHandler (rowIndex, event) {
       // WARNING: when you click on a row, the events focus and click go one after another. This is necessary so that you can distinguish the first click from the second click on the same row
+      if (event.type === 'focus' && document.activeElement !== event.target) return
       if (event.type === 'focus' && !this.focusTiemout) {
         this.focusTiemout = setTimeout(() => {
           this.onTableRowClickHandler(rowIndex, event)
-        }, 100)
+        }, 200)
         return
       }
       this.focusTiemout = clearTimeout(this.focusTiemout)
