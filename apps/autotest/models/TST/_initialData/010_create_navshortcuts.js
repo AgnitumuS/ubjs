@@ -316,25 +316,25 @@ module.exports = function (session) {
     }
   })
 
-  displayOrder += 10
-  console.log('\t\t\tcreate `tst_aclrls` shortcut')
-  conn.insert({
-    fieldList: ['ID'],
-    entity: 'ubm_navshortcut',
-    execParams: {
-      desktopID: desktopID,
-      code: 'tst_aclrls',
-      caption: 'tst_aclrls',
-      displayOrder: displayOrder,
-      cmdCode: JSON.stringify({
-        renderer: 'vue',
-        cmdType: 'showList',
-        cmdData: {
-          entityName: 'tst_aclrls'
-        }
-      }, null, '\t')
-    }
-  })
+  // displayOrder += 10
+  // console.log('\t\t\tcreate `tst_aclrls` shortcut')
+  // conn.insert({
+  //   fieldList: ['ID'],
+  //   entity: 'ubm_navshortcut',
+  //   execParams: {
+  //     desktopID: desktopID,
+  //     code: 'tst_aclrls',
+  //     caption: 'tst_aclrls',
+  //     displayOrder: displayOrder,
+  //     cmdCode: JSON.stringify({
+  //       renderer: 'vue',
+  //       cmdType: 'showList',
+  //       cmdData: {
+  //         entityName: 'tst_aclrls'
+  //       }
+  //     }, null, '\t')
+  //   }
+  // })
 
   displayOrder += 10
   console.log('\t\t\tcreate `tst_gridAction` shortcut')

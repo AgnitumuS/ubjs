@@ -21,8 +21,8 @@
         "aclRls": {
             "useUnityName": false,
             "onEntities": ["org_unit", "uba_subject"],
-            "entityConnectAttr": "[ID]"
-            //,            "exprMethod": "doc_currentOrgUnitAndAdmSubj"
+            "entityConnectAttr": "[ID]",
+            "exprMethod": "tstAclRlsExpr"
         }
     }
 }
