@@ -14,6 +14,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+- Remove from available details for User entity: User Sessions, Previous Passwords,
+  One Time Passwords, Advanced Authentication
 
 ## [5.22.15] - 2022-05-26
 ### Added

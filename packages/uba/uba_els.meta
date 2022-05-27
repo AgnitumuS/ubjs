@@ -1,5 +1,5 @@
 {
-  "caption": "Entity Level Security(ELS)",
+  "caption": "Entity Level Security (ELS)",
   "description": "Describe, which role have access permissions to Entities methods",
   "connectionName": "",
   "cacheType": "None",

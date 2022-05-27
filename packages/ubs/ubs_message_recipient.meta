@@ -19,7 +19,10 @@
       "dataType": "Entity",
       "associatedEntity": "uba_user",
       "caption": "User",
-      "allowNull": false
+      "allowNull": false,
+      "customSettings": {
+        "hiddenInDetails": true
+      }
     },
     {
       "name": "acceptDate",
