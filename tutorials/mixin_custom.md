@@ -37,6 +37,20 @@ UB.registerMixinModule('myMixin', myMixinImpl)
 ```
 
 ## Implementation tips
+
+### Adding new attributes/entities
+Sometimes mixin should add a new attributes\entities into domain. This can be done using metadata transformation hook
+what can mutate a Domain JSON.
+
+About metadata hooks see [Application initialization section](https://unitybase.info/api/server-v5/module-@unitybase_ub.html)
+of `@unitybase/ub` module documentation
+
+> Metadata transformation hook is called on the domain loading stage while server is in `single-thread` mode.
+> 
+> In opposite mixin module is evaluated for each working thread
+
+The real-life code what mutates a Domain and adds additional attributes can be found in [@unitybase/ub] model - [see sources @unitybase/ub/_hookMetadataTransformation.js](https://git-pub.intecracy.com/unitybase/ubjs/-/blob/master/packages/ub/_hookMetadataTransformation.js)
+
 ### Logging with log level
 Wrap methods in logEnter / logLeave block to get a better logging + time profile for free
 ```javascript
