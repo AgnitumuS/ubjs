@@ -251,6 +251,7 @@ Ext.define('UB.ux.Multifilter', {
       items: [
         button,
         filterBar = Ext.create('Ext.toolbar.Toolbar', {
+          flex: 1,
           items: filterItems
         })
 
@@ -1300,6 +1301,7 @@ Ext.define('UB.ux.Multifilter', {
       }
 
       cfg.width = 180
+      cfg.flex = 1
       cfg.labelWidth = 100 // 'auto';
       cfg.isFormField = context.isPreFilter
       cfg.allowBlank = !required
@@ -1518,6 +1520,7 @@ Ext.define('UB.ux.Multifilter', {
       }
 
       cfg.width = 180
+      cfg.flex = 1
       cfg.labelWidth = 100 // 'auto';
       cfg.isFormField = context.isPreFilter
       cfg.allowBlank = !required
