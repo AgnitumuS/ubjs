@@ -14,7 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
- - `UB.ux.Multifilter`: stretch input control when opening the filter in new window
+ - `UB.ux.Multifilter`: stretch input control when opening filter in the new window
 
 ## [5.22.19] - 2022-05-26
 ### Added
