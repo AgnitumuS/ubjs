@@ -65,6 +65,13 @@
     <u-toolbar>
       <u-button appearance="plain" icon="u-icon-download" slot="left"></u-button>
       <u-button slot="right">right side btn</u-button>
+      <template #dropdown-prepend>
+        <u-dropdown-item
+          label="markAsReady"
+          icon="u-icon-check"
+        />
+        <u-dropdown-item divider />
+      </template>
       <!-- Or any component you need, button for example -->
       <button slot="dropdown">dropdown btn</button>
       <div slot="toolbarInfoRow">some content</div>
