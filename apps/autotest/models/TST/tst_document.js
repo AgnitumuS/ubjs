@@ -4,6 +4,7 @@ const UB = require('@unitybase/ub')
 
 me.entity.addMethod('updateNotLocked')
 me.entity.addMethod('runSelectInJSContext')
+me.entity.addMethod('runInAnotherConn')
 /**
  * Update instance without lock to test how "not locked" error is handled \
  * when called from JS
@@ -52,6 +53,16 @@ me.testMailQueue = function (ctx) {
   })
 }
 me.entity.addMethod('testMailQueue')
+
+/**
+ * Verify changing of entity code to point to another entity in different connection
+ * @param {ubMethodParams} ctx
+ */
+me.runInAnotherConn = function (ctx) {
+  ctx.dataStore.runSQL('select * from uba_user', {})
+  ctx.dataStore.switchEntity('fts_ftsDefault')
+  ctx.dataStore.runSQL('SELECT A01.ID,A01.entity,A01.ftsentity,A01.dy,A01.dm,A01.dd,A01.datacode,A01.aclrls,A01.entitydescr,A01.databody FROM ftsDefault_en A01  LIMIT 10 OFFSET 0', {})
+}
 
 /**
  * Fake RLS just to ensure entity with RLS mixin return total correctly if select() is implemented in `select:before` event
