@@ -16,9 +16,10 @@ me.tstAclRlsExpr = function tstAclRlsExpr (params, aclRlsEntityName) {
   }
 
   const subjectIds = [Session.userID, ...Session.uData.roleIDs, ...Session.uData.groupIDs]
-
+  console.log('selectionRule=', params.selectionRule)
   params.aclRlsResult = {
     entity: aclRlsEntityName,
+    fieldList: ['instanceID'],
     whereList: {
       byInstanceID: {
         expression: `[instanceID] = ${params.contextEntitySqlAlias}.ID`,
