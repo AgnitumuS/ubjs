@@ -639,7 +639,7 @@ const me = uba_user
 me.runInAnotherConn = function (ctx) {
   ctx.dataStore.runSQL('select * from uba_user', {})
   ctx.dataStore.switchEntity('fts_ftsDefault')
-  ctx.dataStore.runSQL('SELECT A01.ID,A01.entity,A01.ftsentity,A01.dy,A01.dm,A01.dd,A01.datacode,A01.aclrls,A01.entitydescr,A01.databody FROM ftsDefault_en A01  LIMIT 10 OFFSET 0', {})
+  ctx.dataStore.runSQL('SELECT A01.ID,A01.entity,A01.ftsentity,A01.databody FROM ftsDefault_en A01  LIMIT 10 OFFSET 0', {})
 }
  * @function switchEntity
  * @param {string} newContextEntityCode
