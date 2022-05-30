@@ -723,7 +723,17 @@ export default {
 
     select ({ row, column }) {
       // this is to open the edit form with one click when the row is already selected
-      if (row.ID === this.$store.state.selectedRowId) {
+      const store = this.$store.state
+      if (
+        column &&
+        store.selectedRowId === row.ID &&
+        store.selectedColumnId === column.id
+      ) {
+        this.onSelect(row.ID, row)
+        return
+      }
+      // for CardView
+      if (!column && store.selectedRowId === row.ID) {
         this.onSelect(row.ID, row)
         return
       }
@@ -917,7 +927,7 @@ export default {
   overflow: auto;
 }
 
-.u-table-entity .u-table tr.selected, .u-table-entity .u-card-grid .u-card.selected {
+.u-table-entity .u-table tr.selected td.selected, .u-table-entity .u-card-grid .u-card.selected {
   cursor: pointer;
 }
 
