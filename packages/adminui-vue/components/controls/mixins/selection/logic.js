@@ -264,7 +264,6 @@ module.exports = {
        *
        * @param {object<index>} index new active row in table items array
        */
-      console.log(123)
       this.$emit('change-active-row', { index: this.hoverIndex })
       const { children } = this.$refs.content
       // because first tr in table it is head
