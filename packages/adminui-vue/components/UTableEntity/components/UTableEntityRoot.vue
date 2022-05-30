@@ -859,6 +859,8 @@ export default {
     },
 
     onSelect (ID, row) {
+      const selection = window.getSelection()
+      if (selection.toString()) return
       if (this.onSelectRecord) {
         this.onSelectRecord({ ID, row, close: this.close })
       } else if (this.canEdit) {
