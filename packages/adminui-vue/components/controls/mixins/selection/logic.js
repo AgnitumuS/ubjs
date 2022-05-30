@@ -31,6 +31,13 @@ module.exports = {
     }
   },
   methods: {
+    // WARNING: this is to open the edit form with one click when the row is already selected
+    focusHandler (rowIndex) {
+      if (this.hoverIndex === rowIndex) return
+      setTimeout(() => {
+        this.hoverIndex = rowIndex
+      }, 150)
+    },
     // used in UCardView
     cardClickHandler (rowIndex, event) {
       // const row = this.items[rowIndex]
@@ -262,7 +269,7 @@ module.exports = {
       // because first tr in table it is head
       const shift = children.length - this.items.length
       const row = children[this.hoverIndex + shift]
-      if (!row) return
+      if (!row || document.activeElement === row) return
       row.focus()
     }
   }

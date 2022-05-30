@@ -1,8 +1,8 @@
 <template>
   <div
     v-loading="loading"
+    class="u-table-entity"
     :class="{
-      'u-table-entity': true,
       'u-table-entity__bordered': bordered
     }"
     tabindex="1"
@@ -255,7 +255,6 @@
         @click-head-cell="showSortDropdown"
         @click-cell="select"
         @contextmenu="showContextMenu"
-        @dblclick-row="onSelect($event.row.ID, $event.row)"
         @change-active-row="activeRowChangeHandler"
       >
         <template
@@ -324,7 +323,6 @@
         @remove-selected="$emit('remove-selected', $event)"
         @click="select"
         @contextmenu="showContextMenu"
-        @dblclick="onSelect($event.row.ID, $event.row)"
         @change-active-row="activeRowChangeHandler"
       >
         <slot
@@ -724,6 +722,21 @@ export default {
     },
 
     select ({ row, column }) {
+      // this is to open the edit form with one click when the row is already selected
+      const store = this.$store.state
+      if (
+        column &&
+        store.selectedRowId === row.ID &&
+        store.selectedColumnId === column.id
+      ) {
+        this.onSelect(row.ID, row)
+        return
+      }
+      // for CardView
+      if (!column && store.selectedRowId === row.ID) {
+        this.onSelect(row.ID, row)
+        return
+      }
       if (column !== undefined) {
         this.SELECT_COLUMN(column.id)
       }
@@ -846,6 +859,8 @@ export default {
     },
 
     onSelect (ID, row) {
+      const selection = window.getSelection()
+      if (selection.toString()) return
       if (this.onSelectRecord) {
         this.onSelectRecord({ ID, row, close: this.close })
       } else if (this.canEdit) {
@@ -912,6 +927,10 @@ export default {
   display: flex;
   flex-direction: column;
   overflow: auto;
+}
+
+.u-table-entity .u-table tr.selected td.selected, .u-table-entity .u-card-grid .u-card.selected {
+  cursor: pointer;
 }
 
 .u-table-entity__bordered {
