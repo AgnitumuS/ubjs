@@ -123,9 +123,9 @@
         ]"
         tabindex="1"
         @dblclick="$emit('dblclick-row', { row })"
-        @click="onTableRowClickHandler(rowIndex, $event)"
+        @click="onTableRowClickHandler(rowIndex)"
         @keydown.space="handlerSelection(row, $event)"
-        @focus="focusHandler(rowIndex, $event)"
+        @focus="focusHandler(rowIndex)"
       >
         <td
           v-if="preMultiSelectionColumn"
