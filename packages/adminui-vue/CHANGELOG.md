@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 ### Added
  - `UToolbar`: the `dropdown-prepend` slot to add some items at the start of dropdown
+ - new experimental "Orange' UI theme added
 
 ### Changed
  - `UTable/UTableEntity/UCardView`: improved mobile UX. Click\tap on active cell\card now open edit form (like double click on row) 
