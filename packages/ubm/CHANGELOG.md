@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+ - UI Settings form: fix adding unneeded quoter's for `applicationName` parameter in case it`s a simple string (do not contain localization) 
 
 ## [5.22.19] - 2022-05-26
 ## [5.22.18] - 2022-05-22

@@ -124,6 +124,7 @@ module.exports.default = {
   name: 'ubm_desktop-uiSettings',
   inject: ['$v'],
   data () {
+    const appName = this.$UB.connection.appConfig.uiSettings.adminUI.applicationName
     return {
       loginWindowTopLogoFile: [],
       loginWindowTopLogoDataURL: '',
@@ -132,7 +133,7 @@ module.exports.default = {
       sidebarLogoBigFile: [],
       sidebarLogoBigDataURL: '',
       applicationTitle: this.$UB.connection.appConfig.uiSettings.adminUI.applicationTitle,
-      applicationName: JSON.stringify(this.$UB.connection.appConfig.uiSettings.adminUI.applicationName),
+      applicationName: typeof appName === 'string' ? appName : JSON.stringify(appName),
       supportMailTo: this.$UB.connection.appConfig.uiSettings.adminUI.supportMailTo,
       availableThemes: [],
       selectedTheme: this.$UB.connection.appConfig.uiSettings.adminUI.customTheme || 'buildin'
