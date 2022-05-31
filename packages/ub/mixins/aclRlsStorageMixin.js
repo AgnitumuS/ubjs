@@ -2,11 +2,11 @@ const App = require('../modules/App')
 const { UBAbort } = require('../modules/ubErrors')
 /**
  * An ACL storage implementation for entities with aclRls mixin. Mixin tasks are:
- *   - subscribe on insert:before event and:
+ *   - subscribe on insert:before/update:before event and:
  *     - validate input data contain only one of possible `onEntities` value and fill `valueID`
  *     - validate instanceID is passed
  *
- * This mixin is used internally by aclRls - should not be used directly in meta files
+ * This mixin is used internally by entities what created automatically by aclRls - should not be used directly in meta files
  *
  * Configuration
  * "mixins": {
@@ -28,14 +28,14 @@ module.exports = {
  * @param {UBEntityMixin} mixinCfg Mixin configuration from entity metafile
  */
 function initEntityForAclRlsStorage (entity, mixinCfg) {
-  global[entity.code].on('insert:before', checkAlcRlsInsertion)
+  global[entity.code].on('insert:before', validateAclRlsInsUpd)
 }
 
 /**
  *
  * @param {ubMethodParams} ctx
  */
-function checkAlcRlsInsertion (ctx) {
+function validateAclRlsInsUpd (ctx) {
   const execParams = ctx.mParams.execParams
   const { instanceID } = execParams
   if (!instanceID) throw new UBAbort('Parameter \'instanceID\' is required')
@@ -47,6 +47,5 @@ function checkAlcRlsInsertion (ctx) {
       valueID = execParams[prm]
     }
   })
-  const newName = params.name
-  const ID = params.ID
+  execParams.valueID = valueID
 }
