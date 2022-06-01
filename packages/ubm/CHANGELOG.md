@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
+- Made the `ubm_desktop_adm`, `ubm_navshortcut`, `ubm_desktop_adm` entities tenant-bound.
 
 ### Deprecated
 
