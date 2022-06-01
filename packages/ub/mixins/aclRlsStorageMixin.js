@@ -1,10 +1,10 @@
-const App = require('../modules/App')
 const { UBAbort } = require('../modules/ubErrors')
 /**
  * An ACL storage implementation for entities with aclRls mixin. Mixin tasks are:
- *   - subscribe on insert:before/update:before event and:
+ *   - subscribe on insert:before event and:
  *     - validate input data contain only one of possible `onEntities` value and fill `valueID`
  *     - validate instanceID is passed
+ *   - subscribe on update:before event and throws (update is not applicable)
  *
  * This mixin is used internally by entities what created automatically by aclRls - should not be used directly in meta files
  *
@@ -28,14 +28,14 @@ module.exports = {
  * @param {UBEntityMixin} mixinCfg Mixin configuration from entity metafile
  */
 function initEntityForAclRlsStorage (entity, mixinCfg) {
-  global[entity.code].on('insert:before', validateAclRlsInsUpd)
+  global[entity.code].on('insert:before', validateAclRlsIns)
+  global[entity.code].on('update:before', denyUpdateForAclRls)
 }
 
 /**
- *
  * @param {ubMethodParams} ctx
  */
-function validateAclRlsInsUpd (ctx) {
+function validateAclRlsIns (ctx) {
   const execParams = ctx.mParams.execParams
   const { instanceID } = execParams
   if (!instanceID) throw new UBAbort('Parameter \'instanceID\' is required')
@@ -47,5 +47,13 @@ function validateAclRlsInsUpd (ctx) {
       valueID = execParams[prm]
     }
   })
-  execParams.valueID = valueID
+  if (!valueID) throw new UBAbort('One of subject must be non-null in execParams')
+  execParams.valueID = +valueID
+}
+
+/**
+ * @param {ubMethodParams} ctx
+ */
+function denyUpdateForAclRls (ctx) {
+  throw new UBAbort('Update method is not applicable for aclRls storage entity')
 }

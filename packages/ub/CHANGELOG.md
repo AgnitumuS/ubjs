@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 ### Added
  - data storage entities for "Many" attributes now added by metadata transformation hook of @unitybase/ub model (instead native server code)
+ - mixin what implements data storage for ACL RLS implementation moved from native to JS (@unitybase/ub/mixins/aclRlsStorageMixin.js)
 
 ### Changed
  - Add `TenantUser` built-in role on login of every user, if user is logged in any tenant except
