@@ -501,14 +501,14 @@ function validateWithErrorText (errorLocale, validator) {
 }
 
 /**
- * show table with changes history of specified entity instance. Entity must hase a `dataHistory` mixin
+ * Show Ext-js based form with changes history of specified instance (for entity with `dataHistory` mixin)
  * @param {string} entityName
  * @param {number} instanceID
  * @param {array<string>} fieldList
  * @param {array<object>} [columns] optional columns definition for showList
  * @returns {Promise<void>}
  */
- async function showRecordHistoryOldForm (entityName, instanceID, fieldListOrig, columns) {
+function showRecordHistoryExtForm (entityName, instanceID, fieldListOrig, columns) {
   const fieldList = new Set(fieldListOrig)
 
   fieldList.add('mi_dateFrom')
@@ -522,7 +522,7 @@ function validateWithErrorText (errorLocale, validator) {
       item.description = UB.i18n(field)
     }
   }
-  $App.doCommand({
+  return $App.doCommand({
     cmdType: 'showList',
     renderer: 'ext',
     isModal: true,
@@ -542,7 +542,7 @@ function validateWithErrorText (errorLocale, validator) {
 }
 
 /**
- * show table with changes history of specified entity instance. Entity must hase a `dataHistory` mixin
+ * Show Vue based form with changes history of specified instance (for entity with `dataHistory` mixin)
  * @param {string} entityName
  * @param {number} instanceID
  * @param {array<string>} fieldList
@@ -552,9 +552,8 @@ function validateWithErrorText (errorLocale, validator) {
 async function showRecordHistory (entityName, instanceID, fieldList, columns) {
   const useVueTables = UB.connection.appConfig.uiSettings.adminUI.useVueTables
   if (!useVueTables) {
-    // TODO: delete this code after complete migration to the vue, or the ext form will not be needed
-    await showRecordHistoryOldForm(entityName, instanceID, fieldList, columns)
-    return
+    // TODO: delete this code after complete migration to vue, or when ext form will not be needed
+    return showRecordHistoryExtForm(entityName, instanceID, fieldList, columns)
   }
 
   const dataId = await UB.Repository(entityName)
