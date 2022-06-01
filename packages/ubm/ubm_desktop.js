@@ -54,7 +54,7 @@ me.changeUISettings = function changeUISettings (ctx) {
 
   if (ctx.mParams.reset) {
     ['loginWindowTopLogoURL', 'sidebarLogoURL', 'sidebarLogoBigURL',
-      'applicationTitle', 'applicationName', 'supportMailTo'
+      'applicationTitle', 'applicationName', 'supportMailTo', 'customTheme'
     ].forEach(pn => {
       delete partial.uiSettings.adminUI[pn]
     })
@@ -82,7 +82,6 @@ me.changeUISettings = function changeUISettings (ctx) {
 
     ;['loginWindowTopLogo', 'sidebarLogo', 'sidebarLogoBig'].forEach(dataURLSave)
     ;['applicationTitle', 'supportMailTo', 'customTheme'].forEach(strSave)
-    console.debug(newS.applicationName)
     if (newS.applicationName && newS.applicationName.startsWith('{')) {
       partial.uiSettings.adminUI.applicationName = JSON.parse(newS.applicationName)
     } else {
