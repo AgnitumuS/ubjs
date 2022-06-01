@@ -17,6 +17,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+ - UToolbar: fix helpers.showRecordHistory when useVueTables=false
 
 ## [5.22.21] - 2022-05-26
 ## [5.22.20] - 2022-05-22
