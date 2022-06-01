@@ -8,11 +8,16 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
-- Made the `ubm_desktop_adm`, `ubm_navshortcut`, `ubm_desktop_adm` entities tenant-bound.
 
 ### Deprecated
 
 ### Removed
+
+### Fixed
+
+## [5.22.20] - 2022-06-01
+### Changed
+- Made the `ubm_desktop_adm`, `ubm_navshortcut`, `ubm_desktop_adm` entities tenant-bound.
 
 ### Fixed
  - UI Settings form: fix adding unneeded quoter's for `applicationName` parameter in case it`s a simple string (do not contain localization)

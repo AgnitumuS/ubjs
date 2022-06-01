@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.22.39] - 2022-06-01
 ## [5.22.38] - 2022-05-26
 ### Changed
 - Add `TenantUser` built-in role on login of every user, if user is logged in any tenant except

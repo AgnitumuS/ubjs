@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.22.9] - 2022-06-01
 ## [5.22.8] - 2022-05-26
 ### Added
 - A new built-in role in the `uba_common` module: `TenantUser`, added for multi-tenant

@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.22.18] - 2022-06-01
 ## [5.22.17] - 2022-05-26
 ### Added
  - access to `process` (in addition to server config and current connection config) is added into `ubcli execSql` template engine.

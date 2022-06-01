@@ -14,6 +14,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+
+## [5.22.19] - 2022-06-01
+### Fixed
 - Remove Message Recipients from details of User entity.
 - Fixed caption for some locales for ubs_filter entity and remove it
 
