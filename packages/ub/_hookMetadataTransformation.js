@@ -148,7 +148,7 @@ function addMultitenancyMixinAttributes (domainJson, serverConfig) {
  * Disable multitenancy mixin in all entities
  * @param {object<string, {modelName: string, meta: object, lang: object<string, object>}>} domainJson
  */
-function removeMultitenancyMixin(domainJson) {
+function removeMultitenancyMixin (domainJson) {
   for (const { meta: entityMeta } of Object.values(domainJson)) {
     if (entityMeta.mixins && entityMeta.mixins.multitenancy) {
       delete entityMeta.mixins.multitenancy
