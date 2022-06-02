@@ -1,6 +1,6 @@
 {
-  "caption": "User Roles",
-  "description": "Roles assigned to user",
+  "caption": "User Role Membership",
+  "description": "Roles assigned to users",
   "attributes": [
     {
       "name": "userID",
