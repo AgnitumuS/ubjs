@@ -60,7 +60,6 @@
         <th
           v-if="showMultiSelectionColumn"
           class="u-table__multiple-column-head u-table__multiple__cell"
-          tabindex="1"
           @click="checkedAllHandler"
           @keydown.space="checkedAllHandler"
         >
@@ -121,11 +120,9 @@
             'selected': hoverIndex === rowIndex
           }
         ]"
-        tabindex="1"
         @dblclick="$emit('dblclick-row', { row })"
         @click="onTableRowClickHandler(rowIndex)"
         @keydown.space="handlerSelection(row, $event)"
-        @focus="focusHandler(rowIndex)"
       >
         <td
           v-if="preMultiSelectionColumn"

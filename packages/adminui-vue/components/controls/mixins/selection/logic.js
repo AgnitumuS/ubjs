@@ -27,17 +27,15 @@ module.exports = {
       this.curSelection = e
     },
     hoverIndex () {
-      this.setFocusRow()
+      /**
+       * Triggers when the user change active row with mouse or keyboard arrow
+       *
+       * @param {object<index>} index new active row in table items array
+       */
+      this.$emit('change-active-row', { index: this.hoverIndex })
     }
   },
   methods: {
-    // WARNING: this is to open the edit form with one click when the row is already selected
-    focusHandler (rowIndex) {
-      if (this.hoverIndex === rowIndex) return
-      setTimeout(() => {
-        this.hoverIndex = rowIndex
-      }, 150)
-    },
     // used in UCardView
     cardClickHandler (rowIndex, event) {
       // const row = this.items[rowIndex]
@@ -95,7 +93,7 @@ module.exports = {
       /**
        * Triggers when the user removes or adds a selection
        *
-       * @param {array<number>} selectedIDs an array that includes all currently selected values
+       * @param {Array<number>} selectedIDs an array that includes all currently selected values
        */
       this.$emit('selected', this.curSelection)
     },
@@ -105,7 +103,7 @@ module.exports = {
       const temp = new Set(this.curSelection)
       if (!allSelected) {
         const addedCache = []
-        items.forEach(el => {
+        items.forEach((el) => {
           const value = el[multiSelectKeyAttr]
           if (!temp.has(value)) {
             temp.add(value)
@@ -147,13 +145,13 @@ module.exports = {
        *
        * @deprecated - exist for backward copability. Use contextmenu menu event and check column available field
        */
-      if (col) this.$emit('contextmenu-cell', { event: $event, row, column: col })
+      if (col) { this.$emit('contextmenu-cell', { event: $event, row, column: col }) }
     },
     getSelectionRows () {
       const { items, multiSelectKeyAttr } = this
       const rows = []
       const temp = new Set(this.curSelection)
-      items.forEach(el => {
+      items.forEach((el) => {
         const value = el[multiSelectKeyAttr]
         if (temp.has(value)) {
           temp.delete(value)
@@ -257,20 +255,6 @@ module.exports = {
       this.hoverIndex = rowIndex
       this.startRowIndex = rowIndex
       this.lastRow = row
-    },
-    setFocusRow () {
-      /**
-       * Triggers when the user change active row with mouse or keyboard arrow
-       *
-       * @param {object<index>} index new active row in table items array
-       */
-      this.$emit('change-active-row', { index: this.hoverIndex })
-      const { children } = this.$refs.content
-      // because first tr in table it is head
-      const shift = children.length - this.items.length
-      const row = children[this.hoverIndex + shift]
-      if (!row || document.activeElement === row) return
-      row.focus()
     }
   }
 }
