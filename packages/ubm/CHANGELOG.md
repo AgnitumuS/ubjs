@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
+- Moved navigation shortcut localizations into json files out of yaml files
 
 ### Deprecated
 
