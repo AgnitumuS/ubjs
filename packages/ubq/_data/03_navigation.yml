@@ -6,16 +6,7 @@ adm_desktop:
   $amendment: true
   items:
   - adm_folder_UBQ:
-      caption:
-        en: Mesages Queue
-        de: Nachrichten-Warteschlange
-        ru: Очереди сообщений
-        uk: Черги повідомлень
-        tg: Навбати паёмҳо
-        ka: რიგი
-        az: İsmarış növbələri
-        nl: Wachtrij
-        uz: Xabar navbatlari
+      caption: Message Queues
       iconCls: u-icon-more
       displayOrder: 50
       items:

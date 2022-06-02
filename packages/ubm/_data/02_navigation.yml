@@ -5,16 +5,7 @@ adm_desktop:
   $amendment: true
   items:
   - adm_folder_UI:
-      caption:
-        en: UI
-        de: Benutzeroberfläche
-        ka: მომხმარებლის ინტერფეისი
-        ru: Интерфейс
-        tg: Интерфейс
-        uk: Інтерфейс
-        nl: Gebruikersinterface
-        uz: Interfeys
-        az: İnterfeys
+      caption: UI
       iconCls: u-icon-image
       displayOrder: 30
       items:
