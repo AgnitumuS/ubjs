@@ -5,24 +5,13 @@ $context:
 adm_desktop:
   $amendment: true
   items:
-  - adm_folder_UI:
-      caption:
-        en: UI
-        de: Benutzeroberfläche
-        ka: მომხმარებლის ინტერფეისი
-        ru: Интерфейс
-        tg: Интерфейс
-        uk: Інтерфейс
-        nl: Gebruikersinterface
-        uz: Interfeys
-        az: İnterfeys
-      iconCls: u-icon-image
-      displayOrder: 30
+  - adm_folder_devTools:
+      $amendment: true
       items:
       - ubs_report:
-          caption: {$i18n: ubs_report}
+          caption: { $i18n: ubs_report }
           iconCls: u-icon-book
-          displayOrder: 60
+          displayOrder: 100
           cmd: >
             {
               renderer: 'vue',
@@ -48,7 +37,7 @@ adm_desktop:
       isCollapsed: true
       items:
       - ubs_settings:
-          caption: {$i18n: ubs_settings}
+          caption: { $i18n: ubs_settings }
           iconCls: u-icon-setting
           displayOrder: 10
           cmd: >
@@ -60,7 +49,7 @@ adm_desktop:
               }
             }
       - ubs_filter:
-          caption: {$i18n: ubs_filter}
+          caption: { $i18n: ubs_filter }
           iconCls: u-icon-filter
           displayOrder: 20
           cmd: >
@@ -72,7 +61,7 @@ adm_desktop:
               }
             }
       - ubs_numcounter:
-          caption: {$i18n: ubs_numcounter}
+          caption: { $i18n: ubs_numcounter }
           iconCls: u-icon-number
           displayOrder: 30
           cmd: >
@@ -84,7 +73,7 @@ adm_desktop:
               }
             }
       - ubs_numcounterreserv:
-          caption: {$i18n: ubs_numcounterreserv}
+          caption: { $i18n: ubs_numcounterreserv }
           iconCls: u-icon-number
           displayOrder: 40
           cmd: >
@@ -96,7 +85,7 @@ adm_desktop:
               }
             }
       - ubs_softLock:
-          caption: {$i18n: ubs_softLock}
+          caption: { $i18n: ubs_softLock }
           iconCls: u-icon-lock
           displayOrder: 50
           cmd: >
@@ -115,7 +104,7 @@ adm_desktop:
               }
             }
       - ubs_message:
-          caption: {$i18n: ubs_message}
+          caption: { $i18n: ubs_message }
           iconCls: u-icon-bell
           displayOrder: 60
           cmd: >
@@ -134,7 +123,7 @@ adm_desktop:
               }
             }
       - ubs_globalCache:
-          caption: {$i18n: ubs_globalCache}
+          caption: { $i18n: ubs_globalCache }
           iconCls: u-icon-data
           displayOrder: 60
           cmd: >

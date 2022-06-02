@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Changed
 - Moved navigation shortcut localizations into json files out of yaml files
+- Pull "Schedulers" menu items from "Queues" to "Developer Tools" folder
 
 ### Deprecated
 

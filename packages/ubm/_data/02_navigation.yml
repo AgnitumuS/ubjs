@@ -10,7 +10,7 @@ adm_desktop:
       displayOrder: 30
       items:
       - ubm_ui_settings:
-          caption: {$i18n: ubs_settings}
+          caption: { $i18n: ubs_settings }
           iconCls: u-icon-desktop-administrator
           displayOrder: 10
           cmd: >
@@ -18,10 +18,43 @@ adm_desktop:
               cmdType: 'showForm',
               formCode: 'ubm_desktop-uiSettings'
             }
+      - ubm_desktop:
+          caption: { $i18n: ubm_desktop }
+          iconCls: u-icon-desktop-document-types
+          displayOrder: 20
+          showList:
+            renderer: vue
+            entity: ubm_desktop
+            fieldList:
+            - caption
+            - code
+            - description
+            - iconCls
+            - url
+            - isDefault
+            - displayOrder
+      - ubm_navshortcut:
+          caption: { $i18n: ubm_navshortcut }
+          iconCls: u-icon-link
+          displayOrder: 30
+          showList:
+            renderer: vue
+            entity: ubm_navshortcut
+            fieldList:
+            - desktopID
+            - parentID
+            - code
+            - caption
+            - isFolder
+            - description
+            - keywords
+  - adm_folder_devTools:
+      $amendment: true
+      items:
       - ubm_enum:
-          caption: {$i18n: ubm_enum}
-          iconCls: fas fa-list-ol
-          displayOrder: 10
+          caption: { $i18n: ubm_enum }
+          iconCls: u-icon-list
+          displayOrder: 200
           showList:
             renderer: vue
             entity: ubm_enum
@@ -38,40 +71,19 @@ adm_desktop:
               sortOrder:
                 expression: sortOrder
                 order: asc
-      - ubm_desktop:
-          caption: {$i18n: ubm_desktop}
-          iconCls: u-icon-desktop-document-types
-          displayOrder: 20
+      - ubm_diagram:
+          caption: { $i18n: ubm_diagram }
+          iconCls: u-icon-hierarchy-alt
           showList:
             renderer: vue
-            entity: ubm_desktop
+            entity: ubm_diagram
             fieldList:
-            - caption
-            - code
-            - description
-            - iconCls
-            - url
-            - isDefault
-            - displayOrder
-      - ubm_navshortcut:
-          caption: {$i18n: ubm_navshortcut}
-          iconCls: u-icon-link
-          displayOrder: 30
-          showList:
-            renderer: vue
-            entity: ubm_navshortcut
-            fieldList:
-            - desktopID
-            - parentID
-            - code
-            - caption
-            - isFolder
-            - description
-            - keywords
+            - ID
+            - model
+            - name
       - ubm_form:
-          caption: {$i18n: ubm_form}
+          caption: { $i18n: ubm_form }
           iconCls: u-icon-image
-          displayOrder: 40
           showList:
             renderer: vue
             entity: ubm_form
@@ -82,9 +94,8 @@ adm_desktop:
             - caption
             - formType
       - ubm_query:
-          caption: {$i18n: ubm_query}
+          caption: { $i18n: ubm_query }
           iconCls: u-icon-file-edit
-          displayOrder: 50
           showList:
             renderer: vue
             entity: ubm_query
@@ -93,23 +104,11 @@ adm_desktop:
             - name
             - type
       - ubm_sysdictionary:
-          caption: {$i18n: ubm_sysdictionary}
+          caption: { $i18n: ubm_sysdictionary }
           iconCls: u-icon-dictionary
-          displayOrder: 60
           showList:
             renderer: vue
             entity: ubm_sysdictionary
             fieldList:
             - code
-            - name
-      - ubm_diagram:
-          caption: {$i18n: ubm_diagram}
-          iconCls: fas fa-project-diagram
-          displayOrder: 70
-          showList:
-            renderer: vue
-            entity: ubm_diagram
-            fieldList:
-            - ID
-            - model
             - name

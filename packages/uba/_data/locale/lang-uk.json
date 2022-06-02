@@ -4,5 +4,6 @@
   "ubm_navshortcut.adm_folder_users.caption": "Користувачі",
   "ubm_navshortcut.adm_folder_security.caption": "Безпека",
   "ubm_navshortcut.uba_audit-securityDashboard.caption": "Консоль безпеки",
-  "ubm_navshortcut.adm_folder_mirg.caption": "Міграції"
+  "ubm_navshortcut.adm_folder_mirg.caption": "Міграції",
+  "ubm_navshortcut.adm_folder_devTools.caption": "Інструменти розробника"
 }
