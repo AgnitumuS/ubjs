@@ -42,16 +42,7 @@ adm_desktop:
             }
   - adm_folder_misc:
       access: Supervisor
-      caption:
-        en: Misc
-        de: Sonstiges
-        uk: Різне
-        ru: Разное
-        ka: სხვადასხვა
-        tg: Гуногун
-        nl: Overige toepassingen
-        az: Müxtəlif
-        id: Misc
+      caption: Misc
       iconCls: u-icon-setting
       displayOrder: 40
       isCollapsed: true
