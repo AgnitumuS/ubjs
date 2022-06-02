@@ -32,36 +32,10 @@ adm_desktop:
                 ]
               }
             }
-      - uba_advSecurity:
-          access: Supervisor
-          caption: { $i18n: uba_advSecurity }
-          iconCls: fa fa-user-secret
-          cmd: >
-            {
-              renderer: 'vue',
-              cmdType: 'showList',
-              cmdData: {
-                entityName: 'uba_advSecurity',
-                columns: ['userID.name','allowedIP','refreshIP','fp','refreshFp','keyMediaName','refreshKeyMedia','editCause']
-              }
-            }
-      - uba_userrole:
-          access: Supervisor
-          caption: { $i18n: uba_userrole }
-          iconCls: fas fa-users-cog
-          cmd: >
-            {
-              renderer: 'vue',
-              cmdType: 'showList',
-              cmdData: {
-                entityName: 'uba_userrole',
-                columns: ['userID.name', 'roleID']
-              }
-            }
       - uba_group:
           access: Supervisor
           caption: { $i18n: uba_group }
-          iconCls: fa fa-group
+          iconCls: u-icon-person-group
           cmd: >
             {
               renderer: 'vue',
@@ -69,6 +43,19 @@ adm_desktop:
               cmdData: {
                 entityName: 'uba_group',
                 columns: ['name', 'description', 'code']
+              }
+            }
+      - uba_userrole:
+          access: Supervisor
+          caption: { $i18n: uba_userrole }
+          iconCls: u-icon-person-group
+          cmd: >
+            {
+              renderer: 'vue',
+              cmdType: 'showList',
+              cmdData: {
+                entityName: 'uba_userrole',
+                columns: ['userID.name', 'roleID']
               }
             }
       - uba_usergroup:
@@ -82,6 +69,19 @@ adm_desktop:
               cmdData: {
                 entityName: 'uba_usergroup',
                 columns: ['userID.name', 'groupID']
+              }
+            }
+      - uba_advSecurity:
+          access: Supervisor
+          caption: { $i18n: uba_advSecurity }
+          iconCls: fa fa-user-secret
+          cmd: >
+            {
+              renderer: 'vue',
+              cmdType: 'showList',
+              cmdData: {
+                entityName: 'uba_advSecurity',
+                columns: ['userID.name','allowedIP','refreshIP','fp','refreshFp','keyMediaName','refreshKeyMedia','editCause']
               }
             }
       - uba_usercertificate:

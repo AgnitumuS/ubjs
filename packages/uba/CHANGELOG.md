@@ -12,6 +12,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Changed
 - Moved navigation desktop and shortcut localizations into json files out of yaml files
+- Refined order of items inside "Users and Groups":
+  - most often used "Users" and "User Groups" - top
+  - less used items "User Roles" and "User Group Membership" - middle
+  - advanced User security setting shortcuts - bottom
+- Updated some icons to UB from FA
 
 ### Deprecated
 
