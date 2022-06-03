@@ -136,7 +136,7 @@
             padding: preMultiSelectionColumn.padding && preMultiSelectionColumn.padding + 'px'
           }"
           @click="$emit('click-cell', { row, column: preMultiSelectionColumn })"
-          @contextmenu="contextMenuEventHandler($event, row, preMultiSelectionColumn)"
+          @contextmenu="contextMenuEventHandler($event, rowIndex, preMultiSelectionColumn)"
         >
           <div class="u-table__cell-container">
             <slot
@@ -154,7 +154,7 @@
           v-if="showMultiSelectionColumn"
           class="u-table__multiple__cell"
           @click="onInputClickHandler(row, $event)"
-          @contextmenu="contextMenuEventHandler($event, row)"
+          @contextmenu="contextMenuEventHandler($event, rowIndex)"
         >
           <!-- repeat html-structure for el-checkbox ElementUI -->
           <span
@@ -184,7 +184,7 @@
             padding: col.padding && col.padding + 'px'
           }"
           @click="$emit('click-cell', { row, column: col })"
-          @contextmenu="contextMenuEventHandler($event, row, col)"
+          @contextmenu="contextMenuEventHandler($event, rowIndex, col)"
         >
           <div class="u-table__cell-container">
             <slot

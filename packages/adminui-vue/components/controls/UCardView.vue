@@ -45,7 +45,7 @@
         @click="cardClickHandler(rowIndex, $event)"
         @keydown.space="handlerSelection(row, $event)"
         @dblclick="$emit('dblclick', { row })"
-        @contextmenu="contextMenuEventHandler($event,row)"
+        @contextmenu="contextMenuEventHandler($event,rowIndex)"
       >
         <!-- repeat html-structure for el-checkbox ElementUI -->
         <span

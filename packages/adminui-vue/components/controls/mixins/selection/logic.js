@@ -121,7 +121,9 @@ module.exports = {
       }
       this.emitSelectionEvent()
     },
-    async contextMenuEventHandler ($event, row, col) {
+    async contextMenuEventHandler ($event, rowIndex, col) {
+      const row = this.items[rowIndex]
+      this.setCurrentRow(rowIndex)
       if (this.enableMultiSelect) {
         const { multiSelectKeyAttr, curSelection } = this
         const value = row[multiSelectKeyAttr]
