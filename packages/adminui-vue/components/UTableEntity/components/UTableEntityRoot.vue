@@ -256,6 +256,7 @@
         @click-cell="select"
         @contextmenu="showContextMenu"
         @change-active-row="activeRowChangeHandler"
+        @dblclick-row="onSelect($event.row.ID, $event.row)"
       >
         <template
           v-for="column in columns"
@@ -324,6 +325,7 @@
         @click="select"
         @contextmenu="showContextMenu"
         @change-active-row="activeRowChangeHandler"
+        @dblclick="onSelect($event.row.ID, $event.row)"
       >
         <slot
           slot="card"
@@ -859,8 +861,8 @@ export default {
     },
 
     onSelect (ID, row) {
-      const selection = window.getSelection().toString()
-      if (selection && selection !== '\n') return
+      // const selection = window.getSelection().toString()
+      // if (selection && selection !== '\n') return
       if (this.onSelectRecord) {
         this.onSelectRecord({ ID, row, close: this.close })
       } else if (this.canEdit) {
