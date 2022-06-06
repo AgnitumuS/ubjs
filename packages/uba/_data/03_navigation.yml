@@ -102,18 +102,6 @@ adm_desktop:
       caption: Security
       iconCls: u-icon-lock
       items:
-      - uba_als:
-          access: Supervisor
-          caption: { $i18n: uba_als }
-          iconCls: fa fa-share-alt
-          cmd: >
-            {
-              renderer: 'vue',
-              cmdType: 'showList',
-              cmdData: {
-                entityName: 'uba_als'
-              }
-            }
       - uba_auditTrail:
           access: Supervisor
           caption: { $i18n: uba_auditTrail }
@@ -253,5 +241,17 @@ adm_desktop:
               cmdData: {
                 entityName: 'uba_els',
                 columns: ['code', 'description', 'disabled', 'entityMask', 'methodMask', 'ruleType', 'ruleRole']
+              }
+            }
+      - uba_als:
+          access: Supervisor
+          caption: { $i18n: uba_als }
+          iconCls: fa fa-share-alt
+          cmd: >
+            {
+              renderer: 'vue',
+              cmdType: 'showList',
+              cmdData: {
+                entityName: 'uba_als'
               }
             }
