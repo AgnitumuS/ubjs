@@ -154,7 +154,7 @@
         <td
           v-if="showMultiSelectionColumn"
           class="u-table__multiple__cell"
-          @click.stop="onInputClickHandler(rowIndex, $event)"
+          @click.stop="onMultiSelectionClick(rowIndex, $event)"
           @contextmenu="contextMenuEventHandler($event, rowIndex)"
         >
           <!-- repeat html-structure for el-checkbox ElementUI -->

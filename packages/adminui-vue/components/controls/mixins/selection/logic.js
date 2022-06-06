@@ -31,7 +31,7 @@ module.exports = {
     }
   },
   methods: {
-    onInputClickHandler (rowIndex, event) {
+    onMultiSelectionClick (rowIndex, event) {
       const row = this.items[rowIndex]
       this.handlerSelection(row, event)
       this.onTableRowClickHandler(rowIndex)
