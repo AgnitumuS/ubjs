@@ -7,7 +7,7 @@ $context:
   type: roles
 
 Everyone:
-  description: Everyone build-in role
+  description: Everyone built-in role
   els:
     custom:
     - UBA_AUDIT_SELECT_ONLY: "!uba_audit,[^s]*,Deny direct security audit operation even for all roles"
@@ -16,13 +16,13 @@ Everyone:
 
 # UBA_ADMIN_ALL rule (allow all for Admin) is added during initDB
 Admin:
-  description: Admin build-in role
+  description: Admin built-in role
 
 Anonymous:
-  description: Anonymous build-in role
+  description: Anonymous built-in role
 
 User:
-  description: Authorised user build-in role
+  description: Authorised user built-in role
   els:
     custom:
       - UBA_USER_LANGCH_EVERYONE: "uba_user,changeLanguage,Allow change language for any user"
@@ -35,7 +35,7 @@ User:
       - uba_user: getUserData
 
 Supervisor:
-  description: Supervisor build-in role
+  description: Supervisor built-in role
   els:
     custom:
       - UBA_USER_EDIT_SUPERVISOR: "uba_user,[iuda]*,Allow CUD operations on users for members of Supervisor group"
@@ -55,10 +55,10 @@ Supervisor:
       - UBA_SESSION_DELETE_SUPERVISOR: "uba_session,delete,Allow remove active user session for members of Supervisor group"
 
 Developer:
-  description: Developer build-in role
+  description: Developer built-in role
 
 SysOps:
-  description: Support Engineer build-in role
+  description: Support Engineer built-in role
 
 Monitor:
-  description: Monitoring build-in role
+  description: Monitoring built-in role

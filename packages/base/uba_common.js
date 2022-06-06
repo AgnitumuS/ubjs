@@ -20,56 +20,56 @@ const ROLES = {
     ID: 0,
     NAME: 'Everyone',
     ENDPOINTS: 'auth,timeStamp,statics,getAppInfo,models,getDomainInfo,ubql,rest',
-    DESCR: 'Everyone build-in role',
+    DESCR: 'Everyone built-in role',
     TIMEOUT: 1000
   },
   ADMIN: {
     ID: 1,
     NAME: 'Admin',
     ENDPOINTS: '*',
-    DESCR: 'Admin build-in role',
+    DESCR: 'Admin built-in role',
     TIMEOUT: 10
   },
   ANONYMOUS: {
     ID: 2,
     NAME: 'Anonymous',
     ENDPOINTS: '',
-    DESCR: 'Anonymous build-in role',
+    DESCR: 'Anonymous built-in role',
     TIMEOUT: 1000
   },
   USER: {
     ID: 3,
     NAME: 'User',
     ENDPOINTS: 'logout,changePassword,setDocument,getDocument,checkDocument',
-    DESCR: 'User build-in role',
+    DESCR: 'User built-in role',
     TIMEOUT: 30
   },
   SUPERVISOR: {
     ID: 4,
     NAME: 'Supervisor',
     ENDPOINTS: '',
-    DESCR: 'Supervisor build-in role',
+    DESCR: 'Supervisor built-in role',
     TIMEOUT: 10
   },
   DEVELOPER: {
     ID: 5,
     NAME: 'Developer',
     ENDPOINTS: '',
-    DESCR: 'Developer build-in role',
+    DESCR: 'Developer built-in role',
     TIMEOUT: 10
   },
   SYSOPS: {
     ID: 8,
     NAME: 'SysOps',
     ENDPOINTS: '',
-    DESCR: 'Support Engineer build-in role',
+    DESCR: 'Support Engineer built-in role',
     TIMEOUT: 10
   },
   MONITOR: {
     ID: 6,
     NAME: 'Monitor',
     ENDPOINTS: 'stat',
-    DESCR: 'Monitor build-in role',
+    DESCR: 'Monitor built-in role',
     TIMEOUT: 100
   }
 }
@@ -82,7 +82,7 @@ if (multitenancyEnabled) {
     ID: 100,
     NAME: 'TenantUser',
     ENDPOINTS: '',
-    DESCR: 'TenantUser build-in role',
+    DESCR: 'TenantUser built-in role',
     TIMEOUT: 30
   }
 }
