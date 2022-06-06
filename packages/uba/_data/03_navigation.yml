@@ -5,12 +5,12 @@ $context:
 adm_desktop:
   access: Supervisor
   caption: Administration
-  description: User Management, UI Settings, Logs (Audit Trail, Security, Queue)
+  description: Users and Groups Management, Settings, Audit, Maintenance and Developer Tools
   iconCls: u-icon-desktop-administrator
   items:
   - adm_folder_users:
       access: Supervisor
-      caption: Groups and Users
+      caption: Users and Groups
       iconCls: u-icon-person-group
       items:
       - uba_user:
