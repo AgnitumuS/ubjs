@@ -3,7 +3,7 @@ $context:
 
 # Submenu in "Administrator" desktop
 adm_desktop:
-  access: Supervisor
+  access: Supervisor, Developer, SysOps
   caption: Administration
   description: Users and Groups Management, Settings, Audit, Maintenance and Developer Tools
   iconCls: u-icon-desktop-administrator
@@ -111,7 +111,7 @@ adm_desktop:
               }
             }
   - adm_folder_security:
-      access: Supervisor
+      access: Supervisor, SysOps
       caption: Audit Trails
       iconCls: u-icon-lock
       items:
@@ -163,7 +163,7 @@ adm_desktop:
       caption: Maintenance Tools
       description: System Maintenance and Monitoring Tools
       iconCls: u-icon-wrench
-      access: SysOps
+      access: SysOps, Developer
       displayOrder: 180
       items:
       - ub_version:
