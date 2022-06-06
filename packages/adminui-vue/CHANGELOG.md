@@ -8,13 +8,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
- - `UTable/UTableEntity/UCardView`: improved mobile UX. Click\tap on active cell\card now open edit form (like double click on row) 
 
 ### Deprecated
 
 ### Removed
 
 ### Fixed
+ - `UTable/UTableEntity/UCardView`: fix regression about opening edit form using double click (introduced when implementing tap feature)
 
 ## [5.22.22] - 2022-06-01
 ### Added
@@ -22,7 +22,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - new experimental "Orange' UI theme added
 
 ### Changed
- - `UTable/UTableEntity/UCardView`: improved mobile UX. Click\tap on active cell\card now open edit form (like double click on row) 
+ - `UTable/UTableEntity/UCardView`: improved mobile UX. Click/tap on active cell/card now open edit form (like double click on row) 
 
 ### Fixed
  - UToolbar: fix showing of record history in case `adminUI.useVueTables=false` in config
