@@ -1,6 +1,7 @@
 {
     "caption": "AclRls test",
     "descriptionAttribute": "caption",
+    "sqlAlias": "tstAcl",
     "attributes": [
         {
             "name": "caption",

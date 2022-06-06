@@ -1,5 +1,6 @@
 module.exports = ubMixinTransformation
 
+const addAclRlsStorageEntities = require('./mixins/aclRlsMetadataHook')
 /**
  * This hook is called by server in the single thread initialization mode. In this stage
  *  - native Domain is not created yet
@@ -11,6 +12,7 @@ module.exports = ubMixinTransformation
  */
 function ubMixinTransformation (domainJson, serverConfig) {
   addManyRefEntities(domainJson, serverConfig)
+  addAclRlsStorageEntities(domainJson, serverConfig)
   addImplicitlyAddedMixins(domainJson, serverConfig)
   const mt = serverConfig.security.multitenancy
   if (mt && (mt.enabled === true)) {

@@ -1,4 +1,7 @@
 const { UBAbort } = require('../modules/ubErrors')
+const App = require('../modules/App')
+const Repository = require('@unitybase/base').ServerRepository.fabric
+
 /**
  * An ACL storage implementation for entities with aclRls mixin. Mixin tasks are:
  *   - subscribe on insert:before event and:
@@ -28,14 +31,16 @@ module.exports = {
  * @param {UBEntityMixin} mixinCfg Mixin configuration from entity metafile
  */
 function initEntityForAclRlsStorage (entity, mixinCfg) {
-  global[entity.code].on('insert:before', validateAclRlsIns)
+  const entityModule = global[entity.code]
+  entityModule.insert = wrapEnterLeave(`method(aclRlsStorage) ${entity.name}.insert`, aclRlsStorageInsert)
+  entityModule.entity.addMethod('insert')
   global[entity.code].on('update:before', denyUpdateForAclRls)
 }
 
 /**
  * @param {ubMethodParams} ctx
  */
-function validateAclRlsIns (ctx) {
+function aclRlsStorageInsert (ctx) {
   const execParams = ctx.mParams.execParams
   const { instanceID } = execParams
   if (!instanceID) throw new UBAbort('Parameter \'instanceID\' is required')
@@ -44,11 +49,21 @@ function validateAclRlsIns (ctx) {
   passedParamNames.forEach(prm => {
     if (prm !== 'ID' && prm !== 'instanceID') {
       if (valueID) throw new UBAbort(`Only one subject type can be used as aclRls member at once, but found non null '${prm}' value in execParams`)
-      valueID = execParams[prm]
+      valueID = +execParams[prm]
     }
   })
   if (!valueID) throw new UBAbort('One of subject must be non-null in execParams')
-  execParams.valueID = +valueID
+  execParams.valueID = valueID
+  // validate record not exists. If exists - skip insertion and add existed record ID into result
+  const existedID = Repository(ctx.mParams.entity).attrs('ID')
+    .where('instanceID', '=', instanceID)
+    .where('valueID', '=', valueID)
+    .selectScalar()
+  if (existedID) {
+    execParams.ID = existedID
+    ctx.preventDefault() // skip mStorage insertion - record already exists
+  }
+  // actual insertion will be done in mStorage mixin
 }
 
 /**
@@ -56,4 +71,15 @@ function validateAclRlsIns (ctx) {
  */
 function denyUpdateForAclRls (ctx) {
   throw new UBAbort('Update method is not applicable for aclRls storage entity')
+}
+
+function wrapEnterLeave (enterText, methodImpl) {
+  return function logEnterLeave (ctx) {
+    App.logEnter(enterText)
+    try {
+      methodImpl(ctx)
+    } finally {
+      App.logLeave()
+    }
+  }
 }

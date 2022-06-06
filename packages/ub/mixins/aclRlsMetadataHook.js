@@ -1,7 +1,27 @@
 module.exports = addAclRlsStorageEntities
 
+let allModels
+
+/**
+ * Verify model exists in domain
+ *
+ * @param {object} domainJson
+ * @param {string} modelName
+ * @returns {boolean}
+ */
+function modelExists (domainJson, modelName) {
+  if (!allModels) {
+    allModels = new Set()
+    for (const entityName in domainJson) {
+      allModels.add(domainJson[entityName].modelName)
+    }
+  }
+  return allModels.has(modelName)
+}
+
 /**
  * Add entities for storing ACL of aclRLS mixin
+ *
  * @param {object<string, {modelName: string, meta: object, langs: object<string, object>}>} domainJson
  * @param {object} serverConfig
  */
@@ -10,30 +30,26 @@ function addAclRlsStorageEntities (domainJson, serverConfig) {
   for (const entityName in domainJson) {
     const entityMeta = domainJson[entityName].meta
     const props = entityMeta.mixins && entityMeta.mixins.aclRls
-    if (!props || (props.enabled === false)) return // no aclRls mixin
-
+    if (!props || (props.enabled === false)) continue // no aclRls mixin
+    console.debug('Start adding AclRlsStorageEntiti for ', entityName)
     if (!Array.isArray(props.onEntities) || !props.onEntities.length) {
       throwConfigError("'onEntities' must be non empty array")
     }
 
     let masterEntityName, aclStorageEntityName, aclStorageAlias
     if (props.useUnityName) {
-      if (!entityMeta.mixins.unity) throwConfigError("if 'useUnityName' is true entity must have a unity mixin")
+      if (!entityMeta.mixins.unity) throwConfigError(entityName, "if 'useUnityName' is true entity must have a unity mixin")
       masterEntityName = entityMeta.mixins.unity.entity
-      if (!domainJson[masterEntityName]) throwConfigError(`unity mixin points to non-existent entity '${masterEntityName}'`)
+      if (!domainJson[masterEntityName]) throwConfigError(entityName, `unity mixin points to non-existent entity '${masterEntityName}'`)
       const unityEntityMeta = domainJson[masterEntityName].meta
+      if (!unityEntityMeta.sqlAlias) throwConfigError(entityName, `expect unity entity '${masterEntityName}' to have an sqlAlias - because 'useUnityName=true'`)
       aclStorageEntityName = masterEntityName + '_acl'
-      aclStorageAlias = (unityEntityMeta.sqlAlias || aclStorageEntityName) + 'acl'
+      aclStorageAlias = unityEntityMeta.sqlAlias + 'acl'
     } else {
       masterEntityName = entityName
       aclStorageEntityName = masterEntityName + '_acl'
-      aclStorageAlias = (entityMeta.sqlAlias || aclStorageEntityName) + 'acl'
-    }
-
-    for (const linkedE of props.onEntities) {
-      const le = domainJson[entityName]
-      if (!le) throwConfigError(`entity '${linkedE}' specified in 'onEntities' not in domain`)
-      if (!le.meta.sqlAlias) throwConfigError(`expect entity '${linkedE}' listed in 'onEntities' to have an sqlAlias`)
+      if (!entityMeta.sqlAlias) throwConfigError(entityName, 'expect entity to have a sqlAlias')
+      aclStorageAlias = entityMeta.sqlAlias + 'acl'
     }
     if (domainJson[aclStorageEntityName]) {
       if (!verifiedExisted.has(aclStorageEntityName)) { // log only once for each entity
@@ -41,6 +57,12 @@ function addAclRlsStorageEntities (domainJson, serverConfig) {
       }
       continue
     }
+
+    let aclStorageModel = props.model
+    if (aclStorageModel && !modelExists(domainJson, aclStorageModel)) {
+      throwConfigError(entityName, `model '${aclStorageModel}' specified in 'aclRls.model' not in domain`)
+    }
+    if (!aclStorageModel) aclStorageModel = domainJson[masterEntityName].modelName
 
     const aclStorageMeta = {
       code: aclStorageEntityName,
@@ -57,67 +79,57 @@ function addAclRlsStorageEntities (domainJson, serverConfig) {
       }, {
         name: 'valueID',
         caption: 'valueID',
-        dataType: ' BigInt',
+        dataType: 'BigInt',
         allowNull: false
       }],
-      // compared to native impl. we skip "all not null" check constraint creation - it verified by aclRlsStorage mixin
+      dbKeys: {}, // added below
       mixins: {
         audit: {
           enabled: (entityMeta.mixins && entityMeta.mixins.audit && entityMeta.mixins.audit.enabled),
-          parentIdentifier: 'sourceID',
+          parentIdentifier: 'instanceID',
           parentEntity: entityName
+        },
+        mStorage: {},
+        aclRlsStorage: {}
+      }
+    }
+    // unique index on instanceID + valueID (aclRls.insert skip inserting of duplicates)
+    aclStorageMeta.dbKeys[`UIDX_${aclStorageAlias}_IIVI`] = {
+      instanceID: {},
+      valueID: {}
+    }
+
+    for (const linkedE of props.onEntities) {
+      const le = domainJson[linkedE]
+      if (!le) throwConfigError(entityName, `entity '${linkedE}' specified in 'onEntities' not in domain`)
+      if (!le.meta.sqlAlias) {
+        throwConfigError(entityName, `expect entity '${linkedE}' listed in 'onEntities' to have an sqlAlias`)
+      }
+      const attrCode = `${le.meta.sqlAlias}ID`
+      aclStorageMeta.attributes.push({
+        code: attrCode,
+        name: attrCode,
+        dataType: 'Entity',
+        associatedEntity: linkedE,
+        customSettings: {
+          hiddenInDetails: true
         }
-      }
+      })
     }
-    verifiedExisted.add(aclStorageEntityName) // mark as added - do not put in log info about using existed entity
 
-    if (props.useUnityName) {
-
-    } else {
-
+    domainJson[aclStorageEntityName] = {
+      modelName: aclStorageModel,
+      meta: aclStorageMeta,
+      langs: null
     }
-    // FaclParentEntity := FUnityEntity.name
-    // FactEntityAlias := FUnityEntity.sqlAlias + 'acl';
-    for (const attr of entityMeta.attributes) {
-      if (attr.dataType !== 'Many') continue
-      if (domainJson[attr.associationManyData]) continue // many data entity already added
-      const addedManyEntity = {
-        code: attr.associationManyData,
-        name: attr.associationManyData,
-        isManyManyRef: true,
-        connectionName: entityMeta.connectionName,
-        attributes: [{
-          name: 'sourceID',
-          caption: 'sourceID',
-          dataType: 'Entity',
-          associatedEntity: entityName,
-          cascadeDelete: (entityMeta.mixins && entityMeta.mixins.mStorage && !entityMeta.mixins.mStorage.safeDelete),
-          allowNull: false
-        }, {
-          name: 'destID',
-          caption: 'destID',
-          dataType: 'Entity',
-          associatedEntity: attr.associatedEntity,
-          cascadeDelete: attr.cascadeDelete,
-          allowNull: false
-        }],
-        mixins: {
-          audit: {
-            enabled: (entityMeta.mixins && entityMeta.mixins.audit && entityMeta.mixins.audit.enabled),
-            parentIdentifier: 'sourceID',
-            parentEntity: entityName
-          }
-        }
-      }
-      domainJson[attr.associationManyData] = {
-        modelName: domainJson[entityName].modelName,
-        meta: addedManyEntity,
-        langs: null
-      }
-    }
+    // console.debug('Added:', JSON.stringify(domainJson[aclStorageEntityName], null, '  '))
   }
 }
 
-function throwConfigError(entityName, msg) {
-  throw new Error(`Invalid 'aclRls' mixin config for ${entityName}: ${msg}`)
+/**
+ * @param entityName
+ * @param msg
+ */
+function throwConfigError (entityName, msg) {
+  throw new Error(`Invalid 'aclRls' mixin config for '${entityName}': ${msg}`)
 }

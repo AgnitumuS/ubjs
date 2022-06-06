@@ -8,9 +8,16 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
  - data storage entities for "Many" attributes now added by metadata transformation hook of @unitybase/ub model (instead native server code)
  - mixin what implements data storage for ACL RLS implementation moved from native to JS (@unitybase/ub/mixins/aclRlsStorageMixin.js).
-  **BREAKINGS**
-   - check constraints about "all onEntity attributes is not null" (CHK_*_SOMENOTNULL and CHK_*_NOALLNOTNULL) are removed - this verified by aclRlsStorage mixin
-   -  
+  **CHANGES**
+   - indexes `IDX_*_IIVI(instanceID, valueID)` are replaced by unique indexes `UIDX_*_IIVI(instanceID, valueID)` are added instead
+   - `audit` mixin now enabled for `aclRls` storage and uses main entity as `parentIdentifier`,
+     so changes to ACL will be visible in entity changes history
+   - unneeded indexes `UIDX_*_admSubjentity` are removed
+   - complex indexes for subject attributes like `doc_document_acl(ounitid, instanceid, subjid)` are removed,
+     a simple indexes for ref constraint support like `doc_document_acl(ounitid)` are created instead
+   - check constraints about "all onEntity attributes is not null" (CHK_*_SOMENOTNULL and CHK_*_NOALLNOTNULL)
+     are removed - this verified by aclRlsStorage mixin
+ - **BREAKING** entity with aclRsl mixin now MUST have an sqlAlias
 
 ### Changed
  - Add `TenantUser` built-in role on login of every user, if user is logged in any tenant except
