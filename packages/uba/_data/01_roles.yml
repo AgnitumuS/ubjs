@@ -7,7 +7,6 @@ $context:
   type: roles
 
 Everyone:
-  $amendment: true
   description: Everyone build-in role
   els:
     custom:
@@ -17,15 +16,12 @@ Everyone:
 
 # UBA_ADMIN_ALL rule (allow all for Admin) is added during initDB
 Admin:
-  $amendment: true
   description: Admin build-in role
 
 Anonymous:
-  $amendment: true
   description: Anonymous build-in role
 
 User:
-  $amendment: true
   description: Authorised user build-in role
   els:
     custom:
@@ -39,7 +35,6 @@ User:
       - uba_user: getUserData
 
 Supervisor:
-  $amendment: true
   description: Supervisor build-in role
   els:
     custom:
@@ -60,13 +55,10 @@ Supervisor:
       - UBA_SESSION_DELETE_SUPERVISOR: "uba_session,delete,Allow remove active user session for members of Supervisor group"
 
 Developer:
-  $amendment: true
   description: Developer build-in role
 
 SysOps:
-  $amendment: true
   description: Support Engineer build-in role
 
 Monitor:
-  $amendment: true
   description: Monitoring build-in role
