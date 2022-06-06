@@ -256,6 +256,7 @@
         @click-cell="select"
         @contextmenu="showContextMenu"
         @change-active-row="activeRowChangeHandler"
+        @dblclick-row="onSelect($event.row.ID, $event.row)"
       >
         <template
           v-for="column in columns"
@@ -322,8 +323,10 @@
         @add-selected="$emit('add-selected', $event)"
         @remove-selected="$emit('remove-selected', $event)"
         @click="select"
+        @click-cell="select"
         @contextmenu="showContextMenu"
         @change-active-row="activeRowChangeHandler"
+        @dblclick="onSelect($event.row.ID, $event.row)"
       >
         <slot
           slot="card"
@@ -715,14 +718,14 @@ export default {
     },
 
     showContextMenu ({ event, row, column }) {
-      this.select({ row, column })
+      this.setChoicedToStore({ row, column })
       this.contextMenuRowId = row.ID
       this.cacheActiveElement = document.activeElement
       this.$refs.contextMenu.show(event)
     },
 
-    select ({ row, column }) {
-      // this is to open the edit form with one click when the row is already selected
+    doActionWhenRowSelected ({ row, column }) {
+      // this is to open the edit form with one click when the row is already choiced
       const store = this.$store.state
       if (
         column &&
@@ -730,19 +733,33 @@ export default {
         store.selectedColumnId === column.id
       ) {
         this.onSelect(row.ID, row)
-        return
+        return true
       }
       // for CardView
       if (!column && store.selectedRowId === row.ID) {
         this.onSelect(row.ID, row)
-        return
+        return true
       }
+      return false
+    },
+
+    setChoicedToStore ({ row, column }) {
       if (column !== undefined) {
         this.SELECT_COLUMN(column.id)
       }
       if (row !== undefined) {
         this.SELECT_ROW(row.ID)
       }
+    },
+
+    select ({ isMultipleSelectionCell }) {
+      if (
+        !isMultipleSelectionCell &&
+        this.doActionWhenRowSelected(...arguments)
+      ) {
+        return
+      }
+      this.setChoicedToStore(...arguments)
     },
 
     getNextArrayValue (array, key, current) {
@@ -859,8 +876,6 @@ export default {
     },
 
     onSelect (ID, row) {
-      const selection = window.getSelection()
-      if (selection.toString()) return
       if (this.onSelectRecord) {
         this.onSelectRecord({ ID, row, close: this.close })
       } else if (this.canEdit) {
@@ -929,7 +944,8 @@ export default {
   overflow: auto;
 }
 
-.u-table-entity .u-table tr.selected td.selected, .u-table-entity .u-card-grid .u-card.selected {
+.u-table-entity .u-table tr.selected td.selected,
+.u-table-entity .u-card-grid .u-card.selected {
   cursor: pointer;
 }
 

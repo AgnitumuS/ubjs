@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
+ - `UTable/UTableEntity/UCardView`: improved mobile UX. Click\tap on active cell\card now open edit form (like double click on row) 
 
 ### Deprecated
 
