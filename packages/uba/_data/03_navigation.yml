@@ -97,6 +97,19 @@ adm_desktop:
                 columns: ['userID.name', 'userID.fullName', 'serial', 'isForSigning', 'disabled', 'revoked', 'issuer_cn']
               }
             }
+      - uba_otp:
+          access: Supervisor
+          caption: { $i18n: uba_otp }
+          iconCls: u-icon-eye
+          cmd: >
+            {
+              renderer: 'vue',
+              cmdType: 'showList',
+              cmdData: {
+                entityName: 'uba_otp',
+                columns: ['userID.name','otpKind','otp','expiredDate']
+              }
+            }
   - adm_folder_security:
       access: Supervisor
       caption: Security
@@ -125,19 +138,6 @@ adm_desktop:
                         "parentEntityInfo_id"
             		]
             	}
-            }
-      - uba_otp:
-          access: Supervisor
-          caption: { $i18n: uba_otp }
-          iconCls: u-icon-eye
-          cmd: >
-            {
-              renderer: 'vue',
-              cmdType: 'showList',
-              cmdData: {
-                entityName: 'uba_otp',
-                columns: ['userID.name','otpKind','otp','expiredDate']
-              }
             }
       - uba_audit:
           access: Supervisor
