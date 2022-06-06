@@ -58,6 +58,13 @@ const ROLES = {
     DESCR: 'Developer build-in role',
     TIMEOUT: 10
   },
+  SYSOPS: {
+    ID: 8,
+    NAME: 'SysOps',
+    ENDPOINTS: '',
+    DESCR: 'Support Engineer build-in role',
+    TIMEOUT: 10
+  },
   MONITOR: {
     ID: 6,
     NAME: 'Monitor',

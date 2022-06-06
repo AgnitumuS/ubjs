@@ -111,6 +111,18 @@ Developer:
     nl: Ontwikkelaar (ingebouwde rol)
     az: İnkişaf etdirici (quraşdırılmış rol)
 
+SysOps:
+  $amendment: true
+  description:
+    en: Support Engineer build-in role
+    uk: Інжинер підтримки (вбудована роль)
+    ru: Инженер поддержки (встроенная роль)
+    ka: დამხმარე ინჟინერი (ჩაშენებული როლი)
+    tg: Муҳандиси дастгирӣ (роли дарунсохт)
+    uz: Yordamchi muhandis (o`rnatilgan rol)
+    nl: Ondersteuningsingenieur (ingebouwde rol)
+    az: Dəstək mühəndisi (quraşdırılmış rol)
+
 Monitor:
   $amendment: true
   description:
