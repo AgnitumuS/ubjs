@@ -1,6 +1,6 @@
 {
   "caption": "Групи користувача",
-  "description": "Входження користувача в групи",
+  "description": "Входження користувачів в групи",
   "attributes": [
     {
       "name": "userID",

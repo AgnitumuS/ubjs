@@ -6,9 +6,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+- Navigation shortcut folder "Developer Tools", moved there: System Roles, ELS
+  - System Roles and ELS shortcuts now requires "Developer" built-in role, because
+    the Supervisor meant to administer Users, and not design System Roles
 
 ### Changed
 - Moved navigation desktop and shortcut localizations into json files out of yaml files
+- Refined order of items inside "Users and Groups":
+  - most often used "Users" and "User Groups" - top
+  - less used items "User Roles" and "User Group Membership" - middle
+  - advanced User security setting shortcuts - bottom
+- Updated some icons to UB from FA
 
 ### Deprecated
 

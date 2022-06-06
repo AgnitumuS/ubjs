@@ -10,18 +10,6 @@ adm_desktop:
       iconCls: u-icon-more
       displayOrder: 50
       items:
-      - ubq_scheduler:
-          caption: {$i18n: ubq_scheduler}
-          iconCls: fas fa-tasks
-          displayOrder: 10
-          cmd: >
-            {
-              renderer: "vue",
-              cmdType: "showList",
-              cmdData: {
-                entityName: "ubq_scheduler"
-              }
-            }
       - ubq_runstat:
           caption: {$i18n: ubq_runstat}
           iconCls: u-icon-circle-info
@@ -47,3 +35,20 @@ adm_desktop:
                 "columns": ["mi_createDate", "queueCode", "completeDate", "msgCmd"]
               }
             }
+
+  - adm_folder_devTools:
+      $amendment: true
+      items:
+      - ubq_scheduler:
+          caption: {$i18n: ubq_scheduler}
+          iconCls: fas fa-tasks
+          displayOrder: 400
+          cmd: >
+            {
+              renderer: "vue",
+              cmdType: "showList",
+              cmdData: {
+                entityName: "ubq_scheduler"
+              }
+            }
+
