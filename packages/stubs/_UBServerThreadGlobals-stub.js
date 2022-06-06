@@ -631,3 +631,19 @@ TubDataStore.rowPos = 0
  * @memberOf TubDataStore.prototype
  */
 TubDataStore.freeNative = function () {}
+
+/**
+ * Change an entity associated with DataStore. Example shows method for uba_user what actually return a result from FTS connection
+ * @example
+const me = uba_user
+me.runInAnotherConn = function (ctx) {
+  ctx.dataStore.runSQL('select * from uba_user', {})
+  ctx.dataStore.switchEntity('fts_ftsDefault')
+  ctx.dataStore.runSQL('SELECT A01.ID,A01.entity,A01.ftsentity,A01.databody FROM ftsDefault_en A01  LIMIT 10 OFFSET 0', {})
+}
+ * @function switchEntity
+ * @param {string} newContextEntityCode
+ * @since UB@5.22.10
+ * @memberOf TubDataStore.prototype
+ */
+TubDataStore.switchEntity = function (newContextEntityCode) {}

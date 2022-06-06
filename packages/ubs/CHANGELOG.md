@@ -8,6 +8,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
+- Moved navigation desktop and shortcut localizations into json files out of yaml files
+  - Amend `adm_folder_UI` folder instead of updating
 
 ### Deprecated
 
@@ -15,6 +17,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.22.19] - 2022-06-01
+### Fixed
+- Remove Message Recipients from details of User entity.
+- Fixed caption for some locales for ubs_filter entity and remove it
+
+## [5.22.18] - 2022-05-26
 ## [5.22.17] - 2022-05-22
 ## [5.22.16] - 2022-05-10
 ### Added

@@ -108,7 +108,8 @@ App.registerEndpoint('testTimeout', testTimeout, false)
  * @param {THTTPResponse} resp
  */
 function testTimeout (req, resp) {
-  sleep(40000)
+  const tm = req.parsedParameters.timeout ? parseInt(req.parsedParameters.timeout) : 40000
+  sleep(tm)
   resp.statusCode = 200
   resp.writeEnd('OK')
 }

@@ -8,12 +8,22 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
+- Moved navigation desktop and shortcut localizations into json files out of yaml files
 
 ### Deprecated
 
 ### Removed
 
 ### Fixed
+
+## [5.22.16] - 2022-06-01
+### Fixed
+- Remove from available details for User entity: User Sessions, Previous Passwords,
+  One Time Passwords, Advanced Authentication
+
+## [5.22.15] - 2022-05-26
+### Added
+- Migration hook for dynamically creating ELS rules for TenantUser role
 
 ## [5.22.14] - 2022-05-22
 ### Added

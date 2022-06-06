@@ -301,13 +301,13 @@ function runMigrations (params) {
     if (params.verbose) console.log(`filterFiles hooks decline ${initialFilesCnt - migrations.files.length} files`)
 
     // apply remains migration files (without beforeDDL* hooks)
-    runFiles(migrations.files, params, { conn, dbConnections, dbVersions, migrations })
+    runFiles(migrations.files, params, { conn, dbConnections, dbVersions, migrations, tenantID: params.tenantID })
 
     // apply finalizing hooks
     migrations.hooks.forEach(h => {
       if (typeof h.hook.finalize === 'function') {
         if (params.verbose) console.log(`Call finalize hook for model '${h.model}'`)
-        h.hook.finalize({ conn, dbConnections, dbVersions, migrations: migrations })
+        h.hook.finalize({ conn, dbConnections, dbVersions, migrations: migrations, tenantID: params.tenantID })
       }
     })
   } else {

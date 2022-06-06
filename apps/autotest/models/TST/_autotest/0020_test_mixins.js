@@ -40,6 +40,9 @@ module.exports = function runMixinsTests (options) {
   if (base.ubVersionNum >= 5018014) {
     testSuffixIndex(conn)
   }
+  if (base.ubVersionNum >= 50220010) {
+    testCtxEntitySwitch(conn)
+  }
 }
 
 /**
@@ -341,4 +344,13 @@ function testSuffixIndex (conn) {
   assert.strictEqual(wrongLinkedCode, undefined, 'Suffix index FOR JOIN should not select  \'2014-01-01\' using "0-01" as filter, but got ' + wrongLinkedCode)
 
   // [{"entity":"tst_dictionary_todo","method":"insert","execParams":{"ID":334003995017217,,"fieldList":["ID","objectID","name","status","link","mi_modifyDate","mi_createDate"]}]
+}
+
+/**
+ * Server side method what uses ctx.dataStore.switchEntity to change store connection. Should not throw
+ * @param {SyncConnection} conn
+ */
+function testCtxEntitySwitch (conn) {
+  console.debug('Test SUFFIXES index')
+  conn.query({ entity: 'tst_document', method: 'runInAnotherConn' })
 }

@@ -183,20 +183,24 @@ git add 010-#connName#-v_coursesFromBankDB.sql
 
 #### Conditional SQL
 Under the hood SQL scripts are executed using `ubcli execSql` command, so can be a [lodash template](https://lodash.com/docs/4.17.15#template).  
-Example:
+Template engine is preparsed using `options = {conn: connectionConfig, cfg: execSqlOptionsObject, process}`
+
+Example below uses `if` to check dialect for connection migration executed for. In case of `Oracle` synonym is created
+for schema defined in `LINKED_DB` environment variable:
  
 ```
- <% if (conn.dialect.startsWith('MSSQL')) { %>
-  SQL server specific statement
-  <% } else { %>
-  non SQL server statement
-  <% } %>
+<% if (conn.dialect.startsWith('Oracle')) { %>
+  create synonym rep_reportResult for rep_reportResult@<%= process.env.LINKED_DB %>;
+<% } else { %>
+  statement for other RDBMS 
+<% } %>
   --
   one more statement for any DBMS;
   --
 ```
 
 `conn` is a connection config (as it specified in ubConfig `application.connections` section) for connection script is executed in.
+`process` is  
 
 `--@optimistic` feature of execSql also works here, if statement is marked as optimistic this mean
 `skip this statement in case of exception`. In case table1 exists, create table statement in example throws,

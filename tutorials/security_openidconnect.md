@@ -36,10 +36,9 @@
 
 ### В модели прикладной области
 ```javascript
-// Подключаем модуль 'openIDConnect'
-var openIDConnect = require('openIDConnect');
+const openID = require('@unitybase/openid-connect')
 // Регистрируем точку доступа
-var openIDConnectEndPoint = openIDConnect.registerEndpoint(<EndPoint name>);
+const openIDConnectEndPoint = openID.registerEndpoint('<EndPoint name>')
 ```
 
 **`<EndPoint name>`** - имя точки доступа. Для AdminUI **нужно** использовать имя "openIDConnect"
@@ -97,7 +96,7 @@ openIDConnectEndPoint.registerProvider(<Provider name>,{
 
  - **`<nonce>`** - nonce, передаваемый провайдеру.
 В модуле его значение пока не проверяется. Параметр для модуля необязательный.
-Некоторые провайдеры требуют этот параметр как обязательный.
+Некоторые провайдеры требуют этот паетраметр как обязательный.
 *_Например, '1'_*
 
  - **`<response_type>`** - типы ответа провайдера(разделяем при помощи '+').

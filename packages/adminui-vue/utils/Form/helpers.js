@@ -501,7 +501,48 @@ function validateWithErrorText (errorLocale, validator) {
 }
 
 /**
- * show table with changes history of specified entity instance. Entity must hase a `dataHistory` mixin
+ * Show Ext-js based form with changes history of specified instance (for entity with `dataHistory` mixin)
+ * @param {string} entityName
+ * @param {number} instanceID
+ * @param {array<string>} fieldList
+ * @param {array<object>} [columns] optional columns definition for showList
+ * @returns {Promise<void>}
+ */
+function showRecordHistoryExtForm (entityName, instanceID, fieldListOrig, columns) {
+  const fieldList = new Set(fieldListOrig)
+
+  fieldList.add('mi_dateFrom')
+  fieldList.add('mi_dateTo')
+
+  const extendedFieldList = UB.core.UBUtil.convertFieldListToExtended([...fieldList])
+  for (const item of extendedFieldList) {
+    const field = item.name
+    if (field === 'mi_dateTo' || field === 'mi_dateFrom') {
+      item.visibility = true
+      item.description = UB.i18n(field)
+    }
+  }
+  return $App.doCommand({
+    cmdType: 'showList',
+    renderer: 'ext',
+    isModal: true,
+    cmdData: {
+      params: [{
+        entity: entityName,
+        method: 'select',
+        fieldList: [...fieldList]
+      }]
+    },
+    cmpInitConfig: {
+      extendedFieldList
+    },
+    instanceID: instanceID,
+    __mip_recordhistory: true
+  })
+}
+
+/**
+ * Show Vue based form with changes history of specified instance (for entity with `dataHistory` mixin)
  * @param {string} entityName
  * @param {number} instanceID
  * @param {array<string>} fieldList
@@ -509,6 +550,12 @@ function validateWithErrorText (errorLocale, validator) {
  * @returns {Promise<void>}
  */
 async function showRecordHistory (entityName, instanceID, fieldList, columns) {
+  const useVueTables = UB.connection.appConfig.uiSettings.adminUI.useVueTables
+  if (!useVueTables) {
+    // TODO: delete this code after complete migration to vue, or when ext form will not be needed
+    return showRecordHistoryExtForm(entityName, instanceID, fieldList, columns)
+  }
+
   const dataId = await UB.Repository(entityName)
     .attrs('mi_data_id')
     .where('ID', '=', instanceID)
@@ -527,6 +574,7 @@ async function showRecordHistory (entityName, instanceID, fieldList, columns) {
 
   return UB.core.UBApp.doCommand({
     cmdType: 'showList',
+    renderer: 'vue',
     isModal: true,
     cmdData: {
       entityName: entityName,

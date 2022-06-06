@@ -1,0 +1,8 @@
+{
+  "ubm_desktop.adm_desktop.caption": "Адміністрування",
+  "ubm_desktop.adm_desktop.description": "Керування користувачами, налаштування інтерфейсу, журнали (аудит, безпека, черга)",
+  "ubm_navshortcut.adm_folder_users.caption": "Користувачі",
+  "ubm_navshortcut.adm_folder_security.caption": "Безпека",
+  "ubm_navshortcut.uba_audit-securityDashboard.caption": "Консоль безпеки",
+  "ubm_navshortcut.adm_folder_mirg.caption": "Міграції"
+}

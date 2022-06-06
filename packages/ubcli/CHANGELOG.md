@@ -15,6 +15,23 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.22.18] - 2022-06-01
+## [5.22.17] - 2022-05-26
+### Added
+ - access to `process` (in addition to server config and current connection config) is added into `ubcli execSql` template engine.
+  This made possible to use environment variables in templates, for example in migrate SQL scripts:
+```
+<% if (conn.dialect.startsWith('SQLite')) { %>
+  create synonym rep_reportResult for rep_reportResult@<%= process.env.LINKED_DB %>;
+<% } else { %>
+  -- do nothing
+<% } %>
+```
+
+### Changed
+- `migrate` command: migration scripts and finalize hooks now accept `tenantID` parameter,
+  so that logic might be executed depending on tenant ID (system / non system tenant logic separation)
+
 ## [5.22.16] - 2022-05-22
 ### Added
 - DDL generator for multitenant environment, PostgreSQL: generate SQL policies

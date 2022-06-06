@@ -256,7 +256,7 @@ module.exports = {
       const shift = children.length - this.items.length
       const row = children[this.hoverIndex + shift]
       if (!row) return
-      // needed to select row when pressing space button after navigating with arrow
+      // needed to navigating with arrow
       row.focus()
     }
   }

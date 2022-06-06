@@ -1,0 +1,8 @@
+{
+  "ubm_desktop.adm_desktop.caption": "Administration",
+  "ubm_desktop.adm_desktop.description": "Foydalanuvchilarni boshqarish, interfeys sozlamalari, jurnallar (audit, xavfsizlik, navbat)",
+  "ubm_navshortcut.adm_folder_users.caption": "Foydalanuvchilar",
+  "ubm_navshortcut.adm_folder_security.caption": "Xavfsizlik",
+  "ubm_navshortcut.uba_audit-securityDashboard.caption": "Xavfsizlik konsoli",
+  "ubm_navshortcut.adm_folder_mirg.caption": "Migratsiya"
+}

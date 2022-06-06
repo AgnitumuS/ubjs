@@ -111,9 +111,6 @@
     },
     "tree": {
       "parentAttr": "parentID"
-    },
-    "multitenancy": {
-      "enabled": false
     }
   }
 }

@@ -44,6 +44,9 @@
       />
 
       <template #dropdown>
+        <!-- @slot if need to prepend items to the dropdown -->
+        <slot name="dropdown-prepend" />
+
         <template
           v-for="button in dropdownButtons"
         >
@@ -61,7 +64,7 @@
           />
         </template>
 
-        <!-- @slot if need append items to dropdown -->
+        <!-- @slot if need to append items to the dropdown -->
         <slot name="dropdown" />
       </template>
     </u-dropdown>

@@ -181,6 +181,7 @@ To solve this problem:
  * Entity metadata
  *
  * @member {UBEntity} entity
+ * @readonly
  * @memberOf TubDataStore.prototype
  */
 Object.defineProperty(TubDataStore, 'entity', {

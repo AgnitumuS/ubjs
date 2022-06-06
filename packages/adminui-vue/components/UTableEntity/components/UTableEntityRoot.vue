@@ -727,21 +727,20 @@ export default {
     doActionWnehChoicedRow ({ row, column }) {
       // this is to open the edit form with one click when the row is already choiced
       const store = this.$store.state
-      const flag = false
       if (
         column &&
         store.selectedRowId === row.ID &&
         store.selectedColumnId === column.id
       ) {
         this.onSelect(row.ID, row)
-        return !flag
+        return true
       }
       // for CardView
       if (!column && store.selectedRowId === row.ID) {
         this.onSelect(row.ID, row)
-        return !flag
+        return true
       }
-      return flag
+      return false
     },
 
     setChoicedToStore ({ row, column }) {

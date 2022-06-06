@@ -16,6 +16,18 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.22.22] - 2022-06-01
+### Added
+ - `UToolbar`: the `dropdown-prepend` slot to add some items at the start of dropdown
+ - new experimental "Orange' UI theme added
+
+### Changed
+ - `UTable/UTableEntity/UCardView`: improved mobile UX. Click\tap on active cell\card now open edit form (like double click on row) 
+
+### Fixed
+ - UToolbar: fix showing of record history in case `adminUI.useVueTables=false` in config
+
+## [5.22.21] - 2022-05-26
 ## [5.22.20] - 2022-05-22
 ### Added
  - sidebar (instance of USidebar component) is exported as `SidebarInstance`. Example below collapse sidebar programmatically:
