@@ -11,6 +11,5 @@
   "ubm_desktop.adm_desktop.description": "Gebruikersbeheer, UI-instellingen, logboeken (audit trail, beveiliging, wachtrij)",
   "ubm_navshortcut.adm_folder_users.caption": "Groepen en gebruikers",
   "ubm_navshortcut.adm_folder_security.caption": "Veiligheid",
-  "ubm_navshortcut.uba_audit-securityDashboard.caption": "Beveiligingsdashboard",
-  "ubm_navshortcut.adm_folder_mirg.caption": "Migraties"
+  "ubm_navshortcut.uba_audit-securityDashboard.caption": "Beveiligingsdashboard"
 }

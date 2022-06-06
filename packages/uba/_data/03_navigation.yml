@@ -168,13 +168,14 @@ adm_desktop:
                 ]
               }
             }
-  - adm_folder_mirg:
-      access: Admin
-      caption: Migrations
-      iconCls: u-icon-swap
+
+  - adm_folder_maintenance:
+      caption: Maintenance Tools
+      description: System Maintenance and Monitoring Tools
+      access: SysOps
+      displayOrder: 180
       items:
       - ub_version:
-          access: Admin
           caption: { $i18n: ub_version }
           iconCls: u-icon-file-export
           cmd: >
@@ -186,7 +187,6 @@ adm_desktop:
               }
             }
       - ub_migration:
-          access: Admin
           caption: { $i18n: ub_migration }
           iconCls: u-icon-file-text
           cmd: >
@@ -197,13 +197,6 @@ adm_desktop:
                 entityName: 'ub_migration'
               }
             }
-
-  - adm_folder_maintenance:
-      caption: Maintenance Tools
-      description: System Maintenance and Monitoring Tools
-      access: SysOps
-      displayOrder: 180
-      items:
       - uba_session:
           caption: { $i18n: uba_session }
           iconCls: fas fa-user-cog

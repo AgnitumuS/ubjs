@@ -1,18 +1,16 @@
 /**
  * @param {SyncConnection} conn
+ * @param {string[]} codes
  */
-module.exports = function fixRelatedEntityFilterName({conn}) {
-  console.log('Migration script start: ', __filename)
-
-  const folderName = 'adm_folder_UBQ'
-
-  console.log('\tChecking folder %s exists...', folderName)
-  const shortcutID = conn.Repository('ubm_navshortcut')
+function deleteNavShortcuts({conn}, codes) {
+  console.log('\tSelecting folder(s) IDs for %j...', codes)
+  const shortcutIDs = conn.Repository('ubm_navshortcut')
     .attrs('ID')
-    .where('code', '=', folderName)
-    .selectScalar()
-  if (Number.isInteger(shortcutID)) {
-    console.log('Checking the shortcut does not have child elements...')
+    .where('code', 'in', codes)
+    .selectAsArrayOfValues()
+  console.log('\tSelected %d IDs', shortcutIDs.length)
+  for (const shortcutID of shortcutIDs) {
+    console.log('Checking the shortcut %d does not have child elements...', shortcutID)
     const childID = conn.Repository('ubm_navshortcut')
       .attrs('ID')
       .where('parentID', '=', shortcutID)
@@ -31,9 +29,11 @@ module.exports = function fixRelatedEntityFilterName({conn}) {
       })
       console.log('Done')
     }
-  } else {
-    console.log('The shortcut does not exist, do nothing')
   }
 
   console.log('Migration script finish: %s', __filename)
+}
+
+module.exports = {
+  deleteNavShortcuts
 }

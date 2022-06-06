@@ -11,6 +11,5 @@
   "ubm_desktop.adm_desktop.description": "მომხმარებლის მენეჯმენტი, ინტერფეისის პარამეტრები, ჟურნალი (აუდიტის ბილიკი, დაცვა, რიგები)",
   "ubm_navshortcut.adm_folder_users.caption": "ჯგუფები და მომხმარებლები",
   "ubm_navshortcut.adm_folder_security.caption": "უსაფრთხოება",
-  "ubm_navshortcut.uba_audit-securityDashboard.caption": "უსაფრთხოების დაფა",
-  "ubm_navshortcut.adm_folder_mirg.caption": "Migrations"
+  "ubm_navshortcut.uba_audit-securityDashboard.caption": "უსაფრთხოების დაფა"
 }
