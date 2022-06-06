@@ -43,7 +43,7 @@ adm_desktop:
       $amendment: true
       items:
       - ubm_ui_settings:
-          caption: { $i18n: ubs_settings }
+          caption: UI Theme and Logo
           iconCls: u-icon-desktop-administrator
           displayOrder: 20
           cmd: >
