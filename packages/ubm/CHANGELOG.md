@@ -8,15 +8,18 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
-- Moved navigation shortcut localizations into json files out of yaml files
-- Move some shortcuts from "UI" to "Developer Tools": Enum, System Dictionaries, Queries, Diagrams
-- Replace for some shortcuts FA icons to UB icons
 
 ### Deprecated
 
 ### Removed
 
 ### Fixed
+
+## [5.22.21] - 2022-06-06
+### Changed
+- Moved navigation shortcut localizations into json files out of yaml files
+- Move some shortcuts from "UI" to "Developer Tools": Enum, System Dictionaries, Queries, Diagrams
+- Replace for some shortcuts FA icons to UB icons
 
 ## [5.22.20] - 2022-06-01
 ### Changed

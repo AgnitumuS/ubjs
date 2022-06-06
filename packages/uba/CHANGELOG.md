@@ -6,6 +6,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+## [5.22.17] - 2022-06-06
+### Added
 - Navigation shortcut folder "Developer Tools", moved there: System Roles, ELS
   - System Roles and ELS shortcuts now requires "Developer" built-in role, because
     the Supervisor meant to administer Users, and not design System Roles
@@ -17,12 +28,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
   - less used items "User Roles" and "User Group Membership" - middle
   - advanced User security setting shortcuts - bottom
 - Updated some icons to UB from FA
-
-### Deprecated
-
-### Removed
-
-### Fixed
 
 ## [5.22.16] - 2022-06-01
 ### Fixed

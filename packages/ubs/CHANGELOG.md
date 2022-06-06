@@ -8,15 +8,18 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
-- Moved navigation desktop and shortcut localizations into json files out of yaml files
-  - Amend `adm_folder_UI` folder instead of updating
-- Moved "Reports" navigation shortcut to the new folder "Developer Tools", out of "UI" folder
 
 ### Deprecated
 
 ### Removed
 
 ### Fixed
+
+## [5.22.20] - 2022-06-06
+### Changed
+- Moved navigation desktop and shortcut localizations into json files out of yaml files
+  - Amend `adm_folder_UI` folder instead of updating
+- Moved "Reports" navigation shortcut to the new folder "Developer Tools", out of "UI" folder
 
 ## [5.22.19] - 2022-06-01
 ### Fixed

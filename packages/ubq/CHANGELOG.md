@@ -8,14 +8,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
-- Moved navigation shortcut localizations into json files out of yaml files
-- Pull "Schedulers" menu items from "Queues" to "Developer Tools" folder
 
 ### Deprecated
 
 ### Removed
 
 ### Fixed
+
+## [5.22.17] - 2022-06-06
+### Changed
+- Moved navigation shortcut localizations into json files out of yaml files
+- Pull "Schedulers" menu items from "Queues" to "Developer Tools" folder
 
 ## [5.22.16] - 2022-06-01
 ## [5.22.15] - 2022-05-26

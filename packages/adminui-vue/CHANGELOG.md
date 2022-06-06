@@ -14,6 +14,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+
+## [5.22.23] - 2022-06-06
+### Fixed
  - `UTable/UTableEntity/UCardView`: fix regression about opening edit form using double click (introduced when implementing tap feature)
 
 ## [5.22.22] - 2022-06-01
