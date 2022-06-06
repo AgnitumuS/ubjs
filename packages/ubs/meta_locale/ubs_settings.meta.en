@@ -1,6 +1,5 @@
 {
-  "caption": "Settings",
-  "description": "Application settings",
+  "caption": "System Settings",
   "attributes": [
     {
       "name": "settingKey",

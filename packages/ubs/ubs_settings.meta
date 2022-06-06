@@ -1,5 +1,5 @@
 {
-  "caption": "Settings",
+  "caption": "System Settings",
   "description": "Application settings (like about:config in firefox)",
   "connectionName": "",
   "sqlAlias": "stngs",

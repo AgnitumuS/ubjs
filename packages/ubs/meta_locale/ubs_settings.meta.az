@@ -1,6 +1,5 @@
 {
-  "caption": "Kökləmələr",
-  "description": "Sistem kökləmələrinin saxlandığı obyekt",
+  "caption": "Sistem Parametrləri",
   "attributes": [
     {
       "name": "settingKey",
