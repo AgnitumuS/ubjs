@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Changed
 - Change caption of ubs_settings to "System Settings" to not 
   confuse with other type of settings
+- Rename "Misc" into "Settings"
 
 ### Deprecated
 
