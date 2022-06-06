@@ -9,15 +9,6 @@ adm_desktop:
       iconCls: u-icon-image
       displayOrder: 30
       items:
-      - ubm_ui_settings:
-          caption: { $i18n: ubs_settings }
-          iconCls: u-icon-desktop-administrator
-          displayOrder: 10
-          cmd: >
-            {
-              cmdType: 'showForm',
-              formCode: 'ubm_desktop-uiSettings'
-            }
       - ubm_desktop:
           caption: { $i18n: ubm_desktop }
           iconCls: u-icon-desktop-document-types
@@ -48,6 +39,18 @@ adm_desktop:
             - isFolder
             - description
             - keywords
+  - adm_folder_misc:
+      $amendment: true
+      items:
+      - ubm_ui_settings:
+          caption: { $i18n: ubs_settings }
+          iconCls: u-icon-desktop-administrator
+          displayOrder: 20
+          cmd: >
+            {
+              cmdType: 'showForm',
+              formCode: 'ubm_desktop-uiSettings'
+            }
   - adm_folder_devTools:
       $amendment: true
       items:

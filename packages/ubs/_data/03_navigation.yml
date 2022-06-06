@@ -25,6 +25,7 @@ adm_desktop:
             }
       - ubs_filter:
           caption: { $i18n: ubs_filter }
+          displayOrder: 100
           iconCls: u-icon-filter
           cmd: >
             {

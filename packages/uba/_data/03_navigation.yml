@@ -11,7 +11,7 @@ adm_desktop:
   - adm_folder_users:
       access: Supervisor
       caption: Groups and Users
-      iconCls: u-icon-folder-open
+      iconCls: u-icon-person-group
       items:
       - uba_user:
           access: Supervisor
@@ -162,6 +162,7 @@ adm_desktop:
   - adm_folder_maintenance:
       caption: Maintenance Tools
       description: System Maintenance and Monitoring Tools
+      iconCls: u-icon-wrench
       access: SysOps
       displayOrder: 180
       items:
