@@ -1,4 +1,12 @@
 {
+  "uba_role.Everyone.description": "Будь хто (вбудована роль)",
+  "uba_role.Admin.description": "Адміністратор (вбудована роль)",
+  "uba_role.Anonymous.description": "Неавторизований користувач (вбудована роль)",
+  "uba_role.User.description": "Авторизований користувач (вбудована роль)",
+  "uba_role.Supervisor.description": "Адміністратор безпеки (вбудована роль)",
+  "uba_role.Developer.description": "Розробник (вбудована роль)",
+  "uba_role.SysOps.description": "Інженер підтримки (вбудована роль)",
+  "uba_role.Monitor.description": "Моніторинг (вбудована роль)",
   "ubm_desktop.adm_desktop.caption": "Адміністрування",
   "ubm_desktop.adm_desktop.description": "Керування користувачами, налаштування інтерфейсу, журнали (аудит, безпека, черга)",
   "ubm_navshortcut.adm_folder_users.caption": "Користувачі",

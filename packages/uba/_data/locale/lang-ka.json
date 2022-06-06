@@ -1,4 +1,12 @@
 {
+  "uba_role.Everyone.description": "ნებისმიერ მსურველს (ჩაშენებული როლი)",
+  "uba_role.Admin.description": "ადმინისტრატორი (ჩაშენებული როლი)",
+  "uba_role.Anonymous.description": "უნებართვო მომხმარებელი (ჩაშენებული როლი)",
+  "uba_role.User.description": "ავტორიზებული მომხმარებელი (ჩაშენებული როლი)",
+  "uba_role.Supervisor.description": "უსაფრთხოების ადმინისტრატორი (ჩაშენებული როლი)",
+  "uba_role.Developer.description": "დეველოპერი (ჩაშენებული როლი)",
+  "uba_role.SysOps.description": "დამხმარე ინჟინერი (ჩაშენებული როლი)",
+  "uba_role.Monitor.description": "მონიტორინგი (ჩაშენებული როლი)",
   "ubm_desktop.adm_desktop.caption": "ადმინისტრატორი",
   "ubm_desktop.adm_desktop.description": "მომხმარებლის მენეჯმენტი, ინტერფეისის პარამეტრები, ჟურნალი (აუდიტის ბილიკი, დაცვა, რიგები)",
   "ubm_navshortcut.adm_folder_users.caption": "ჯგუფები და მომხმარებლები",

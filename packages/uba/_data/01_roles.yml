@@ -8,15 +8,7 @@ $context:
 
 Everyone:
   $amendment: true
-  description:
-    en: Everyone build-in role
-    uk: Будь хто (вбудована роль)
-    ru: Кто угодно (встроенная роль)
-    ka: ნებისმიერ მსურველს (ჩაშენებული როლი)
-    tg: Ҳама (роли дарунсохташуда)
-    uz: Hamma (o`rnatilgan rol)
-    nl: Iedereen (ingebouwde rol)
-    az: Hər kəsin qurduğu rol
+  description: Everyone build-in role
   els:
     custom:
     - UBA_AUDIT_SELECT_ONLY: "!uba_audit,[^s]*,Deny direct security audit operation even for all roles"
@@ -26,39 +18,15 @@ Everyone:
 # UBA_ADMIN_ALL rule (allow all for Admin) is added during initDB
 Admin:
   $amendment: true
-  description:
-    en: Admin build-in role
-    uk: Адміністратор (вбудована роль)
-    ru: Администратор (встроенная роль)
-    ka: ადმინისტრატორი (ჩაშენებული როლი)
-    tg: Маъмурӣ (роли дарунсохташуда)
-    uz: Administrator (o`rnatilgan rol)
-    nl: Admin (ingebouwde rol)
-    az: İdarəçi rolu
+  description: Admin build-in role
 
 Anonymous:
   $amendment: true
-  description:
-    en: Anonymous build-in role
-    uk: Неавторизований користувач (вбудована роль)
-    ru: Неавторизованный пользователь (встроенная роль)
-    ka: უნებართვო მომხმარებელი (ჩაშენებული როლი)
-    tg: Истифодабарандаи беиҷозат (роли дарунсохташуда)
-    uz: Ruxsatsiz foydalanuvchi (o`rnatilgan rol)
-    nl: Ongeautoriseerde gebruiker (ingebouwde rol)
-    az: İcazəsiz istifadəçi (quraşdırılmış rol)
+  description: Anonymous build-in role
 
 User:
   $amendment: true
-  description:
-    en: Authorised user build-in role
-    uk: Авторизований користувач (вбудована роль)
-    ru: Авторизированный пользователь (встроенная роль)
-    ka: ავტორიზებული მომხმარებელი (ჩაშენებული როლი)
-    tg: Истифодабарандаи ваколатдор (роли дарунсохташуда)
-    uz: Vakolatli foydalanuvchi (o`rnatilgan rol)
-    nl: Geautoriseerde gebruiker (ingebouwde rol)
-    az: Səlahiyyətli istifadəçi (quraşdırılmış rol)
+  description: Authorised user build-in role
   els:
     custom:
       - UBA_USER_LANGCH_EVERYONE: "uba_user,changeLanguage,Allow change language for any user"
@@ -72,15 +40,7 @@ User:
 
 Supervisor:
   $amendment: true
-  description:
-    en: Supervisor build-in role
-    uk: Адміністратор безпеки (вбудована роль)
-    ru: Администратор безопасности (встроенная роль)
-    ka: უსაფრთხოების ადმინისტრატორი (ჩაშენებული როლი)
-    tg: Маъмур оид ба амният (роли дарунсохт)
-    uz: Xavfsizlik ma`muri (o`rnatilgan rol)
-    nl: Beveiligingsbeheerder (ingebouwde rol)
-    az: Təhlükəsizlik Administratoru (quraşdırılmış rol)
+  description: Supervisor build-in role
   els:
     custom:
       - UBA_USER_EDIT_SUPERVISOR: "uba_user,[iuda]*,Allow CUD operations on users for members of Supervisor group"
@@ -101,36 +61,12 @@ Supervisor:
 
 Developer:
   $amendment: true
-  description:
-    en: Developer build-in role
-    uk: Розробник (вбудована роль)
-    ru: Разработчик (встроенная роль)
-    ka: დეველოპერი (ჩაშენებული როლი)
-    tg: Таҳиякунанда  (роли дарунсохт)
-    uz: Ishlab chiquvchi (o`rnatilgan rol)
-    nl: Ontwikkelaar (ingebouwde rol)
-    az: İnkişaf etdirici (quraşdırılmış rol)
+  description: Developer build-in role
 
 SysOps:
   $amendment: true
-  description:
-    en: Support Engineer build-in role
-    uk: Інжинер підтримки (вбудована роль)
-    ru: Инженер поддержки (встроенная роль)
-    ka: დამხმარე ინჟინერი (ჩაშენებული როლი)
-    tg: Муҳандиси дастгирӣ (роли дарунсохт)
-    uz: Yordamchi muhandis (o`rnatilgan rol)
-    nl: Ondersteuningsingenieur (ingebouwde rol)
-    az: Dəstək mühəndisi (quraşdırılmış rol)
+  description: Support Engineer build-in role
 
 Monitor:
   $amendment: true
-  description:
-    en: Monitoring build-in role
-    uk: Моніторинг (вбудована роль)
-    ru: Мониторинг (встроенная роль)
-    ka: მონიტორინგი (ჩაშენებული როლი)
-    tg: Мониторинг (роли дарунсохт)
-    uz: Monitoring (o`rnatilgan rol)
-    nl: Monitoring (ingebouwde rol)
-    az: Monitorinq (quraşdırılmış rol)
+  description: Monitoring build-in role

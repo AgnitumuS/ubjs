@@ -1,4 +1,12 @@
 {
+  "uba_role.Everyone.description": "Кто угодно (встроенная роль)",
+  "uba_role.Admin.description": "Администратор (встроенная роль)",
+  "uba_role.Anonymous.description": "Неавторизованный пользователь (встроенная роль)",
+  "uba_role.User.description": "Авторизированный пользователь (встроенная роль)",
+  "uba_role.Supervisor.description": "Администратор безопасности (встроенная роль)",
+  "uba_role.Developer.description": "Разработчик (встроенная роль)",
+  "uba_role.SysOps.description": "Инженер поддержки (встроенная роль)",
+  "uba_role.Monitor.description": "Мониторинг (встроенная роль)",
   "ubm_desktop.adm_desktop.caption": "Администрирование",
   "ubm_desktop.adm_desktop.description": "Управление пользователями, настройки интерфейса, журналы (аудит, безопасность, очередь)",
   "ubm_navshortcut.adm_folder_users.caption": "Пользователи",

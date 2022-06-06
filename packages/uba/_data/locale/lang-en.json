@@ -1,4 +1,12 @@
 {
+  "uba_role.Everyone.description": "Everyone build-in role",
+  "uba_role.Admin.description": "Admin build-in role",
+  "uba_role.Anonymous.description": "Anonymous build-in role",
+  "uba_role.User.description": "Authorised user build-in role",
+  "uba_role.Supervisor.description": "Supervisor build-in role",
+  "uba_role.Developer.description": "Developer build-in role",
+  "uba_role.SysOps.description": "Support Engineer build-in role",
+  "uba_role.Monitor.description": "Monitoring build-in role",
   "ubm_desktop.adm_desktop.caption": "Administration",
   "ubm_desktop.adm_desktop.description": "User Management, UI Settings, Logs (Audit Trail, Security, Queue)",
   "ubm_navshortcut.adm_folder_users.caption": "Groups and Users",

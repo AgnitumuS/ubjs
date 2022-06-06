@@ -1,4 +1,12 @@
 {
+  "uba_role.Everyone.description": "Jeder baut eine Rolle ein",
+  "uba_role.Admin.description": "Integrierte Admin-Rolle",
+  "uba_role.Anonymous.description": "Anonyme eingebaute Rolle",
+  "uba_role.User.description": "Autorisierter Benutzer - eingebaute Rolle",
+  "uba_role.Supervisor.description": "Integrierte Rolle des Datenschutzbeauftragten",
+  "uba_role.Developer.description": "Integrierte Rolle des Entwicklers",
+  "uba_role.SysOps.description": "Support-Ingenieur mit eingebauter Rolle",
+  "uba_role.Monitor.description": "Überwachung der eingebauten Rolle",
   "ubm_desktop.adm_desktop.caption": "Verwaltung",
   "ubm_desktop.adm_desktop.description": "Benutzerverwaltung, Einstellungen der Benutzeroberfläche, Protokolle (Überwachungspfad, Sicherheit, Warteschlange)",
   "ubm_navshortcut.adm_folder_users.caption": "Gruppen und Benutzer",
