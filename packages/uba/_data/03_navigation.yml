@@ -112,12 +112,13 @@ adm_desktop:
             }
   - adm_folder_security:
       access: Supervisor
-      caption: Security
+      caption: Audit Trails
       iconCls: u-icon-lock
       items:
       - uba_auditTrail:
           access: Supervisor
           caption: { $i18n: uba_auditTrail }
+          description: { $i18n: uba_auditTrail#description }
           iconCls: u-icon-line-chart
           cmd: >
             {
@@ -142,6 +143,7 @@ adm_desktop:
       - uba_audit:
           access: Supervisor
           caption: { $i18n: uba_audit }
+          description: { $i18n: uba_audit#description }
           iconCls: u-icon-lock
           cmd: >
             {
