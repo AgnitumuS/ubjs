@@ -724,7 +724,7 @@ export default {
       this.$refs.contextMenu.show(event)
     },
 
-    doActionWhenRowChoiced ({ row, column }) {
+    doActionWhenRowSelected ({ row, column }) {
       // this is to open the edit form with one click when the row is already choiced
       const store = this.$store.state
       if (
@@ -755,7 +755,7 @@ export default {
     select ({ isMultipleSelectionCell }) {
       if (
         !isMultipleSelectionCell &&
-        this.doActionWhenRowChoiced(...arguments)
+        this.doActionWhenRowSelected(...arguments)
       ) {
         return
       }
