@@ -323,6 +323,7 @@
         @add-selected="$emit('add-selected', $event)"
         @remove-selected="$emit('remove-selected', $event)"
         @click="select"
+        @click-cell="select"
         @contextmenu="showContextMenu"
         @change-active-row="activeRowChangeHandler"
         @dblclick="onSelect($event.row.ID, $event.row)"
@@ -717,34 +718,49 @@ export default {
     },
 
     showContextMenu ({ event, row, column }) {
-      this.select({ row, column })
+      this.setChoicedToStore({ row, column })
       this.contextMenuRowId = row.ID
       this.cacheActiveElement = document.activeElement
       this.$refs.contextMenu.show(event)
     },
 
-    select ({ row, column }) {
-      // this is to open the edit form with one click when the row is already selected
+    doActionWnehChoicedRow ({ row, column }) {
+      // this is to open the edit form with one click when the row is already choiced
       const store = this.$store.state
+      const flag = false
       if (
         column &&
         store.selectedRowId === row.ID &&
         store.selectedColumnId === column.id
       ) {
         this.onSelect(row.ID, row)
-        return
+        return !flag
       }
       // for CardView
       if (!column && store.selectedRowId === row.ID) {
         this.onSelect(row.ID, row)
-        return
+        return !flag
       }
+      return flag
+    },
+
+    setChoicedToStore ({ row, column }) {
       if (column !== undefined) {
         this.SELECT_COLUMN(column.id)
       }
       if (row !== undefined) {
         this.SELECT_ROW(row.ID)
       }
+    },
+
+    select ({ isMultipleSelectionCell }) {
+      if (
+        !isMultipleSelectionCell &&
+        this.doActionWnehChoicedRow(...arguments)
+      ) {
+        return
+      }
+      this.setChoicedToStore(...arguments)
     },
 
     getNextArrayValue (array, key, current) {
@@ -861,8 +877,6 @@ export default {
     },
 
     onSelect (ID, row) {
-      // const selection = window.getSelection().toString()
-      // if (selection && selection !== '\n') return
       if (this.onSelectRecord) {
         this.onSelectRecord({ ID, row, close: this.close })
       } else if (this.canEdit) {
@@ -931,7 +945,8 @@ export default {
   overflow: auto;
 }
 
-.u-table-entity .u-table tr.selected td.selected, .u-table-entity .u-card-grid .u-card.selected {
+.u-table-entity .u-table tr.selected td.selected,
+.u-table-entity .u-card-grid .u-card.selected {
   cursor: pointer;
 }
 

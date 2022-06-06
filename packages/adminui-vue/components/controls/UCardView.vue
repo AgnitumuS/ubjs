@@ -38,11 +38,12 @@
             )
           }
         ]"
+        tabindex="1"
         @keydown.down="toArrowPressHandler($event, 'down')"
         @keydown.right="toArrowPressHandler($event, 'down')"
         @keydown.up="toArrowPressHandler($event, 'up')"
         @keydown.left="toArrowPressHandler($event, 'up')"
-        @click="cardClickHandler(rowIndex, $event)"
+        @click="onTableRowClickHandler(rowIndex, $event)"
         @keydown.space="handlerSelection(row, $event)"
         @dblclick="$emit('dblclick', { row })"
         @contextmenu="contextMenuEventHandler($event,rowIndex)"
@@ -54,7 +55,7 @@
           :class="{
             'is-checked': curSelection.includes(row[multiSelectKeyAttr])
           }"
-          @click="handlerSelection(row, $event)"
+          @click.stop="handlerSelection(row, $event)"
         >
           <span class="el-checkbox__inner" />
           <input

@@ -27,29 +27,17 @@ module.exports = {
       this.curSelection = e
     },
     hoverIndex () {
-      /**
-       * Triggers when the user change active row with mouse or keyboard arrow
-       *
-       * @param {object<index>} index new active row in table items array
-       */
-      this.$emit('change-active-row', { index: this.hoverIndex })
+      this.setFocusRow()
     }
   },
   methods: {
-    // used in UCardView
-    cardClickHandler (rowIndex, event) {
-      // const row = this.items[rowIndex]
-      // the order in which the methods are called is important
-      // this.handlerSelection(row, event)
-      this.onTableRowClickHandler(rowIndex, event)
-    },
-    onInputClickHandler (row, event) {
+    onInputClickHandler (rowIndex, event) {
+      const row = this.items[rowIndex]
       this.handlerSelection(row, event)
-      this.$emit('click', { row })
-      this.$emit('click-row', { row })
+      this.onTableRowClickHandler(rowIndex)
     },
     async handlerSelection (row, event) {
-      this.$emit('click-cell', { row })
+      this.$emit('click-cell', { row, isMultipleSelectionCell: true })
       if (!this.enableMultiSelect) return
       const { multiSelectKeyAttr, curSelection } = this
       const arr = curSelection
@@ -129,12 +117,10 @@ module.exports = {
         const value = row[multiSelectKeyAttr]
         if (!curSelection.includes(value)) {
           const cache = this.getSelectionRows()
-          for (const row of cache) {
-            await this.handlerSelection(row)
+          for (const rowInCache of cache) {
+            await this.handlerSelection(rowInCache, $event)
           }
-          const rowIndex = this.items.indexOf(row)
-          this.setCurrentRow(rowIndex)
-          await this.handlerSelection(row)
+          await this.handlerSelection(row, $event)
         }
       }
       /**
@@ -257,6 +243,21 @@ module.exports = {
       this.hoverIndex = rowIndex
       this.startRowIndex = rowIndex
       this.lastRow = row
+    },
+    setFocusRow () {
+      /**
+       * Triggers when the user change active row with mouse or keyboard arrow
+       *
+       * @param {object<index>} index new active row in table items array
+       */
+      this.$emit('change-active-row', { index: this.hoverIndex })
+      const { children } = this.$refs.content
+      // because first tr in table it is head
+      const shift = children.length - this.items.length
+      const row = children[this.hoverIndex + shift]
+      if (!row) return
+      // needed to select row when pressing space button after navigating with arrow
+      row.focus()
     }
   }
 }

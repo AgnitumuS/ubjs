@@ -120,6 +120,7 @@
             'selected': hoverIndex === rowIndex
           }
         ]"
+        tabindex="1"
         @dblclick="$emit('dblclick-row', { row })"
         @click="onTableRowClickHandler(rowIndex)"
         @keydown.space="handlerSelection(row, $event)"
@@ -153,7 +154,7 @@
         <td
           v-if="showMultiSelectionColumn"
           class="u-table__multiple__cell"
-          @click="onInputClickHandler(row, $event)"
+          @click.stop="onInputClickHandler(rowIndex, $event)"
           @contextmenu="contextMenuEventHandler($event, rowIndex)"
         >
           <!-- repeat html-structure for el-checkbox ElementUI -->
