@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - The new SysOps built-in role
 
 ### Changed
+- Item "Monitoring Tools" in the "Administrator" desktop
+  - Moved there "Security Dashboard" and "User Sessions"
 
 ### Deprecated
 

@@ -8,6 +8,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
+- In the "Administrator" desktop, move items from "Messages Queue" to "Monitoring Tools"
+  - Delete the empty "Message Queue" item 
 
 ### Deprecated
 

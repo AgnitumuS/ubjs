@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Change caption of ubs_settings to "System Settings" to not 
   confuse with other type of settings
 - Rename "Misc" into "Settings"
+- Move some items into the new "Maintenance Tools" folder of the "Administrator" desktop
 
 ### Deprecated
 

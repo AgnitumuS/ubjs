@@ -5,5 +5,8 @@
   "ubm_navshortcut.adm_folder_security.caption": "Sicherheit",
   "ubm_navshortcut.uba_audit-securityDashboard.caption": "Sicherheits-Dashboard",
   "ubm_navshortcut.adm_folder_mirg.caption": "Migrationen",
-  "ubm_navshortcut.adm_folder_devTools.caption": "Entwicklerwerkzeuge"
+  "ubm_navshortcut.adm_folder_maintenance.caption": "Wartungswerkzeuge",
+  "ubm_navshortcut.adm_folder_maintenance.description": "Werkzeuge zur Systemwartung und -überwachung",
+  "ubm_navshortcut.adm_folder_devTools.caption": "Entwicklerwerkzeuge",
+  "ubm_navshortcut.adm_folder_devTools.description": "Von Entwicklern erstellte und bearbeitete Systemdaten, die mit diesen Werkzeugen geändert wurden, können nach der Migration auf neue Versionen des Systems überschrieben werden."
 }

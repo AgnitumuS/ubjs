@@ -168,38 +168,8 @@ adm_desktop:
                 ]
               }
             }
-      - uba_session:
-          access: Supervisor
-          caption: { $i18n: uba_session }
-          iconCls: fas fa-user-cog
-          cmd: >
-            {
-              renderer: 'vue',
-              cmdType: 'showList',
-              cmdData: {
-                entityName: 'uba_session',
-                columns: [
-                  'ID',
-                  {id: 'userID', label: 'user ID', isLookup: false},
-                  'userName', 'remoteIP', 'tenantID',
-                  {id: 'accessedAt', sortable: false, filterable: false, format: ({ value }) => UB.formatter.formatDate(value, 'dateTimeFull')},
-                  {id: 'createdAt', sortable: false, filterable: false, format: ({ value }) => UB.formatter.formatDate(value, 'dateTimeFull')},
-                  'isPasswordExpired', 'isLocked', 'serverTimeDelta'
-                ]
-              }
-            }
-      - uba_audit-securityDashboard:
-          access: Supervisor
-          caption: Security Dashboard
-          iconCls: fa fa-user-secret
-          cmd: >
-            {
-              cmdType: 'showForm',
-              formCode: 'uba_audit-securityDashboard'
-            }
   - adm_folder_mirg:
       access: Admin
-      displayOrder: 25
       caption: Migrations
       iconCls: u-icon-swap
       items:
@@ -228,14 +198,48 @@ adm_desktop:
               }
             }
 
+  - adm_folder_maintenance:
+      caption: Maintenance Tools
+      description: System Maintenance and Monitoring Tools
+      access: SysOps
+      displayOrder: 180
+      items:
+      - uba_session:
+          caption: { $i18n: uba_session }
+          iconCls: fas fa-user-cog
+          cmd: >
+            {
+              renderer: 'vue',
+              cmdType: 'showList',
+              cmdData: {
+                entityName: 'uba_session',
+                columns: [
+                  'ID',
+                  {id: 'userID', label: 'user ID', isLookup: false},
+                  'userName', 'remoteIP', 'tenantID',
+                  {id: 'accessedAt', sortable: false, filterable: false, format: ({ value }) => UB.formatter.formatDate(value, 'dateTimeFull')},
+                  {id: 'createdAt', sortable: false, filterable: false, format: ({ value }) => UB.formatter.formatDate(value, 'dateTimeFull')},
+                  'isPasswordExpired', 'isLocked', 'serverTimeDelta'
+                ]
+              }
+            }
+      - uba_audit-securityDashboard:
+          caption: Security Dashboard
+          iconCls: fa fa-user-secret
+          cmd: >
+            {
+              cmdType: 'showForm',
+              formCode: 'uba_audit-securityDashboard'
+            }
+
   - adm_folder_devTools:
       caption: Developer Tools
+      description: System Data created and edited by Developers, changing Data using these tools might be overridden after migration to never versions of the system.
       access: Developer
       iconCls: u-icon-wrench
       displayOrder: 200   # The last one
       items:
       - uba_role:
-          access: Developer
           caption: { $i18n: uba_role }
           iconCls: u-icon-person-group
           cmd: >
@@ -247,7 +251,6 @@ adm_desktop:
               }
             }
       - uba_els:
-          access: Developer
           caption: { $i18n: uba_els }
           iconCls: fa fa-shield
           cmd: >
