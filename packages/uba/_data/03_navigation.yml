@@ -98,7 +98,6 @@ adm_desktop:
               }
             }
       - uba_otp:
-          access: Supervisor
           caption: { $i18n: uba_otp }
           iconCls: u-icon-eye
           cmd: >
@@ -108,6 +107,25 @@ adm_desktop:
               cmdData: {
                 entityName: 'uba_otp',
                 columns: ['userID.name','otpKind','otp','expiredDate']
+              }
+            }
+      - uba_session:
+          caption: { $i18n: uba_session }
+          iconCls: fas fa-user-cog
+          cmd: >
+            {
+              renderer: 'vue',
+              cmdType: 'showList',
+              cmdData: {
+                entityName: 'uba_session',
+                columns: [
+                  'ID',
+                  {id: 'userID', label: 'user ID', isLookup: false},
+                  'userName', 'remoteIP', 'tenantID',
+                  {id: 'accessedAt', sortable: false, filterable: false, format: ({ value }) => UB.formatter.formatDate(value, 'dateTimeFull')},
+                  {id: 'createdAt', sortable: false, filterable: false, format: ({ value }) => UB.formatter.formatDate(value, 'dateTimeFull')},
+                  'isPasswordExpired', 'isLocked', 'serverTimeDelta'
+                ]
               }
             }
   - adm_folder_security:
@@ -186,25 +204,6 @@ adm_desktop:
               cmdType: 'showList',
               cmdData: {
                 entityName: 'ub_migration'
-              }
-            }
-      - uba_session:
-          caption: { $i18n: uba_session }
-          iconCls: fas fa-user-cog
-          cmd: >
-            {
-              renderer: 'vue',
-              cmdType: 'showList',
-              cmdData: {
-                entityName: 'uba_session',
-                columns: [
-                  'ID',
-                  {id: 'userID', label: 'user ID', isLookup: false},
-                  'userName', 'remoteIP', 'tenantID',
-                  {id: 'accessedAt', sortable: false, filterable: false, format: ({ value }) => UB.formatter.formatDate(value, 'dateTimeFull')},
-                  {id: 'createdAt', sortable: false, filterable: false, format: ({ value }) => UB.formatter.formatDate(value, 'dateTimeFull')},
-                  'isPasswordExpired', 'isLocked', 'serverTimeDelta'
-                ]
               }
             }
       - uba_audit-securityDashboard:

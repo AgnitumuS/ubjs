@@ -11,6 +11,7 @@ adm_desktop:
       items:
       - ubq_runstat:
           caption: { $i18n: ubq_runstat }
+          access: SysOps
           iconCls: u-icon-circle-info
           displayOrder: 100   # Specify for the first item only, each next will be increased by 10
           cmd: >
@@ -23,6 +24,7 @@ adm_desktop:
             }
       - ubq_messages:
           caption: { $i18n: ubq_messages }
+          access: SysOps
           iconCls: fas fa-list-ol
           cmd: >
             {
@@ -38,6 +40,7 @@ adm_desktop:
       items:
       - ubq_scheduler:
           caption: { $i18n: ubq_scheduler }
+          access: SysOps, Developer
           iconCls: fas fa-tasks
           displayOrder: 400
           cmd: >

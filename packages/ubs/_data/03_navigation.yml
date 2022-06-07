@@ -40,6 +40,7 @@ adm_desktop:
       items:
       - ubs_softLock:
           caption: { $i18n: ubs_softLock }
+          access: SysOps
           iconCls: u-icon-lock
           displayOrder: 200
           cmd: >
@@ -59,6 +60,7 @@ adm_desktop:
             }
       - ubs_globalCache:
           caption: { $i18n: ubs_globalCache }
+          access: SysOps
           iconCls: u-icon-data
           cmd: >
             {
@@ -75,6 +77,7 @@ adm_desktop:
             }
       - ubs_numcounter:
           caption: { $i18n: ubs_numcounter }
+          access: SysOps
           iconCls: u-icon-number
           cmd: >
             {
@@ -86,6 +89,7 @@ adm_desktop:
             }
       - ubs_numcounterreserv:
           caption: { $i18n: ubs_numcounterreserv }
+          access: SysOps
           iconCls: u-icon-number
           cmd: >
             {
@@ -97,6 +101,7 @@ adm_desktop:
             }
       - ubs_message:
           caption: { $i18n: ubs_message }
+          access: SysOps
           iconCls: u-icon-bell
           cmd: >
             {
@@ -118,6 +123,7 @@ adm_desktop:
       items:
       - ubs_report:
           caption: { $i18n: ubs_report }
+          access: Developer
           iconCls: u-icon-book
           displayOrder: 100
           cmd: >

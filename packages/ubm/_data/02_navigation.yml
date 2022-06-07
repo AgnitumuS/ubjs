@@ -7,6 +7,7 @@ adm_desktop:
   - adm_folder_UI:
       caption: UI
       iconCls: u-icon-image
+      access: Developer
       displayOrder: 30
       items:
       - ubm_desktop:
@@ -44,6 +45,7 @@ adm_desktop:
       items:
       - ubm_ui_settings:
           caption: UI Theme and Logo
+          access: SysOps, Developer
           iconCls: u-icon-desktop-administrator
           displayOrder: 20
           cmd: >
@@ -56,6 +58,7 @@ adm_desktop:
       items:
       - ubm_enum:
           caption: { $i18n: ubm_enum }
+          access: Developer
           iconCls: u-icon-list
           displayOrder: 200
           showList:
@@ -76,6 +79,7 @@ adm_desktop:
                 order: asc
       - ubm_diagram:
           caption: { $i18n: ubm_diagram }
+          access: Developer
           iconCls: u-icon-hierarchy-alt
           showList:
             renderer: vue
@@ -86,6 +90,7 @@ adm_desktop:
             - name
       - ubm_form:
           caption: { $i18n: ubm_form }
+          access: Developer
           iconCls: u-icon-image
           showList:
             renderer: vue
@@ -98,6 +103,7 @@ adm_desktop:
             - formType
       - ubm_query:
           caption: { $i18n: ubm_query }
+          access: Developer
           iconCls: u-icon-file-edit
           showList:
             renderer: vue
@@ -108,6 +114,7 @@ adm_desktop:
             - type
       - ubm_sysdictionary:
           caption: { $i18n: ubm_sysdictionary }
+          access: Developer
           iconCls: u-icon-dictionary
           showList:
             renderer: vue
