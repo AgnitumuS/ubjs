@@ -7,7 +7,7 @@ adm_desktop:
   - adm_folder_UI:
       caption: UI
       iconCls: u-icon-image
-      access: Developer
+      access: Developer, Supervisor
       displayOrder: 30
       items:
       - ubm_desktop:
