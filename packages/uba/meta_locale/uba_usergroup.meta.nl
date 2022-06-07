@@ -1,6 +1,5 @@
 {
-  "caption": "Gebruikersgroepen",
-  "description": "Gebruikerslidmaatschappen in groepen",
+  "caption": "Gebruikerslidmaatschappen in groepen",
   "attributes": [
     {
       "name": "userID",
