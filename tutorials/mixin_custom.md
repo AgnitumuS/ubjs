@@ -38,7 +38,19 @@ UB.registerMixinModule('myMixin', myMixinImpl)
 
 ## Implementation tips
 ### Logging with log level
-Wrap methods in logEnter / logLeave block to get a better logging + time profile for free
+Wrap methods in logEnter / logLeave block to get a better logging + time profile for free.
+Since @unitybase/ub@5.22.39 there is a service function `App.wrapEnterLeaveForUbMethod`
+```javascript
+const App = require('@unitybase/ub').App
+// use pattern below for method enter text - the same as native method do
+entytModule.select = App.wrapEnterLeaveForUbMethod(`method(${MIXIN_NAME}) ${entity.name}.select`, myMixinSelect)
+entityModule.entity.addMethod('select')
+function myMixinSelect(cxt) {
+  console.debug('some debug (shifted by recursion level automatically)')
+}
+```
+
+Before 5.33.39 use a polyfill
 ```javascript
 function wrapEnterLeave (enterText, methodImpl) {
   return function enterLeave(ctx) {
@@ -49,12 +61,6 @@ function wrapEnterLeave (enterText, methodImpl) {
       App.logLeave()
     }
   }
-}
-// use pattern below for method enter text - the same as native method do
-entytModule.select = wrapEnterLeave(`method(${MIXIN_NAME}) ${entity.name}.select`, myMixinSelect)
-entityModule.entity.addMethod('select')
-function myMixinSelect(cxt) {
-  console.debug('some debug (shifted by recursion level automatically)')
 }
 ```
 

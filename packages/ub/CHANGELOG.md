@@ -6,6 +6,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+ - added new method `App.wrapEnterLeaveForUbMethod` for logging method execution with timer and recursion shift  
  - data storage entities for "Many" attributes now added by metadata transformation hook of @unitybase/ub model (instead native server code)
  - mixin what implements data storage for ACL RLS implementation moved from native to JS (@unitybase/ub/mixins/aclRlsStorageMixin.js).
   **CHANGES**

@@ -32,7 +32,7 @@ module.exports = {
  */
 function initEntityForAclRlsStorage (entity, mixinCfg) {
   const entityModule = global[entity.code]
-  entityModule.insert = wrapEnterLeave(`method(aclRlsStorage) ${entity.name}.insert`, aclRlsStorageInsert)
+  entityModule.insert = App.wrapEnterLeaveForUbMethod(`method(aclRlsStorage) ${entity.name}.insert`, aclRlsStorageInsert)
   entityModule.entity.addMethod('insert')
   global[entity.code].on('update:before', denyUpdateForAclRls)
 }
@@ -71,15 +71,4 @@ function aclRlsStorageInsert (ctx) {
  */
 function denyUpdateForAclRls (ctx) {
   throw new UBAbort('Update method is not applicable for aclRls storage entity')
-}
-
-function wrapEnterLeave (enterText, methodImpl) {
-  return function logEnterLeave (ctx) {
-    App.logEnter(enterText)
-    try {
-      methodImpl(ctx)
-    } finally {
-      App.logLeave()
-    }
-  }
 }

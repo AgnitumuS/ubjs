@@ -84,15 +84,15 @@ function initEntityForFsStorage (entity, mixinCfg) {
   })
 
   // add methods wrapped by logEnter / logLeave (to avoid a long try/finally inside method implementation)
-  entityModule.select = wrapEnterLeave(`method(${MIXIN_NAME}) ${entity.name}.select`, fsStorageSelect)
+  entityModule.select = App.wrapEnterLeaveForUbMethod(`method(${MIXIN_NAME}) ${entity.name}.select`, fsStorageSelect)
   entityModule.entity.addMethod('select')
-  entityModule.insert = wrapEnterLeave(`method(${MIXIN_NAME}) ${entity.name}.insert`, fsStorageInsert)
+  entityModule.insert = App.wrapEnterLeaveForUbMethod(`method(${MIXIN_NAME}) ${entity.name}.insert`, fsStorageInsert)
   entityModule.entity.addMethod('insert')
-  entityModule.update = wrapEnterLeave(`method(${MIXIN_NAME}) ${entity.name}.update`, fsStorageUpdate)
+  entityModule.update = App.wrapEnterLeaveForUbMethod(`method(${MIXIN_NAME}) ${entity.name}.update`, fsStorageUpdate)
   entityModule.entity.addMethod('update')
-  entityModule.delete = wrapEnterLeave(`method(${MIXIN_NAME}) ${entity.name}.delete`, fsStorageDelete)
+  entityModule.delete = App.wrapEnterLeaveForUbMethod(`method(${MIXIN_NAME}) ${entity.name}.delete`, fsStorageDelete)
   entityModule.entity.addMethod('delete')
-  entityModule.addnew = wrapEnterLeave(`method(${MIXIN_NAME}) ${entity.name}.addnew`, fsStorageAddNew)
+  entityModule.addnew = App.wrapEnterLeaveForUbMethod(`method(${MIXIN_NAME}) ${entity.name}.addnew`, fsStorageAddNew)
   entityModule.entity.addMethod('addnew')
 
   const CACHABLE = (entity.cacheType === UBDomain.EntityCacheTypes.Entity) ||
@@ -531,16 +531,5 @@ function initEntityForFsStorage (entity, mixinCfg) {
     }
     console.debug('loaded in', Date.now() - startTime, 'ms')
     return result
-  }
-}
-
-function wrapEnterLeave (enterText, methodImpl) {
-  return function logEnterLeave (ctx) {
-    App.logEnter(enterText)
-    try {
-      methodImpl(ctx)
-    } finally {
-      App.logLeave()
-    }
   }
 }
