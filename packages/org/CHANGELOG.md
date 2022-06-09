@@ -14,6 +14,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+
+## [5.22.22] - 2022-06-09
+### Fixed
 - Remove scheduler condition for the "updateStaffUnitCaptions" caption
   (it was dependent on fts.async setting)
 

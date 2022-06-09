@@ -8,16 +8,19 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
- - `UNavbar` (tabs on the top of the page)
-   - uses native tooltip instead of `el-tooltip`
-   - tooltip is not shown in case tab text length < 18 chars
-  This simplifies layout and gives better UX
 
 ### Deprecated
 
 ### Removed
 
 ### Fixed
+
+## [5.22.24] - 2022-06-09
+### Changed
+ - `UNavbar` (tabs on the top of the page)
+   - uses native tooltip instead of `el-tooltip`
+   - tooltip is not shown in case tab text length < 18 chars
+  This simplifies layout and gives better UX
 
 ## [5.22.23] - 2022-06-06
 ### Fixed
