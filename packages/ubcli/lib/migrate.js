@@ -101,6 +101,24 @@ const AFTER_DDL_RE = /_afterDDL[_/.]/
 const IS_VERSION_RE = /^\d{9}$/ // 9 digits version number 005001001
 const NORMALIZE_VERSION_RE = /^((\d{1,3})[._](\d{1,3})[._](\d{1,3}))/
 
+function patchParamsForTenant(serverConfig, params) {
+  console.log('Configure tenant connection for tenant: %s', params.tenantID)
+  if (serverConfig.security.multitenancy.tenantIDHeader) {
+    const patchedHeaders = params.headers ? JSON.parse(params.headers) : {}
+    if (!patchedHeaders[serverConfig.security.multitenancy.tenantIDHeader]) {
+      patchedHeaders[serverConfig.security.multitenancy.tenantIDHeader] = params.tenantID.toString()
+      params.headers = JSON.stringify(patchedHeaders)
+    }
+  } else {
+    const tenantIDNum = +params.tenantID
+    const tenantCfg = serverConfig.security.multitenancy.tenants.find(t => t.TID === tenantIDNum)
+    if (!tenantCfg) {
+      throw new Error(`Tenant ${params.tenantID} does not exist`)
+    }
+    params.host = 'http://' + tenantCfg.URI
+  }
+}
+
 /**
  *  @param {Object} params  Migration parameters
  *  @private
@@ -120,21 +138,7 @@ function runMigrations (params) {
     modelsToMigrate = modelsToMigrate.filter(m => inModels.includes(m.name))
   }
   if (params.tenantID) {
-    console.log('Configure tenant connection for tenant: %s', params.tenantID)
-    if (serverConfig.security.multitenancy.tenantIDHeader) {
-      const patchedHeaders = params.headers ? JSON.parse(params.headers) : {}
-      if (!patchedHeaders[serverConfig.security.multitenancy.tenantIDHeader]) {
-        patchedHeaders[serverConfig.security.multitenancy.tenantIDHeader] = params.tenantID.toString()
-        params.headers = JSON.stringify(patchedHeaders)
-      }
-    } else {
-      const tenantIDNum = +params.tenantID
-      const tenantCfg = serverConfig.security.multitenancy.tenants.find(t => t.TID === tenantIDNum)
-      if (!tenantCfg) {
-        throw new Error(`Tenant ${params.tenantID} does not exist`)
-      }
-      params.host = 'http://' + tenantCfg.URI
-    }
+    patchParamsForTenant(serverConfig, params)
   }
 
   console.log('Loading application migration state from DB...')
@@ -315,6 +319,17 @@ function runMigrations (params) {
   }
 
   if (!params.noUpdateVersion) {
+    if (params.tenantID > 1) {
+      // When multi-tenant environments, noUpdateVersion=true for all tenants except the last,
+      // So that until ALL tenant migrated, version not updated.
+
+      // So, this code usually executed for the last tenant, and in order to allow
+      // update ub_version entity, need to switch back to tenant 1
+      console.log('Recreate UB connection for tenant=1 to update model versions')
+      patchParamsForTenant(serverConfig, params)
+      session = argv.establishConnectionFromCmdLineAttributes(params)
+      conn = session.connection
+    }
     updateVersionsInDB(conn, modelsToMigrate, { dbVersionIDs, dbVersions })
   } else {
     console.log('Skipped update version because of "noUpdateVersion" flag')
