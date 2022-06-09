@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+- Migrate bug for multitenant environment
 
 ## [5.22.18] - 2022-06-01
 ## [5.22.17] - 2022-05-26
