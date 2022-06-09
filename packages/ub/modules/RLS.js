@@ -10,7 +10,7 @@ const ubaCommon = require('@unitybase/base').uba_common
 /**
  * @namespace
  */
-let RLS = global.RLS = {}
+const RLS = global.RLS = {}
 global['$'] = RLS
 
 RLS.currentOwner = function () {
@@ -74,6 +74,13 @@ RLS.currentUserOrUserGroupInAdmSubtable = function (sender) {
 }
 
 /**
+ * Returns `true` in case current user is Superuser ( build-in root or admin) or member of Admin group
+ * @returns {boolean}
+ */
+RLS.isSuperUserOrInAdminGroup = function () {
+  return (ubaCommon.isSuperUser() || Session.hasRole(ubaCommon.ROLES.ADMIN.NAME))
+}
+/**
  * For members of Admin group and for users `root` and `admin` do nothing.
  *
  * For other users adds condition what
@@ -84,7 +91,7 @@ RLS.currentUserOrUserGroupInAdmSubtable = function (sender) {
  */
 RLS.allowForAdminOwnerAndAdmTable = function (ctxt) {
   // skip RLS for admin and root and Admin group member
-  if (ubaCommon.isSuperUser() || Session.hasRole(ubaCommon.ROLES.ADMIN.NAME)) return
+  if (RLS.isUserAdminOrInAdminGroup()) return
 
   const mParams = ctxt.mParams
   let whereList = mParams.whereList

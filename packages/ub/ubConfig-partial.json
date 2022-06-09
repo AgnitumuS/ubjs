@@ -1,0 +1,10 @@
+{
+  "application": {
+    "mixinsDefaults": {
+      "aclRls": {
+        "skipIfFn": "RLS.isSuperUserOrInAdminGroup",
+        "selectionRule": "Exists"
+      }
+    }
+  }
+}
