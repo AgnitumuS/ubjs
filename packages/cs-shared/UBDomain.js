@@ -1022,6 +1022,9 @@ function booleanParse (v) {
  * @returns {*|null}
  */
 function jsonParse (v) {
+  if (typeof v === 'object') {
+    return v
+  }
   return v ? JSON.parse(v) : null
 }
 
