@@ -326,6 +326,7 @@ function runMigrations (params) {
       // So, this code usually executed for the last tenant, and in order to allow
       // update ub_version entity, need to switch back to tenant 1
       console.log('Recreate UB connection for tenant=1 to update model versions')
+      params.tenantID = 1
       patchParamsForTenant(serverConfig, params)
       session = argv.establishConnectionFromCmdLineAttributes(params)
       conn = session.connection
