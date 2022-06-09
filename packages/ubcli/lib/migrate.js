@@ -315,6 +315,14 @@ function runMigrations (params) {
   }
 
   if (!params.noUpdateVersion) {
+    if (params.tenantID) {
+      // When multi-tenant environments, noUpdateVersion=true for all tenants except the last,
+      // So that until ALL tenant migrated, version not updated.
+
+      // So, this code usually executed for the last tenant, and in order to allow
+      // update ub_version entity, need to switch bask to tenant 1
+      dbConnections.DEFAULT.exec('SET ub.tenantID=1')
+    }
     updateVersionsInDB(conn, modelsToMigrate, { dbVersionIDs, dbVersions })
   } else {
     console.log('Skipped update version because of "noUpdateVersion" flag')
