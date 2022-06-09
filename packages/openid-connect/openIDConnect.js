@@ -31,7 +31,10 @@ const App = UB.App
  */
 
 const btoa = require('btoa')
-module.exports.registerEndpoint = registerOpenIDEndpoint
+module.exports = {
+  registerEndpoint: registerOpenIDEndpoint,
+  getOpenIDEndpoint
+}
 
 const endpoints = {}
 const queryString = require('querystring')
@@ -101,16 +104,44 @@ function registerOpenIDEndpoint (endpointName) {
           `
         }
       }
+      providerConfig.name = name
       providers[name] = providerConfig
     },
+    /**
+     *
+     * @returns {string[]}
+     */
     getProviderList: function () {
       return Object.keys(providers)
     },
+    /**
+     *
+     * @param {String} providerName
+     * @returns {Object}
+     */
     getProvider: function (providerName) {
       return providers[providerName]
+    },
+    /**
+     *
+     * @param {String} providerName
+     */
+    removeProvider (providerName) {
+      if (providers[providerName]) {
+        delete providers[providerName]
+      }
     }
   }
   return endpoints[endpointName]
+}
+
+/**
+ *
+ * @param {String} name - Name of OIDC registered endpoint
+ * @return {Object | undefined} - Object for managing endpoint providers
+ */
+function getOpenIDEndpoint (name) {
+  return endpoints[name]
 }
 
 /**
@@ -135,6 +166,7 @@ function openIDConnect (req, resp) {
     returnInvalidRequest(resp, 'Endpoint is not registered')
     return
   }
+
   if (!providerName) {
     returnProviderList(resp, endpoint)
     return
@@ -288,7 +320,15 @@ function doProviderAuthHandshake (resp, code, state, provider, redirectUrl, orig
     }
     if (response.statusCode === 200) {
       responseData = JSON.parse(response.read()) // response._http.responseText
-      const userID = provider.getUserID(responseData, { resp: resp, code: code, state: state, provider: provider, redirectUrl: redirectUrl, orign: orign })
+      const userID = provider.getUserID(responseData, {
+        resp: resp,
+        code: code,
+        state: state,
+        provider: provider,
+        redirectUrl: redirectUrl,
+        orign: orign,
+        id_token: provider.id_token
+      })
       if (userID === false) {
         return
       }

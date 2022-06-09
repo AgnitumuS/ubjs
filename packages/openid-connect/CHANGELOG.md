@@ -6,7 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
-
+- Method getOpenIDEndpoint. Return endpoint management interface.
+- Endpoint management interface method "getProvider". Return provider configuration. If provider did not register returns null
+- Endpoint management interface method "removeProvider". Remove the provider
+- Parameter id_token for callback getUserID. Some providers put this information about user 
 ### Changed
 
 ### Deprecated
