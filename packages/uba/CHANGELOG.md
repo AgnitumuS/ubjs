@@ -13,6 +13,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Role "Developer" given permissions: "ubm" model - full permissions,
   "uba_els" / "uba_als" / "ubs_report" - full permissions;
   "ubs" / "ubq" / "uba" - read only.
+- New Desktop "Studio" with access to Developer
+  - move there "Developer Tools" folder
 
 ### Changed
 - Item "Monitoring Tools" in the "Administrator" desktop

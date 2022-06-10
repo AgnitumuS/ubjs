@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
+- Move UI (shortcuts and desktops) to "Studio" desktop
 
 ### Deprecated
 

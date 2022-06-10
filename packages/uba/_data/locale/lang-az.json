@@ -12,5 +12,6 @@
   "ubm_navshortcut.adm_folder_users.caption": "İstifadəçilər",
   "ubm_navshortcut.adm_folder_security.caption": "Təhlükəsizlik",
   "ubm_navshortcut.uba_audit-securityDashboard.caption": "Təhlükəsizlik Konsolu",
-  "ubm_navshortcut.adm_folder_devTools.caption": "Tərtibatçı alətləri"
+  "ubm_navshortcut.adm_folder_devTools.caption": "Tərtibatçı alətləri",
+  "ubm_navshortcut.dev_folder_devTools.description": "Tərtibatçılar tərəfindən yaradılan və redaktə edilən Sistem Məlumatı, bu alətlərdən istifadə edərək Datanın dəyişdirilməsi sistemin heç vaxt versiyalarına köçdükdən sonra ləğv edilə bilər."
 }

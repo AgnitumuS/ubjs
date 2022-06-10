@@ -4,6 +4,7 @@ $context:
 # Submenu in "Administrator" desktop
 adm_desktop:
   access: Supervisor, Developer, SysOps
+  displayOrder: 10
   caption: Administration
   description: Users and Groups Management, Settings, Audit, Maintenance and Developer Tools
   iconCls: u-icon-desktop-administrator
@@ -215,12 +216,18 @@ adm_desktop:
               formCode: 'uba_audit-securityDashboard'
             }
 
-  - adm_folder_devTools:
+
+dev_desktop:
+  access: Developer, Supervisor
+  caption: Studio
+  description: System Configuration Tools
+  iconCls: u-icon-desktop-studio
+  items:
+  - dev_folder_devTools:
       caption: Developer Tools
       description: System Data created and edited by Developers, changing Data using these tools might be overridden after migration to never versions of the system.
-      access: Developer
       iconCls: u-icon-wrench
-      displayOrder: 200   # The last one
+      displayOrder: 1000   # The last one
       items:
       - uba_role:
           caption: { $i18n: uba_role }
@@ -246,7 +253,6 @@ adm_desktop:
               }
             }
       - uba_als:
-          access: Supervisor
           caption: { $i18n: uba_als }
           iconCls: fa fa-share-alt
           cmd: >
@@ -257,3 +263,4 @@ adm_desktop:
                 entityName: 'uba_als'
               }
             }
+

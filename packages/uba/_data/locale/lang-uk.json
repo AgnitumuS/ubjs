@@ -14,6 +14,8 @@
   "ubm_navshortcut.uba_audit-securityDashboard.caption": "Консоль безпеки",
   "ubm_navshortcut.adm_folder_maintenance.caption": "Інструменти обслуговування",
   "ubm_navshortcut.adm_folder_maintenance.description": "Інструменти для обслуговування та моніторингу системи",
-  "ubm_navshortcut.adm_folder_devTools.caption": "Інструменти розробника",
-  "ubm_navshortcut.adm_folder_devTools.description": "Системні дані, редагування яких виконуються розробниками. Зміна даних в цьому розділі може бути перезаписана при міграції на нові версії."
+  "ubm_desktop.dev_desktop.caption": "Студія",
+  "ubm_desktop.dev_desktop.description": "Інструменти конфігурування системи",
+  "ubm_navshortcut.dev_folder_devTools.caption": "Інструменти розробника",
+  "ubm_navshortcut.dev_folder_devTools.description": "Системні дані, редагування яких виконуються розробниками. Зміна даних в цьому розділі може бути перезаписана при міграції на нові версії."
 }

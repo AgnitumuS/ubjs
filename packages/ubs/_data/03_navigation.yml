@@ -119,7 +119,7 @@ adm_desktop:
                 ]
               }
             }
-  - adm_folder_devTools:
+  - dev_folder_devTools:
       $amendment: true
       items:
       - ubs_report:

@@ -1,14 +1,14 @@
 $context:
   type: navigation
-
-adm_desktop:
+  
+dev_desktop:
   $amendment: true
   items:
-  - adm_folder_UI:
+  - dev_folder_UI:
       caption: UI
       iconCls: u-icon-image
-      access: Developer, Supervisor
-      displayOrder: 30
+      access: Developer
+      displayOrder: 100
       items:
       - ubm_desktop:
           caption: { $i18n: ubm_desktop }
@@ -40,6 +40,10 @@ adm_desktop:
             - isFolder
             - description
             - keywords
+
+adm_desktop:
+  $amendment: true
+  items:
   - adm_folder_misc:
       $amendment: true
       items:
@@ -53,7 +57,7 @@ adm_desktop:
               cmdType: 'showForm',
               formCode: 'ubm_desktop-uiSettings'
             }
-  - adm_folder_devTools:
+  - dev_folder_devTools:
       $amendment: true
       items:
       - ubm_enum:

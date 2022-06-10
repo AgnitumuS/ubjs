@@ -14,6 +14,8 @@
   "ubm_navshortcut.uba_audit-securityDashboard.caption": "Security Dashboard",
   "ubm_navshortcut.adm_folder_maintenance.caption": "Maintenance Tools",
   "ubm_navshortcut.adm_folder_maintenance.description": "System Maintenance and Monitoring Tools",
-  "ubm_navshortcut.adm_folder_devTools.caption": "Developer Tools",
-  "ubm_navshortcut.adm_folder_devTools.description": "System Data created and edited by Developers, changing Data using these tools might be overridden after migration to never versions of the system."
+  "ubm_desktop.dev_desktop.caption": "Studio",
+  "ubm_desktop.dev_desktop.description": "System Configuration Tools",
+  "ubm_navshortcut.dev_folder_devTools.caption": "Developer Tools",
+  "ubm_navshortcut.dev_folder_devTools.description": "System Data created and edited by Developers, changing Data using these tools might be overridden after migration to never versions of the system."
 }
