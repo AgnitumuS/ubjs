@@ -2,36 +2,13 @@ $context:
   type: navigation
 
 org_desktop:
-  caption:
-    en: Organizational Structure
-    de: Organisationsstruktur
-    uk: Орг. структура
-    ru: Орг. структура
-    ka: ორგანიზაციული სტრუქტურა
-    tg: Сохтори корхона
-    nl: Structuur van de organisatie
-    az: Təş. Struktur
-  description:
-    en: Departments, Positions, Employees, Appointments,...
-    de: Abteilungen, Positionen, Mitarbeiter, Funktionen,...
-    uk: Департаменти, посади, службовці, призначення,...
-    ru: Отделы, должности, сотрудники, назначения,...
-    ka: განყოფილებები, თანამდებობები, თანამშრომლები, დანიშვნები, ...
-    tg: Раёсатҳо, вазифаҳо, кормандон, таъйинот, ...
-    nl: Afdelingen, functies, medewerkers, toewijzingen,...
-    az: Şöbələr, vəzifələr, əməkdaşlar,təyinatlar,...
+  displayOrder: 200
+  caption: Organizational Structure
+  description: Departments, Positions, Employees, Appointments, ...
   iconCls: u-icon-desktop-orgstructure
   items:
   - org_folder_internal:
-      caption:
-        en: Org Internal
-        de: Organisationsintern
-        uk: Орг. структура
-        ru: Орг. структура
-        ka: შიდა ორგანიზება
-        tg: Сохтори корхона
-        nl: Structuur van de organisatie
-        az: Təş.strurktur
+      caption: Org Internal
       iconCls: u-icon-globe
       displayOrder: 10
       items:
@@ -108,15 +85,7 @@ org_desktop:
               }
             }
       - org_employeeonstaff_all:
-          caption:
-            en: Assignment history
-            de: Zuweisungsverlauf
-            uk: Історія призначень
-            ru: История назначений
-            ka: დავალების ისტორია
-            tg: Таърихи таъинот
-            nl: Opdrachtgeschiedenis
-            az: Tapşırıq tarixçəsi
+          caption: Assignment history
           iconCls: u-icon-person-settings
           displayOrder: 35
           cmd: >
@@ -230,15 +199,7 @@ org_desktop:
               }
             }
   - org_folder_dict:
-      caption:
-        en: Additional
-        de: Zusätzlich
-        uk: Додатково
-        ru: Дополнительно
-        ka: დამატებითი
-        tg: Иловагӣ
-        nl: Extra
-        az: Əlavə
+      caption: Additional
       displayOrder: 20
       items:
       - org_profession:
