@@ -6,8 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+- new icons: `u-icon-desktop-tools`, `u-icon-desktop-gear` and `u-icon-desktop-studio`
 
 ### Changed
+- updated all desktop icons to have a modern and clearer look
 
 ### Deprecated
 
