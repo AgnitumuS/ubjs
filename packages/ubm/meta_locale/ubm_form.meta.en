@@ -1,6 +1,6 @@
 {
-  "caption": "Forms",
-  "description": "Definition of interface forms",
+  "caption": "System Forms",
+  "description": "UnityBase platform Forms Definition",
   "attributes": [
     {
       "name": "code",
@@ -16,8 +16,8 @@
     },
     {
       "name": "formType",
-      "caption": "Form type",
-      "description": "Form definition type (auto or custom)"
+      "caption": "Form Type",
+      "description": "Form definition type: \"auto\", \"vue\", \"custom\" or \"module\""
     },
     {
       "name": "formDef",

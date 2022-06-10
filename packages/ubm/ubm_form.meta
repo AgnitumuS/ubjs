@@ -1,6 +1,6 @@
 {
-  "caption": "Forms",
-  "description": "Definition of interface forms",
+  "caption": "System Forms",
+  "description": "UnityBase platform Forms Definition",
   "connectionName": "",
   "sqlAlias": "form",
   "cacheType": "SessionEntity",
@@ -42,7 +42,8 @@
       "name": "formType",
       "dataType": "Enum",
       "enumGroup": "FORM_TYPE",
-      "caption": "Form type",
+      "caption": "Form Type",
+      "description": "Form definition type: \"auto\", \"vue\", \"custom\" or \"module\"",
       "allowNull": false,
       "defaultValue": "auto"
     },
