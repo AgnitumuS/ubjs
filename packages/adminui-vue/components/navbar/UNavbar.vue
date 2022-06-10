@@ -55,36 +55,28 @@
     </u-dropdown>
 
     <div class="u-navbar__tab-container">
-      <el-tooltip
+      <div
         v-for="tab in tabs"
         :key="tab.id"
-        placement="bottom"
-        :enterable="false"
-        :disabled="tab.title === tab.titleTooltip && tab.title.length < 18"
+        :ref="`tab${tab.id}`"
+        :class="{
+          active: tab.id === activeTabId
+        }"
+        class="u-navbar__tab"
+        :title="getTooltipText(tab)"
+        @click="setActiveTab(tab.id)"
+        @contextmenu="showContextMenu($event, tab.id)"
+        @click.middle="handleClose([tab])"
       >
-        <template #content>
-          <span v-html="tab.titleTooltip || tab.title" />
-        </template>
-        <div
-          :ref="`tab${tab.id}`"
-          :class="{
-            active: tab.id === activeTabId
-          }"
-          class="u-navbar__tab"
-          @click="setActiveTab(tab.id)"
-          @contextmenu="showContextMenu($event, tab.id)"
-          @click.middle="handleClose([tab])"
-        >
-          <span
-            class="u-navbar__tab-text"
-            v-html="tab.title"
-          />
-          <i
-            class="u-icon-close u-navbar__tab-close-button"
-            @click="handleClose([tab])"
-          />
-        </div>
-      </el-tooltip>
+        <span
+          class="u-navbar__tab-text"
+          v-html="tab.title"
+        />
+        <i
+          class="u-icon-close u-navbar__tab-close-button"
+          @click="handleClose([tab])"
+        />
+      </div>
     </div>
 
     <slot />
@@ -254,6 +246,16 @@ export default {
 
         scope: this
       })
+    },
+
+    /**
+     * Return non-empty string in case tooltip is defined in titleTooltip
+     * or title length > 18
+     */
+    getTooltipText (tab) {
+      // tooltip defined manually
+      if (tab.titleTooltip && tab.titleTooltip !== tab.title) return tab.titleTooltip
+      return tab.title.length > 18 ? tab.title : ''
     }
   }
 }
