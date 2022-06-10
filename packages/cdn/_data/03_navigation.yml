@@ -3,40 +3,14 @@ $context:
 
 cdn_desktop:
   access: User
-  caption:
-    en: Common Dictionaries
-    de: Gemeinsame Wörterbücher
-    uk: Загальні довідники
-    ru: Общие справочники
-    ka: საერთო ლექსიკონო
-    tg: Маълумотномаҳои умумӣ
-    nl: Common Dictionaries
-    uz: Umumiy kataloglar
-    az: Ümumi soraqçalaq
-  description:
-    en: Directories of Subjects, Addresses, Other Classifiers
-    de: Verzeichnisse von Subjekten, Adressen und anderen Klassifikatoren
-    uk: Довідники суб'єктів, адрес, інші класифікатори
-    ru: Справочники субъектов, адресов, прочие классификаторы
-    ka: საგნების, მისამართების, სხვა კლასიფიკატორების დირექტორიები
-    tg: Директорияи фанҳо, суроғаҳо, таснифоти дигар
-    nl: Directories of subjects, addresses, other classifiers
-    uz: Mavzular kataloglari, manzillar, boshqa tasniflagichlar
-    az: Mövzular, ünvanlar, digər soraqçalar
+  displayOrder: 100
+  caption: Common Dictionaries
+  description: Directories of Subjects, Addresses, Other Classifiers
   iconCls: u-icon-desktop-dictionaries
   items:
   - cdn_folder_territorial:
       access: User
-      caption:
-        en: Territorial
-        de: Territorial
-        uk: Адмін. поділ
-        ru: Админ. деление
-        ka: ტერიტორია
-        tg: Воҳиди маъмурӣ
-        nl: Territoriaal
-        uz: Admin. bo`linish
-        az: İnzibati bölgü
+      caption: Territorial
       iconCls: u-icon-globe
       displayOrder: 10
       items:
@@ -131,16 +105,7 @@ cdn_desktop:
             }
   - cdn_folder_subjects:
       access: User
-      caption:
-        en: Subjects
-        de: Verwaltungssubjekte
-        uk: Суб'єкти
-        ru: Субъекты
-        ka: თემა ან საგანი
-        tg: Субъектҳо
-        nl: Onderwerpen
-        uz: Mavzular
-        az: Subyektlər
+      caption: Subjects
       iconCls: u-icon-person
       displayOrder: 10
       items:
@@ -244,16 +209,7 @@ cdn_desktop:
             }
   - cdn_folder_misc:
       access: User
-      caption:
-        en: Miscellaneous
-        de: Sonstiges
-        uk: Різне
-        ru: Разное
-        ka: სხვადასხვა
-        tg: Гуногун
-        nl: Overige toepassingen
-        uz: Har xil
-        az: Müxtəlif
+      caption: Miscellaneous
       iconCls: u-icon-setting
       displayOrder: 40
       isCollapsed: true
