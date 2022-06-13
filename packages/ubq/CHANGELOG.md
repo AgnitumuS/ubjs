@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+- Tenant schedulers work in case, when TenantID header is used
 
 ## [5.22.17] - 2022-06-06
 ### Changed
