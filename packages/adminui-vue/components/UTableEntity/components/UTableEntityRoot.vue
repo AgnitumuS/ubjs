@@ -256,7 +256,6 @@
         @click-cell="select"
         @contextmenu="showContextMenu"
         @change-active-row="activeRowChangeHandler"
-        @dblclick-row="onSelect($event.row.ID, $event.row)"
       >
         <template
           v-for="column in columns"
@@ -326,7 +325,6 @@
         @click-cell="select"
         @contextmenu="showContextMenu"
         @change-active-row="activeRowChangeHandler"
-        @dblclick="onSelect($event.row.ID, $event.row)"
       >
         <slot
           slot="card"
