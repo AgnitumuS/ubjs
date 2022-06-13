@@ -8,6 +8,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
+ - fonts: `Roboto` & `ub-icons` fonts now provided only in woff2 format (without fallback to ttf/eot).
+   This decrease package size by 1.5Mb. WOFF2 is better compressed (compared to ttf/eot) and
+   supported by all modern browsers
+ - `ub-icons` font compiled from SVGs using `webfont` tool directly, instead of deprecated
+   and not supported `webfont-webpack-plugin`
 
 ### Deprecated
 
