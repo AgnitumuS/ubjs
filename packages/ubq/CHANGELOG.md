@@ -8,12 +8,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
-- In the "Administrator" desktop, move items from "Messages Queue" to "Monitoring Tools"
-  - Delete the empty "Message Queue" item 
 
 ### Deprecated
 
 ### Removed
+
+### Fixed
+
+## [5.23.0] - 2022-06-15
+### Changed
+- In the "Administrator" desktop, move items from "Messages Queue" to "Monitoring Tools"
+  - Delete the empty "Message Queue" item 
 
 ### Fixed
 - Tenant schedulers work in case, when TenantID header is used

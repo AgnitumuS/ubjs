@@ -6,6 +6,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+## [5.23.0] - 2022-06-15
+### Added
  - added global `resize` handler for touch devices what scroll input into viewport when on-screen keyboard appears
 
 ### Changed
@@ -18,13 +29,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
    - "mini-css-extract-plugin": "^2.6.0",
    - "uglify-js": "~3.14"
 
-### Deprecated
-
 ### Removed
  - `unhandledrejection` polyfill is removed - starting from FireFox69 it supported natively
  - `zoom` CSS usage is removed (deprecated by browsers)
-
-### Fixed
 
 ## [5.22.21] - 2022-06-06
 ## [5.22.20] - 2022-06-01

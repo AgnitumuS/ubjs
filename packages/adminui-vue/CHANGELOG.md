@@ -6,6 +6,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+## [5.23.0] - 2022-06-15
+### Added
  - added muting of `ElDatePicker` placement prop mutation warning
  - new icons: `u-icon-desktop-tools`, `u-icon-desktop-gear` and `u-icon-desktop-studio`
 
@@ -35,10 +46,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
    - css-loader@5.2.7  - version locked. version above have problems with fonts
    - uglify-js "~3.14" -version locked. versions above broke ext-all minification
  - updated all desktop icons to have a modern and clearer look
-
-### Deprecated
-
-### Removed
 
 ### Fixed
  - `UtableEntity` - fixed error with "monkey request" when open document for edit

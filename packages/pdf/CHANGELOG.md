@@ -8,15 +8,18 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
- - packages updated:
-   - "file-saver": "^2.0.5",
-   - "xmldom": "^0.6.0"
 
 ### Deprecated
 
 ### Removed
 
 ### Fixed
+
+## [5.3.0] - 2022-06-15
+### Changed
+ - packages updated:
+   - "file-saver": "^2.0.5",
+   - "xmldom": "^0.6.0"
 
 ## [5.2.6] - 2022-03-25
 ## [5.2.5] - 2021-12-02

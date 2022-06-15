@@ -8,13 +8,16 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
-- Move UI (shortcuts and desktops) to "Studio" desktop
 
 ### Deprecated
 
 ### Removed
 
 ### Fixed
+
+## [5.23.0] - 2022-06-15
+### Changed
+- Move UI (shortcuts and desktops) to "Studio" desktop
 
 ## [5.22.21] - 2022-06-06
 ### Changed

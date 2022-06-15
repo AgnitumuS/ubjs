@@ -8,13 +8,16 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
-- Move localization for navigation shortcuts and desktop to json files
 
 ### Deprecated
 
 ### Removed
 
 ### Fixed
+
+## [5.23.0] - 2022-06-15
+### Changed
+- Move localization for navigation shortcuts and desktop to json files
 
 ## [5.22.22] - 2022-06-09
 ### Fixed

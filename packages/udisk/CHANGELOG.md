@@ -12,9 +12,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Deprecated
 
 ### Removed
- - "peerDependencies" - removed @unitybase/adminui-pub
 
 ### Fixed
+
+## [5.23.0] - 2022-06-15
+### Removed
+ - "peerDependencies" - removed @unitybase/adminui-pub
 
 ## [5.22.16] - 2022-06-01
 ## [5.22.15] - 2022-05-26

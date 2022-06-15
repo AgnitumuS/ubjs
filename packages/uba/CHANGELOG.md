@@ -6,6 +6,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+## [5.23.0] - 2022-06-15
+### Added
 - The new "SysOps" built-in role. Role shall be given to engineers, who help to maintain the system.
   Role Access:
   - Full access to ubs/ubq/ubm models
@@ -19,12 +30,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Changed
 - Item "Monitoring Tools" in the "Administrator" desktop
   - Moved there "Security Dashboard" and "User Sessions"
-
-### Deprecated
-
-### Removed
-
-### Fixed
 
 ## [5.22.17] - 2022-06-06
 ### Added

@@ -8,6 +8,15 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+## [5.23.0] - 2022-06-15
+### Changed
 - packages updated:
   - "mustache": "^4.2.0",
   - "xmldom": "^0.6.0"
@@ -16,12 +25,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
   confuse with other type of settings
 - Rename "Misc" into "Settings"
 - Move some items into the new "Maintenance Tools" folder of the "Administrator" desktop
-
-### Deprecated
-
-### Removed
-
-### Fixed
 
 ## [5.22.20] - 2022-06-06
 ### Changed
