@@ -13,14 +13,15 @@ program
   .option('-q, --quiet', 'do not harm console', false)
   .parse(process.argv)
 
-let opts = {
-  port: program.port,
-  user: program.user,
-  pwd: program.pwd,
-  host: program.host,
-  poll: program.poll,
-  quiet: program.quiet,
-  depth: program.depth
+const options = program.opts()
+const opts = {
+  port: options.port,
+  user: options.user,
+  pwd: options.pwd,
+  host: options.host,
+  poll: options.poll,
+  quiet: options.quiet,
+  depth: options.depth
 }
 
 server(opts)

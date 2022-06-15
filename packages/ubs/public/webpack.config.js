@@ -41,9 +41,6 @@ module.exports = {
   plugins: [
     new webpack.DefinePlugin({
       BOUNDLED_BY_WEBPACK: true
-    }),
-    new webpack.LoaderOptionsPlugin({
-      minimize: true
     })
   ]
 }

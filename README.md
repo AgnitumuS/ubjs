@@ -14,17 +14,23 @@ UnityBase is a full stack JavaScript framework for Enterprise. Its main purpose 
 
   - Download the last passed(!!!) version of  [Job artifacts](https://git-pub.intecracy.com/pavel.mash/ub-server-ee/pipelines)
   - unzip a UnityBase Standard Edition to the destination folder and add this folder to PATH
-  - _(optional step)_ To debug server-side JavaScript install [FireFox v57.0.4](https://ftp.mozilla.org/pub/firefox/releases/57.0.4/)
+  - _(optional step)_ To debug server-side use  [this VSCode setup] (https://unitybase.info/api/gettingstarted/gs-gettingStarted.html#debug-ub-server-with-vscode)
 
 > In case you develop a module for UnityBase, please see [Contribution Guide](https://git-pub.intecracy.com/unitybase/ubjs/blob/master/CONTRIBUTING.md).
 
-## Install (linux)
+## Install (Linux)
+Starting from 2022-06-15 recommended *development* environments are:
+  - nodejs@18
+  - npm@8
+  - lerna@5
+  - webpack@5
 
+ > DO NOT install NodeJS using Snap - lerna don't work correctly in this case. Install using `deb` [as described here](https://github.com/nodesource/distributions/blob/master/README.md#installation-instructions)
 
 
 ## Get Started
 
-Check out UnityBase [**Getting Started**](https://git-pub.intecracy.com/unitybase/samples/tree/master/courses/tutorial-v5) guide 
-and [other guides](https://git-pub.intecracy.com/unitybase/samples).
+Check out UnityBase [**Getting Started**](https://unitybase.info/api/gettingstarted/gs-gettingStarted.html) guide 
+and [other guides](https://unitybase.info/api/gettingstarted/index.html).
 
-Explore [the project WiKi](https://git-pub.intecracy.com/unitybase/ubjs/wikis/home).
+Explore [the project Articles](https://unitybase.info/api/server-v5/tutorialIndex.html).

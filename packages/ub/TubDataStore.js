@@ -173,7 +173,7 @@ All other appearances must be either a symbolic links created by lerna or not ex
 Detected duplicate path is ${__dirname}
 To solve this problem:
  - in case this app is not managed by lerna - run 'npm ddp'
- - in case of lerna: remove package-lock.json and run 'lerna clear && lerna bootstrap'  
+ - in case of lerna: remove package-lock.json and run 'lerna clean && lerna bootstrap'  
 `)
 }
 

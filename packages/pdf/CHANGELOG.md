@@ -8,6 +8,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
+ - packages updated:
+   - "file-saver": "^2.0.5",
+   - "xmldom": "^0.6.0"
 
 ### Deprecated
 

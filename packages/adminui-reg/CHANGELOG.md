@@ -8,10 +8,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
+ - dependencies upgraded: "mustache": "^4.2.0"
 
 ### Deprecated
 
 ### Removed
+ - `plugin-types` CSP header is removed (marked as deprecated in browsers)
 
 ### Fixed
 

@@ -25,9 +25,6 @@
     "@unitybase/stubs": "^5.22.5",
     "@unitybase/update-changelog": "^1.0.4"
   },
-  "peerDependencies": {
-    "@unitybase/ub": "^5.0.0"
-  },
   "keywords": [
     "UnityBase",
     "BLOB"

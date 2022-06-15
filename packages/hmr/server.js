@@ -7,6 +7,10 @@ const WebSocket = require('ws')
 
 module.exports = runServer
 
+/**
+ *
+ * @param opts
+ */
 function getDomainFolders (opts) {
   return UB.connect({
     host: opts.host,
@@ -14,7 +18,7 @@ function getDomainFolders (opts) {
       if (isRepeat) {
         throw new UB.UBAbortError('invalid')
       } else {
-        return Promise.resolve({authSchema: 'UB', login: opts.user, password: opts.pwd})
+        return Promise.resolve({ authSchema: 'UB', login: opts.user, password: opts.pwd })
       }
     },
     onAuthorizationFail: function (reason) {
@@ -23,15 +27,15 @@ function getDomainFolders (opts) {
   }).then(function (conn) {
     return conn.get(`getDomainInfo?v=4&userName=${opts.user}&extended=true`)
   }).then(function (res) {
-    let models = res.data.models
-    let folders = []
-    for (let modelName in models) {
+    const models = res.data.models
+    const folders = []
+    for (const modelName in models) {
       // noinspection JSUnfilteredForInLoop
       const model = models[modelName]
-      let pp = model.realPublicPath
+      const pp = model.realPublicPath
       if (pp) {
         if (fs.existsSync(pp)) {
-          let replaceBy = model.moduleName.startsWith('@')
+          const replaceBy = model.moduleName.startsWith('@')
             ? model.moduleName + (model.moduleSuffix ? ('/' + model.moduleSuffix) : '')
             : model.path
           folders.push({
@@ -45,9 +49,13 @@ function getDomainFolders (opts) {
   })
 }
 
+/**
+ *
+ * @param opts
+ */
 async function runServer (opts) {
-  let folders = await getDomainFolders(opts)
-  let log = opts.quiet ? () => {} : console.log.bind(console)
+  const folders = await getDomainFolders(opts)
+  const log = opts.quiet ? () => {} : console.log.bind(console)
   if (!folders.length) {
     log('Public folders not found')
     process.exit(1)
@@ -58,14 +66,14 @@ async function runServer (opts) {
   })
 
   const pathsToWatch = folders.map(fc => fc.publicPath)
-  let ignoredPaths = [
+  const ignoredPaths = [
     /[/\\]\./,
     // Ignore relative, top-level dotfiles as well (e.g. '.gitignore').
     /^\.[^/\\]/,
     `node_modules${path.sep}**`,
     `.git${path.sep}**`
   ]
-  let chokidarOpts = {
+  const chokidarOpts = {
     ignored: ignoredPaths,
     ignoreInitial: true,
     depth: opts.depth
@@ -73,9 +81,9 @@ async function runServer (opts) {
   if (opts.poll) chokidarOpts.usePolling = true
   log('Watching:')
   log(pathsToWatch.join('\n'))
-  let watcher = chokidar.watch(pathsToWatch, chokidarOpts).on('change', (onPath) => {
+  const watcher = chokidar.watch(pathsToWatch, chokidarOpts).on('change', (onPath) => {
     const event = 'change'
-    let modelFolder = folders.find(f => onPath.startsWith(f.publicPath))
+    const modelFolder = folders.find(f => onPath.startsWith(f.publicPath))
     if (!modelFolder) {
       log('Public path not found for', onPath)
       return
@@ -88,13 +96,19 @@ async function runServer (opts) {
     log('File', onPath, 'emitted:', event, 'with', clientPath)
     wss.clients.forEach(function each (client) {
       if (client.readyState === WebSocket.OPEN) {
-        client.send(JSON.stringify({event: event, path: clientPath}))
+        client.send(JSON.stringify({ event, path: clientPath }))
       }
     })
   })
 
+  /**
+   *
+   */
   function noop () {}
 
+  /**
+   *
+   */
   function heartbeat () {
     this.isAlive = true
   }
@@ -119,7 +133,7 @@ async function runServer (opts) {
   }, 30000)
 
   return {
-    wss: wss,
-    watcher: watcher
+    wss,
+    watcher
   }
 }

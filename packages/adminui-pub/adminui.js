@@ -24,8 +24,6 @@ window._ = _
 window.UB.LocalDataStore = LocalDataStore
 
 window.UBDomain = UBDomain // used as UBDomain.getPhysicalDataType && UBDomain.ubDataTypes
-// commented by MPV on 2019-03-01 - required in ubs
-// window.JSZip = require('jszip/dist/jszip.js') // for xlsx-pub. require('jszip') dose not work
 window.saveAs = fileSaver.saveAs
 
 Ext.Loader.setConfig({

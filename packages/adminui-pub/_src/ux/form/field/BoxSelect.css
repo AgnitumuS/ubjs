@@ -16,7 +16,6 @@ ul.x-boxselect-list.x-boxselect-singleselect {
     display: inline-block;
     position: relative;
     text-transform: none;
-    zoom:1; /* IE */
 }
 .x-boxselect-input input, .x-boxselect-input div {
     border: none;

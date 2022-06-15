@@ -26,9 +26,6 @@
   "devDependencies": {
     "@unitybase/update-changelog": "^1.0.4"
   },
-  "peerDependencies": {
-    "@unitybase/adminui-pub": "^5.8.16"
-  },
   "keywords": [
     "UnityBase",
     "UB5"
