@@ -15,7 +15,7 @@
     "build:watch": "cd ./public && webpack --progress --colors --watch",
     "prepare": "npm run build",
     "analyse-boundle": "cd ./public && webpack --profile --json > wp_stats.json && webpack-bundle-analyzer ./wp_stats.json",
-    "version": "update-changelog && git add CHANGELOG.md"
+    "version": "update-changelog"
   },
   "public": true,
   "publishConfig": {

@@ -10,7 +10,7 @@
   },
   "scripts": {
     "test": "ubcli autotest -m UBA -skipModules",
-    "version": "update-changelog && git add CHANGELOG.md"
+    "version": "update-changelog"
   },
   "public": true,
   "publishConfig": {

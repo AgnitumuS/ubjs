@@ -20,7 +20,7 @@
     "registry": "https://registry.unitybase.info"
   },
   "scripts": {
-    "version": "update-changelog && git add CHANGELOG.md"
+    "version": "update-changelog"
   },
   "dependencies": {
     "@unitybase/base": "^5.22.9",

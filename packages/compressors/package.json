@@ -9,7 +9,7 @@
   "scripts": {
     "test": "ub ./test/testCompresors.js",
     "build": "./build_native",
-    "version": "update-changelog && git add CHANGELOG.md"
+    "version": "update-changelog"
   },
   "public": true,
   "publishConfig": {

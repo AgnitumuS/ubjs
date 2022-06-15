@@ -6,7 +6,7 @@
   "scripts": {
     "test": "node ./test/test.js",
     "server": "node ./server.js",
-    "version": "update-changelog && git add CHANGELOG.md"
+    "version": "update-changelog"
   },
   "public": true,
   "publishConfig": {

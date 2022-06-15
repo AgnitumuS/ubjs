@@ -16,7 +16,7 @@
     "lint": "eslint source test",
     "test": "",
     "prepare": "npm run build",
-    "version": "update-changelog && git add CHANGELOG.md"
+    "version": "update-changelog"
   },
   "public": true,
   "publishConfig": {

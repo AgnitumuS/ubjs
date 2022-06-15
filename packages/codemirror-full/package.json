@@ -9,7 +9,7 @@
     "analyse-boundle": "webpack --profile --json > /tmp/wp_stats.json && webpack-bundle-analyzer /tmp/wp_stats.json",
     "test": "npm run test",
     "prepare": "npm run build",
-    "version": "update-changelog && git add CHANGELOG.md"
+    "version": "update-changelog"
   },
   "public": true,
   "publishConfig": {
