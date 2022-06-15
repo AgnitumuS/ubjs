@@ -39,7 +39,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
-
+`UtableEntity` - fixed error with "monkey request" when open document for edit
 ## [5.22.24] - 2022-06-09
 ### Changed
  - `UNavbar` (tabs on the top of the page)
