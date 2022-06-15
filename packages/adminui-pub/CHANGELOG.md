@@ -8,10 +8,20 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
+ - `uglify-js` updated `3.6 -> 3.14.X`. Versions above 3.14 cause "e is undefined" exception in minified `ext-all.min.js`
+   while mouse move over Ext grid 
+ - dependencies upgraded:
+   - "mustache": "^4.2.0"
+   - "exports-loader": "^4.0.0",
+   - "imports-loader": "^4.0.0",
+   - "mini-css-extract-plugin": "^2.6.0",
+   - "uglify-js": "~3.14"
 
 ### Deprecated
 
 ### Removed
+ - `unhandledrejection` polyfill is removed - starting from FireFox69 it supported natively
+ - `zoom` CSS usage is removed (deprecated by browsers)
 
 ### Fixed
 

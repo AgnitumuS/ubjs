@@ -230,8 +230,7 @@ but "browser" section in package.json is not defined. Will fallback to "browser"
         `style-src 'self' 'unsafe-inline' data: ${cspAllowP.styleSrc}; ` +
         `font-src 'self' data: ${cspAllowP.fontSrc}; ` +
         `frame-src 'self' ${cspAllowP.frameSrc} blob:; ` + // blob src required for chrome PDF viewer. Self - for JS PDF viewer
-        `img-src 'self' https://unitybase.info ${cspAllowP.imgSrc} data: blob:; ` + // blob: is for pictures inside tinyMCE
-        'plugin-types application/pdf'
+        `img-src 'self' https://unitybase.info ${cspAllowP.imgSrc} data: blob:;` // blob: is for pictures inside tinyMCE
       cspHeader = '\r\nContent-Security-Policy: ' + cspHeaders
       console.debug(cspHeaders)
     }

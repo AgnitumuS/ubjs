@@ -6,8 +6,33 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+ - added muting of `ElDatePicker` placement prop mutation warning
 
 ### Changed
+ - fonts: `Roboto` & `ub-icons` fonts now provided only in woff2 format (without fallback to ttf/eot).
+   This decrease package size by 1.5Mb. WOFF2 is better compressed (compared to ttf/eot) and
+   supported by all modern browsers
+ - `ub-icons` font compiled from SVGs using `webfont` tool directly, instead of deprecated
+   and not supported `webfont-webpack-plugin`
+ - build sysytem uses NodeJS version 16 and npm 8. For Linux users - do not install node using snap - there is problems with lerna in this case
+ - packages updated:
+   - "element-ui": "2.15.9",
+   - "throttle-debounce": "^5.0.0",  
+   - "mustache": "^4.2.0"
+   - "file-saver": "^2.0.5",
+ - dev packages updated:
+   - "eslint": "^8.17.0",
+   - "eslint-plugin-jsdoc": "^39.3.2",
+   - "eslint-plugin-vue": "^9.1.1",
+   - "exports-loader": "^4.0.0",
+   - "imports-loader": "^4.0.0",
+   - "mini-css-extract-plugin": "^2.6.0",
+   - "lerna": "^5.1.2",
+   - "standard": "^17.0.0",
+   - "style-loader": "^3.3.1",
+   - "ub-jsdoc": "^3.1.4"
+   - css-loader@5.2.7  - version locked. version above have problems with fonts
+   - uglify-js "~3.14" -version locked. versions above broke ext-all minification
 
 ### Deprecated
 

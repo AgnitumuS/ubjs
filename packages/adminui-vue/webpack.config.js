@@ -2,10 +2,8 @@
  * Created by pavel.mash on 2018-07-15
  */
 const webpack = require('webpack')
-const path = require('path')
 const VueLoaderPlugin = require('vue-loader/lib/plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
-const WebfontPlugin = require('webfont-webpack-plugin').default
 
 module.exports = (options = {}) => ({
   entry: {
@@ -69,21 +67,7 @@ module.exports = (options = {}) => ({
     }),
     new webpack.IgnorePlugin({
       resourceRegExp: /^\.\/locale$/,
-      contextRegExp: /moment$/,
-    }),
-    new WebfontPlugin({
-      files: path.resolve(__dirname, './icons/*.svg'),
-      dest: path.resolve(__dirname, './theme/icons'),
-      template: 'css',
-      fontName: 'ub-icons',
-      templateClassName: 'u',
-      glyphTransformFn: icon => {
-        // could just set u-icon in templateClassName but it will creates class .u-icon which override css in UIcon.vue
-        icon.name = `icon-${icon.name}`
-        return icon
-      },
-      fontHeight: 1001,
-      descent: 100
+      contextRegExp: /moment$/
     })
   ]
 })

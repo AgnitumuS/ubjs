@@ -35,14 +35,14 @@
     "@unitybase/uba": "^5.22.17",
     "@unitybase/xlsx": "^5.22.9",
     "mime-types": "^2.1.14",
-    "mustache": "^3.0.1",
+    "mustache": "^4.2.0",
     "when": "1.8.1",
-    "xmldom": "^0.1.27"
+    "xmldom": "^0.6.0"
   },
   "devDependencies": {
     "@unitybase/stubs": "^5.22.5",
     "@unitybase/update-changelog": "^1.0.4",
-    "exports-loader": "^2.0.0"
+    "exports-loader": "^4.0.0"
   },
   "keywords": [
     "UnityBase",

@@ -8,6 +8,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
+ - packages updated:
+   - "mustache": "^4.2.0",
+   - "ub-jsdoc": "^3.1.4"
 
 ### Deprecated
 

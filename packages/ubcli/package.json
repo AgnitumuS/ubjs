@@ -25,8 +25,8 @@
     "@unitybase/cs-shared": "^5.22.3",
     "@unitybase/ub": "^5.22.39",
     "lodash": "^4",
-    "mustache": "^3.0.1",
-    "ub-jsdoc": "^2.2.0"
+    "mustache": "^4.2.0",
+    "ub-jsdoc": "^3.1.4"
   },
   "devDependencies": {
     "@unitybase/stubs": "^5.22.5",

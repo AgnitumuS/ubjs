@@ -8,6 +8,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
+ - packages updated:
+   - "mustache": "^4.2.0",
+   - "xmldom": "^0.6.0"
+   - "exports-loader": "^4.0.0"
 
 ### Deprecated
 
