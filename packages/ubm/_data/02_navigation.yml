@@ -1,23 +1,15 @@
 $context:
   type: navigation
-
-adm_desktop:
+  
+dev_desktop:
   $amendment: true
   items:
-  - adm_folder_UI:
+  - dev_folder_UI:
       caption: UI
       iconCls: u-icon-image
-      displayOrder: 30
+      access: Developer
+      displayOrder: 100
       items:
-      - ubm_ui_settings:
-          caption: { $i18n: ubs_settings }
-          iconCls: u-icon-desktop-administrator
-          displayOrder: 10
-          cmd: >
-            {
-              cmdType: 'showForm',
-              formCode: 'ubm_desktop-uiSettings'
-            }
       - ubm_desktop:
           caption: { $i18n: ubm_desktop }
           iconCls: u-icon-desktop-document-types
@@ -48,11 +40,29 @@ adm_desktop:
             - isFolder
             - description
             - keywords
-  - adm_folder_devTools:
+
+adm_desktop:
+  $amendment: true
+  items:
+  - adm_folder_misc:
+      $amendment: true
+      items:
+      - ubm_ui_settings:
+          caption: UI Theme and Logo
+          access: SysOps, Developer
+          iconCls: u-icon-desktop-administrator
+          displayOrder: 20
+          cmd: >
+            {
+              cmdType: 'showForm',
+              formCode: 'ubm_desktop-uiSettings'
+            }
+  - dev_folder_devTools:
       $amendment: true
       items:
       - ubm_enum:
           caption: { $i18n: ubm_enum }
+          access: Developer
           iconCls: u-icon-list
           displayOrder: 200
           showList:
@@ -73,6 +83,7 @@ adm_desktop:
                 order: asc
       - ubm_diagram:
           caption: { $i18n: ubm_diagram }
+          access: Developer
           iconCls: u-icon-hierarchy-alt
           showList:
             renderer: vue
@@ -83,6 +94,7 @@ adm_desktop:
             - name
       - ubm_form:
           caption: { $i18n: ubm_form }
+          access: Developer
           iconCls: u-icon-image
           showList:
             renderer: vue
@@ -95,6 +107,7 @@ adm_desktop:
             - formType
       - ubm_query:
           caption: { $i18n: ubm_query }
+          access: Developer
           iconCls: u-icon-file-edit
           showList:
             renderer: vue
@@ -105,6 +118,7 @@ adm_desktop:
             - type
       - ubm_sysdictionary:
           caption: { $i18n: ubm_sysdictionary }
+          access: Developer
           iconCls: u-icon-dictionary
           showList:
             renderer: vue

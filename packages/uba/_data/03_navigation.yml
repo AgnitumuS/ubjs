@@ -3,15 +3,16 @@ $context:
 
 # Submenu in "Administrator" desktop
 adm_desktop:
-  access: Supervisor
+  access: Supervisor, Developer, SysOps
+  displayOrder: 10
   caption: Administration
-  description: User Management, UI Settings, Logs (Audit Trail, Security, Queue)
+  description: Users and Groups Management, Settings, Audit, Maintenance and Developer Tools
   iconCls: u-icon-desktop-administrator
   items:
   - adm_folder_users:
       access: Supervisor
-      caption: Groups and Users
-      iconCls: u-icon-folder-open
+      caption: Users and Groups
+      iconCls: u-icon-person-group
       items:
       - uba_user:
           access: Supervisor
@@ -97,26 +98,46 @@ adm_desktop:
                 columns: ['userID.name', 'userID.fullName', 'serial', 'isForSigning', 'disabled', 'revoked', 'issuer_cn']
               }
             }
-  - adm_folder_security:
-      access: Supervisor
-      caption: Security
-      iconCls: u-icon-lock
-      items:
-      - uba_als:
-          access: Supervisor
-          caption: { $i18n: uba_als }
-          iconCls: fa fa-share-alt
+      - uba_otp:
+          caption: { $i18n: uba_otp }
+          iconCls: u-icon-eye
           cmd: >
             {
               renderer: 'vue',
               cmdType: 'showList',
               cmdData: {
-                entityName: 'uba_als'
+                entityName: 'uba_otp',
+                columns: ['userID.name','otpKind','otp','expiredDate']
               }
             }
+      - uba_session:
+          caption: { $i18n: uba_session }
+          iconCls: fas fa-user-cog
+          cmd: >
+            {
+              renderer: 'vue',
+              cmdType: 'showList',
+              cmdData: {
+                entityName: 'uba_session',
+                columns: [
+                  'ID',
+                  {id: 'userID', label: 'user ID', isLookup: false},
+                  'userName', 'remoteIP', 'tenantID',
+                  {id: 'accessedAt', sortable: false, filterable: false, format: ({ value }) => UB.formatter.formatDate(value, 'dateTimeFull')},
+                  {id: 'createdAt', sortable: false, filterable: false, format: ({ value }) => UB.formatter.formatDate(value, 'dateTimeFull')},
+                  'isPasswordExpired', 'isLocked', 'serverTimeDelta'
+                ]
+              }
+            }
+  - adm_folder_security:
+      access: Supervisor, SysOps
+      caption: Audit Trails
+      iconCls: u-icon-lock
+      items:
       - uba_auditTrail:
           access: Supervisor
           caption: { $i18n: uba_auditTrail }
+          description: { $i18n: uba_auditTrail#description }
           iconCls: u-icon-line-chart
           cmd: >
             {
@@ -138,22 +159,10 @@ adm_desktop:
             		]
             	}
             }
-      - uba_otp:
-          access: Supervisor
-          caption: { $i18n: uba_otp }
-          iconCls: u-icon-eye
-          cmd: >
-            {
-              renderer: 'vue',
-              cmdType: 'showList',
-              cmdData: {
-                entityName: 'uba_otp',
-                columns: ['userID.name','otpKind','otp','expiredDate']
-              }
-            }
       - uba_audit:
           access: Supervisor
           caption: { $i18n: uba_audit }
+          description: { $i18n: uba_audit#description }
           iconCls: u-icon-lock
           cmd: >
             {
@@ -168,43 +177,15 @@ adm_desktop:
                 ]
               }
             }
-      - uba_session:
-          access: Supervisor
-          caption: { $i18n: uba_session }
-          iconCls: fas fa-user-cog
-          cmd: >
-            {
-              renderer: 'vue',
-              cmdType: 'showList',
-              cmdData: {
-                entityName: 'uba_session',
-                columns: [
-                  'ID',
-                  {id: 'userID', label: 'user ID', isLookup: false},
-                  'userName', 'remoteIP', 'tenantID',
-                  {id: 'accessedAt', sortable: false, filterable: false, format: ({ value }) => UB.formatter.formatDate(value, 'dateTimeFull')},
-                  {id: 'createdAt', sortable: false, filterable: false, format: ({ value }) => UB.formatter.formatDate(value, 'dateTimeFull')},
-                  'isPasswordExpired', 'isLocked', 'serverTimeDelta'
-                ]
-              }
-            }
-      - uba_audit-securityDashboard:
-          access: Supervisor
-          caption: Security Dashboard
-          iconCls: fa fa-user-secret
-          cmd: >
-            {
-              cmdType: 'showForm',
-              formCode: 'uba_audit-securityDashboard'
-            }
-  - adm_folder_mirg:
-      access: Admin
-      displayOrder: 25
-      caption: Migrations
-      iconCls: u-icon-swap
+
+  - adm_folder_maintenance:
+      caption: Maintenance Tools
+      description: System Maintenance and Monitoring Tools
+      iconCls: u-icon-wrench
+      access: SysOps, Developer
+      displayOrder: 180
       items:
       - ub_version:
-          access: Admin
           caption: { $i18n: ub_version }
           iconCls: u-icon-file-export
           cmd: >
@@ -216,7 +197,6 @@ adm_desktop:
               }
             }
       - ub_migration:
-          access: Admin
           caption: { $i18n: ub_migration }
           iconCls: u-icon-file-text
           cmd: >
@@ -227,15 +207,29 @@ adm_desktop:
                 entityName: 'ub_migration'
               }
             }
+      - uba_audit-securityDashboard:
+          caption: Security Dashboard
+          iconCls: fa fa-user-secret
+          cmd: >
+            {
+              cmdType: 'showForm',
+              formCode: 'uba_audit-securityDashboard'
+            }
 
-  - adm_folder_devTools:
+
+dev_desktop:
+  access: Developer, Supervisor
+  caption: Studio
+  description: System Configuration Tools
+  iconCls: u-icon-desktop-studio
+  items:
+  - dev_folder_devTools:
       caption: Developer Tools
-      access: Developer
+      description: System Data created and edited by Developers, changing Data using these tools might be overridden after migration to never versions of the system.
       iconCls: u-icon-wrench
-      displayOrder: 200   # The last one
+      displayOrder: 1000   # The last one
       items:
       - uba_role:
-          access: Developer
           caption: { $i18n: uba_role }
           iconCls: u-icon-person-group
           cmd: >
@@ -247,7 +241,6 @@ adm_desktop:
               }
             }
       - uba_els:
-          access: Developer
           caption: { $i18n: uba_els }
           iconCls: fa fa-shield
           cmd: >
@@ -259,3 +252,15 @@ adm_desktop:
                 columns: ['code', 'description', 'disabled', 'entityMask', 'methodMask', 'ruleType', 'ruleRole']
               }
             }
+      - uba_als:
+          caption: { $i18n: uba_als }
+          iconCls: fa fa-share-alt
+          cmd: >
+            {
+              renderer: 'vue',
+              cmdType: 'showList',
+              cmdData: {
+                entityName: 'uba_als'
+              }
+            }
+

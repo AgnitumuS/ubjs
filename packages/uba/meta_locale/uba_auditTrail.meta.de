@@ -1,5 +1,7 @@
 {
-  "caption": "Überwachungspfad",
+  "caption": "Daten-Audit",
+  "description": "Datenänderungen Audit Trail",
+  "documentation": "Alle DML-Anweisungen für Entität mit Mixin 'audit' werden hier protokolliert",
   "attributes": [
     {
       "name": "entity",
@@ -56,7 +58,5 @@
       "caption": "ID anfordern",
       "documentation": "Eindeutige Anfrage-ID. Kann verwendet werden, um alle Operationen einer Anfrage rückgängig zu machen"
     }
-  ],
-  "description": "Überprüfung von Datenänderungen",
-  "documentation": "Alle DML-Anweisungen für Entität mit Mixin 'audit' werden hier protokolliert"
+  ]
 }

@@ -5,15 +5,15 @@ $context:
 adm_desktop:
   $amendment: true
   items:
-  - adm_folder_UBQ:
-      caption: Message Queues
-      iconCls: u-icon-more
-      displayOrder: 50
+  # Additional items in the "adm_folder_maintenance" folder
+  - adm_folder_maintenance:
+      $amendment: true
       items:
       - ubq_runstat:
-          caption: {$i18n: ubq_runstat}
+          caption: { $i18n: ubq_runstat }
+          access: SysOps
           iconCls: u-icon-circle-info
-          displayOrder: 20
+          displayOrder: 100   # Specify for the first item only, each next will be increased by 10
           cmd: >
             {
               "renderer": "vue",
@@ -23,9 +23,9 @@ adm_desktop:
               }
             }
       - ubq_messages:
-          caption: {$i18n: ubq_messages}
+          caption: { $i18n: ubq_messages }
+          access: SysOps
           iconCls: fas fa-list-ol
-          displayOrder: 30
           cmd: >
             {
               "renderer": "vue",
@@ -35,12 +35,12 @@ adm_desktop:
                 "columns": ["mi_createDate", "queueCode", "completeDate", "msgCmd"]
               }
             }
-
-  - adm_folder_devTools:
+  - dev_folder_devTools:
       $amendment: true
       items:
       - ubq_scheduler:
-          caption: {$i18n: ubq_scheduler}
+          caption: { $i18n: ubq_scheduler }
+          access: SysOps, Developer
           iconCls: fas fa-tasks
           displayOrder: 400
           cmd: >
@@ -51,4 +51,3 @@ adm_desktop:
                 entityName: "ubq_scheduler"
               }
             }
-

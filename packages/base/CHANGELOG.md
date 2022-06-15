@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+- A new built-in role in the `uba_common` module: `SysOps`, added for giving access
+  to System Maintenance and Monitoring Tools as well as System Configuration tools
 
 ### Changed
 

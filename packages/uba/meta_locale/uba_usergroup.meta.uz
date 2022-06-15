@@ -1,6 +1,5 @@
 {
-  "caption": "Foydalanuvchi guruhlari",
-  "description": "Foydalanuvchilar guruhiga a'zolik",
+  "caption": "Foydalanuvchilar guruhiga a'zolik",
   "attributes": [
     {
       "name": "userID",

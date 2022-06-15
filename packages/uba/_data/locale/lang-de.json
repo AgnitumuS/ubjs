@@ -1,9 +1,21 @@
 {
+  "uba_role.Everyone.description": "Jeder baut eine Rolle ein",
+  "uba_role.Admin.description": "Integrierte Admin-Rolle",
+  "uba_role.Anonymous.description": "Anonyme eingebaute Rolle",
+  "uba_role.User.description": "Autorisierter Benutzer - eingebaute Rolle",
+  "uba_role.Supervisor.description": "Integrierte Rolle des Datenschutzbeauftragten",
+  "uba_role.Developer.description": "Integrierte Rolle des Entwicklers",
+  "uba_role.SysOps.description": "Support-Ingenieur mit eingebauter Rolle",
+  "uba_role.Monitor.description": "Überwachung der eingebauten Rolle",
   "ubm_desktop.adm_desktop.caption": "Verwaltung",
   "ubm_desktop.adm_desktop.description": "Benutzerverwaltung, Einstellungen der Benutzeroberfläche, Protokolle (Überwachungspfad, Sicherheit, Warteschlange)",
-  "ubm_navshortcut.adm_folder_users.caption": "Gruppen und Benutzer",
-  "ubm_navshortcut.adm_folder_security.caption": "Sicherheit",
+  "ubm_navshortcut.adm_folder_users.caption": "Benutzer und Gruppen",
+  "ubm_navshortcut.adm_folder_security.caption": "Prüfpfade",
   "ubm_navshortcut.uba_audit-securityDashboard.caption": "Sicherheits-Dashboard",
-  "ubm_navshortcut.adm_folder_mirg.caption": "Migrationen",
-  "ubm_navshortcut.adm_folder_devTools.caption": "Entwicklerwerkzeuge"
+  "ubm_navshortcut.adm_folder_maintenance.caption": "Wartungswerkzeuge",
+  "ubm_navshortcut.adm_folder_maintenance.description": "Werkzeuge zur Systemwartung und -überwachung",
+  "ubm_desktop.dev_desktop.caption": "Studio",
+  "ubm_desktop.dev_desktop.description": "Werkzeuge zur Systemkonfiguration",
+  "ubm_navshortcut.dev_folder_devTools.caption": "Entwicklerwerkzeuge",
+  "ubm_navshortcut.dev_folder_devTools.description": "Von Entwicklern erstellte und bearbeitete Systemdaten, die mit diesen Werkzeugen geändert wurden, können nach der Migration auf neue Versionen des Systems überschrieben werden."
 }

@@ -1,9 +1,21 @@
 {
+  "uba_role.Everyone.description": "Кто угодно (встроенная роль)",
+  "uba_role.Admin.description": "Администратор (встроенная роль)",
+  "uba_role.Anonymous.description": "Неавторизованный пользователь (встроенная роль)",
+  "uba_role.User.description": "Авторизированный пользователь (встроенная роль)",
+  "uba_role.Supervisor.description": "Администратор безопасности (встроенная роль)",
+  "uba_role.Developer.description": "Разработчик (встроенная роль)",
+  "uba_role.SysOps.description": "Инженер поддержки (встроенная роль)",
+  "uba_role.Monitor.description": "Мониторинг (встроенная роль)",
   "ubm_desktop.adm_desktop.caption": "Администрирование",
-  "ubm_desktop.adm_desktop.description": "Управление пользователями, настройки интерфейса, журналы (аудит, безопасность, очередь)",
-  "ubm_navshortcut.adm_folder_users.caption": "Пользователи",
-  "ubm_navshortcut.adm_folder_security.caption": "Безопасность",
+  "ubm_desktop.adm_desktop.description": "Управление пользователями и группами, настройки, журналы аудита, инструменты обслуживания и разработки",
+  "ubm_navshortcut.adm_folder_users.caption": "Пользователи и группы",
+  "ubm_navshortcut.adm_folder_security.caption": "Журналы аудита",
   "ubm_navshortcut.uba_audit-securityDashboard.caption": "Консоль безопасности",
-  "ubm_navshortcut.adm_folder_mirg.caption": "Миграции",
-  "ubm_navshortcut.adm_folder_devTools.caption": "Инструменты разработчика"
+  "ubm_navshortcut.adm_folder_maintenance.caption": "Инструменты обслуживания",
+  "ubm_navshortcut.adm_folder_maintenance.description": "Инструменты для обслуживания и мониторинга системы",
+  "ubm_desktop.dev_desktop.caption": "Студия",
+  "ubm_desktop.dev_desktop.description": "Инструменты конфигурирования системы",
+  "ubm_navshortcut.dev_folder_devTools.caption": "Инструменты разработчика",
+  "ubm_navshortcut.dev_folder_devTools.description": "Системные данные, редактирование которых выполняется разработчиками. Изменение данных в этом разделе может быть перезаписано после миграции на новые версии."
 }

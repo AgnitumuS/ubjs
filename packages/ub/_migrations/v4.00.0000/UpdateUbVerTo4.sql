@@ -5,31 +5,31 @@ insert into uba_subject (name,  ID, sType, mi_unityEntity)
 select 'User',  3, 'R', 'uba_role'
 
 insert into uba_role (name, description, sessionTimeout, allowedAppMethods, ID, mi_owner, mi_createUser, mi_modifyUser, mi_createDate, mi_modifyDate)
-select 'User', 'User build-in role', 30, 'logout,changePassword,setDocument,getDocument', 3, 10, 10, 10, getDate(), getDate() 
+select 'User', 'User built-in role', 30, 'logout,changePassword,setDocument,getDocument', 3, 10, 10, 10, getDate(), getDate()
 
 insert into uba_subject (name,  ID, sType, mi_unityEntity)
 select 'Anonymous',  2, 'R', 'uba_role'
 
 insert into uba_role (name, description, sessionTimeout, allowedAppMethods, ID, mi_owner, mi_createUser, mi_modifyUser, mi_createDate, mi_modifyDate)
-select 'Anonymous', 'Anonymous build-in role', 1000, '', 2, 10, 10, 10, getDate(), getDate() 
+select 'Anonymous', 'Anonymous built-in role', 1000, '', 2, 10, 10, 10, getDate(), getDate()
 
 insert into uba_subject (name,  ID, sType, mi_unityEntity)
 select 'Supervisor',  4, 'R', 'uba_role'
 
 insert into uba_role (name, description, sessionTimeout, allowedAppMethods, ID, mi_owner, mi_createUser, mi_modifyUser, mi_createDate, mi_modifyDate)
-select 'Supervisor', 'Supervisor build-in role', 1000, '', 4, 10, 10, 10, getDate(), getDate() 
+select 'Supervisor', 'Supervisor built-in role', 1000, '', 4, 10, 10, 10, getDate(), getDate()
 
 insert into uba_subject (name,  ID, sType, mi_unityEntity)
 select 'Developer',  5, 'R', 'uba_role'
 
 insert into uba_role (name, description, sessionTimeout, allowedAppMethods, ID, mi_owner, mi_createUser, mi_modifyUser, mi_createDate, mi_modifyDate)
-select 'Developer', 'Developer build-in role', 1000, '', 5, 10, 10, 10, getDate(), getDate() 
+select 'Developer', 'Developer built-in role', 1000, '', 5, 10, 10, 10, getDate(), getDate()
 
 insert into uba_subject (name,  ID, sType, mi_unityEntity)
 select 'Monitor',  6, 'R', 'uba_role'
 
 insert into uba_role (name, description, sessionTimeout, allowedAppMethods, ID, mi_owner, mi_createUser, mi_modifyUser, mi_createDate, mi_modifyDate)
-select 'Monitor', 'Developer build-in role', 1000, 'stat', 6, 10, 10, 10, getDate(), getDate() 
+select 'Monitor', 'Developer built-in role', 1000, 'stat', 6, 10, 10, 10, getDate(), getDate()
 
  
 update uba_role set name = 'Admin'

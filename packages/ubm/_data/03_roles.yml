@@ -3,7 +3,6 @@ $context:
 
 User:
   $amendment: true
-  description: Allow read all UBM model entities for User
   els:
     read:
     - ubm

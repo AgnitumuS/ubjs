@@ -1,6 +1,6 @@
 {
   "caption": "Аудит безопасности",
-  "description": "Аудит безопасности",
+  "description": "Журнал событий безопасности",
   "attributes": [
     {
       "name": "entity",

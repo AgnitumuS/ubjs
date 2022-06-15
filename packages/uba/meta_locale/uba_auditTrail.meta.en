@@ -1,5 +1,6 @@
 {
-  "caption": "Audit Trail",
+  "caption": "Data Audit",
+  "description": "Data Changes Audit Trail",
   "attributes": [
     {
       "name": "entity",
@@ -49,6 +50,5 @@
       "name": "parentEntityInfo_id",
       "caption": "Parent instance ID"
     }
-  ],
-  "description": "Data changes audit"
+  ]
 }

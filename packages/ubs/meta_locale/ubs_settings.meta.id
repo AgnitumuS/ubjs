@@ -1,6 +1,5 @@
 {
-  "caption": "pengaturan",
-  "description": "Entitas dengan informasi tentang sistem pengaturan",
+  "caption": "Pengaturan sistem",
   "attributes": [
     {
       "name": "settingKey",

@@ -1,6 +1,5 @@
 ﻿{
     "caption": "მომხმარებლის ჯგუფი",
-    "description": "",
     "attributes": [
         {
             "name": "userID",

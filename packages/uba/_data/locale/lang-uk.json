@@ -1,9 +1,21 @@
 {
+  "uba_role.Everyone.description": "Будь хто (вбудована роль)",
+  "uba_role.Admin.description": "Адміністратор (вбудована роль)",
+  "uba_role.Anonymous.description": "Неавторизований користувач (вбудована роль)",
+  "uba_role.User.description": "Авторизований користувач (вбудована роль)",
+  "uba_role.Supervisor.description": "Адміністратор безпеки (вбудована роль)",
+  "uba_role.Developer.description": "Розробник (вбудована роль)",
+  "uba_role.SysOps.description": "Інженер підтримки (вбудована роль)",
+  "uba_role.Monitor.description": "Моніторинг (вбудована роль)",
   "ubm_desktop.adm_desktop.caption": "Адміністрування",
-  "ubm_desktop.adm_desktop.description": "Керування користувачами, налаштування інтерфейсу, журнали (аудит, безпека, черга)",
-  "ubm_navshortcut.adm_folder_users.caption": "Користувачі",
-  "ubm_navshortcut.adm_folder_security.caption": "Безпека",
+  "ubm_desktop.adm_desktop.description": "Керування користувачами та групами, системні налаштування, журнали аудиту, інструменти для обслуговування та розробки",
+  "ubm_navshortcut.adm_folder_users.caption": "Користувачі та групи",
+  "ubm_navshortcut.adm_folder_security.caption": "Журнали аудитів",
   "ubm_navshortcut.uba_audit-securityDashboard.caption": "Консоль безпеки",
-  "ubm_navshortcut.adm_folder_mirg.caption": "Міграції",
-  "ubm_navshortcut.adm_folder_devTools.caption": "Інструменти розробника"
+  "ubm_navshortcut.adm_folder_maintenance.caption": "Інструменти обслуговування",
+  "ubm_navshortcut.adm_folder_maintenance.description": "Інструменти для обслуговування та моніторингу системи",
+  "ubm_desktop.dev_desktop.caption": "Студія",
+  "ubm_desktop.dev_desktop.description": "Інструменти конфігурування системи",
+  "ubm_navshortcut.dev_folder_devTools.caption": "Інструменти розробника",
+  "ubm_navshortcut.dev_folder_devTools.description": "Системні дані, редагування яких виконуються розробниками. Зміна даних в цьому розділі може бути перезаписана при міграції на нові версії."
 }

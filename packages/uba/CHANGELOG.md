@@ -6,8 +6,19 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+- The new "SysOps" built-in role. Role shall be given to engineers, who help to maintain the system.
+  Role Access:
+  - Full access to ubs/ubq/ubm models
+  - Read only access to uba mode
+- Role "Developer" given permissions: "ubm" model - full permissions,
+  "uba_els" / "uba_als" / "ubs_report" - full permissions;
+  "ubs" / "ubq" / "uba" - read only.
+- New Desktop "Studio" with access to Developer
+  - move there "Developer Tools" folder
 
 ### Changed
+- Item "Monitoring Tools" in the "Administrator" desktop
+  - Moved there "Security Dashboard" and "User Sessions"
 
 ### Deprecated
 

@@ -1,6 +1,6 @@
 {
-  "caption": "Форми",
-  "description": "Визначення інтерфейсних форм",
+  "caption": "Системні форми",
+  "description": "Визначення інтерфейсних форм платформи UnityBase",
   "attributes": [
     {
       "name": "code",
@@ -19,7 +19,7 @@
     {
       "name": "formType",
       "caption": "Тип форми",
-      "description": "Тип визначення форми auto чи custom"
+      "description": "Тип визначення форми: \"auto\", \"vue\", \"custom\" чи \"module\""
     },
     {
       "name": "formDef",

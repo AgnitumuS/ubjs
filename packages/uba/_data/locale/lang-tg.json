@@ -1,8 +1,15 @@
 {
+  "uba_role.Everyone.description": "Ҳама (роли дарунсохташуда)",
+  "uba_role.Admin.description": "Маъмурӣ (роли дарунсохташуда)",
+  "uba_role.Anonymous.description": "Истифодабарандаи беиҷозат (роли дарунсохташуда)",
+  "uba_role.User.description": "Истифодабарандаи ваколатдор (роли дарунсохташуда)",
+  "uba_role.Supervisor.description": "Маъмур оид ба амният (роли дарунсохт)",
+  "uba_role.Developer.description": "Таҳиякунанда (роли дарунсохт)",
+  "uba_role.SysOps.description": "Муҳандиси дастгирӣ (роли дарунсохт)",
+  "uba_role.Monitor.description": "Мониторинг (роли дарунсохт)",
   "ubm_desktop.adm_desktop.caption": "Маъмур",
   "ubm_desktop.adm_desktop.description": "Идоракунии корбар, танзимоти UI, гузоришҳо (пайгирии аудит, амният, навбат)",
   "ubm_navshortcut.adm_folder_users.caption": "Истифодабарандагон",
   "ubm_navshortcut.adm_folder_security.caption": "Бехатарӣ",
-  "ubm_navshortcut.uba_audit-securityDashboard.caption": "Консоли амният",
-  "ubm_navshortcut.adm_folder_mirg.caption": "Миграции"
+  "ubm_navshortcut.uba_audit-securityDashboard.caption": "Консоли амният"
 }

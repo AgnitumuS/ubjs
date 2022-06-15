@@ -1,8 +1,15 @@
 {
+  "uba_role.Everyone.description": "Hamma (o`rnatilgan rol)",
+  "uba_role.Admin.description": "Administrator (o`rnatilgan rol)",
+  "uba_role.Anonymous.description": "Ruxsatsiz foydalanuvchi (o`rnatilgan rol)",
+  "uba_role.User.description": "Vakolatli foydalanuvchi (o`rnatilgan rol)",
+  "uba_role.Supervisor.description": "Xavfsizlik ma`muri (o`rnatilgan rol)",
+  "uba_role.Developer.description": "Ishlab chiquvchi (o`rnatilgan rol)",
+  "uba_role.SysOps.description": "Yordamchi muhandis (o`rnatilgan rol)",
+  "uba_role.Monitor.description": "Monitoring (o`rnatilgan rol)",
   "ubm_desktop.adm_desktop.caption": "Administration",
   "ubm_desktop.adm_desktop.description": "Foydalanuvchilarni boshqarish, interfeys sozlamalari, jurnallar (audit, xavfsizlik, navbat)",
   "ubm_navshortcut.adm_folder_users.caption": "Foydalanuvchilar",
   "ubm_navshortcut.adm_folder_security.caption": "Xavfsizlik",
-  "ubm_navshortcut.uba_audit-securityDashboard.caption": "Xavfsizlik konsoli",
-  "ubm_navshortcut.adm_folder_mirg.caption": "Migratsiya"
+  "ubm_navshortcut.uba_audit-securityDashboard.caption": "Xavfsizlik konsoli"
 }
