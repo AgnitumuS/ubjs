@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 ### Added
  - added muting of `ElDatePicker` placement prop mutation warning
+ - new icons: `u-icon-desktop-tools`, `u-icon-desktop-gear` and `u-icon-desktop-studio`
 
 ### Changed
  - fonts: `Roboto` & `ub-icons` fonts now provided only in woff2 format (without fallback to ttf/eot).
@@ -33,13 +34,15 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
    - "ub-jsdoc": "^3.1.4"
    - css-loader@5.2.7  - version locked. version above have problems with fonts
    - uglify-js "~3.14" -version locked. versions above broke ext-all minification
+ - updated all desktop icons to have a modern and clearer look
 
 ### Deprecated
 
 ### Removed
 
 ### Fixed
-`UtableEntity` - fixed error with "monkey request" when open document for edit
+ - `UtableEntity` - fixed error with "monkey request" when open document for edit
+
 ## [5.22.24] - 2022-06-09
 ### Changed
  - `UNavbar` (tabs on the top of the page)
