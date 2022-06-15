@@ -6,6 +6,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+ - added global `resize` handler for touch devices what scroll input into viewport when on-screen keyboard appears
 
 ### Changed
  - `uglify-js` updated `3.6 -> 3.14.X`. Versions above 3.14 cause "e is undefined" exception in minified `ext-all.min.js`

@@ -77,3 +77,22 @@ launchApp()
 
 module.exports = $App
 if (!SystemJS.has('@unitybase/adminui-pub')) SystemJS.set('@unitybase/adminui-pub', SystemJS.newModule($App))
+
+if (document.ontouchstart !== undefined) window.addEventListener('resize', scrollInputIntoViewport)
+
+const keyboardAppearsElements = new Set(['INPUT', 'TEXTAREA'])
+/**
+ * Scroll input into viewport when screen is resized (usually because keyboard appears)
+ * Added only for touch devices.
+ * This hack is added because Ext based viewport layout fixes viewport height
+ * TODO - remove when viewport will be rewritten without ExtJS
+ */
+function scrollInputIntoViewport () {
+  const target = document.activeElement
+  if (!keyboardAppearsElements.has(target.nodeName)) return
+  const position = target.getBoundingClientRect()
+  if (position.bottom < document.documentElement.clientHeight) return
+  setTimeout(() => {
+    target.scrollIntoView()
+  }, 150)
+}

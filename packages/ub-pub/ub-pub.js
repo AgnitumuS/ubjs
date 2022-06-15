@@ -712,17 +712,3 @@ if (typeof SystemJS !== 'undefined') { // browser
   if (!SystemJS.has('@unitybase/cryptojs')) SystemJS.set('@unitybase/cryptojs', SystemJS.newModule(CryptoJS))
   if (!SystemJS.has('@unitybase/ub-pub')) SystemJS.set('@unitybase/ub-pub', SystemJS.newModule(module.exports))
 }
-
-if (document.ontouchstart !== undefined) window.addEventListener('resize', scrollInputToViewport)
-
-/** Scroll input into viewport on mobile when focused */
-function scrollInputToViewport () {
-  const target = document.activeElement
-  const targetList = ['INPUT', 'TEXTAREA']
-  if (!targetList.includes(target.nodeName)) return
-  const position = target.getBoundingClientRect()
-  if (position.bottom < document.documentElement.clientHeight) return
-  setTimeout(() => {
-    target.scrollIntoView()
-  }, 150)
-}

@@ -14,7 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
-`globally` - Scroll input into viewport on mobile when focused
+
 ## [5.22.12] - 2022-05-26
 ### Added
  - `AsyncConnection.logout` - optional reasonParams is added, such params are added to URL and cen be analysed in server-side logs  
