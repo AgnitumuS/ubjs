@@ -6,7 +6,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
-`UTableEntity` - added loader when opening the form for editing
+ - `UTableEntity` - added loader when opening the form for editing
+ - `Form.js` - Vue-form generates a new event `{{entity_name}}:loaded` after downloading data.
 ### Changed
 
 ### Deprecated
