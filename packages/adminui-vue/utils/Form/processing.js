@@ -603,16 +603,23 @@ function createProcessingModule ({
           isLoading: true,
           target: 'loadMaster'
         })
-
+        const targetID = instanceID || newInstanceID
         const repo = UB.connection
           .Repository(masterEntityName)
           .attrs(fieldList)
-          .misc({ ID: instanceID || newInstanceID }) // Add top level ID to bypass caching, soft deletion and history
-
+          .misc({ ID: targetID }) // Add top level ID to bypass caching, soft deletion and history
           .miscIf(isLockable(), { lockType: 'None' }) // get lock info
           .miscIf(entitySchema.hasMixin('als'), { alsNeed: true }) // get als info
-        const data = await repo.selectById(instanceID || newInstanceID)
-
+        const data = await repo.selectById(targetID)
+        const loadStatus = !!data
+        /**
+        * @event entity_name:loaded
+        * @memberOf module:@unitybase/ub-pub.module:AsyncConnection~UBConnection
+        * @param {object} payload
+        * @param {number} payload.loadID - ID of entity_name instance what loaded
+        * @param {boolean} payload.status - status of loaded
+        */
+        UB.connection.emit(`${masterEntityName}:loaded`, { loadID: targetID, status: loadStatus })
         commit('LOAD_DATA', data)
 
         if (isLockable()) {

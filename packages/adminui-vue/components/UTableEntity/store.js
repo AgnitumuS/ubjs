@@ -567,13 +567,18 @@ module.exports = instance => ({
         },
         item
       )
+      
+      UB.connection.addListener(`${config.entity}:loaded`, stopLoading)
+      // if form already exists
       window.$App.viewport.centralPanel.on('tabchange', stopLoading)
+
       UB.core.UBApp.doCommand(config)
 
-      function stopLoading (sender, tab) {
-        if (config.tabId === tab.tabID || config.tabId === tab.id) {
+      function stopLoading (sender, tab = {}) {
+        if (config.tabId === tab.tabID || config.tabId === tab.id || sender.loadID === config.instanceID) {
           commit('LOADING', false)
           window.$App.viewport.centralPanel.removeListener('tabchange', stopLoading)
+          UB.connection.removeListener(`${config.entity}:loaded`, stopLoading)
         }
       }
     },
