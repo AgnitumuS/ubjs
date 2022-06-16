@@ -550,9 +550,10 @@ module.exports = instance => ({
       UB.core.UBApp.doCommand(config)
     },
 
-    async editRecord ({ state, getters }, ID) {
+    async editRecord ({ state, getters, commit }, ID) {
       if (ID === null) return
 
+      commit('LOADING', true)
       const item = state.items.find(i => i.ID === ID)
       const config = await instance.buildEditConfig(
         {
@@ -566,7 +567,15 @@ module.exports = instance => ({
         },
         item
       )
+      window.$App.viewport.centralPanel.on('tabchange', stopLoading)
       UB.core.UBApp.doCommand(config)
+
+      function stopLoading (sender, tab) {
+        if (config.tabId === tab.tabID || config.tabId === tab.id) {
+          commit('LOADING', false)
+          window.$App.viewport.centralPanel.removeListener('tabchange', stopLoading)
+        }
+      }
     },
     async deleteRecord ({ state, dispatch, getters }, ID) {
       let result = null

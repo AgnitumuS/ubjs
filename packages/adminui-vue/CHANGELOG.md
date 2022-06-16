@@ -6,7 +6,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
-
+`UTableEntity` - added loader when opening the form for editing
 ### Changed
 
 ### Deprecated
