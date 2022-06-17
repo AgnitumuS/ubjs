@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
+- For system roles made default roles null instead of empty string
 
 ### Deprecated
 

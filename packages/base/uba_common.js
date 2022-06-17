@@ -33,7 +33,7 @@ const ROLES = {
   ANONYMOUS: {
     ID: 2,
     NAME: 'Anonymous',
-    ENDPOINTS: '',
+    ENDPOINTS: null,
     DESCR: 'Anonymous built-in role',
     TIMEOUT: 1000
   },
@@ -47,21 +47,21 @@ const ROLES = {
   SUPERVISOR: {
     ID: 4,
     NAME: 'Supervisor',
-    ENDPOINTS: '',
+    ENDPOINTS: null,
     DESCR: 'Supervisor built-in role',
     TIMEOUT: 10
   },
   DEVELOPER: {
     ID: 5,
     NAME: 'Developer',
-    ENDPOINTS: '',
+    ENDPOINTS: null,
     DESCR: 'Developer built-in role',
     TIMEOUT: 10
   },
   SYSOPS: {
     ID: 8,
     NAME: 'SysOps',
-    ENDPOINTS: '',
+    ENDPOINTS: null,
     DESCR: 'Support Engineer built-in role',
     TIMEOUT: 10
   },
