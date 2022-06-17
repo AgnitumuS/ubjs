@@ -135,7 +135,7 @@ export default {
         const firstList = item.whereList[0]
         const secondtList = item.whereList[1]
         const column = availableColumns.find(
-          (i) => i.id === firstList.expression
+          (i) => i.id === firstList.expression || i.id === item.columnId
         )
         if (!column) return
 
