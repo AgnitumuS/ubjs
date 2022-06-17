@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+ - `UMasterDetailView` - fixed error when open details of document
 
 ## [5.23.0] - 2022-06-15
 ### Added
