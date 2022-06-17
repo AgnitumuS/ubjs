@@ -8,6 +8,15 @@ $context:
 
 Everyone:
   description: Everyone built-in role
+  allowedAppMethods:
+  - auth
+  - timeStamp
+  - statics
+  - getAppInfo
+  - models
+  - getDomainInfo
+  - ubql
+  - rest
   els:
     custom:
     - UBA_AUDIT_SELECT_ONLY: "!uba_audit,[^s]*,Deny direct security audit operation even for all roles"
@@ -16,6 +25,7 @@ Everyone:
 
 # UBA_ADMIN_ALL rule (allow all for Admin) is added during initDB
 Admin:
+  allowedAppMethods: '*'
   description: Admin built-in role
 
 Anonymous:
@@ -23,6 +33,12 @@ Anonymous:
 
 User:
   description: Authorised user built-in role
+  allowedAppMethods:
+  - logout
+  - changePassword
+  - setDocument
+  - getDocument
+  - checkDocument
   els:
     custom:
     - UBA_USER_LANGCH_EVERYONE: "uba_user,changeLanguage,Allow change language for any user"
@@ -75,3 +91,4 @@ SysOps:
 
 Monitor:
   description: Monitoring built-in role
+  allowedAppMethods: stat

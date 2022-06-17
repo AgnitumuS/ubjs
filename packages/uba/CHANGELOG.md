@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
+- For system roles defined allowed app methods (set in `_data` directory)
 
 ### Deprecated
 
