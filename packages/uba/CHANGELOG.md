@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Changed
 - For system roles defined allowed app methods (set in `_data` directory)
+- `Studio` (dev_desktop) desktop display order changed to 20, to be just below `Administration`  
 
 ### Deprecated
 
