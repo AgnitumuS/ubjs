@@ -14,7 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
-- `UMasterDetailView` - fixed regresion when open document details: throttle() API is changed in throttle-debounce package
+- `UMasterDetailView` - fixed regression when open document details: throttle() API is changed in throttle-debounce package
  ```
  throttle(50, true fn) -> throttle(50, fn, { noTrailing: true })
 ```
