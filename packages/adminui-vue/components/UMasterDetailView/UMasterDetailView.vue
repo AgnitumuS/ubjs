@@ -249,9 +249,9 @@ export default {
       this.$refs.masterTable.$el.focus()
     },
 
-    refreshMasterTable: throttle(50, true, function () {
+    refreshMasterTable: throttle(50, function () {
       this.$refs.detailsTable.$store.dispatch('refresh')
-    }),
+    }, { noTrailing: true }),
 
     formatDetailLabel ({ entity, attribute }) {
       const hasSameEntity =
