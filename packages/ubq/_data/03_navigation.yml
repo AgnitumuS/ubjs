@@ -35,6 +35,9 @@ adm_desktop:
                 "columns": ["mi_createDate", "queueCode", "completeDate", "msgCmd"]
               }
             }
+dev_desktop:
+  $amendment: true
+  items:
   - dev_folder_devTools:
       $amendment: true
       items:

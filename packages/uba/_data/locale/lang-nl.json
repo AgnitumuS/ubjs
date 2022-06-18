@@ -6,6 +6,7 @@
   "uba_role.Supervisor.description": "Beveiligingsbeheerder (ingebouwde rol)",
   "uba_role.Developer.description": "Ontwikkelaar (ingebouwde rol)",
   "uba_role.SysOps.description": "Ondersteuningsingenieur (ingebouwde rol)",
+  "uba_role.DataManager.description": "Gegevensbeheerder (ingebouwde rol)",
   "uba_role.Monitor.description": "Monitoring (ingebouwde rol)",
   "ubm_desktop.adm_desktop.caption": "Beheerder",
   "ubm_desktop.adm_desktop.description": "Gebruikersbeheer, UI-instellingen, logboeken (audit trail, beveiliging, wachtrij)",

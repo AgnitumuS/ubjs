@@ -3,6 +3,7 @@ $context:
 
 org_desktop:
   displayOrder: 200
+  access: DataManager
   caption: Organizational Structure
   description: Departments, Positions, Employees, Appointments, ...
   iconCls: u-icon-desktop-orgstructure

@@ -119,6 +119,11 @@ adm_desktop:
                 ]
               }
             }
+
+# Submenu in "Studio" desktop
+dev_desktop:
+  $amendment: true
+  items:
   - dev_folder_devTools:
       $amendment: true
       items:

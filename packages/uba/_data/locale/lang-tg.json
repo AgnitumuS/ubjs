@@ -6,6 +6,7 @@
   "uba_role.Supervisor.description": "Маъмур оид ба амният (роли дарунсохт)",
   "uba_role.Developer.description": "Таҳиякунанда (роли дарунсохт)",
   "uba_role.SysOps.description": "Муҳандиси дастгирӣ (роли дарунсохт)",
+  "uba_role.DataManager.description": "Нақши дарунсохташудаи Менеҷери маълумот",
   "uba_role.Monitor.description": "Мониторинг (роли дарунсохт)",
   "ubm_desktop.adm_desktop.caption": "Маъмур",
   "ubm_desktop.adm_desktop.description": "Идоракунии корбар, танзимоти UI, гузоришҳо (пайгирии аудит, амният, навбат)",

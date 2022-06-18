@@ -6,8 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+- The new "DataManager" built-in role.
 
 ### Changed
+- For system roles defined allowed app methods (set in `_data` directory)
 
 ### Deprecated
 
@@ -17,7 +19,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [5.23.0] - 2022-06-15
 ### Added
-- The new "SysOps" built-in role. Role shall be given to engineers, who help to maintain the system.
+- The new "SysOps" built-in role. Role shall be given to the engineers,
+  who help to maintain the system.
   Role Access:
   - Full access to ubs/ubq/ubm models
   - Read only access to uba mode

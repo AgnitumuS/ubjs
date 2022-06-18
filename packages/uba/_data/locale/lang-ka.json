@@ -7,6 +7,7 @@
   "uba_role.Developer.description": "დეველოპერი (ჩაშენებული როლი)",
   "uba_role.SysOps.description": "დამხმარე ინჟინერი (ჩაშენებული როლი)",
   "uba_role.Monitor.description": "მონიტორინგი (ჩაშენებული როლი)",
+  "uba_role.DataManager.description": "მონაცემთა მენეჯერის ჩაშენებული როლი",
   "ubm_desktop.adm_desktop.caption": "ადმინისტრატორი",
   "ubm_desktop.adm_desktop.description": "მომხმარებლის მენეჯმენტი, ინტერფეისის პარამეტრები, ჟურნალი (აუდიტის ბილიკი, დაცვა, რიგები)",
   "ubm_navshortcut.adm_folder_users.caption": "ჯგუფები და მომხმარებლები",
