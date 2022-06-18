@@ -54,7 +54,7 @@
       <template slot="dropdown">
         <u-dropdown-item
           label="Edit"
-          :disabled="!canEdit"
+          :disabled="!canEdit || contextMenuPayload.ID === undefined"
           icon="u-icon-edit"
           @click="selectContext('edit')"
         />
