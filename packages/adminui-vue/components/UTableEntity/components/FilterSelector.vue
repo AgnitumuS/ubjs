@@ -134,9 +134,14 @@ export default {
 
         const firstList = item.whereList[0]
         const secondtList = item.whereList[1]
-        const column = availableColumns.find(
-          (i) => i.id === firstList.expression || i.id === item.columnId
+        let column = availableColumns.find(
+          (i) => i.id === firstList.expression
         )
+        if (!column) { // in case of custom expression try to find column by id
+          column = availableColumns.find(
+            (i) => i.id === i.id === item.columnId
+          )
+        }
         if (!column) return
 
         column.condition = firstList.condition
