@@ -8,6 +8,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
+- Navigation folder "UI" (english) rename to "User Interface"
+- Move Theme Settings to "Studio" desktop, "User Interface" folder from Administration
 
 ### Deprecated
 

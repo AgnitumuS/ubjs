@@ -6,12 +6,15 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+- Full access to ORG for DataManager
 
 ### Changed
 
 ### Deprecated
 
 ### Removed
+- Roles `orgNodeAdmin` and `orgAllNodeAccess`, because they are used in a specific product and
+  not needed in the platform
 
 ### Fixed
 

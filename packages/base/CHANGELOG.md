@@ -6,8 +6,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+- A new built-in role in the `uba_common` module: `DataManager`, added for giving access
+  to all dictionary editing
 
 ### Changed
+- For system roles made default roles null instead of empty string
 
 ### Deprecated
 

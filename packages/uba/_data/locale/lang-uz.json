@@ -6,6 +6,7 @@
   "uba_role.Supervisor.description": "Xavfsizlik ma`muri (o`rnatilgan rol)",
   "uba_role.Developer.description": "Ishlab chiquvchi (o`rnatilgan rol)",
   "uba_role.SysOps.description": "Yordamchi muhandis (o`rnatilgan rol)",
+  "uba_role.DataManager.description": "Ma'lumotlar menejeri o'rnatilgan roli",
   "uba_role.Monitor.description": "Monitoring (o`rnatilgan rol)",
   "ubm_desktop.adm_desktop.caption": "Administration",
   "ubm_desktop.adm_desktop.description": "Foydalanuvchilarni boshqarish, interfeys sozlamalari, jurnallar (audit, xavfsizlik, navbat)",

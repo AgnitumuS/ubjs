@@ -1,0 +1,7 @@
+$context:
+  type: roles
+
+DataManager:
+  $amendment: true
+  els:
+    full: cdn

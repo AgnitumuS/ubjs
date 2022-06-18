@@ -6,6 +6,7 @@
   "uba_role.Supervisor.description": "Integrierte Rolle des Datenschutzbeauftragten",
   "uba_role.Developer.description": "Integrierte Rolle des Entwicklers",
   "uba_role.SysOps.description": "Support-Ingenieur mit eingebauter Rolle",
+  "uba_role.DataManager.description": "Integrierte Rolle des Datenmanagers",
   "uba_role.Monitor.description": "Überwachung der eingebauten Rolle",
   "ubm_desktop.adm_desktop.caption": "Verwaltung",
   "ubm_desktop.adm_desktop.description": "Benutzerverwaltung, Einstellungen der Benutzeroberfläche, Protokolle (Überwachungspfad, Sicherheit, Warteschlange)",

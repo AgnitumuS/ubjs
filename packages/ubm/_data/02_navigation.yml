@@ -5,7 +5,7 @@ dev_desktop:
   $amendment: true
   items:
   - dev_folder_UI:
-      caption: UI
+      caption: User Interface
       iconCls: u-icon-image
       access: Developer
       displayOrder: 100
@@ -40,23 +40,16 @@ dev_desktop:
             - isFolder
             - description
             - keywords
-
-adm_desktop:
-  $amendment: true
-  items:
-  - adm_folder_misc:
-      $amendment: true
-      items:
       - ubm_ui_settings:
           caption: UI Theme and Logo
           access: SysOps, Developer
           iconCls: u-icon-desktop-administrator
-          displayOrder: 20
           cmd: >
             {
               cmdType: 'showForm',
               formCode: 'ubm_desktop-uiSettings'
             }
+
   - dev_folder_devTools:
       $amendment: true
       items:

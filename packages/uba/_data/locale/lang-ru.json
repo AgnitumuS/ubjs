@@ -6,6 +6,7 @@
   "uba_role.Supervisor.description": "Администратор безопасности (встроенная роль)",
   "uba_role.Developer.description": "Разработчик (встроенная роль)",
   "uba_role.SysOps.description": "Инженер поддержки (встроенная роль)",
+  "uba_role.DataManager.description": "Менеджер данных (встроенная роль)",
   "uba_role.Monitor.description": "Мониторинг (встроенная роль)",
   "ubm_desktop.adm_desktop.caption": "Администрирование",
   "ubm_desktop.adm_desktop.description": "Управление пользователями и группами, настройки, журналы аудита, инструменты обслуживания и разработки",

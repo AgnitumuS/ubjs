@@ -216,7 +216,7 @@ adm_desktop:
               formCode: 'uba_audit-securityDashboard'
             }
 
-
+# Submenu in "Studio" desktop
 dev_desktop:
   access: Developer, Supervisor
   caption: Studio
