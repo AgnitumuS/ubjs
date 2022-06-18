@@ -128,3 +128,11 @@ RLS.allowForAdminOwnerAndAdmTable = function (ctxt) {
     mParams.logicalPredicates = [...mParams.logicalPredicates, logic]
   }
 }
+
+/**
+ * Returns `true` un case current user is admin or root or Admin group member
+ * @returns {boolean}
+ */
+RLS.isUserAdminOrInAdminGroup = function () {
+  return (ubaCommon.isSuperUser() || Session.hasRole(ubaCommon.ROLES.ADMIN.NAME))
+}
