@@ -14,7 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
-- `UTableEntity` fix restore filters for `Entity` column when used custom expression
+- `UTableEntity` fix restore filters for colums of type `Entity` if custom expression is used 
 
 ## [5.23.0] - 2022-06-15
 ### Added
