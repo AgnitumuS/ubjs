@@ -18,7 +18,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  ```
  throttle(50, true fn) -> throttle(50, fn, { noTrailing: true })
 ```
-- `UTableEntity` fix restore filters for colums of type `Entity` if custom expression is used 
+- `UTableEntity` fix restore filters for columns of type `Entity` if custom expression is used 
+- `USidebar` - `edit` action for sidebar item is disabled if no shortcut in focus
 
 ## [5.23.0] - 2022-06-15
 ### Added
