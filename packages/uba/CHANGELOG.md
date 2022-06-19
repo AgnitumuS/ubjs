@@ -16,6 +16,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 - Remove obsolete navigation folders: `adm_folder_UI` and `adm_folder_devTools` (now new
   folders are placed on the "Studio" desktop and have different codes)
+- ELS rule descriptions: change "Supervisor group" to "Supervisor role" to not confuse roles
+  with groups
+- Add full permissions on `uba_otp`, `uba_els`, `uba_als` entities to Supervisor role
 
 ## [5.23.1] - 2022-06-19
 ### Added
