@@ -69,9 +69,11 @@ Supervisor:
     - UBA_ADVSEC_EDIT_SUPERVISOR: "uba_advSecurity,[iuda]*,Allow CUD operations on advanced security for members of Supervisor role"
     - UBA_SESSION_READ_SUPERVISOR: "uba_session,select,Allow view active users sessions for members of Supervisor role"
     - UBA_SESSION_DELETE_SUPERVISOR: "uba_session,delete,Allow remove active user session for members of Supervisor role"
-    - UBA_OTP_EDIT_SUPERVISOR: "uba_otp,*,Allow managing OTP for Supervisor role"
     - ubm_desktop_adm.*
     - ubm_navshortcut_adm.*
+    - uba_otp.*
+    - uba_els.*
+    - uba_als.*
 
 Developer:
   description: Developer built-in role

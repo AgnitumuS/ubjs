@@ -16,7 +16,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 - ELS rule descriptions: change "Supervisor group" to "Supervisor role" to not confuse roles
   with groups
-- Add full permissions on uba_otp entity to Supervisor role
+- Add full permissions on `uba_otp`, `uba_els`, `uba_als` entities to Supervisor role
 
 ## [5.23.1] - 2022-06-19
 ### Added
