@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+ - check type of value in `jsonParse` method to prevent parse errors
 
 ## [5.23.0] - 2022-06-15
 ## [5.22.3] - 2022-04-27
