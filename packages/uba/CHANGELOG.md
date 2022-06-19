@@ -14,6 +14,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+- Remove obsolete navigation folders: `adm_folder_UI` and `adm_folder_devTools` (now new
+  folders are placed on the "Studio" desktop and have different codes)
 
 ## [5.23.1] - 2022-06-19
 ### Added
