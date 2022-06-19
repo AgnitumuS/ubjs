@@ -8,14 +8,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
-- Navigation folder "UI" (english) rename to "User Interface"
-- Move Theme Settings to "Studio" desktop, "User Interface" folder from Administration
 
 ### Deprecated
 
 ### Removed
 
 ### Fixed
+
+## [5.23.1] - 2022-06-19
+### Changed
+- Navigation folder "UI" (english) rename to "User Interface"
+- Move Theme Settings to "Studio" desktop, "User Interface" folder from Administration
 
 ## [5.23.0] - 2022-06-15
 ### Changed

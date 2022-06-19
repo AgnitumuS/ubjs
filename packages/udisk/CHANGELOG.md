@@ -8,13 +8,16 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
- - `UDisk` desktop display order changed to 1000 (folder moved down)
 
 ### Deprecated
 
 ### Removed
 
 ### Fixed
+
+## [5.23.1] - 2022-06-19
+### Changed
+ - `UDisk` desktop display order changed to 1000 (folder moved down)
 
 ## [5.23.0] - 2022-06-15
 ### Removed

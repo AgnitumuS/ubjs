@@ -14,6 +14,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+
+## [5.23.1] - 2022-06-19
+### Fixed
  - `ubcli initDB` do not insert string `null` into `uba_role.allowedAppMethods` in case 
   `uba_common.ROLES.ENDPOINTS` is null
 

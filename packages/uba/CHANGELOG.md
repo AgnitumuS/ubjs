@@ -6,17 +6,22 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
-- The new "DataManager" built-in role.
 
 ### Changed
-- For system roles defined allowed app methods (set in `_data` directory)
-- `Studio` (dev_desktop) desktop display order changed to 20, to be just below `Administration`  
 
 ### Deprecated
 
 ### Removed
 
 ### Fixed
+
+## [5.23.1] - 2022-06-19
+### Added
+- The new "DataManager" built-in role.
+
+### Changed
+- For system roles defined allowed app methods (set in `_data` directory)
+- `Studio` (dev_desktop) desktop display order changed to 20, to be just below `Administration`  
 
 ## [5.23.0] - 2022-06-15
 ### Added
