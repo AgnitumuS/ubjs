@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
+ - `UDisk` desktop display order changed to 1000 (folder moved down)
 
 ### Deprecated
 
