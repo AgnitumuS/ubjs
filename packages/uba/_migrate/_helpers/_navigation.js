@@ -30,8 +30,6 @@ function deleteNavShortcuts({conn}, codes) {
       console.log('Done')
     }
   }
-
-  console.log('Migration script finish: %s', __filename)
 }
 
 module.exports = {
