@@ -1,5 +1,7 @@
 {
   "caption": "Sicherheitsüberprüfung",
+  "description": "Überprüfung von Sicherheitsänderungen",
+  "documentation": "Alle Änderungen an UBA-Modell-Entitäten (mit Ausnahme von uba_als & uba_subject) + Ereignisse im Zusammenhang mit der Benutzeranmeldung werden hier protokolliert",
   "attributes": [
     {
       "name": "entity",
@@ -52,7 +54,5 @@
       "caption": "Zielrolle",
       "description": "Rollenname, für den sich die Daten geändert haben"
     }
-  ],
-  "description": "Überprüfung von Sicherheitsänderungen",
-  "documentation": "Alle Änderungen an UBA-Modell-Entitäten (mit Ausnahme von uba_als & uba_subject) + Ereignisse im Zusammenhang mit der Benutzeranmeldung werden hier protokolliert"
+  ]
 }

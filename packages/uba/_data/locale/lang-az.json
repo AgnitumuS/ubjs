@@ -1,0 +1,18 @@
+{
+  "uba_role.Everyone.description": "Hər kəsin qurduğu rol",
+  "uba_role.Admin.description": "İdarəçi rolu",
+  "uba_role.Anonymous.description": "İcazəsiz istifadəçi (quraşdırılmış rol)",
+  "uba_role.User.description": "Səlahiyyətli istifadəçi (quraşdırılmış rol)",
+  "uba_role.Supervisor.description": "Təhlükəsizlik Administratoru (quraşdırılmış rol)",
+  "uba_role.Developer.description": "İnkişaf etdirici (quraşdırılmış rol)",
+  "uba_role.SysOps.description": "Dəstək mühəndisi (quraşdırılmış rol)",
+  "uba_role.DataManager.description": "Data Manager (quraşdırılmış rol)",
+  "uba_role.Monitor.description": "Monitorinq (quraşdırılmış rol)",
+  "ubm_desktop.adm_desktop.caption": "Administration",
+  "ubm_desktop.adm_desktop.description": "İstifadəçilərin idarəedilməs, interfeys sazlamaları, jurnal (audit, təhlükəsizlik, növbə)",
+  "ubm_navshortcut.adm_folder_users.caption": "İstifadəçilər",
+  "ubm_navshortcut.adm_folder_security.caption": "Təhlükəsizlik",
+  "ubm_navshortcut.uba_audit-securityDashboard.caption": "Təhlükəsizlik Konsolu",
+  "ubm_navshortcut.adm_folder_devTools.caption": "Tərtibatçı alətləri",
+  "ubm_navshortcut.dev_folder_devTools.description": "Tərtibatçılar tərəfindən yaradılan və redaktə edilən Sistem Məlumatı, bu alətlərdən istifadə edərək Datanın dəyişdirilməsi sistemin heç vaxt versiyalarına köçdükdən sonra ləğv edilə bilər."
+}

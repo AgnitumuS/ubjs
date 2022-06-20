@@ -1,6 +1,5 @@
 {
-  "caption": "Instellingen",
-  "description": "Entiteit met informatie over systeeminstellingen",
+  "caption": "Systeem instellingen",
   "attributes": [
     {
       "name": "settingKey",

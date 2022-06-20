@@ -1,8 +1,8 @@
 <template>
   <div
     v-loading="loading"
+    class="u-table-entity"
     :class="{
-      'u-table-entity': true,
       'u-table-entity__bordered': bordered
     }"
     tabindex="1"
@@ -255,7 +255,6 @@
         @click-head-cell="showSortDropdown"
         @click-cell="select"
         @contextmenu="showContextMenu"
-        @dblclick-row="onSelect($event.row.ID, $event.row)"
         @change-active-row="activeRowChangeHandler"
       >
         <template
@@ -323,8 +322,8 @@
         @add-selected="$emit('add-selected', $event)"
         @remove-selected="$emit('remove-selected', $event)"
         @click="select"
+        @click-cell="select"
         @contextmenu="showContextMenu"
-        @dblclick="onSelect($event.row.ID, $event.row)"
         @change-active-row="activeRowChangeHandler"
       >
         <slot
@@ -717,19 +716,48 @@ export default {
     },
 
     showContextMenu ({ event, row, column }) {
-      this.select({ row, column })
+      this.setChoicedToStore({ row, column })
       this.contextMenuRowId = row.ID
       this.cacheActiveElement = document.activeElement
       this.$refs.contextMenu.show(event)
     },
 
-    select ({ row, column }) {
+    doActionWhenRowSelected ({ row, column }) {
+      // this is to open the edit form with one click when the row is already choiced
+      const store = this.$store.state
+      if (
+        column &&
+        store.selectedRowId === row.ID &&
+        store.selectedColumnId === column.id
+      ) {
+        this.onSelect(row.ID, row)
+        return true
+      }
+      // for CardView
+      if (!column && store.selectedRowId === row.ID) {
+        this.onSelect(row.ID, row)
+        return true
+      }
+      return false
+    },
+
+    setChoicedToStore ({ row, column }) {
       if (column !== undefined) {
         this.SELECT_COLUMN(column.id)
       }
       if (row !== undefined) {
         this.SELECT_ROW(row.ID)
       }
+    },
+
+    select ({ isMultipleSelectionCell }) {
+      if (
+        !isMultipleSelectionCell &&
+        this.doActionWhenRowSelected(...arguments)
+      ) {
+        return
+      }
+      this.setChoicedToStore(...arguments)
     },
 
     getNextArrayValue (array, key, current) {
@@ -912,6 +940,11 @@ export default {
   display: flex;
   flex-direction: column;
   overflow: auto;
+}
+
+.u-table-entity .u-table tr.selected td.selected,
+.u-table-entity .u-card-grid .u-card.selected {
+  cursor: pointer;
 }
 
 .u-table-entity__bordered {

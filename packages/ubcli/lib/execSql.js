@@ -11,12 +11,12 @@
  * Exceptions in statements what contains `--@optimistic` string is forced to be optimistic.
  *
  * SQL script can be a [lodash template](https://lodash.com/docs/4.17.15#template). In this case it preparsed using
- * `options = {conn: connectionConfig, cfg: execSqlOptionsObject}`
+ * `options = {conn: connectionConfig, cfg: execSqlOptionsObject, process}`
  *
  * Template example:
 
-  <% if (conn.dialect.startsWith('MSSQL')) { %>
-  SQL server specific statement
+  <% if (conn.dialect.startsWith('Oracle')) { %>
+  create synonym rep_reportResult for rep_reportResult@<%process.env.LINKED_DB%>;
   <% } else { %>
   non SQL server statement
   <% } %>
@@ -145,7 +145,8 @@ function execSql (cfg) {
     const compiledTpl = _.template(scriptTpl)
     script = compiledTpl({
       conn: connCfg,
-      cfg
+      cfg,
+      process
     })
   } else {
     script = scriptTpl

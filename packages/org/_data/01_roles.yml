@@ -1,18 +1,15 @@
 $context:
   type: roles
 
-orgNodeAdmin:
-  description: Administrator of organization node
-  sessionTimeout: 30
-
-orgAllNodeAccess:
-  description: Administrator of all organization nodes
-  sessionTimeout: 30
-
 User:
   $amendment: true
   els:
     read: org
+
+DataManager:
+  $amendment: true
+  els:
+    full: org
 
 Everyone:
   $amendment: true

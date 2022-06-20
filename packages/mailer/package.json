@@ -1,6 +1,6 @@
 {
   "name": "@unitybase/mailer",
-  "version": "5.22.4",
+  "version": "5.23.0",
   "description": "UnityBase SMTP/POP3",
   "repository": "https://git-pub.intecracy.com/unitybase/ubjs/tree/master/packages/mailer",
   "config": {
@@ -8,7 +8,7 @@
   },
   "scripts": {
     "build": "./build_native",
-    "version": "update-changelog && git add CHANGELOG.md"
+    "version": "update-changelog"
   },
   "public": true,
   "publishConfig": {
@@ -16,7 +16,7 @@
   },
   "main": "./UBMail.js",
   "devDependencies": {
-    "@unitybase/stubs": "^5.22.4",
+    "@unitybase/stubs": "^5.22.5",
     "@unitybase/update-changelog": "^1.0.4"
   },
   "keywords": [

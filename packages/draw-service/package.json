@@ -1,12 +1,12 @@
 {
   "name": "@unitybase/draw-service",
-  "version": "1.0.9",
+  "version": "1.1.1",
   "description": "Micro service for creating PNG picture based on series of commands",
   "main": "drawer.js",
   "scripts": {
     "test": "node ./test/test.js",
     "server": "node ./server.js",
-    "version": "update-changelog && git add CHANGELOG.md"
+    "version": "update-changelog"
   },
   "public": true,
   "publishConfig": {

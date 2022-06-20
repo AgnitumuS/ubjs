@@ -15,6 +15,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [1.4.1] - 2022-06-19
+## [1.4.0] - 2022-06-15
 ## [1.3.1] - 2021-12-02
 ### Changed
  - dependencies upgraded

@@ -8,19 +8,19 @@
     "babel-loader": "^8.2.3",
     "clean-css-cli": "^5.4.2",
     "css-loader": "^5.2.7",
-    "eslint": "^7.32.0",
-    "eslint-plugin-jsdoc": "^37.2.0",
-    "eslint-plugin-vue": "^7.20.0",
-    "exports-loader": "^2.0.0",
+    "eslint": "*",
+    "eslint-plugin-jsdoc": "*",
+    "eslint-plugin-vue": "^9.1.1",
+    "exports-loader": "^4.0.0",
     "file-loader": "^6.2.0",
-    "imports-loader": "^2.0.0",
-    "lerna": "^4.0.0",
+    "imports-loader": "^4.0.0",
+    "lerna": "^5",
     "lerna-update-wizard": "^1.1.0",
     "lodash": "^4.17.21",
-    "mini-css-extract-plugin": "^1.6.2",
+    "mini-css-extract-plugin": "^2.6.0",
     "shx": "^0.3.3",
-    "standard": "^16.0.4",
-    "style-loader": "^2.0.0",
+    "standard": "^17.0.0",
+    "style-loader": "^3.3.1",
     "uglify-js": "^3.14.4",
     "uglifycss": "*",
     "webpack": "^5.64.4",
@@ -33,13 +33,14 @@
     "build:doc-server": "jsdoc -c ./jsdoc-conf.json",
     "build:doc-ubpub": "jsdoc -c ./jsdoc-conf-ubpub.json",
     "build": "lerna run build",
-    "build:for-ci": "lerna run build:native"
+    "build:for-ci": "lerna run build:native",
+    "version": "git add **/CHANGELOG.md"
   },
   "engines": {
-    "npm": "^5"
+    "node": "^16",
+    "npm": "^8"
   },
   "dependencies": {
-    "core-js": "^3.19.2",
-    "ub-jsdoc": "^3.1.3"
+    "ub-jsdoc": "^3"
   }
 }

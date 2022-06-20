@@ -60,7 +60,6 @@
         <th
           v-if="showMultiSelectionColumn"
           class="u-table__multiple-column-head u-table__multiple__cell"
-          tabindex="1"
           @click="checkedAllHandler"
           @keydown.space="checkedAllHandler"
         >
@@ -125,7 +124,6 @@
         @dblclick="$emit('dblclick-row', { row })"
         @click="onTableRowClickHandler(rowIndex)"
         @keydown.space="handlerSelection(row, $event)"
-        @focus="hoverIndex = rowIndex"
       >
         <td
           v-if="preMultiSelectionColumn"
@@ -139,7 +137,7 @@
             padding: preMultiSelectionColumn.padding && preMultiSelectionColumn.padding + 'px'
           }"
           @click="$emit('click-cell', { row, column: preMultiSelectionColumn })"
-          @contextmenu="contextMenuEventHandler($event, row, preMultiSelectionColumn)"
+          @contextmenu="contextMenuEventHandler($event, rowIndex, preMultiSelectionColumn)"
         >
           <div class="u-table__cell-container">
             <slot
@@ -156,8 +154,8 @@
         <td
           v-if="showMultiSelectionColumn"
           class="u-table__multiple__cell"
-          @click="onInputClickHandler(row, $event)"
-          @contextmenu="contextMenuEventHandler($event, row)"
+          @click.stop="onMultiSelectionClick(rowIndex, $event)"
+          @contextmenu="contextMenuEventHandler($event, rowIndex)"
         >
           <!-- repeat html-structure for el-checkbox ElementUI -->
           <span
@@ -187,7 +185,7 @@
             padding: col.padding && col.padding + 'px'
           }"
           @click="$emit('click-cell', { row, column: col })"
-          @contextmenu="contextMenuEventHandler($event, row, col)"
+          @contextmenu="contextMenuEventHandler($event, rowIndex, col)"
         >
           <div class="u-table__cell-container">
             <slot
@@ -373,6 +371,7 @@ export default {
   },
 
   methods: {
+
     getAlignClass (align = 'left') {
       return `u-table__cell__align-${align}`
     },

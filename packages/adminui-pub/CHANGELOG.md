@@ -6,8 +6,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
- - added call to `connection.logout()` on `window.pagehide` event (in addition to `window.onbeforeunload`).
-   This adds reaction on more cases of how user can leave a web page (F5, Ctrl+F5, back, close tab, close browser)
 
 ### Changed
 
@@ -16,6 +14,36 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+
+## [5.23.2] - 2022-06-19
+## [5.23.1] - 2022-06-19
+## [5.23.0] - 2022-06-15
+### Added
+ - added global `resize` handler for touch devices what scroll input into viewport when on-screen keyboard appears
+
+### Changed
+ - `uglify-js` updated `3.6 -> 3.14.X`. Versions above 3.14 cause "e is undefined" exception in minified `ext-all.min.js`
+   while mouse move over Ext grid 
+ - dependencies upgraded:
+   - "mustache": "^4.2.0"
+   - "exports-loader": "^4.0.0",
+   - "imports-loader": "^4.0.0",
+   - "mini-css-extract-plugin": "^2.6.0",
+   - "uglify-js": "~3.14"
+
+### Removed
+ - `unhandledrejection` polyfill is removed - starting from FireFox69 it supported natively
+ - `zoom` CSS usage is removed (deprecated by browsers)
+
+## [5.22.21] - 2022-06-06
+## [5.22.20] - 2022-06-01
+### Fixed
+ - `UB.ux.Multifilter`: stretch input control when opening filter in the new window
+
+## [5.22.19] - 2022-05-26
+### Added
+ - added call to `connection.logout()` on `window.pagehide` event (in addition to `window.onbeforeunload`).
+   This adds reaction on more cases of how user can leave a web page (F5, Ctrl+F5, back, close tab, close browser)
 
 ## [5.22.18] - 2022-05-22
 ### Added

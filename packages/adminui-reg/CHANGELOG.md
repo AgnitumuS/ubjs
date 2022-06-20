@@ -15,6 +15,18 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.23.2] - 2022-06-19
+## [5.23.1] - 2022-06-19
+## [5.23.0] - 2022-06-15
+### Changed
+ - dependencies upgraded: "mustache": "^4.2.0"
+
+### Removed
+ - `plugin-types` CSP header is removed (marked as deprecated in browsers)
+
+## [5.22.21] - 2022-06-06
+## [5.22.20] - 2022-06-01
+## [5.22.19] - 2022-05-26
 ## [5.22.18] - 2022-05-22
 ### Added
  - added support for `uiSettings.adminUI.customTheme` while generation an index page.

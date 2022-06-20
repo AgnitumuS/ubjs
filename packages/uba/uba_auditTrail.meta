@@ -1,11 +1,11 @@
 {
-  "caption": "Audit",
-  "description": "Data changes audit trail",
+  "caption": "Data Audit",
+  "description": "Data Changes Audit Trail",
+  "documentation": "All DML statement for entity with mixin 'audit' logged here",
   "connectionName": "",
   "sqlAlias": "audtr",
   "cacheType": "None",
   "descriptionAttribute": "entity",
-  "documentation": "All DML statement for entity with mixin 'audit' logged here",
   "attributes": [
     {
       "name": "entity",

@@ -8,14 +8,44 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
-- `migrate` command: migration scripts and finalize hooks now accept `tenantID` parameter,
-  so that logic might be executed depending on tenant ID (system / non system tenant logic separation)
 
 ### Deprecated
 
 ### Removed
 
 ### Fixed
+
+## [5.23.1] - 2022-06-19
+### Fixed
+ - `ubcli initDB` do not insert string `null` into `uba_role.allowedAppMethods` in case 
+  `uba_common.ROLES.ENDPOINTS` is null
+
+## [5.23.0] - 2022-06-15
+### Changed
+ - packages updated:
+   - "mustache": "^4.2.0",
+   - "ub-jsdoc": "^3.1.4"
+
+## [5.22.19] - 2022-06-09
+### Fixed
+- Migrate bug for multitenant environment
+
+## [5.22.18] - 2022-06-01
+## [5.22.17] - 2022-05-26
+### Added
+ - access to `process` (in addition to server config and current connection config) is added into `ubcli execSql` template engine.
+  This made possible to use environment variables in templates, for example in migrate SQL scripts:
+```
+<% if (conn.dialect.startsWith('SQLite')) { %>
+  create synonym rep_reportResult for rep_reportResult@<%= process.env.LINKED_DB %>;
+<% } else { %>
+  -- do nothing
+<% } %>
+```
+
+### Changed
+- `migrate` command: migration scripts and finalize hooks now accept `tenantID` parameter,
+  so that logic might be executed depending on tenant ID (system / non system tenant logic separation)
 
 ## [5.22.16] - 2022-05-22
 ### Added

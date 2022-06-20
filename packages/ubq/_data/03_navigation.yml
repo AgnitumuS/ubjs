@@ -5,36 +5,15 @@ $context:
 adm_desktop:
   $amendment: true
   items:
-  - adm_folder_UBQ:
-      caption:
-        en: Mesages Queue
-        de: Nachrichten-Warteschlange
-        ru: Очереди сообщений
-        uk: Черги повідомлень
-        tg: Навбати паёмҳо
-        ka: რიგი
-        az: İsmarış növbələri
-        nl: Wachtrij
-        uz: Xabar navbatlari
-      iconCls: u-icon-more
-      displayOrder: 50
+  # Additional items in the "adm_folder_maintenance" folder
+  - adm_folder_maintenance:
+      $amendment: true
       items:
-      - ubq_scheduler:
-          caption: {$i18n: ubq_scheduler}
-          iconCls: fas fa-tasks
-          displayOrder: 10
-          cmd: >
-            {
-              renderer: "vue",
-              cmdType: "showList",
-              cmdData: {
-                entityName: "ubq_scheduler"
-              }
-            }
       - ubq_runstat:
-          caption: {$i18n: ubq_runstat}
+          caption: { $i18n: ubq_runstat }
+          access: SysOps
           iconCls: u-icon-circle-info
-          displayOrder: 20
+          displayOrder: 100   # Specify for the first item only, each next will be increased by 10
           cmd: >
             {
               "renderer": "vue",
@@ -44,9 +23,9 @@ adm_desktop:
               }
             }
       - ubq_messages:
-          caption: {$i18n: ubq_messages}
+          caption: { $i18n: ubq_messages }
+          access: SysOps
           iconCls: fas fa-list-ol
-          displayOrder: 30
           cmd: >
             {
               "renderer": "vue",
@@ -54,5 +33,24 @@ adm_desktop:
               "cmdData": {
                 "entityName": "ubq_messages",
                 "columns": ["mi_createDate", "queueCode", "completeDate", "msgCmd"]
+              }
+            }
+dev_desktop:
+  $amendment: true
+  items:
+  - dev_folder_devTools:
+      $amendment: true
+      items:
+      - ubq_scheduler:
+          caption: { $i18n: ubq_scheduler }
+          access: SysOps, Developer
+          iconCls: fas fa-tasks
+          displayOrder: 400
+          cmd: >
+            {
+              renderer: "vue",
+              cmdType: "showList",
+              cmdData: {
+                entityName: "ubq_scheduler"
               }
             }

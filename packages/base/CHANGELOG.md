@@ -6,8 +6,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
-- A new built-in role in the `uba_common` module: `TenantUser`, added for multi-tenant
-  environments only
 
 ### Changed
 
@@ -16,6 +14,25 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+
+## [5.23.1] - 2022-06-19
+### Added
+- A new built-in role in the `uba_common` module: `DataManager`, added for giving access
+  to all dictionary editing
+
+### Changed
+- For system roles made default roles null instead of empty string
+
+## [5.23.0] - 2022-06-15
+### Added
+- A new built-in role in the `uba_common` module: `SysOps`, added for giving access
+  to System Maintenance and Monitoring Tools as well as System Configuration tools
+
+## [5.22.9] - 2022-06-01
+## [5.22.8] - 2022-05-26
+### Added
+- A new built-in role in the `uba_common` module: `TenantUser`, added for multi-tenant
+  environments only
 
 ## [5.22.7] - 2022-05-22
 ## [5.22.6] - 2022-05-04

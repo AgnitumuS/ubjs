@@ -43,11 +43,10 @@
         @keydown.right="toArrowPressHandler($event, 'down')"
         @keydown.up="toArrowPressHandler($event, 'up')"
         @keydown.left="toArrowPressHandler($event, 'up')"
-        @click="cardClickHandler(rowIndex, $event)"
-        @focus="cardClickHandler(rowIndex, $event)"
+        @click="onTableRowClickHandler(rowIndex, $event)"
         @keydown.space="handlerSelection(row, $event)"
         @dblclick="$emit('dblclick', { row })"
-        @contextmenu="contextMenuEventHandler($event,row)"
+        @contextmenu="contextMenuEventHandler($event,rowIndex)"
       >
         <!-- repeat html-structure for el-checkbox ElementUI -->
         <span
@@ -56,7 +55,7 @@
           :class="{
             'is-checked': curSelection.includes(row[multiSelectKeyAttr])
           }"
-        @click="handlerSelection(row, $event)"
+          @click.stop="handlerSelection(row, $event)"
         >
           <span class="el-checkbox__inner" />
           <input

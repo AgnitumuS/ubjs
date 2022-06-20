@@ -3,7 +3,6 @@
   "sqlAlias": "usrGroup",
   "cacheType": "None",
   "caption": "User Group Membership",
-  "description": "User memberships in groups",
   "mixins": {
     "mStorage": {
       "simpleAudit": true,

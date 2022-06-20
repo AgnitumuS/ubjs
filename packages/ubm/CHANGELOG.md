@@ -15,6 +15,31 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.23.2] - 2022-06-19
+## [5.23.1] - 2022-06-19
+### Changed
+- Navigation folder "UI" (english) rename to "User Interface"
+- Move Theme Settings to "Studio" desktop, "User Interface" folder from Administration
+
+## [5.23.0] - 2022-06-15
+### Changed
+- Move UI (shortcuts and desktops) to "Studio" desktop
+
+## [5.22.21] - 2022-06-06
+### Changed
+- Moved navigation shortcut localizations into json files out of yaml files
+- Move some shortcuts from "UI" to "Developer Tools": Enum, System Dictionaries, Queries, Diagrams
+- Replace for some shortcuts FA icons to UB icons
+
+## [5.22.20] - 2022-06-01
+### Changed
+- Made the `ubm_desktop_adm`, `ubm_navshortcut`, `ubm_desktop_adm` entities tenant-bound.
+
+### Fixed
+ - UI Settings form: fix adding unneeded quoter's for `applicationName` parameter in case it`s a simple string (do not contain localization)
+ - UI Settings form: fix reset of `customTheme` 
+
+## [5.22.19] - 2022-05-26
 ## [5.22.18] - 2022-05-22
 ### Added
  - added form and method for changing UI settings. Current implementation allow to customize following `uiSetting.adminUI` props:

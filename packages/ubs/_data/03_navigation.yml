@@ -5,61 +5,16 @@ $context:
 adm_desktop:
   $amendment: true
   items:
-  - adm_folder_UI:
-      caption:
-        en: UI
-        de: Benutzeroberfläche
-        ka: მომხმარებლის ინტერფეისი
-        ru: Интерфейс
-        tg: Интерфейс
-        uk: Інтерфейс
-        nl: Gebruikersinterface
-        uz: Interfeys
-        az: İnterfeys
-      iconCls: u-icon-image
-      displayOrder: 30
-      items:
-      - ubs_report:
-          caption: {$i18n: ubs_report}
-          iconCls: u-icon-book
-          displayOrder: 60
-          cmd: >
-            {
-              renderer: 'vue',
-              cmdType: 'showList',
-              cmdData: {
-                entityName: 'ubs_report',
-                columns: [
-                  'ID',
-                  'model',
-                  'report_code',
-                  {
-                    id: 'name',
-                    format: 'return UB.i18n(value)'
-                  }
-                ]
-              }
-            }
   - adm_folder_misc:
-      access: Supervisor
-      caption:
-        en: Misc
-        de: Sonstiges
-        uk: Різне
-        ru: Разное
-        ka: სხვადასხვა
-        tg: Гуногун
-        nl: Overige toepassingen
-        az: Müxtəlif
-        id: Misc
+      access: SysOps, Developer
+      caption: Settings
       iconCls: u-icon-setting
       displayOrder: 40
       isCollapsed: true
       items:
       - ubs_settings:
-          caption: {$i18n: ubs_settings}
+          caption: { $i18n: ubs_settings }
           iconCls: u-icon-setting
-          displayOrder: 10
           cmd: >
             {
               renderer: 'vue',
@@ -69,9 +24,10 @@ adm_desktop:
               }
             }
       - ubs_filter:
-          caption: {$i18n: ubs_filter}
+          caption: { $i18n: ubs_filter }
+          access: SysOps
+          displayOrder: 100
           iconCls: u-icon-filter
-          displayOrder: 20
           cmd: >
             {
               renderer: 'vue',
@@ -80,34 +36,14 @@ adm_desktop:
                 entityName: 'ubs_filter'
               }
             }
-      - ubs_numcounter:
-          caption: {$i18n: ubs_numcounter}
-          iconCls: u-icon-number
-          displayOrder: 30
-          cmd: >
-            {
-              renderer: 'vue',
-              cmdType: 'showList',
-              cmdData: {
-                entityName: 'ubs_numcounter'
-              }
-            }
-      - ubs_numcounterreserv:
-          caption: {$i18n: ubs_numcounterreserv}
-          iconCls: u-icon-number
-          displayOrder: 40
-          cmd: >
-            {
-              renderer: 'vue',
-              cmdType: 'showList',
-              cmdData: {
-                entityName: 'ubs_numcounterreserv'
-              }
-            }
+  - adm_folder_maintenance:
+      $amendment: true
+      items:
       - ubs_softLock:
-          caption: {$i18n: ubs_softLock}
+          caption: { $i18n: ubs_softLock }
+          access: SysOps
           iconCls: u-icon-lock
-          displayOrder: 50
+          displayOrder: 200
           cmd: >
             {
               renderer: 'vue',
@@ -123,10 +59,51 @@ adm_desktop:
                 ]
               }
             }
+      - ubs_globalCache:
+          caption: { $i18n: ubs_globalCache }
+          access: SysOps
+          iconCls: u-icon-data
+          cmd: >
+            {
+              renderer: 'vue',
+              cmdType: 'showList',
+              cmdData: {
+                entityName: 'ubs_globalCache',
+                columns: [
+                  'ID',
+                  'key',
+                  'value'
+                ]
+              }
+            }
+      - ubs_numcounter:
+          caption: { $i18n: ubs_numcounter }
+          access: SysOps
+          iconCls: u-icon-number
+          cmd: >
+            {
+              renderer: 'vue',
+              cmdType: 'showList',
+              cmdData: {
+                entityName: 'ubs_numcounter'
+              }
+            }
+      - ubs_numcounterreserv:
+          caption: { $i18n: ubs_numcounterreserv }
+          access: SysOps
+          iconCls: u-icon-number
+          cmd: >
+            {
+              renderer: 'vue',
+              cmdType: 'showList',
+              cmdData: {
+                entityName: 'ubs_numcounterreserv'
+              }
+            }
       - ubs_message:
-          caption: {$i18n: ubs_message}
+          caption: { $i18n: ubs_message }
+          access: SysOps
           iconCls: u-icon-bell
-          displayOrder: 60
           cmd: >
             {
               renderer: 'vue',
@@ -142,20 +119,33 @@ adm_desktop:
                 ]
               }
             }
-      - ubs_globalCache:
-          caption: {$i18n: ubs_globalCache}
-          iconCls: u-icon-data
-          displayOrder: 60
+
+# Submenu in "Studio" desktop
+dev_desktop:
+  $amendment: true
+  items:
+  - dev_folder_devTools:
+      $amendment: true
+      items:
+      - ubs_report:
+          caption: { $i18n: ubs_report }
+          access: Developer
+          iconCls: u-icon-book
+          displayOrder: 100
           cmd: >
             {
               renderer: 'vue',
               cmdType: 'showList',
               cmdData: {
-                entityName: 'ubs_globalCache',
+                entityName: 'ubs_report',
                 columns: [
                   'ID',
-                  'key',
-                  'value'
+                  'model',
+                  'report_code',
+                  {
+                    id: 'name',
+                    format: 'return UB.i18n(value)'
+                  }
                 ]
               }
             }

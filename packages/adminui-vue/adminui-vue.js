@@ -307,6 +307,8 @@ Vue.prototype.$zIndex = () => {
 }
 
 Vue.config.warnHandler = (err, vm, trace) => {
+  // TODO - remove this hack when element-ui fixes https://github.com/ElemeFE/element/issues/21905
+  if (err && err.indexOf('"placement"') >= 0) return // mute ElDatePicker placement prop mutation
   console.error(err, vm, trace)
   const newErrText = '<b>THIS MESSAGE APPEARS ONLY IN DEBUG BUILD</b><br>' + err
   window.onerror.apply(UB, [newErrText, trace, '', '', new UB.UBError(newErrText, trace)])

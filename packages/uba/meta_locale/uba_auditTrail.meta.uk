@@ -1,6 +1,6 @@
 {
-  "caption": "Аудит змін",
-  "description": "Аудит змін",
+  "caption": "Аудит даних",
+  "description": "Журнал аудит змін даних",
   "attributes": [
     {
       "name": "entity",

@@ -24,6 +24,7 @@ module.exports = function (session) {
       execParams: {
         code: 'tst_desktop',
         caption: 'Test',
+        displayOrder: 9000,
         iconCls: 'u-icon-desktop-document-types'
       }
     })

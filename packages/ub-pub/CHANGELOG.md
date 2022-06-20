@@ -6,17 +6,24 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
- - `AsyncConnection.logout` - optional reasonParams is added, such params are added to URL and cen be analysed in server-side logs  
 
 ### Changed
- - AsyncConnection (browser) `UB` Authorization will lowercase a logon before pass it to server, so user can enter his name InAnyCase.
-  Note: `uba_user` convert name to lowercase before save since 2016 year 
 
 ### Deprecated
 
 ### Removed
 
 ### Fixed
+
+## [5.23.1] - 2022-06-19
+## [5.23.0] - 2022-06-15
+## [5.22.12] - 2022-05-26
+### Added
+ - `AsyncConnection.logout` - optional reasonParams is added, such params are added to URL and cen be analysed in server-side logs  
+
+### Changed
+ - AsyncConnection (browser) `UB` Authorization will lowercase a logon before pass it to server, so user can enter his name InAnyCase.
+  Note: `uba_user` convert name to lowercase before save since 2016 year 
 
 ## [5.22.11] - 2022-05-22
 ### Added

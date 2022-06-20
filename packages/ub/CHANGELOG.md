@@ -21,7 +21,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - **BREAKING** entity with aclRsl mixin now MUST have an sqlAlias
 
 ### Changed
- - Add `TenantUser` built-in role on login of every user, if user is logged in any tenant except
+- Add `TenantUser` built-in role on login of every user, if user is logged in any tenant except
   the system tenant
 
 ### Deprecated
@@ -29,6 +29,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+
+## [5.23.1] - 2022-06-19
+## [5.23.0] - 2022-06-15
+## [5.22.39] - 2022-06-01
+## [5.22.38] - 2022-05-26
+### Changed
+- Add `TenantUser` built-in role on login of every user, if user is logged in any tenant except
+  the system tenant
 
 ## [5.22.37] - 2022-05-22
 ### Changed

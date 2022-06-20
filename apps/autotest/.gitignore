@@ -11,3 +11,4 @@ callgrind*
 ubConfig*.env
 *.supp
 .*
+*.bak

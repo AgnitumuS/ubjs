@@ -1,6 +1,6 @@
 {
   "name": "@unitybase/xlsx",
-  "version": "5.22.7",
+  "version": "5.23.1",
   "description": "UnityBase Excel exporter",
   "main": "index.js",
   "config": {
@@ -16,17 +16,17 @@
     "lint": "eslint source test",
     "test": "",
     "prepare": "npm run build",
-    "version": "update-changelog && git add CHANGELOG.md"
+    "version": "update-changelog"
   },
   "public": true,
   "publishConfig": {
     "registry": "https://registry.unitybase.info"
   },
   "dependencies": {
-    "@unitybase/base": "^5.22.7",
+    "@unitybase/base": "^5.23.1",
     "jszip": "2.6.0",
     "lodash": "^4",
-    "mustache": "^3.0.1"
+    "mustache": "^4.2.0"
   },
   "devDependencies": {
     "@unitybase/update-changelog": "^1.0.4"

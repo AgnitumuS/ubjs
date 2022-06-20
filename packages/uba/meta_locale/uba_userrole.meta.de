@@ -1,6 +1,5 @@
 {
-  "caption": "Benutzerrollen",
-  "description": "Dem Benutzer zugewiesene Rollen",
+  "caption": "Dem Benutzer zugewiesene Rollen",
   "attributes": [
     {
       "name": "userID",

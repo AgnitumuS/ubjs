@@ -15,6 +15,23 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.23.2] - 2022-06-19
+## [5.23.1] - 2022-06-19
+## [5.23.0] - 2022-06-15
+### Changed
+- In the "Administrator" desktop, move items from "Messages Queue" to "Monitoring Tools"
+  - Delete the empty "Message Queue" item 
+
+### Fixed
+- Tenant schedulers work in case, when TenantID header is used
+
+## [5.22.17] - 2022-06-06
+### Changed
+- Moved navigation shortcut localizations into json files out of yaml files
+- Pull "Schedulers" menu items from "Queues" to "Developer Tools" folder
+
+## [5.22.16] - 2022-06-01
+## [5.22.15] - 2022-05-26
 ## [5.22.14] - 2022-05-22
 ### Added
 - Support for schedulers in multitenant mode:

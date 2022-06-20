@@ -73,9 +73,6 @@
     },
     "rls": {
       "func": "RLS.allowForAdminOwnerAndAdmTable"
-    },
-    "multitenancy": {
-      "enabled": false
     }
   }
 }

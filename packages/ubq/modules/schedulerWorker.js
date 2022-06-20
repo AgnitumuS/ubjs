@@ -26,6 +26,14 @@ function runSchedulersCircle (message) {
     }
   })
 
+  const multitenancyConfig = JSON.parse(process.cachedConfigStr).security.multitenancy
+  if (multitenancyConfig && multitenancyConfig.enabled && multitenancyConfig.tenantIDHeader) {
+    // Set the first header,
+    // tenants loop is inside job processing endpoint, so to make the request
+    // system tenant ID is used
+    request.setHeader(multitenancyConfig.tenantIDHeader, '1')
+  }
+
   function safeSendAsyncRequest (cfgIdx) {
     try {
       const cfg = config[cfgIdx]

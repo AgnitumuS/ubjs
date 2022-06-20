@@ -19,3 +19,5 @@ wp_stats.json
 # linkStatic artifact
 .entryPoint.js
 .linkStatic*
+apps/shared
+getting-started

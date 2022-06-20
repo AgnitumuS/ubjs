@@ -1,6 +1,5 @@
 {
   "caption": "User Group Membership",
-  "description": "User memberships in groups",
   "attributes": [
     {
       "name": "userID",

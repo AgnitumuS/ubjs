@@ -3,4 +3,9 @@
   "description": "Blue theme (experimental)",
   "css": "/models/adminui-vue/uithemes/blue-theme.css",
   "js": ""
+},{
+  "name": "adminui-vue_orange",
+  "description": "Orange theme (experimental)",
+  "css": "/models/adminui-vue/uithemes/orange-theme.css",
+  "js": ""
 }]

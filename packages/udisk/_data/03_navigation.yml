@@ -12,6 +12,7 @@ udisk_desktop:
   - udiskSecretUsers
   - udiskSecretAdmins
   - udiskSecretAdminsDenyContent
+  displayOrder: 1000   # The last one
   caption: UDISK
   items:
   - UDISK_CARD:

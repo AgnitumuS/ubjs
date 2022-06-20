@@ -6,7 +6,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
-- Migration hook for dynamically creating ELS rules for TenantUser role
 
 ### Changed
 
@@ -15,6 +14,62 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+
+## [5.23.2] - 2022-06-19
+### Fixed
+- Remove obsolete navigation folders: `adm_folder_UI` and `adm_folder_devTools` (now new
+  folders are placed on the "Studio" desktop and have different codes)
+- ELS rule descriptions: change "Supervisor group" to "Supervisor role" to not confuse roles
+  with groups
+- Add full permissions on `uba_otp`, `uba_els`, `uba_als` entities to Supervisor role
+
+## [5.23.1] - 2022-06-19
+### Added
+- The new "DataManager" built-in role.
+
+### Changed
+- For system roles defined allowed app methods (set in `_data` directory)
+- `Studio` (dev_desktop) desktop display order changed to 20, to be just below `Administration`  
+
+## [5.23.0] - 2022-06-15
+### Added
+- The new "SysOps" built-in role. Role shall be given to the engineers,
+  who help to maintain the system.
+  Role Access:
+  - Full access to ubs/ubq/ubm models
+  - Read only access to uba mode
+- Role "Developer" given permissions: "ubm" model - full permissions,
+  "uba_els" / "uba_als" / "ubs_report" - full permissions;
+  "ubs" / "ubq" / "uba" - read only.
+- New Desktop "Studio" with access to Developer
+  - move there "Developer Tools" folder
+
+### Changed
+- Item "Monitoring Tools" in the "Administrator" desktop
+  - Moved there "Security Dashboard" and "User Sessions"
+
+## [5.22.17] - 2022-06-06
+### Added
+- Navigation shortcut folder "Developer Tools", moved there: System Roles, ELS
+  - System Roles and ELS shortcuts now requires "Developer" built-in role, because
+    the Supervisor meant to administer Users, and not design System Roles
+
+### Changed
+- Moved navigation desktop and shortcut localizations into json files out of yaml files
+- Refined order of items inside "Users and Groups":
+  - most often used "Users" and "User Groups" - top
+  - less used items "User Roles" and "User Group Membership" - middle
+  - advanced User security setting shortcuts - bottom
+- Updated some icons to UB from FA
+
+## [5.22.16] - 2022-06-01
+### Fixed
+- Remove from available details for User entity: User Sessions, Previous Passwords,
+  One Time Passwords, Advanced Authentication
+
+## [5.22.15] - 2022-05-26
+### Added
+- Migration hook for dynamically creating ELS rules for TenantUser role
 
 ## [5.22.14] - 2022-05-22
 ### Added
