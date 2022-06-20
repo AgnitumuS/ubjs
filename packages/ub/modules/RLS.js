@@ -136,3 +136,27 @@ RLS.allowForAdminOwnerAndAdmTable = function (ctxt) {
 RLS.isUserAdminOrInAdminGroup = function () {
   return (ubaCommon.isSuperUser() || Session.hasRole(ubaCommon.ROLES.ADMIN.NAME))
 }
+
+RLS.defaultAclRlsSubjects = function (ctx, mixinCfg) {
+  const admS = new Set(mixinCfg.onEntities)
+  let result = []
+  if (admS.has('uba_subject') >= 0) { // add possible adm subjects
+    result = [Session.userID, ...Session.uData.roleIDs, ...Session.uData.groupIDs]
+    admS.delete('uba_subject')
+  }
+  if (admS.has('org_unit') >= 0) { // add all user org units
+    result.concat(Session.uData.orgUnitIDs.split(',').map(Number))
+    admS.delete('org_unit')
+  }
+  if (admS.size !== 0) throw new Error('default aclRls subjectIDsFn ')
+  return result
+}
+
+RLS.defaultAclRlsSubjects.validator = function (mixinCfg, entityCode) {
+  const admS = new Set(mixinCfg.onEntities)
+  admS.delete('uba_subject')
+  admS.delete('org_unit')
+  if (admS.size !== 0) {
+    throw new Error(`AclRls: used '${entityCode}.mixins.aclRls.subjectIDsFn' require 'onEntities' contains 'uba_subject' or|and 'org_unit'`)
+  }
+}
