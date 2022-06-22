@@ -123,7 +123,10 @@ module.exports = {
 
     /** Key prefix for storing flags for running schedulers tasks; Value === 1 in case task in running */
     UBQ_TASK_RUNNING_: 'UBQ.TASK_RUNNING_',
-    /** In case schedulers Worker is initialized value is `yes` */
+    /**
+     * In case schedulers Worker is initialized value is `yes`.
+     * `ubcli migrate` set this key to `yes` to prevent running schedulers during migration
+     */
     UBQ_SCHEDULER_INITIALIZED: 'UBQ.schedulersInitialized'
   }
 }

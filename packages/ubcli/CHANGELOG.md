@@ -8,6 +8,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
+ - `ubcli migrate` will disable schedulers in starting server instance.
+   Schedulers execution can break migration process. Feature works for UB@5.22.10 and up.
 
 ### Deprecated
 
