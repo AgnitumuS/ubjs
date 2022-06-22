@@ -73,6 +73,9 @@ RLS.currentUserOrUserGroupInAdmSubtable = function (sender) {
   return `exists (select 1 from ${sender.entity.name}_adm ast where ast.instanceID = [ID] and (${subjects}))`
 }
 
+const BY_OWNER_WHERE_LIST_PREDICATE = '__rlsByOwner'
+const BY_ADM_WHERE_LIST_PREDICATE = '__rlsByAdm'
+
 /**
  * For members of Admin group and for users `root` and `admin` do nothing.
  *
@@ -94,30 +97,32 @@ RLS.allowForAdminOwnerAndAdmTable = function (ctxt) {
     whereList = mParams.whereList
   }
   // either current user is record owner
-  const byOwner = whereList.getUniqKey()
-  whereList[byOwner] = {
+  whereList[BY_OWNER_WHERE_LIST_PREDICATE] = {
     expression: '[mi_owner]',
     condition: 'equal',
     value: Session.userID
   }
   // or User or one of user role in _adm sub-table
-  const byAdm = whereList.getUniqKey()
   const eName = ctxt.dataStore.entity.name
   const subQ = Repository(`${eName}_adm`)
-    .where('[admSubjID]', 'in', [Session.userID,...Session.uData.roleIDs, ...Session.uData.groupIDs])
+    .where('[admSubjID]', 'in', [Session.userID, ...Session.uData.roleIDs, ...Session.uData.groupIDs])
     .correlation('instanceID', 'ID')
     .ubql()
-  whereList[byAdm] = {
+  whereList[BY_ADM_WHERE_LIST_PREDICATE] = {
     expression: '',
     condition: 'subquery',
     subQueryType: 'exists',
     value: subQ
   }
-  const logic = `([${byOwner}]) OR ([${byAdm}])`
+  const logic = `([${BY_OWNER_WHERE_LIST_PREDICATE}]) OR ([${BY_ADM_WHERE_LIST_PREDICATE}])`
   if (!mParams.logicalPredicates) {
     mParams.logicalPredicates = [logic]
   } else {
-    // ubList.push NOT WORK!
-    mParams.logicalPredicates = [...mParams.logicalPredicates, logic]
+    const lp = [...mParams.logicalPredicates]
+    if (lp.indexOf(logic) === -1) {
+      // ubList.push NOT WORK!
+      mParams.logicalPredicates = [...mParams.logicalPredicates, logic]
+    }
   }
+  console.log('mParams:', JSON.stringify(mParams, null, ''))
 }

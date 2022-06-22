@@ -14,6 +14,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+ - `umb_navshortcut.update` for non-privileged users now works. Before this fix user got server-side error because
+  RLS conditions added twice - once in `selectBeforeUpdate` and once in `selectAfterUpdate` [LDOC-2294]
 
 ## [5.23.2] - 2022-06-19
 ## [5.23.1] - 2022-06-19
