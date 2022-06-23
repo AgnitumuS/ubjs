@@ -1,7 +1,10 @@
 <template>
   <u-file-container :style="previewSizeCss">
     <template #toolbar>
-      <u-file-add-button v-if="hasButton('add')" :accept="accept"/>
+      <u-file-add-button
+        v-if="hasButton('add')"
+        :accept="accept"
+      />
       <u-file-webcam-button v-if="hasButton('webcam')" />
       <div
         v-if="hasButton('add') || hasButton('webcam')"
@@ -17,7 +20,11 @@
       <u-file-preview-button v-if="hasButton('preview')" />
       <u-file-fullscreen-button v-if="hasButton('fullscreen')" />
       <div
-        v-if="hasButton('download') || hasButton('preview') || hasButton('fullscreen')"
+        v-if="
+          hasButton('download') ||
+            hasButton('preview') ||
+            hasButton('fullscreen')
+        "
         class="u-divider"
       />
       <u-file-remove-button v-if="hasButton('remove')" />
@@ -55,6 +62,16 @@ export default {
   components: {
     UFileContainer: require('./UFileContainer.vue').default,
     FileRenderer: require('./views/FileRenderer.vue').default
+  },
+
+  provide () {
+    return {
+      fileComponentInstance: this
+    }
+  },
+
+  inject: {
+    providedEntity: 'entity'
   },
 
   props: {
@@ -150,16 +167,6 @@ export default {
     }
   },
 
-  provide () {
-    return {
-      fileComponentInstance: this
-    }
-  },
-
-  inject: {
-    providedEntity: 'entity'
-  },
-
   computed: {
     file () {
       if (this.value) {
@@ -195,9 +202,7 @@ export default {
     previewSizeCss () {
       return ['width', 'height'].reduce((style, property) => {
         const value = this.previewSize[property]
-        style[property] = typeof value === 'number'
-          ? value + 'px'
-          : value
+        style[property] = typeof value === 'number' ? value + 'px' : value
         return style
       }, {})
     },
@@ -206,10 +211,7 @@ export default {
       if (this.removeDefaultButtons === true) {
         return []
       }
-      const defaultButtons = [
-        'add',
-        'webcam'
-      ]
+      const defaultButtons = ['add', 'webcam']
       // Show scan options only if disableScanner property is not explicitly set as true
       if (!this.$UB.connection.appConfig.uiSettings.adminUI.disableScanner) {
         defaultButtons.push('scan', 'scanSettings')
@@ -223,7 +225,9 @@ export default {
       }
 
       if (Array.isArray(this.removeDefaultButtons)) {
-        return defaultButtons.filter(b => !this.removeDefaultButtons.includes(b))
+        return defaultButtons.filter(
+          (b) => !this.removeDefaultButtons.includes(b)
+        )
       }
 
       return defaultButtons
@@ -245,10 +249,7 @@ export default {
         origName: file.name,
         id: this.recordId
       })
-      this.$emit(
-        'input',
-        JSON.stringify(uploadedFileMetadata)
-      )
+      this.$emit('input', JSON.stringify(uploadedFileMetadata))
     },
 
     hasButton (button) {
