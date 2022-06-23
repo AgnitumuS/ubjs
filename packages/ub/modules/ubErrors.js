@@ -5,7 +5,6 @@
 
 /**
  * @classdesc
- * @param {...any} args
  * Server-side Abort exception. To be used in server-side logic in case of HANDLED
  * exception. This errors logged using "Error" log level to prevent unnecessary
  * EXC log entries.
@@ -20,7 +19,8 @@ throw new UB.UBAbort('<<<file_not_found>>>', 'bad_file.name')
 
 // In case message should not be shown to the end used by ub-pub globalExceptionHandler `<<<>>>` can be omitted
 throw new UB.UBAbort('wrongParameters')
- * @param {string} [message] Message
+ * @param {string} [message] Error message
+ * @param {...any} args
  * @augments {Error}
  * @function Object() { [native code] }
  */
