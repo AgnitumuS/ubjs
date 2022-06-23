@@ -29,7 +29,7 @@ const base = require('@unitybase/base')
 const options = base.options
 const argv = base.argv
 const execSql = require('./execSql')
-const { createDBConnectionPool, releaseDBConnectionPool } = require('@unitybase/base')
+const { createDBConnectionPool, releaseDBConnectionPool, GC_KEYS } = require('@unitybase/base')
 const generateDDL = require('./generateDDL')
 const { normalizeVersion, updateVersionsInDB } = require('./flow/migrationUtils')
 
@@ -106,10 +106,13 @@ const NORMALIZE_VERSION_RE = /^((\d{1,3})[._](\d{1,3})[._](\d{1,3}))/
  *  @private
  */
 function runMigrations (params) {
+  if (process.globalCachePut) { // UB@5.22.10
+    process.globalCachePut(GC_KEYS.UBQ_SCHEDULER_INITIALIZED, 'yes')
+  }
   const serverConfig = argv.getServerConfiguration(false)
   let dbConnections = createDBConnectionPool(serverConfig.application.connections)
-  const multitenancyEnabled = serverConfig.security.multitenancy
-    && serverConfig.security.multitenancy.enabled
+  const multitenancyEnabled = serverConfig.security.multitenancy &&
+    serverConfig.security.multitenancy.enabled
   if (params.tenantID && !multitenancyEnabled) {
     throw new Error('tenantID parameter should only be used when multitenancy enabled')
   }

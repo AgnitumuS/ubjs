@@ -29,6 +29,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+ - `RLS.allowForAdminOwnerAndAdmTable` uses predefined names for added where conditions.
+  This prevents adding the same conditions several times 
 
 ## [5.23.1] - 2022-06-19
 ## [5.23.0] - 2022-06-15
