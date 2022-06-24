@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+- Typo in uk localization of `ubq_runstat` entity caption
 
 ## [5.23.2] - 2022-06-19
 ## [5.23.1] - 2022-06-19
