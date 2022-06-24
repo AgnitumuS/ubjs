@@ -388,31 +388,43 @@
                     "properties": {
                         "useUnityName": {
                             "type": "boolean",
-                            "description": "In case this entity have a `unity` mixin and `useUnityName` is `true` then ACL will be stored for the parent entity. This important for situation of many descendants of one entity"
+                            "description": "In case this entity have a `unity` mixin and `useUnityName` is `true` then ACL will be stored for the parent entity. This important for situation of many descendants of one entity",
+                            "default": false
                         },
                         "onEntities": {
                             "type": "array",
-                            "description": "Subjects (entity names) for ACL",
+                            "description": "ACL subjects (entity names)",
                             "items": {
                                 "type": "string"
                             }
                         },
                         "entityConnectAttr": {
                             "type": "string",
-                            "description": "this entity attribute name for join to acl entity. TODO - explain"
-                        },
-                        "exprMethod": {
-                            "type": "string",
-                            "description": "name of entity method, which create sub-query structure. TODO - explain"
+                            "description": "attribute name for current entity what used to join an acl entity",
+                            "default": "[ID]"
                         },
                         "selectionRule": {
                             "enum": ["Exist", "In"],
                             "default": "Exists",
                             "description": "Rule for connect sub-query by according aclRls table. `In` - connect by IN condition (example: ... AND mainEntity.ID IN (SELECT instanceID FROM aclRlsTable WHERE ...))\n`Exist` - connect by EXIST condition (example: ... AND EXISTS (SELECT 1 FROM aclRlsTable WHERE ...))"
                         },
+                        "skipIfFn": {
+                            "type": "string",
+                            "default": "RLS.isUserAdminOrInAdminGroup",
+                            "description": "name of guard function (can contains namespaces). If function returns `true` aclRls rules not added for select"
+                        },
+                        "subjectIDsFn": {
+                            "type": "string",
+                            "default": "RLS.getDefaultAclRlsSubjects",
+                            "description": "name of function (can contains namespaces). Should return array of acl subject IDs. select method returns rows for which at ast one of this ID is added into alc table"
+                        },
                         "model": {
                             "type": "string",
                             "description": "model name where to place the entity for storing aclRLS. If entity expected to be override in other models then placing here name of original model will help to keep acl entity in the model of origin"
+                        },
+                        "exprMethod": {
+                            "type": "string",
+                            "description": "DEPRECATED use skipIfFn + subjectIDsFn instead"
                         }
                     }
                 },

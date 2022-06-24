@@ -3,7 +3,6 @@ $context:
 
 User:
   $amendment: true
-  description: Fill access to all test entities for all logged in users
+  description: Full access to all test entities for all logged in users
   els:
-    crud:
-      - tst
+    full: [tst]

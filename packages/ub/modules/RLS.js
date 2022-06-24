@@ -131,33 +131,46 @@ RLS.allowForAdminOwnerAndAdmTable = function (ctxt) {
       mParams.logicalPredicates = [...mParams.logicalPredicates, logic]
     }
   }
-  console.log('mParams:', JSON.stringify(mParams, null, ''))
 }
 
 /**
- * Returns `true` un case current user is admin or root or Admin group member
+ * Returns `true` in case current user is admin or root or Admin group member.
+ * Used as default for `aclRls.skipIfFn`
+ *
  * @returns {boolean}
  */
 RLS.isUserAdminOrInAdminGroup = function () {
   return (ubaCommon.isSuperUser() || Session.hasRole(ubaCommon.ROLES.ADMIN.NAME))
 }
 
-RLS.defaultAclRlsSubjects = function (ctx, mixinCfg) {
+/**
+ * Default behavior for get aclRls subjects - return array of IDs for currently logged in user:
+ *  - if `uba_subject` in onEntities: userID + user roles IDs + user groups IDs
+ *  - if `org_unit` in onEntities: orgUnitIDs
+ *
+ * @param {ubMethodParams} ctx
+ * @param {object} [mixinCfg]
+ * @returns {number[]}
+ */
+RLS.getDefaultAclRlsSubjects = function (ctx, mixinCfg) {
   const admS = new Set(mixinCfg.onEntities)
   let result = []
   if (admS.has('uba_subject') >= 0) { // add possible adm subjects
     result = [Session.userID, ...Session.uData.roleIDs, ...Session.uData.groupIDs]
-    admS.delete('uba_subject')
   }
   if (admS.has('org_unit') >= 0) { // add all user org units
     result.concat(Session.uData.orgUnitIDs.split(',').map(Number))
-    admS.delete('org_unit')
   }
-  if (admS.size !== 0) throw new Error('default aclRls subjectIDsFn ')
   return result
 }
 
-RLS.defaultAclRlsSubjects.validator = function (mixinCfg, entityCode) {
+/**
+ * Helper what validates `RLS.getDefaultAclRlsSubjects` function is applicable for aclRls.onEntities config -
+ * check onEntities contains only uba_subject or/and org_unit
+ * @param mixinCfg
+ * @param entityCode
+ */
+RLS.getDefaultAclRlsSubjects.validator = function (mixinCfg, entityCode) {
   const admS = new Set(mixinCfg.onEntities)
   admS.delete('uba_subject')
   admS.delete('org_unit')

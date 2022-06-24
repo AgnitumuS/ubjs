@@ -3,6 +3,7 @@
     "mixinsDefaults": {
       "aclRls": {
         "skipIfFn": "RLS.isSuperUserOrInAdminGroup",
+        "subjectIDsFn": "RLS.getDefaultAclRlsSubjects",
         "selectionRule": "Exists"
       }
     }

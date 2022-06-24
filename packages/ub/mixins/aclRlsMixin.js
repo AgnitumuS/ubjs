@@ -1,6 +1,6 @@
 /**
  * `aclRls` mixin implements a Row Level Security based on Access Control List.
- * See [File system storage tutorial](https://unitybase.info/api/server-v5/tutorial-mixins_fsstorage.html) for details.
+ * See [ACL RLS topic in entities tutorial](https://unitybase.info/api/server-v5/tutorial-entites.html#aclrls---access-control-list-row-level-security) for details.
  *
  * Configuration
  * "mixins": {
@@ -10,7 +10,7 @@
  *     "entityConnectAttr": "ID",
  *     "skipIfFn": "functionWithNS", // new. default is `ubaCommon.isSuperUser() || ubaCommon.haveAdminRole()`
  *     "subjectIDsFn": "functionWithNS", // new. replace exprMethod. Should return ID's array to be used as valueID filter
- *     "exprMethod": "methodWhatCreatesSubQuery", //
+ *     "exprMethod": "DEPRECATED! methodWhatCreatesSubQuery", //
  *     "selectionRule": "Exists", // "In"
  *     "model": "modelWhereToCreateAclRlsStorageEntity"
  *   }
@@ -19,14 +19,15 @@
  * @implements MixinModule
  */
 
-const UB_SPN_skipAclRls = '__skipAclRls'
+const UB_SPN_SKIPACLRLS = '__skipAclRls'
+const ACL_RLS_WHERE_LIST_PREDICATE = '__aclRlsFilter'
+
 module.exports = {
   initDomain: null,
   initEntity: initEntityForAclRls
 }
 
 const App = require('../modules/App')
-const Session = require('../modules/Session')
 
 /**
  * Add select:before event for each entity with aclRls method what
@@ -43,6 +44,9 @@ function initEntityForAclRls (entity, mixinCfg) {
   if (mixinCfg.exprMethod) {
     throw new Error(`AclRls: '${entity.code}.mixins.aclRls.exprMethod' is obsolete. Please, remove 'exprMethod' for default behavior or use 'skipIfFn' and 'subjectIDsFn'`)
   }
+  if (!mixinCfg.selectionRule) {
+    mixinCfg.selectionRule = App.serverConfig.mixinsDefaults.aclRls.selectionRule || 'Exists'
+  }
   if (mixinCfg.skipIfFn === undefined) mixinCfg.skipIfFn = App.serverConfig.mixinsDefaults.aclRls.skipIfFn
   const skipIfFn = funcFromNS(mixinCfg.skipIfFn, entity.code)
   if (mixinCfg.subjectIDsFn === undefined) mixinCfg.subjectIDsFn = App.serverConfig.mixinsDefaults.aclRls.subjectIDsFn
@@ -53,7 +57,7 @@ function initEntityForAclRls (entity, mixinCfg) {
   if (!subjectIDsFn) {
     throw new Error(`AclRls: '${entity.code}.mixins.aclRls.subjectIDsFn' is mandatory`)
   }
-  const entityConnectAttr = mixinCfg.entityConnectAttr || 'ID'
+  const entityConnectAttr = mixinCfg.entityConnectAttr || '[ID]]'
 
   entityModule.on('select:before', App.wrapEnterLeaveForUbMethod(
     `method(aclRls) ${entity.name}.select:before`,
@@ -66,7 +70,7 @@ function initEntityForAclRls (entity, mixinCfg) {
    */
   function aclRlsAddSelectFilter (ctx) {
     const mParams = ctx.mParams
-    if (mParams[UB_SPN_skipAclRls]) {
+    if (mParams[UB_SPN_SKIPACLRLS]) {
       console.log('skipped because of __skipAclRls')
       return
     }
@@ -82,16 +86,16 @@ function initEntityForAclRls (entity, mixinCfg) {
       // whereList = mParams.whereList = {} assign a {} to whereList instead of TubList instance
       whereList = mParams.whereList
     }
-    const wiName = whereList.getUniqKey()
+
     if (!subjectIDs.length) {
-      whereList[wiName] = {
+      whereList[ACL_RLS_WHERE_LIST_PREDICATE] = {
         expression: '(0=1)',
         condition: 'custom'
       }
       return
     }
     if (mixinCfg.selectionRule === 'Exists') {
-      whereList[wiName] = {
+      whereList[ACL_RLS_WHERE_LIST_PREDICATE] = {
         condition: 'subquery',
         subQueryType: 'exists',
         value: {
@@ -110,7 +114,7 @@ function initEntityForAclRls (entity, mixinCfg) {
         }
       }
     } else { // In
-      whereList[wiName] = {
+      whereList[ACL_RLS_WHERE_LIST_PREDICATE] = {
         expression: entityConnectAttr,
         condition: 'subquery',
         subQueryType: 'in',
