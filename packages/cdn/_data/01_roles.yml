@@ -9,4 +9,6 @@ DataManager:
 Developer:
   $amendment: true
   els:
-    full: cdn_classifier
+    full:
+    - cdn_classifier
+    - cdn_classifieritem
