@@ -5,3 +5,8 @@ DataManager:
   $amendment: true
   els:
     full: cdn
+
+Developer:
+  $amendment: true
+  els:
+    full: cdn_classifier
