@@ -20,10 +20,14 @@
             "safeDelete": false
         },
         "aclRls": {
-            "useUnityName": false,
-            "onEntities": ["org_unit", "uba_subject"],
-            "entityConnectAttr": "[ID]",
-            "exprMethod": "tstAclRlsExpr"
+            "onEntities": ["org_unit", "uba_subject"]
+        },
+        "fts": {
+          "scope": "Connection",
+          "dataProvider": "Mixin",
+          "indexedAttributes": [
+            "caption"
+          ]
         }
     }
 }

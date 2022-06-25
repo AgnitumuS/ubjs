@@ -153,12 +153,12 @@ RLS.isUserAdminOrInAdminGroup = function () {
  * @returns {number[]}
  */
 RLS.getDefaultAclRlsSubjects = function (ctx, mixinCfg) {
-  const admS = new Set(mixinCfg.onEntities)
   let result = []
-  if (admS.has('uba_subject') >= 0) { // add possible adm subjects
+  // indexOf is OK here, onEntities length is either 1 or 2
+  if (mixinCfg.onEntities.indexOf('uba_subject') >= 0) { // add possible adm subjects
     result = [Session.userID, ...Session.uData.roleIDs, ...Session.uData.groupIDs]
   }
-  if (admS.has('org_unit') >= 0) { // add all user org units
+  if (mixinCfg.onEntities.indexOf('org_unit') >= 0) { // add all user org units
     result.concat(Session.uData.orgUnitIDs.split(',').map(Number))
   }
   return result

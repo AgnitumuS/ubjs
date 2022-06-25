@@ -329,6 +329,9 @@ UB.registerMixinModule('fsStorage', fsStorageImpl)
 const aclRlsStorageMixinImpl = require('./mixins/aclRlsStorageMixin')
 UB.registerMixinModule('aclRlsStorage', aclRlsStorageMixinImpl)
 
+const aclRlsMixinImpl = require('./mixins/aclRlsMixin')
+UB.registerMixinModule('aclRls', aclRlsMixinImpl)
+
 if (App.serverConfig.security.disabledAccounts) {
   const reDisabledAccounts = new RegExp(App.serverConfig.security.disabledAccounts)
   Session.on('login', () => {

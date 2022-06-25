@@ -44,12 +44,14 @@ function initEntityForAclRls (entity, mixinCfg) {
   if (mixinCfg.exprMethod) {
     throw new Error(`AclRls: '${entity.code}.mixins.aclRls.exprMethod' is obsolete. Please, remove 'exprMethod' for default behavior or use 'skipIfFn' and 'subjectIDsFn'`)
   }
+
+  const aclRlsDefaults = App.serverConfig.application.mixinsDefaults.aclRls
   if (!mixinCfg.selectionRule) {
-    mixinCfg.selectionRule = App.serverConfig.mixinsDefaults.aclRls.selectionRule || 'Exists'
+    mixinCfg.selectionRule = aclRlsDefaults.selectionRule || 'Exists'
   }
-  if (mixinCfg.skipIfFn === undefined) mixinCfg.skipIfFn = App.serverConfig.mixinsDefaults.aclRls.skipIfFn
+  if (mixinCfg.skipIfFn === undefined) mixinCfg.skipIfFn = aclRlsDefaults.skipIfFn
   const skipIfFn = funcFromNS(mixinCfg.skipIfFn, entity.code)
-  if (mixinCfg.subjectIDsFn === undefined) mixinCfg.subjectIDsFn = App.serverConfig.mixinsDefaults.aclRls.subjectIDsFn
+  if (mixinCfg.subjectIDsFn === undefined) mixinCfg.subjectIDsFn = aclRlsDefaults.subjectIDsFn
   const subjectIDsFn = funcFromNS(mixinCfg.subjectIDsFn, entity.code)
   if (subjectIDsFn.validator) {
     subjectIDsFn.validator(mixinCfg)
@@ -57,8 +59,20 @@ function initEntityForAclRls (entity, mixinCfg) {
   if (!subjectIDsFn) {
     throw new Error(`AclRls: '${entity.code}.mixins.aclRls.subjectIDsFn' is mandatory`)
   }
-  const entityConnectAttr = mixinCfg.entityConnectAttr || '[ID]]'
+  // this method is called from native FTS in TubFTSHelper.GetEntityAclRlsFilterIDValues
+  entityModule.__internalGetAclSbjIDs = (function () {
+    return function (ctx) {
+      if (skipIfFn && skipIfFn(ctx.mParams)) {
+        console.log('skipped because skipIfFn()==true')
+        return []
+      } else {
+        return subjectIDsFn(ctx, mixinCfg)
+      }
+    }
+  })()
+  const entityConnectAttr = mixinCfg.entityConnectAttr || 'ID'
 
+  console.log(`ALC RLS: added handler for ${entity.name}.select:before`)
   entityModule.on('select:before', App.wrapEnterLeaveForUbMethod(
     `method(aclRls) ${entity.name}.select:before`,
     aclRlsAddSelectFilter
@@ -96,13 +110,14 @@ function initEntityForAclRls (entity, mixinCfg) {
     }
     if (mixinCfg.selectionRule === 'Exists') {
       whereList[ACL_RLS_WHERE_LIST_PREDICATE] = {
+        expression: entityConnectAttr,
         condition: 'subquery',
         subQueryType: 'exists',
         value: {
           entity: aclStorageEntityName,
           whereList: {
             byInstanceID: {
-              expression: `[instanceID] = [{master}.${entityConnectAttr}]`,
+              expression: `[instanceID] = {master}.${entityConnectAttr}`,
               condition: 'custom'
             },
             byValueID: {
