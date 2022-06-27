@@ -41,7 +41,7 @@
       <div class="file-loading-container__icon">
         <loading-icon />
       </div>
-      <div class="u-file__dropzone-placeholder">loading...</div>
+      <div class="u-file__dropzone-placeholder">{{ $ut(loadingTxt) }}</div>
     </div>
     <input
       type="file"
@@ -120,6 +120,10 @@ export default {
     isLoading: {
       type: Boolean,
       default: false
+    },
+    loadingTxt: {
+      type: String,
+      default: 'fileInput.loading'
     }
   },
 

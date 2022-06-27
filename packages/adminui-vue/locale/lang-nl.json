@@ -206,7 +206,8 @@
       "caption": "Zet bestand(en) hier neer of klik om te uploaden",
       "acceptError": "Ongeldig bestandstype",
       "selectedFiles": "Geselecteerd"
-    }
+    },
+    "loading": "Loading..."
   },
   "select": {
     "valueIsUndefined": "Waarde \"{0}\" niet gevonden in entiteit \"{1}\"",

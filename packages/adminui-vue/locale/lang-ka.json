@@ -206,7 +206,8 @@
       "caption": "Drop file(s) here or click to upload",
       "acceptError": "Invalid file(s) type",
       "selectedFiles": "Selected"
-    }
+    },
+    "loading": "Loading..."
   },
   "select": {
     "valueIsUndefined": "Value \"{0}\" not found in entity \"{1}\"",

@@ -206,7 +206,8 @@
       "caption": "Faylı buraya sürün və ya seçmək üçün vurun",
       "acceptError": "Yanlış fayl uzadılması",
       "selectedFiles": "Seçilib"
-    }
+    },
+    "loading": "Loading..."
   },
   "select": {
     "valueIsUndefined": "Qiymət \"{0}\" obeyktdə tapılmadı \"{1}\"",
