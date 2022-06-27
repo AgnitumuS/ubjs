@@ -49,6 +49,7 @@
         :accept="accept"
         :disabled="disabled"
         :border="false"
+        :is-loading="isLoading"
         @input="upload"
       />
     </template>
@@ -166,6 +167,11 @@ export default {
       default: () => Promise.resolve()
     }
   },
+  data () {
+    return {
+      isLoading: false
+    }
+  },
 
   computed: {
     file () {
@@ -237,6 +243,7 @@ export default {
   methods: {
     async upload (binaryFiles) {
       const file = binaryFiles[0]
+      this.isLoading = true
       await this.beforeSetDocument({
         entity: this.entityName,
         attribute: this.attributeName,
@@ -249,6 +256,7 @@ export default {
         origName: file.name,
         id: this.recordId
       })
+      this.isLoading = false
       this.$emit('input', JSON.stringify(uploadedFileMetadata))
     },
 

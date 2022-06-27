@@ -3,7 +3,7 @@
     class="u-file__dropzone"
     :class="{
       hover: dragging,
-      disabled,
+      isBlocked,
       'u-file__dropzone-border': border
     }"
     @dragleave.prevent.stop="dragging = false"
@@ -12,28 +12,40 @@
     @dragover="dragover"
     @drop.stop.prevent="drop"
   >
-    <u-icon
-      icon="u-icon-cloud-alt"
-      color="control"
-      size="large"
-      class="u-file__dropzone-icon"
-    />
+    <template v-if="!isLoading">
+      <u-icon
+        icon="u-icon-cloud-alt"
+        color="control"
+        size="large"
+        class="u-file__dropzone-icon"
+      />
+      <div
+        v-if="value.length"
+        class="text--truncated"
+      >
+        <strong>{{ $ut(selectedPlaceholder) }}:</strong> {{ selectedFileNames }}
+      </div>
+      <div
+        v-else
+        class="u-file__dropzone-placeholder"
+      >
+        {{ $ut(placeholder) }}
+        <div v-if="accept">({{ accept }})</div>
+      </div>
+    </template>
+
     <div
-      v-if="value.length"
-      class="text--truncated"
+      v-if="isLoading"
+      class="file-loading-container"
     >
-      <strong>{{ $ut(selectedPlaceholder) }}:</strong> {{ selectedFileNames }}
-    </div>
-    <div
-      v-else
-      class="u-file__dropzone-placeholder"
-    >
-      {{ $ut(placeholder) }}
-      <div v-if="accept">({{ accept }})</div>
+      <div class="file-loading-container__icon">
+        <loading-icon />
+      </div>
+      <div class="u-file__dropzone-placeholder">loading...</div>
     </div>
     <input
       type="file"
-      :disabled="disabled"
+      :disabled="isBlocked"
       :multiple="multiple"
       :accept="accept"
       v-bind="$attrs"
@@ -46,8 +58,12 @@
 /**
  * Select file(s) from the file system by clicking or drag-and-drop
  */
+const LoadingIcon = require('./loadingIcon.vue').default
+
 export default {
   name: 'UFileInput',
+
+  components: { LoadingIcon },
 
   props: {
     /**
@@ -97,6 +113,10 @@ export default {
     value: {
       type: Array,
       default: () => []
+    },
+    isLoading: {
+      type: Boolean,
+      default: false
     }
   },
 
@@ -112,6 +132,9 @@ export default {
     },
     selectedFileNames: function () {
       return this.value.map((f) => f.name).join('; ')
+    },
+    isBlocked () {
+      return this.disabled || this.isLoading
     }
   },
 
@@ -123,7 +146,7 @@ export default {
 
     drop (e) {
       this.dragging = false
-      if (this.disabled) return
+      if (this.isBlocked) return
 
       this.upload(e.dataTransfer.files)
     },
@@ -167,7 +190,7 @@ export default {
     },
 
     dragover (e) {
-      if (this.disabled) return false
+      if (this.isBlocked) return false
       e.preventDefault()
       e.stopPropagation()
       this.dragging = true
@@ -220,14 +243,14 @@ export default {
   margin-bottom: 4px;
 }
 
-.u-file__dropzone:active:not(.disabled),
-.u-file__dropzone.hover:not(.disabled) {
+.u-file__dropzone:active:not(.isBlocked),
+.u-file__dropzone.hover:not(.isBlocked) {
   border-color: hsl(var(--hs-primary), var(--l-input-border-hover));
   color: hsl(var(--hs-primary), var(--l-text-label));
   background: hsl(var(--hs-primary), var(--l-background-default));
 }
 
-.u-file__dropzone.disabled {
+.u-file__dropzone.isBlocked {
   opacity: 0.5;
   cursor: not-allowed;
 }
@@ -237,5 +260,20 @@ export default {
   display: -webkit-box;
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
+}
+
+.file-loading-container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.file-loading-container__icon {
+  width: max(25%, 80px);
+  height: 10px;
+  border-radius: 10px;
+  background: hsl(var(--hs-control), var(--l-state-hover));
+  margin-bottom: var(--padding);
 }
 </style>
