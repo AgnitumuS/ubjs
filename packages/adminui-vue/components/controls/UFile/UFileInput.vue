@@ -3,7 +3,7 @@
     class="u-file__dropzone"
     :class="{
       hover: dragging,
-      isBlocked,
+      disabled: isBlocked,
       'u-file__dropzone-border': border
     }"
     @dragleave.prevent.stop="dragging = false"
@@ -38,9 +38,7 @@
       v-if="isLoading"
       class="file-loading-container"
     >
-      <div class="file-loading-container__icon">
-        <loading-icon />
-      </div>
+      <i class="el-icon-loading u-icon_color-control u-icon" />
       <div class="u-file__dropzone-placeholder">{{ $ut(loadingTxt) }}</div>
     </div>
     <input
@@ -58,12 +56,8 @@
 /**
  * Select file(s) from the file system by clicking or drag-and-drop
  */
-const LoadingIcon = require('./loadingIcon.vue').default
-
 export default {
   name: 'UFileInput',
-
-  components: { LoadingIcon },
 
   props: {
     /**
@@ -250,14 +244,14 @@ export default {
   margin-bottom: 4px;
 }
 
-.u-file__dropzone:active:not(.isBlocked),
-.u-file__dropzone.hover:not(.isBlocked) {
+.u-file__dropzone:active:not(.disabled),
+.u-file__dropzone.hover:not(.disabled) {
   border-color: hsl(var(--hs-primary), var(--l-input-border-hover));
   color: hsl(var(--hs-primary), var(--l-text-label));
   background: hsl(var(--hs-primary), var(--l-background-default));
 }
 
-.u-file__dropzone.isBlocked {
+.u-file__dropzone.disabled {
   opacity: 0.5;
   cursor: not-allowed;
 }
@@ -269,18 +263,10 @@ export default {
   -webkit-box-orient: vertical;
 }
 
-.file-loading-container {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
-.file-loading-container__icon {
-  width: max(25%, 80px);
-  height: 10px;
-  border-radius: 10px;
-  background: hsl(var(--hs-control), var(--l-state-hover));
+.file-loading-container .el-icon-loading {
+  font-size: 32px;
+  font-weight: 600;
   margin-bottom: var(--padding);
+  color: hsl(var(--hs-control), var(--l-state-default));
 }
 </style>

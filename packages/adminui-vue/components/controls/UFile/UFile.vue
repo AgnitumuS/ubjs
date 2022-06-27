@@ -244,19 +244,24 @@ export default {
     async upload (binaryFiles) {
       const file = binaryFiles[0]
       this.isLoading = true
-      await this.beforeSetDocument({
-        entity: this.entityName,
-        attribute: this.attributeName,
-        id: this.recordId,
-        file
-      })
-      const uploadedFileMetadata = await this.$UB.connection.setDocument(file, {
-        entity: this.entityName,
-        attribute: this.attributeName,
-        origName: file.name,
-        id: this.recordId
-      })
-      this.isLoading = false
+      let uploadedFileMetadata = {}
+      try {
+        await this.beforeSetDocument({
+          entity: this.entityName,
+          attribute: this.attributeName,
+          id: this.recordId,
+          file
+        })
+        uploadedFileMetadata = await this.$UB.connection.setDocument(file, {
+          entity: this.entityName,
+          attribute: this.attributeName,
+          origName: file.name,
+          id: this.recordId
+        })
+      } finally {
+        this.isLoading = false
+      }
+
       this.$emit('input', JSON.stringify(uploadedFileMetadata))
     },
 
