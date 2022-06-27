@@ -114,6 +114,9 @@ export default {
       type: Array,
       default: () => []
     },
+    /**
+     * Shows loader. Makes the input disabled
+     */
     isLoading: {
       type: Boolean,
       default: false
