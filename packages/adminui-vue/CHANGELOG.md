@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
+- `UtableEntity` - removed cursor: pointer from table that cannot be edited
 
 ### Deprecated
 
