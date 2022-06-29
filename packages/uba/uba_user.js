@@ -37,14 +37,14 @@ function checkDuplicateUser (ctxt) {
   const ID = params.ID
   if (newName) {
     const store = UB.Repository('uba_user').attrs('ID')
-      .where('name', '=', newName.toLowerCase())
+      .where('name', '=', newName.toLowerCase().trim())
       .whereIf(ID, 'ID', '<>', ID)
       .select()
 
     if (!store.eof) {
       throw new UB.UBAbort('<<<Duplicate user name (may be in different case)>>>')
     }
-    params.name = newName.toLowerCase() // convert user name to lower case
+    params.name = newName.toLowerCase().trim() // convert a username to lower case
   }
 }
 

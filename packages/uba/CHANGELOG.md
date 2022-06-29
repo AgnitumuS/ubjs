@@ -6,6 +6,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+ - `uba_user`: added username trimming before insert/update. This prevents from creating logins what looks like the same 
 
 ### Changed
 
