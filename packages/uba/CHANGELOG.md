@@ -8,6 +8,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
+- Protected system user accounts from some changes:
+  - System User accounts are:
+    - `root`, `admin` and `anonymous` (all that are in the `uba_common.USERS`)
+    - accounts matching `ubConfig:security.disabledAccounts` regular expressions
+  - Actions the accounts protected against (action are prohibited except when executed by root):
+    - update name
+    - delete account
 
 ### Deprecated
 
