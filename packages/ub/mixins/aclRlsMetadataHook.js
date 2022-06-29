@@ -52,7 +52,7 @@ function addAclRlsStorageEntities (domainJson, serverConfig) {
     props.__aclStorageEntityName = aclStorageEntityName
     entityMeta.mixins.aclRls = props // override props by new objectwith defaults sets and __aclStorageEntityName defined
 
-    console.debug('HOOK AclRls for', entityName, 'props are', props)
+    // console.debug('HOOK AclRls for', entityName, 'props are', props)
 
     if (domainJson[aclStorageEntityName]) {
       if (!verifiedExisted.has(aclStorageEntityName)) { // log only once for each entity

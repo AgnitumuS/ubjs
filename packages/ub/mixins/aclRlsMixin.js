@@ -47,7 +47,7 @@ function initEntityForAclRls (entity, mixinCfg) {
   if (mixinCfg.exprMethod) {
     console.error(`AclRls: '${entity.code}.mixins.aclRls.exprMethod' is obsolete. Please, remove 'exprMethod'. Fallback to default 'skipIfFn' and 'subjectIDsFn'`)
   }
-  console.debug('AclRls for', entity.code, 'props are', props, 'mixincfg is', mixinCfg)
+  // console.debug('AclRls for', entity.code, 'props are', props, 'mixincfg is', mixinCfg)
   const skipIfFn = funcFromNS(mixinCfg.skipIfFn, entity.code)
   const subjectIDsFn = funcFromNS(mixinCfg.subjectIDsFn, entity.code)
   if (!subjectIDsFn) {
