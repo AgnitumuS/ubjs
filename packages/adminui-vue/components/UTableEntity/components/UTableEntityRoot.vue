@@ -3,7 +3,8 @@
     v-loading="loading"
     class="u-table-entity"
     :class="{
-      'u-table-entity__bordered': bordered
+      'u-table-entity__bordered': bordered,
+      'u-table-entity__can-edit': canEdit,
     }"
     tabindex="1"
     @keydown.ctrl.delete.exact="canDelete && deleteRecord(selectedRowId)"
@@ -942,8 +943,8 @@ export default {
   overflow: auto;
 }
 
-.u-table-entity .u-table tr.selected td.selected,
-.u-table-entity .u-card-grid .u-card.selected {
+.u-table-entity.u-table-entity__can-edit .u-table tr.selected td.selected,
+.u-table-entity.u-table-entity__can-edit .u-card-grid .u-card.selected {
   cursor: pointer;
 }
 
