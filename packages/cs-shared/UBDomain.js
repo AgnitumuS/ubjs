@@ -1592,9 +1592,6 @@ function UBEntityAclRlsMixin (mixinInfo, i18n, mixinCode) {
 }
 UBEntityAclRlsMixin.prototype = Object.create(UBEntityMixin.prototype)
 UBEntityAclRlsMixin.prototype.constructor = UBEntityAclRlsMixin
-// defaults
-UBEntityAclRlsMixin.prototype.aclRlsUseUnityName = false
-UBEntityAclRlsMixin.prototype.aclRlsSelectionRule = 'exists'
 
 /**
  * Full text search mixin

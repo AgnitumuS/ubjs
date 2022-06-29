@@ -6,7 +6,7 @@
  * "mixins": {
  *   "aclRls": {
  *     "sameAs": "nameOfEntityWhichACLIsUsed"
- *     "entityConnectAttr": "ID", // DEPRECATED
+ *     "entityConnectAttr": ""attributeWhereInstanceIdIsStored", (applicable for sameAs)
  *     "instanceIdAttribute": "attributeWhereInstanceIdIsStored", (applicable for sameAs)
  *
  *     "useUnityName": false, // DEPRECATED
@@ -42,26 +42,21 @@ function initEntityForAclRls (entity, mixinCfg) {
   const entityModule = global[entity.code]
   const props = entity.mixins.aclRls
   // method expect mixin props are validated in metadata hook
-  const aclStorageEntityName = (props.useUnityName ? entity.mixins.unity.entity : entity.name) + '_acl'
+  const aclStorageEntityName = props.__aclStorageEntityName
 
   if (mixinCfg.exprMethod) {
     console.error(`AclRls: '${entity.code}.mixins.aclRls.exprMethod' is obsolete. Please, remove 'exprMethod'. Fallback to default 'skipIfFn' and 'subjectIDsFn'`)
   }
-
-  const aclRlsDefaults = App.serverConfig.application.mixinsDefaults.aclRls
-  if (!mixinCfg.selectionRule) {
-    mixinCfg.selectionRule = aclRlsDefaults.selectionRule || 'Exists'
-  }
-  if (mixinCfg.skipIfFn === undefined) mixinCfg.skipIfFn = aclRlsDefaults.skipIfFn
+  console.debug('AclRls for', entity.code, 'props are', props, 'mixincfg is', mixinCfg)
   const skipIfFn = funcFromNS(mixinCfg.skipIfFn, entity.code)
-  if (mixinCfg.subjectIDsFn === undefined) mixinCfg.subjectIDsFn = aclRlsDefaults.subjectIDsFn
   const subjectIDsFn = funcFromNS(mixinCfg.subjectIDsFn, entity.code)
-  if (subjectIDsFn.validator) {
-    subjectIDsFn.validator(mixinCfg)
-  }
   if (!subjectIDsFn) {
     throw new Error(`AclRls: '${entity.code}.mixins.aclRls.subjectIDsFn' is mandatory`)
   }
+  if (subjectIDsFn.validator) {
+    subjectIDsFn.validator(mixinCfg)
+  }
+
   // this method is called from native FTS in TubFTSHelper.GetEntityAclRlsFilterIDValues
   entityModule.__internalGetAclSbjIDs = (function () {
     return function (ctx) {
@@ -120,7 +115,7 @@ function initEntityForAclRls (entity, mixinCfg) {
           entity: aclStorageEntityName,
           whereList: {
             byInstanceID: {
-              expression: `[instanceID] = A01.${entityConnectAttr}`,
+              expression: `[instanceID] = {master}.${entityConnectAttr}`,
               condition: 'custom'
             },
             byValueID: {

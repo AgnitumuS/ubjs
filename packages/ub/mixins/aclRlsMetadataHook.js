@@ -39,8 +39,9 @@ function addAclRlsStorageEntities (domainJson, serverConfig) {
       realAclEntityMeta = domainJson[props.sameAs].meta
       if (!realAclEntityMeta.mixins.aclRls) throwConfigError(entityName, `entity '${realAclEntityName}' specified as 'sameAs' do not have aclRls mixin`)
       if (!realAclEntityMeta.mixins.aclRls.sameAs) throwConfigError(entityName, `'sameAs' can be one level nested, but entity '${realAclEntityName}' also configured as 'sameAs'`)
-      props = Object.assign(props, realAclEntityMeta.mixins.aclRls)
+      props = Object.assign(serverConfig.application.mixinsDefaults.aclRls, props, realAclEntityMeta.mixins.aclRls)
     } else {
+      props = Object.assign(serverConfig.application.mixinsDefaults.aclRls, props)
       realAclEntityName = entityName
       realAclEntityMeta = entityMeta
     }
@@ -48,6 +49,10 @@ function addAclRlsStorageEntities (domainJson, serverConfig) {
     if (!Array.isArray(props.onEntities) || !props.onEntities.length) {
       throwConfigError("'onEntities' must be non empty array")
     }
+    props.__aclStorageEntityName = aclStorageEntityName
+    entityMeta.mixins.aclRls = props // override props by new objectwith defaults sets and __aclStorageEntityName defined
+
+    console.debug('HOOK AclRls for', entityName, 'props are', props)
 
     if (domainJson[aclStorageEntityName]) {
       if (!verifiedExisted.has(aclStorageEntityName)) { // log only once for each entity
