@@ -6,6 +6,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+ - new method `THTTPRequest.appendToFile(fullFilePath, [encoding])` - append request body content (as binary) to
+   existed file (or creates new one). Return `true` on success. Can be used to bypass moving body content between native<->JS
+  if conversion of the request body is not required. Require UB@5.22.10
 
 ### Changed
 
