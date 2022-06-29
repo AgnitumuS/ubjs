@@ -401,7 +401,7 @@
                         "entityConnectAttr": {
                             "type": "string",
                             "description": "attribute name for current entity what used to join an acl entity",
-                            "default": "[ID]"
+                            "default": "ID"
                         },
                         "selectionRule": {
                             "enum": ["Exist", "In"],

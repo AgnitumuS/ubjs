@@ -5,9 +5,12 @@
  * Configuration
  * "mixins": {
  *   "aclRls": {
- *     "useUnityName": false,
+ *     "sameAs": "nameOfEntityWhichACLIsUsed"
+ *     "entityConnectAttr": "ID", // DEPRECATED
+ *     "instanceIdAttribute": "attributeWhereInstanceIdIsStored", (applicable for sameAs)
+ *
+ *     "useUnityName": false, // DEPRECATED
  *     "onEntities": ["entity_one", ....],
- *     "entityConnectAttr": "ID",
  *     "skipIfFn": "functionWithNS", // new. default is `ubaCommon.isSuperUser() || ubaCommon.haveAdminRole()`
  *     "subjectIDsFn": "functionWithNS", // new. replace exprMethod. Should return ID's array to be used as valueID filter
  *     "exprMethod": "DEPRECATED! methodWhatCreatesSubQuery", //
@@ -42,7 +45,7 @@ function initEntityForAclRls (entity, mixinCfg) {
   const aclStorageEntityName = (props.useUnityName ? entity.mixins.unity.entity : entity.name) + '_acl'
 
   if (mixinCfg.exprMethod) {
-    throw new Error(`AclRls: '${entity.code}.mixins.aclRls.exprMethod' is obsolete. Please, remove 'exprMethod' for default behavior or use 'skipIfFn' and 'subjectIDsFn'`)
+    console.error(`AclRls: '${entity.code}.mixins.aclRls.exprMethod' is obsolete. Please, remove 'exprMethod'. Fallback to default 'skipIfFn' and 'subjectIDsFn'`)
   }
 
   const aclRlsDefaults = App.serverConfig.application.mixinsDefaults.aclRls
@@ -117,7 +120,7 @@ function initEntityForAclRls (entity, mixinCfg) {
           entity: aclStorageEntityName,
           whereList: {
             byInstanceID: {
-              expression: `[instanceID] = {master}.${entityConnectAttr}`,
+              expression: `[instanceID] = A01.${entityConnectAttr}`,
               condition: 'custom'
             },
             byValueID: {
@@ -147,6 +150,7 @@ function initEntityForAclRls (entity, mixinCfg) {
         }
       }
     }
+    console.log(JSON.stringify(whereList, null, ' '))
   }
 }
 
