@@ -16,10 +16,6 @@
       "description": "URL server halaman statis yang ditampilkan di tengah layar desktop yang dipilih"
     },
     {
-      "name": "isDefault",
-      "caption": "Secara default?"
-    },
-    {
       "name": "displayOrder",
       "caption": "№ rangka",
       "description": "Agar tampilan"

@@ -12,9 +12,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Deprecated
 
 ### Removed
+- `ubm_desktop.isDefault` attribute
+  !!! Requires `@unitybase/ub-migrate@1.24.12` or later
 
 ### Fixed
- - `umb_navshortcut.update` for non-privileged users now works. Before this fix user got server-side error because
+ - `ubm_navshortcut.update` for non-privileged users now works. Before this fix user got server-side error because
   RLS conditions added twice - once in `selectBeforeUpdate` and once in `selectAfterUpdate` [LDOC-2294]
 
 ## [5.23.2] - 2022-06-19

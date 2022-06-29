@@ -51,13 +51,6 @@
       "description": "Static server page URL which is displayed in screen centre of selected desktop"
     },
     {
-      "name": "isDefault",
-      "dataType": "Boolean",
-      "caption": "Dy default?",
-      "allowNull": false,
-      "defaultValue": "0"
-    },
-    {
       "name": "displayOrder",
       "dataType": "Int",
       "caption": "Order #",

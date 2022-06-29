@@ -16,10 +16,6 @@
       "description": "İş masasının seçimi zamanı ekranın mərkəzində əks olunan server səhifəsinin statik URL-si"
     },
     {
-      "name": "isDefault",
-      "caption": "Susmaya görə?"
-    },
-    {
       "name": "displayOrder",
       "caption": "Sıra №si",
       "description": "Göstərmə qaydası"

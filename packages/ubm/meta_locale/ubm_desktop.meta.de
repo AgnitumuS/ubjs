@@ -17,10 +17,6 @@
       "description": "Statische Serverseiten-URL, die in der Bildschirmmitte des ausgewählten Desktops angezeigt wird"
     },
     {
-      "name": "isDefault",
-      "caption": "Standardmäßig?"
-    },
-    {
       "name": "displayOrder",
       "caption": "Bestellnummer",
       "description": "Bestellung anzeigen"

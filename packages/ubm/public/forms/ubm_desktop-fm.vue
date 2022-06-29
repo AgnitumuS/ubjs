@@ -21,31 +21,23 @@
 
       <u-auto-field attribute-name="code" />
 
-      <u-form-row
-        :label="`${entity}.isDefault`"
-        required
-        :error="$v.isDefault.$error"
-      >
-        <el-switch v-model="isDefault" />
-      </u-form-row>
-
       <u-auto-field attribute-name="description" />
 
       <u-form-row
-        :label="`${entity}.iconCls`"
+        label="ubm_desktop.iconCls"
         required
         :error="$v.iconCls.$error"
       >
         <u-icon-picker
           :value="iconCls"
-          :label="`${entity}.iconCls`"
+          label="ubm_desktop.iconCls"
           @change="iconCls = $event"
         />
       </u-form-row>
 
       <u-auto-field attribute-name="displayOrder" />
 
-      <u-form-row label="Desktop rights">
+      <u-form-row label="ubm_desktop_adm">
         <u-select-collection
           associated-attr="admSubjID"
           entity-name="ubm_desktop_adm"

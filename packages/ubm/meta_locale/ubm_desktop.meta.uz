@@ -15,10 +15,6 @@
       "caption": "Url"
     },
     {
-      "name": "isDefault",
-      "caption": "Odatiymi?"
-    },
-    {
       "name": "displayOrder",
       "caption": "T/r "
     }

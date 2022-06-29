@@ -16,10 +16,6 @@
       "description": "Static server page URL which is displayed in screen centre of selected desktop"
     },
     {
-      "name": "isDefault",
-      "caption": "By default?"
-    },
-    {
       "name": "displayOrder",
       "caption": "Order #",
       "description": "Display order"
