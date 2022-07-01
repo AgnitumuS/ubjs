@@ -23,6 +23,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Changed
 - Add `TenantUser` built-in role on login of every user, if user is logged in any tenant except
   the system tenant
+- improved logging for application initialization:
+  - wrap blocks in logEnter\logLeave
+  - all `meta` overrides are logged one-line-per meta file instead of one-line-per-override
 
 ### Deprecated
 

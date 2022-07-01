@@ -34,55 +34,81 @@ function loadDomainIntoJS (skipNativeEntityInit) {
   console.time('load domain')
   const { hooks, ePaths } = readAllEntitiesPathsAndHooks()
   const domainJSON = {}
-  console.log(`Loading meta files for ${Object.keys(ePaths).length} entities... `)
-  for (const en in ePaths) {
-    const ep = ePaths[en]
-    const p = ep.metaFiles[0].fullPath
-    const metaJSON = loadMetaAsJSON(p) // main meta file
-    const modelName = ep.metaFiles[0].modelName // original model name
-    const overriddenBy = []
-    if (ep.metaFiles.length > 1) { // need to merge meta files from other models
-      for (let i = 1, L = ep.metaFiles.length; i < L; i++) {
-        console.log(`MERGE "${en}" with descendant from "${ep.metaFiles[i].modelName}" model`)
-        const override = loadMetaAsJSON(ep.metaFiles[i].fullPath)
-        _.mergeWith(metaJSON, override, mergeNamedCollections)
-        overriddenBy.push(ep.metaFiles[i].modelName)
+  nativeApp.logEnter(`loading meta files for ${Object.keys(ePaths).length} entities...`)
+  try {
+    for (const en in ePaths) {
+      const ep = ePaths[en]
+      const p = ep.metaFiles[0].fullPath
+      const metaJSON = loadMetaAsJSON(p) // main meta file
+      if (!metaJSON.caption || !metaJSON.attributes) {
+        throw new Error(`Entity '${en}' from '${ep.metaFiles[0].fullPath}' looks to be a partial definition but there is no fully defined entity to merge with`)
       }
-      if (overriddenBy.length) metaJSON.overriddenBy = overriddenBy.join(',')
-    }
-    // merge lang files
-    const languages = {}
-    let langsExists = false
-    for (const ln in ep.langFiles) {
-      const l = ep.langFiles[ln]
-      if (!l.length) continue // lang files for language ln not exists
-      const langJSON = loadMetaAsJSON(l[0].fullPath)
-      if (l.length > 1) { // need to merge lang files for ln language from other models
-        for (let i = 1, L = l.length; i < L; i++) {
-          console.log(`MERGE "${en}" LANG "${ln}" with descendant from "${l[i].modelName}" model`)
-          const override = loadMetaAsJSON(l[i].fullPath)
-          _.mergeWith(langJSON, override, mergeNamedCollections)
-        }
-      }
-      languages[ln] = langJSON
-      langsExists = true
-    }
+      const modelName = ep.metaFiles[0].modelName // original model name
+      const overriddenBy = []
+      let stage = ''
+      const mergedMetaFromModels = []
+      const mergedLangFromModels = []
+      try {
+        if (ep.metaFiles.length > 1) { // need to merge meta files from other models
+          for (let i = 1, L = ep.metaFiles.length; i < L; i++) {
+            stage = `MERGE '${en}' with descendant from "${ep.metaFiles[i].modelName}" model`
+            mergedMetaFromModels.push(ep.metaFiles[i].modelName)
 
-    domainJSON[en] = {
-      modelName: modelName,
-      meta: metaJSON,
-      langs: langsExists ? languages : null
+            const override = loadMetaAsJSON(ep.metaFiles[i].fullPath)
+            _.mergeWith(metaJSON, override, mergeNamedCollections)
+            overriddenBy.push(ep.metaFiles[i].modelName)
+          }
+          if (overriddenBy.length) metaJSON.overriddenBy = overriddenBy.join(',')
+        }
+        // merge lang files
+        const languages = {}
+        let langsExists = false
+        for (const ln in ep.langFiles) {
+          const l = ep.langFiles[ln]
+          if (!l.length) continue // lang files for language ln not exists
+          const langJSON = loadMetaAsJSON(l[0].fullPath)
+          if (l.length > 1) { // need to merge lang files for ln language from other models
+            for (let i = 1, L = l.length; i < L; i++) {
+              stage = `MERGE '${en}' LANG '${ln}' with descendant from "${l[i].modelName}" model`
+              mergedLangFromModels.push(`${ln}:${l[i].modelName}`)
+              const override = loadMetaAsJSON(l[i].fullPath)
+              _.mergeWith(langJSON, override, mergeNamedCollections)
+            }
+          }
+          languages[ln] = langJSON
+          langsExists = true
+        }
+        if (mergedMetaFromModels.length || mergedLangFromModels.length) {
+          let msg = `${en.padEnd(20, ' ')} merged with`
+          if (mergedMetaFromModels.length) msg += ` METAs from ${mergedMetaFromModels.join(', ')} `
+          if (mergedLangFromModels.length) msg += ` I18Ns form ${mergedLangFromModels.join(', ')}`
+          console.debug(msg)
+        }
+
+        domainJSON[en] = {
+          modelName: modelName,
+          meta: metaJSON,
+          langs: langsExists ? languages : null
+        }
+      } catch (e) {
+        console.error('Error on: ', stage)
+        throw e
+      }
     }
+  } finally {
+    nativeApp.logLeave()
   }
-  console.timeEnd('load domain')
+
   if (hooks.length) {
     // apply all metadata transformation hooks
-    console.time('applying hooks')
     hooks.forEach(h => {
-      console.log(`applying metadata transformation hook from ${h.modelName}`)
-      h.hookFunc(domainJSON, cfg)
+      nativeApp.logEnter(`applying metadata transformation hook from ${h.modelName}`)
+      try {
+        h.hookFunc(domainJSON, cfg)
+      } finally {
+        nativeApp.logLeave()
+      }
     })
-    console.timeEnd('applying hooks')
   }
   if (!skipNativeEntityInit) {
     console.time('native init')
@@ -158,26 +184,30 @@ function readAllEntitiesPathsAndHooks () {
     })
   }
 
-  console.log('Loading domain models...')
-  cfg.application.domain.models.forEach(model => {
-    if (model.path === '_public_only_') return // public model without entities
-    if (!fs.existsSync(model.realPath)) {
-      console.error(`Model "${model.name}" path "${model.path}" resolved to "${model.realPath}" does not exist, model not loaded`)
-      return
-    }
-    console.info(`"${model.name}"(${model.version}) from "${model.path}"`)
-    // todo - check public path
-    readDir(model.name, model.realPath, true)
-    const possibleHookFN = path.join(model.realPath, hookMetadataTransformationFn)
-    if (fs.existsSync(possibleHookFN)) {
-      const h = require(possibleHookFN)
-      result.hooks.push({
-        modelName: model.name,
-        hookFunc: h
-      })
-    }
-  })
-
+  nativeApp.logEnter('Loading domain models...')
+  try {
+    cfg.application.domain.models.forEach(model => {
+      if (model.path === '_public_only_') return // public model without entities
+      if (!fs.existsSync(model.realPath)) {
+        console.error(`Model "${model.name}" path "${model.path}" resolved to "${model.realPath}" does not exist, model not loaded`)
+        return
+      }
+      const formattedMn = `${model.name}@${model.version}`.padEnd(20, ' ')
+      console.info(formattedMn, model.path)
+      // todo - check public path
+      readDir(model.name, model.realPath, true)
+      const possibleHookFN = path.join(model.realPath, hookMetadataTransformationFn)
+      if (fs.existsSync(possibleHookFN)) {
+        const h = require(possibleHookFN)
+        result.hooks.push({
+          modelName: model.name,
+          hookFunc: h
+        })
+      }
+    })
+  } finally {
+    nativeApp.logLeave()
+  }
   // remove entities with lang files buf without meta file
   const eNames = Object.keys(ePaths)
   eNames.forEach(e => {
