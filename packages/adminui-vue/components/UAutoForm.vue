@@ -3,7 +3,7 @@
     <u-toolbar />
 
     <u-form-container
-      v-loading.body="loading"
+      v-loading="loading"
       label-position="top"
       :max-width="800"
     >

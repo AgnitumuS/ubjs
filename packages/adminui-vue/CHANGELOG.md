@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+- `UAutoForm` - fixed loader that existsed in all tabs
 
 ## [5.23.1] - 2022-06-19
 ### Fixed
