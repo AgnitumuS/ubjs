@@ -26,7 +26,8 @@ function modelExists (domainJson, modelName) {
  * @param {object} serverConfig
  */
 function addAclRlsStorageEntities (domainJson, serverConfig) {
-  const verifiedExisted = new Set()
+  console.info('adding ACL RLS storage entities...')
+  const entity2acl = {}
   for (const entityName in domainJson) {
     const entityMeta = domainJson[entityName].meta
     let props = entityMeta.mixins && entityMeta.mixins.aclRls
@@ -38,10 +39,10 @@ function addAclRlsStorageEntities (domainJson, serverConfig) {
       if (!domainJson[realAclEntityName]) throwConfigError(entityName, `'sameAs' uses non-existent entity '${realAclEntityName}'`)
       realAclEntityMeta = domainJson[props.sameAs].meta
       if (!realAclEntityMeta.mixins.aclRls) throwConfigError(entityName, `entity '${realAclEntityName}' specified as 'sameAs' do not have aclRls mixin`)
-      if (!realAclEntityMeta.mixins.aclRls.sameAs) throwConfigError(entityName, `'sameAs' can be one level nested, but entity '${realAclEntityName}' also configured as 'sameAs'`)
-      props = Object.assign(serverConfig.application.mixinsDefaults.aclRls, props, realAclEntityMeta.mixins.aclRls)
+      if (realAclEntityMeta.mixins.aclRls.sameAs) throwConfigError(entityName, `'sameAs' can be one level nested, but entity '${realAclEntityName}' also configured as 'sameAs'`)
+      props = Object.assign({}, serverConfig.application.mixinsDefaults.aclRls, props, realAclEntityMeta.mixins.aclRls)
     } else {
-      props = Object.assign(serverConfig.application.mixinsDefaults.aclRls, props)
+      props = Object.assign({}, serverConfig.application.mixinsDefaults.aclRls, props)
       realAclEntityName = entityName
       realAclEntityMeta = entityMeta
     }
@@ -49,17 +50,16 @@ function addAclRlsStorageEntities (domainJson, serverConfig) {
     if (!Array.isArray(props.onEntities) || !props.onEntities.length) {
       throwConfigError("'onEntities' must be non empty array")
     }
-    props.__aclStorageEntityName = aclStorageEntityName
-    entityMeta.mixins.aclRls = props // override props by new objectwith defaults sets and __aclStorageEntityName defined
+    props.aclStorageEntityName = aclStorageEntityName
+    entityMeta.mixins.aclRls = props // override props by new object with defaults and aclStorageEntityName defined
 
     // console.debug('HOOK AclRls for', entityName, 'props are', props)
-
-    if (domainJson[aclStorageEntityName]) {
-      if (!verifiedExisted.has(aclStorageEntityName)) { // log only once for each entity
-        console.info(`Existed entity '${aclStorageEntityName}' is used for storing ACL for '${entityName}'`)
-      }
-      continue
+    if (!entity2acl[aclStorageEntityName]) {
+      entity2acl[aclStorageEntityName] = []
     }
+    entity2acl[aclStorageEntityName].push(entityName)
+
+    if (domainJson[aclStorageEntityName]) continue // ACL RLS storage already added
 
     let aclStorageModel = props.model
     if (aclStorageModel && !modelExists(domainJson, aclStorageModel)) {
@@ -87,17 +87,17 @@ function addAclRlsStorageEntities (domainJson, serverConfig) {
       }],
       dbKeys: {}, // added below
       mixins: {
-        audit: {
-          enabled: (entityMeta.mixins && entityMeta.mixins.audit && entityMeta.mixins.audit.enabled),
-          parentIdentifier: 'instanceID',
-          parentEntity: entityName
-        },
+        // audit: {
+        //   enabled: (entityMeta.mixins && entityMeta.mixins.audit && entityMeta.mixins.audit.enabled),
+        //   parentIdentifier: 'instanceID',
+        //   parentEntity: entityName
+        // },
         mStorage: {},
         aclRlsStorage: {}
       }
     }
     // unique index on instanceID + valueID (aclRls.insert skip inserting of duplicates)
-    aclStorageMeta.dbKeys[`UIDX_${aclStorageAlias}_IIVI`] = {
+    aclStorageMeta.dbKeys[`UIDX_${aclStorageAlias.toUpperCase()}_IIVI`] = {
       instanceID: {},
       valueID: {}
     }
@@ -110,8 +110,8 @@ function addAclRlsStorageEntities (domainJson, serverConfig) {
       }
       const attrCode = `${le.meta.sqlAlias}ID`
       aclStorageMeta.attributes.push({
-        code: attrCode,
         name: attrCode,
+        caption: linkedE,
         dataType: 'Entity',
         associatedEntity: linkedE,
         customSettings: {
@@ -125,7 +125,10 @@ function addAclRlsStorageEntities (domainJson, serverConfig) {
       meta: aclStorageMeta,
       langs: null
     }
-    // console.debug('Added:', JSON.stringify(domainJson[aclStorageEntityName], null, '  '))
+    // console.debug('Added:', JSON.stringify(domainJson[aclStorageEntityName], null, ' '))
+  }
+  for (const en in entity2acl) {
+    console.debug(`${en.padEnd(20, ' ')} is an ACL storage for: ${entity2acl[en].join(', ')}`)
   }
 }
 

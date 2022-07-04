@@ -42,7 +42,7 @@ function initEntityForAclRls (entity, mixinCfg) {
   const entityModule = global[entity.code]
   const props = entity.mixins.aclRls
   // method expect mixin props are validated in metadata hook
-  const aclStorageEntityName = props.__aclStorageEntityName
+  const aclStorageEntityName = props.aclStorageEntityName
 
   if (mixinCfg.exprMethod) {
     console.error(`AclRls: '${entity.code}.mixins.aclRls.exprMethod' is obsolete. Please, remove 'exprMethod'. Fallback to default 'skipIfFn' and 'subjectIDsFn'`)
@@ -70,7 +70,7 @@ function initEntityForAclRls (entity, mixinCfg) {
   })()
   const entityConnectAttr = mixinCfg.entityConnectAttr || 'ID'
 
-  console.log(`ALC RLS: added handler for ${entity.name}.select:before`)
+  console.debug(`ALC RLS: added handler for ${entity.name}.select:before`)
   entityModule.on('select:before', App.wrapEnterLeaveForUbMethod(
     `method(aclRls) ${entity.name}.select:before`,
     aclRlsAddSelectFilter
@@ -145,7 +145,7 @@ function initEntityForAclRls (entity, mixinCfg) {
         }
       }
     }
-    console.log(JSON.stringify(whereList, null, ' '))
+    // console.debug(JSON.stringify(whereList, null, ' '))
   }
 }
 
