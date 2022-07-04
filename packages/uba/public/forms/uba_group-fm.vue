@@ -37,36 +37,36 @@
 </template>
 
 <script>
-  const {Form} = require('@unitybase/adminui-vue')
-  const {Repository} = require('@unitybase/ub-pub')
+const { Form } = require('@unitybase/adminui-vue')
+const { Repository } = require('@unitybase/ub-pub')
 
-  module.exports.mount = (cfg) => {
-    Form(cfg)
-      .store()
-      .processing({
-        collections: {
-          groupRoles: ({state}) => Repository('uba_grouprole')
-            .attrs('ID', 'groupID', 'roleID')
-            .where('groupID', '=', state.data.ID)
-        }
-      })
-      .mount()
-  }
-
-  module.exports.default = {
-    name: 'UbaGroup',
-
-    computed: {
-      instanceID() {
-        return this.$store.state.data.ID
+module.exports.mount = (cfg) => {
+  Form(cfg)
+    .store()
+    .processing({
+      collections: {
+        groupRoles: ({ state }) => Repository('uba_grouprole')
+          .attrs('ID', 'groupID', 'roleID')
+          .where('groupID', '=', state.data.ID)
       }
-    },
+    })
+    .mount()
+}
 
-    methods: {
-      getUsersRepository() {
-        return Repository('uba_usergroup').attrs('userID.name').where('groupID', '=', this.instanceID)
-      }
+module.exports.default = {
+  name: 'UbaGroup',
+
+  computed: {
+    instanceID () {
+      return this.$store.state.data.ID
     }
+  },
 
+  methods: {
+    getUsersRepository () {
+      return Repository('uba_usergroup').attrs('userID.name').where('groupID', '=', this.instanceID)
+    }
   }
+
+}
 </script>
