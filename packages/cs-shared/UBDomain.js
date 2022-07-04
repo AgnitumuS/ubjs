@@ -1580,7 +1580,7 @@ UBEntityHistoryMixin.prototype.constructor = UBEntityHistoryMixin
  */
 UBEntityHistoryMixin.prototype.historyType = 'common'
 /**
- * Access control list mixin
+ * Access control list Row Level Security mixin
  * @class
  * @extends UBEntityMixin
  * @param {object} mixinInfo

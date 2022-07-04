@@ -103,7 +103,7 @@ implementation of Row Level Security conception, so we implement it as a mixin a
 Unlike `acl` mixin, what allows set "static" rule for selecting rows, `aclRls` mixin allows end user or program
 to specify grants for each row.
 
-Consider we have `doc_document` entity and wants to allow supervisor to specify specific grants for every document.
+Consider we have `doc_document` entity and wants to allow supervisor sets specific grants for every document.
 And we need to give grant either to user, or to role or to group or to organization unit.
 
 For this we add `aclRls` mixin into mixins section of `doc_document` metadata and specify `onEntities` to be
@@ -114,9 +114,9 @@ For this we add `aclRls` mixin into mixins section of `doc_document` metadata an
 ```json5
 {
   "caption": "Documents",
-  "attributes": {
+  "attributes": [
     // document attributes ...
-  },
+  ],
   "mixins": {
     "mStorage": {
     },
@@ -211,6 +211,39 @@ For other `aclRls` options see description in [entity schema](/docson/index.html
 
 > Before UB@5.22.10 instead of `skipIfFn` and `subjectIDsFn` `exprMethod` method is used. This method is OBSOLETE
 
+#### "sameAs" ALC configuration
+For master-detail relations (for example we have a detail `doc_doumentitems` belong to `doc_document`) master entity ACL
+usually should be used. In this case detail entity `aclRlc` can be configured as such
+
+`doc_doumentitems.meta` example:
+```json5
+{
+  "caption": "Document items",
+  "attributes": [
+    {
+      "name": "docID",
+      "dataType": "Entity",
+      "associatedEntity": "doc_document",
+      "cascadeDelete": true,
+      "caption": "Document",
+      "allowNull": false,
+      "defaultView": false
+    },
+    // other attributes ...
+  ],
+  "mixins": {
+    "mStorage": {
+    },
+    "aclRls": {
+      "sameAs": "doc_document",
+      "entityConnectAttr": "docID"
+    },
+  }
+}
+```
+
+For entities with aclRls configured using `sameAs` the same ACL RLS storage is used (doc_document_acl in example above).
+ACL editing UI is disabled for such entities.
 
 ### als - Attribute Level Security
 Методы миксина:

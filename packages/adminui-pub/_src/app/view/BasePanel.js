@@ -2226,7 +2226,7 @@ Ext.define('UB.view.BasePanel', {
       })
     }
 
-    if (me.hasHardSecurityMixin) {
+    if (me.hasHardSecurityMixin && !me.domainEntity.mixins.aclRls.sameAs) {
       var aclEntityName = me.domainEntity.mixins.aclRls.aclStorageEntityName
 
       me.actions[actions.accessRight] = new Ext.Action({

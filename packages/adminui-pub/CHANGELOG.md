@@ -8,7 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
- - `BasePanel` & `EntityGridPanel` uses new property `mixins.aclRls.aclStorageEntityName` for aclRls editing (instead of calculate ACL entity name)
+ - `BasePanel` & `EntityGridPanel`: for entities with aclRls mixin configured using `sameAs` aclRls editing is not visible
 
 ### Deprecated
 

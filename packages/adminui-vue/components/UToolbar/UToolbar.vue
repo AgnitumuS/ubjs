@@ -228,13 +228,15 @@ export default {
 
       if (this.entitySchema.hasMixin('aclRls')) {
         const mixins = this.entitySchema.mixins
-        const aclEntityName = mixins.aclRls.aclStorageEntityName
-        buttons.push({
-          icon: 'u-icon-key',
-          label: 'accessRight',
-          handler: () => { this.showAccessRights(aclEntityName) },
-          disabled: !this.$UB.connection.domain.isEntityMethodsAccessible(aclEntityName, 'select')
-        })
+        if (!mixins.aclRls.sameAs) {
+          const aclEntityName = mixins.aclRls.aclStorageEntityName
+          buttons.push({
+            icon: 'u-icon-key',
+            label: 'accessRight',
+            handler: () => { this.showAccessRights(aclEntityName) },
+            disabled: !this.$UB.connection.domain.isEntityMethodsAccessible(aclEntityName, 'select')
+          })
+        }
       }
 
       if (this.entitySchema.hasMixin('softLock')) {

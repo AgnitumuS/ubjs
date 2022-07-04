@@ -386,6 +386,10 @@
                     "type": "object",
                     "description": "Access Control List Row Level Security. WARNING - configuration will be changed",
                     "properties": {
+                        "sameAs": {
+                            "type": "string",
+                            "description": "Use the same ACL RLS storage as for entity specified here. Applicable, for example, to detail entity in master-detail relation"
+                        },
                         "useUnityName": {
                             "type": "boolean",
                             "description": "In case this entity have a `unity` mixin and `useUnityName` is `true` then ACL will be stored for the parent entity. This important for situation of many descendants of one entity",
@@ -400,7 +404,7 @@
                         },
                         "entityConnectAttr": {
                             "type": "string",
-                            "description": "attribute name for current entity what used to join an acl entity",
+                            "description": "attribute name for current entity what used to join an acl entity. Make sense for sameAs ACL's",
                             "default": "ID"
                         },
                         "selectionRule": {
@@ -420,11 +424,11 @@
                         },
                         "model": {
                             "type": "string",
-                            "description": "model name where to place the entity for storing aclRLS. If entity expected to be override in other models then placing here name of original model will help to keep acl entity in the model of origin"
+                            "description": "DEPRECATED. Model name where to place the entity for storing aclRLS. If entity expected to be override in other models then placing here name of original model will help to keep acl entity in the model of origin"
                         },
                         "exprMethod": {
                             "type": "string",
-                            "description": "DEPRECATED use skipIfFn + subjectIDsFn instead"
+                            "description": "DEPRECATED. Use skipIfFn + subjectIDsFn instead"
                         }
                     }
                 },
