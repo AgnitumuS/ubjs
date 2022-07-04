@@ -59,15 +59,13 @@ module.exports.mount = (cfg) => {
 module.exports.default = {
   name: 'UbaGroup',
 
-  data () {
-    return {
-      columns: [{ id: 'userID.name', label: '' }]
-    }
-  },
-
   computed: {
     instanceID () {
       return this.$store.state.data.ID
+    },
+
+    columns () {
+      return [{ id: 'userID.name', label: '' }]
     }
   },
 
