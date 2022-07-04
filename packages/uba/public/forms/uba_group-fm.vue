@@ -31,6 +31,7 @@
           :bordered="true"
           :repository="getUsersRepository"
           :style="{maxWidth: '800px'}"
+          :columns="columns"
         />
       </u-form-row>
 
@@ -57,6 +58,12 @@ module.exports.mount = (cfg) => {
 
 module.exports.default = {
   name: 'UbaGroup',
+
+  data () {
+    return {
+      columns: [{ id: 'userID.name', label: '' }]
+    }
+  },
 
   computed: {
     instanceID () {
