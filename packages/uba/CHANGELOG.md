@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - `uba_user`: added username trimming before insert/update. This prevents from creating logins what looks like the same 
 
 ### Changed
+- `uba_user` form is rewritten to Vue
 
 ### Deprecated
 

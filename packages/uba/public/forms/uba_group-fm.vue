@@ -2,8 +2,7 @@
   <div
     class="u-form-layout"
   >
-    <u-toolbar>
-    </u-toolbar>
+    <u-toolbar/>
 
     <u-form-container
       label-position="top"
@@ -11,8 +10,8 @@
     >
 
       <u-auto-field attribute-name="code" required/>
-      <u-auto-field attribute-name="description"/>
       <u-auto-field attribute-name="name" required/>
+      <u-auto-field attribute-name="description"/>
 
       <u-form-row
         :label="$ut('roles')"
@@ -29,8 +28,7 @@
         :bordered="true"
         :repository="getUsersRepository"
         :style="{maxWidth: '800px'}"
-      >
-      </u-table-entity>
+      />
 
     </u-form-container>
   </div>
