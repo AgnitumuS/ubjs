@@ -228,9 +228,7 @@ export default {
 
       if (this.entitySchema.hasMixin('aclRls')) {
         const mixins = this.entitySchema.mixins
-        const aclEntityName = mixins?.aclRls?.useUnityName
-          ? mixins.unity.entity + '_acl'
-          : this.entitySchema.name + '_acl'
+        const aclEntityName = mixins.aclRls.aclStorageEntityName
         buttons.push({
           icon: 'u-icon-key',
           label: 'accessRight',
