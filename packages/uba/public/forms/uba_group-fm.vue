@@ -24,11 +24,15 @@
         />
       </u-form-row>
 
-      <u-table-entity
-        :bordered="true"
-        :repository="getUsersRepository"
-        :style="{maxWidth: '800px'}"
-      />
+      <u-form-row
+        :label="$ut('users')"
+      >
+        <u-table-entity
+          :bordered="true"
+          :repository="getUsersRepository"
+          :style="{maxWidth: '800px'}"
+        />
+      </u-form-row>
 
     </u-form-container>
   </div>
