@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
+ - for UB>=5.22.10 migrate hook expect ACL and Many entities HAVE multi-tenancy mixin
 
 ### Deprecated
 
