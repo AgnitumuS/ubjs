@@ -1,4 +1,5 @@
-const {argv} = require('@unitybase/base')
+const base = require('@unitybase/base')
+const argv = base.argv
 const execSql = require('@unitybase/ubcli/lib/execSql')
 
 const RULE_PREFIX = 'TNTU_DENY_'
@@ -13,7 +14,10 @@ const COMPARABLE_ATTRIBUTES = [
   'ruleRole'
 ]
 
-function buildExpectedEls(conn) {
+/**
+ * @param {SyncConnection} conn
+ */
+function buildExpectedEls (conn) {
   const tenantUserRoleID = conn.Repository('uba_role')
     .attrs('ID')
     .where('name', '=', TENANT_USER_ROLE_NAME)
@@ -28,9 +32,11 @@ function buildExpectedEls(conn) {
 
   const expectedEls = new Map()
   for (const ei of Object.values(domain.entities)) {
-    if (ei.isManyManyRef || ei.code.endsWith('_acl')) {
-      // Workaround for UB issue: ACL and Many entities do not have multitenancy mixin yet
-      continue
+    if (base.ubVersionNum < 5022010) { // starts from 5.22.10 ACL & many entities is the same as all other
+      if (ei.isManyManyRef || ei.code.endsWith('_acl')) {
+        // Workaround for UB issue: ACL and Many entities do not have multi-tenancy mixin yet
+        continue
+      }
     }
     if (ei.dsType === 'External') {
       continue
@@ -54,7 +60,10 @@ function buildExpectedEls(conn) {
   return expectedEls
 }
 
-function loadElsFromDb(conn) {
+/**
+ * @param {SyncConnection} conn
+ */
+function loadElsFromDb (conn) {
   console.log('Loading ELS rules for TenantUser role...')
   const elsInDb = conn.Repository('uba_els')
     .attrs('ID', ...COMPARABLE_ATTRIBUTES)
@@ -68,7 +77,7 @@ function loadElsFromDb(conn) {
  * @param {SyncConnection} conn
  * @param tenantID
  */
-function mergeElsRules({conn, tenantID}) {
+function mergeElsRules ({ conn, tenantID }) {
   if (tenantID !== 1) {
     // Run once, for system tenant only
     return
@@ -95,7 +104,7 @@ function mergeElsRules({conn, tenantID}) {
       conn.query({
         entity: 'uba_els',
         method: 'update',
-        execParams: Object.assign({ID: elsAsIs.ID}, elsToBe),
+        execParams: Object.assign({ ID: elsAsIs.ID }, elsToBe),
         __skipOptimisticLock: true
       })
     }
@@ -114,12 +123,15 @@ function mergeElsRules({conn, tenantID}) {
   console.log('Finished merging ELS rules for the TenantUser role')
 }
 
-function fixTenantIdForUbaSubject() {
+function fixTenantIdForUbaSubject () {
   console.log('Set mi_tenantID=0 for uba_subject for roles')
-  execSql({sql: `update uba_subject set mi_tenantID=0 where mi_tenantID<>0 and sType='R'`})
+  execSql({ sql: 'update uba_subject set mi_tenantID=0 where mi_tenantID<>0 and sType=\'R\'' })
 }
 
-function finalizeUbaForTenants(params) {
+/**
+ * @param params
+ */
+function finalizeUbaForTenants (params) {
   mergeElsRules(params)
   fixTenantIdForUbaSubject(params)
 }

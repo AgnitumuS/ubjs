@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
+ - `BasePanel` & `EntityGridPanel`: for entities with aclRls mixin configured using `sameAs` aclRls editing is not visible
 
 ### Deprecated
 

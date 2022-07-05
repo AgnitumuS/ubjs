@@ -10,7 +10,7 @@ const ubaCommon = require('@unitybase/base').uba_common
 /**
  * @namespace
  */
-let RLS = global.RLS = {}
+const RLS = global.RLS = {}
 global['$'] = RLS
 
 RLS.currentOwner = function () {
@@ -77,6 +77,13 @@ const BY_OWNER_WHERE_LIST_PREDICATE = '__rlsByOwner'
 const BY_ADM_WHERE_LIST_PREDICATE = '__rlsByAdm'
 
 /**
+ * Returns `true` in case current user is Superuser ( build-in root or admin) or member of Admin group
+ * @returns {boolean}
+ */
+RLS.isSuperUserOrInAdminGroup = function () {
+  return (ubaCommon.isSuperUser() || Session.hasRole(ubaCommon.ROLES.ADMIN.NAME))
+}
+/**
  * For members of Admin group and for users `root` and `admin` do nothing.
  *
  * For other users adds condition what
@@ -87,7 +94,7 @@ const BY_ADM_WHERE_LIST_PREDICATE = '__rlsByAdm'
  */
 RLS.allowForAdminOwnerAndAdmTable = function (ctxt) {
   // skip RLS for admin and root and Admin group member
-  if (ubaCommon.isSuperUser() || Session.hasRole(ubaCommon.ROLES.ADMIN.NAME)) return
+  if (RLS.isUserAdminOrInAdminGroup()) return
 
   const mParams = ctxt.mParams
   let whereList = mParams.whereList
@@ -124,5 +131,50 @@ RLS.allowForAdminOwnerAndAdmTable = function (ctxt) {
       mParams.logicalPredicates = [...mParams.logicalPredicates, logic]
     }
   }
-  console.log('mParams:', JSON.stringify(mParams, null, ''))
+}
+
+/**
+ * Returns `true` in case current user is admin or root or Admin group member.
+ * Used as default for `aclRls.skipIfFn`
+ *
+ * @returns {boolean}
+ */
+RLS.isUserAdminOrInAdminGroup = function () {
+  return (ubaCommon.isSuperUser() || Session.hasRole(ubaCommon.ROLES.ADMIN.NAME))
+}
+
+/**
+ * Default behavior for get aclRls subjects - return array of IDs for currently logged in user:
+ *  - if `uba_subject` in onEntities: userID + user roles IDs + user groups IDs
+ *  - if `org_unit` in onEntities: orgUnitIDs
+ *
+ * @param {ubMethodParams} ctx
+ * @param {object} [mixinCfg]
+ * @returns {number[]}
+ */
+RLS.getDefaultAclRlsSubjects = function (ctx, mixinCfg) {
+  let result = []
+  // indexOf is OK here, onEntities length is either 1 or 2
+  if (mixinCfg.onEntities.indexOf('uba_subject') >= 0) { // add possible adm subjects
+    result = [Session.userID, ...Session.uData.roleIDs, ...Session.uData.groupIDs]
+  }
+  if (mixinCfg.onEntities.indexOf('org_unit') >= 0) { // add all user org units
+    result.concat(Session.uData.orgUnitIDs.split(',').map(Number))
+  }
+  return result
+}
+
+/**
+ * Helper what validates `RLS.getDefaultAclRlsSubjects` function is applicable for aclRls.onEntities config -
+ * check onEntities contains only uba_subject or/and org_unit
+ * @param mixinCfg
+ * @param entityCode
+ */
+RLS.getDefaultAclRlsSubjects.validator = function (mixinCfg, entityCode) {
+  const admS = new Set(mixinCfg.onEntities)
+  admS.delete('uba_subject')
+  admS.delete('org_unit')
+  if (admS.size !== 0) {
+    throw new Error(`AclRls: used '${entityCode}.mixins.aclRls.subjectIDsFn' require 'onEntities' contains 'uba_subject' or|and 'org_unit'`)
+  }
 }
