@@ -6,6 +6,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+- `UFileInput` - added indication of file uploading process using loader icon
 
 ### Changed
 - `UtableEntity` - removed cursor: pointer from table that cannot be edited
