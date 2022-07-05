@@ -6,12 +6,18 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
- - `uba_user`: added username trimming before insert/update. This prevents from creating logins what looks like the same 
+- `uba_user`: added username trimming before insert/update. This prevents from creating logins what looks like the same 
 
 ### Changed
+- for UB>=5.22.10 migrate hook expect ACL and Many entities HAVE multi-tenancy mixin
+- Protected system user accounts from some changes:
+  - System User accounts are:
+    - `root`, `admin` and `anonymous` (all that are in the `uba_common.USERS`)
+    - accounts matching `ubConfig:security.disabledAccounts` regular expressions
+  - Actions the accounts protected against (action are prohibited except when executed by root):
+    - update name
+    - delete account
 - `uba_group` form is rewritten to Vue
- - for UB>=5.22.10 migrate hook expect ACL and Many entities HAVE multi-tenancy mixin
-
 ### Deprecated
 
 ### Removed
