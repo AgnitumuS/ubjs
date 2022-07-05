@@ -17,7 +17,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
   - Actions the accounts protected against (action are prohibited except when executed by root):
     - update name
     - delete account
-
+- `uba_group` form is rewritten to Vue
 ### Deprecated
 
 ### Removed

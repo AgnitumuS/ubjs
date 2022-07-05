@@ -35,6 +35,7 @@
   "needChangePassword": "User need to change password on next logon",
   "checkAll": "Check all",
   "roles": "Roles",
+  "users": "Users",
   "uba": {
     "changePassword": {
       "newPassword": {

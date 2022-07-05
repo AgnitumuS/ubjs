@@ -35,6 +35,7 @@
   "needChangePassword": "İstifadəçi növbəti girişdə şifrəni yeniləməlidir",
   "checkAll": "Hamısını seç",
   "roles": "Rollar",
+  "users": "İstifadəçilər",
   "uba": {
     "changePassword": {
       "newPassword": {
