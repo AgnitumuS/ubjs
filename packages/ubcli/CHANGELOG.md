@@ -8,13 +8,18 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
- - `ubcli migrate` will disable schedulers in starting server instance.
-   Schedulers execution can break migration process. Feature works for UB@5.22.10 and up.
-- `ubcli migrate` for multitenant environments: skip virtual tenants (TID in 80..99)
 
 ### Deprecated
 
 ### Removed
+
+### Fixed
+
+## [5.23.2] - 2022-07-05
+### Changed
+ - `ubcli migrate` will disable schedulers in starting server instance.
+   Schedulers execution can break migration process. Feature works for UB@5.22.10 and up.
+- `ubcli migrate` for multitenant environments: skip virtual tenants (TID in 80..99)
 
 ### Fixed
 - Fix `ubcli migrate -?` command execution

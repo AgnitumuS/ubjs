@@ -8,11 +8,16 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
-- Execution schedulers for tenants: skip virtual tenants (TID in 80..99)
 
 ### Deprecated
 
 ### Removed
+
+### Fixed
+
+## [5.23.3] - 2022-07-05
+### Changed
+- Execution schedulers for tenants: skip virtual tenants (TID in 80..99)
 
 ### Fixed
 - Typo in uk localization of `ubq_runstat` entity caption

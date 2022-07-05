@@ -6,6 +6,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+## [5.23.3] - 2022-07-05
+### Added
 - `uba_user`: added username trimming before insert/update. This prevents from creating logins what looks like the same 
 
 ### Changed
@@ -18,12 +29,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
     - update name
     - delete account
 - `uba_group` form is rewritten to Vue
-### Deprecated
-
-### Removed
-
-### Fixed
-
 ## [5.23.2] - 2022-06-19
 ### Fixed
 - Remove obsolete navigation folders: `adm_folder_UI` and `adm_folder_devTools` (now new

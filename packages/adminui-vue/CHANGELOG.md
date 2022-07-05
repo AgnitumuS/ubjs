@@ -6,16 +6,23 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+## [5.23.2] - 2022-07-05
+### Added
 - `UTableEntity`: the `toolbarBeforePagination` slot to append new buttons to toolbar before pagination
 - `UFileInput` - added indication of file uploading process using loader icon
 
 ### Changed
 - `UtableEntity` - removed cursor: pointer from table that cannot be edited
 - `UToolbar`: for entities with aclRls mixin configured using `sameAs` aclRls editing is not visible
-
-### Deprecated
-
-### Removed
 
 ### Fixed
 - `UTableEntity`: title for the delete multiple toolbar button

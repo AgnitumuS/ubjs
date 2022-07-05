@@ -6,6 +6,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+## [5.23.2] - 2022-07-05
+### Added
  - new method `THTTPRequest.appendToFile(fullFilePath, [encoding])` - append request body content (as binary) to
    existed file (or creates new one). Return `true` on success. Can be used to bypass moving body content between native<->JS
   if conversion of the request body is not required. Require UB@5.22.10
@@ -30,10 +41,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - improved logging for application initialization:
   - wrap blocks in logEnter\logLeave
   - all `meta` overrides are logged one-line-per meta file instead of one-line-per-override
-
-### Deprecated
-
-### Removed
 
 ### Fixed
  - `RLS.allowForAdminOwnerAndAdmTable` uses predefined names for added where conditions.
