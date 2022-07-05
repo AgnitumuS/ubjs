@@ -8,7 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
  - added new method `App.wrapEnterLeaveForUbMethod` for logging method execution with timer and recursion shift  
  - data storage entities for "Many" attributes now added by metadata transformation hook of @unitybase/ub model (instead native server code)
- - mixin what implements data storage for ACL RLS implementation moved from native to JS (@unitybase/ub/mixins/aclRlsStorageMixin.js).
+ - realisation for mixin what implements ACL RLS is moved from native to JS (@unitybase/ub/mixins/aclRlsStorageMixin.js).
   **CHANGES**
    - indexes `IDX_*_IIVI(instanceID, valueID)` are replaced by unique indexes `UIDX_*_IIVI(instanceID, valueID)` are added instead
    - `audit` mixin now enabled for `aclRls` storage and uses main entity as `parentIdentifier`,
@@ -18,6 +18,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
      a simple indexes for ref constraint support like `doc_document_acl(ounitid)` are created instead
    - check constraints about "all onEntity attributes is not null" (CHK_*_SOMENOTNULL and CHK_*_NOALLNOTNULL)
      are removed - this verified by aclRlsStorage mixin
+   - **BREAKING** - mixin configuration changed. See https://unitybase.info/api/server-v5/tutorial-entites.html#aclrls---access-control-list-row-level-security
  - **BREAKING** entity with aclRsl mixin now MUST have an sqlAlias
 
 ### Changed
