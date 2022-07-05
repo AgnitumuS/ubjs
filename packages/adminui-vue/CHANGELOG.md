@@ -6,7 +6,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
-- `UFileInput` - added loader, which can be controlled programmatically
+- `UFileInput` - added indication of file uploading process using loader icon
+
 ### Changed
 
 ### Deprecated
