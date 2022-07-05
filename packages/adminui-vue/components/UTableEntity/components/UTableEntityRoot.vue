@@ -56,7 +56,7 @@
 
         <u-button
           v-if="showDeleteMultipleBtn"
-          :title="$ut('delete')"
+          :title="$ut('actionDelete')"
           appearance="inverse"
           icon="u-icon-delete"
           color="control"
@@ -64,7 +64,7 @@
           @click="deleteRecord"
         />
 
-        <!-- @slot Prepend new buttons to toolbar before filter -->
+        <!-- @slot Append new buttons to toolbar before filter -->
         <slot
           :close="close"
           :store="$store"
@@ -80,6 +80,14 @@
           :target-column="targetColumn"
           @close="onSortClose"
         />
+
+        <!-- @slot Append new buttons to toolbar before pagination -->
+        <slot
+          :close="close"
+          :store="$store"
+          name="toolbarBeforePagination"
+        />
+
         <pagination v-if="withPagination" />
         <div
           v-else

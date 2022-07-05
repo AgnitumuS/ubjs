@@ -6,6 +6,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+- `UTableEntity`: the `toolbarBeforePagination` slot to append new buttons to toolbar before pagination
 - `UFileInput` - added indication of file uploading process using loader icon
 
 ### Changed
@@ -17,6 +18,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+- `UTableEntity`: title for the delete multiple toolbar button
 
 ## [5.23.1] - 2022-06-19
 ### Fixed
