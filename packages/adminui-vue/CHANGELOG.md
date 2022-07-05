@@ -6,6 +6,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+- `UTableEntity`: the `toolbarBeforePagination` slot to append new buttons to toolbar before pagination
 
 ### Changed
 - `UtableEntity` - removed cursor: pointer from table that cannot be edited
@@ -16,6 +17,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+- `UTableEntity`: title for the delete multiple toolbar button
 
 ## [5.23.1] - 2022-06-19
 ### Fixed
