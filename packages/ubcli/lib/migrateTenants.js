@@ -1,6 +1,7 @@
 /**
  * Apply models migrations for multitenant environments (excel DDL stage).
  * See [Version migrations tutorial](https://unitybase.info/api/server-v5/tutorial-migrations.html)
+ *
  * @module migrate
  * @memberOf module:@unitybase/ubcli
  */
@@ -44,13 +45,13 @@ module.exports = function migrate (cfg) {
 }
 
 /**
- *  @param {Object} params  Migration parameters
- *  @private
+ * @param {object} params  Migration parameters
+ * @private
  */
 function runMigrations (params) {
   const serverConfig = argv.getServerConfiguration(false)
-  const multitenancyEnabled = serverConfig.security.multitenancy
-    && serverConfig.security.multitenancy.enabled
+  const multitenancyEnabled = serverConfig.security.multitenancy &&
+    serverConfig.security.multitenancy.enabled
   if (!multitenancyEnabled) {
     throw new Error('Command is intended for use in multitenant environments only')
   }
@@ -60,6 +61,11 @@ function runMigrations (params) {
   const tenants = serverConfig.security.multitenancy.tenants
   const lastTenantID = tenants[tenants.length - 1].TID
   for (const t of tenants) {
+    if (t.TID < 100 && t.TID >= 80) {
+      // Reserved numbers for virtual tenants, skip
+      continue
+    }
+
     console.log('==========> Starting migration for tenant %s ...', t.TID)
     const migrateTenantOptions = Object.assign(
       {},

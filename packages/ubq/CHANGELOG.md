@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
+- Execution schedulers for tenants: skip virtual tenants (TID in 80..99)
 
 ### Deprecated
 
