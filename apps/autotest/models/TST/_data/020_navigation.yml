@@ -1,0 +1,17 @@
+$context:
+  type: navigation
+
+tst_desktop:
+  $amendment: true
+  items:
+    - tst_aclrls:
+        access: User
+        caption: {$i18n: tst_aclrls}
+        cmd: >
+          {
+            renderer: 'vue',
+            cmdType: 'showList',
+            cmdData: {
+              entityName: 'tst_aclrls'
+            }
+          }

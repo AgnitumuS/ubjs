@@ -72,11 +72,11 @@
 				"librarySettings": "%UB_APPDATA%../shared",
 				"keyPath": "%UB_APPDATA%../shared/Key-6.dat",
 				"password": "%KEY_PWD%",
-				/*"hsm": {
+				"hsm": {
 				    "mediaType": 7,
 				    "mediaNumber": 5
 				    //,"password": "F98hv2muKz52"
-				}*/
+				}
 			}
 		},
 		//#endif

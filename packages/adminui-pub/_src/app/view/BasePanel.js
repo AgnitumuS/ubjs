@@ -2226,12 +2226,8 @@ Ext.define('UB.view.BasePanel', {
       })
     }
 
-    if (me.hasHardSecurityMixin) {
-      var aclEntityName = me.entityName + '_acl'
-      var entityM = me.domainEntity
-      if (entityM.mixins && entityM.mixins.aclRls && entityM.mixins.aclRls.useUnityName) {
-        aclEntityName = entityM.mixins.unity.entity + '_acl'
-      }
+    if (me.hasHardSecurityMixin && !me.domainEntity.mixins.aclRls.sameAs) {
+      var aclEntityName = me.domainEntity.mixins.aclRls.aclStorageEntityName
 
       me.actions[actions.accessRight] = new Ext.Action({
         actionId: actions.accessRight,
@@ -3580,9 +3576,11 @@ Ext.define('UB.view.BasePanel', {
     $App.doCommand({
       cmdType: 'showList',
       isModal: true,
-      cmdData: { params: [{
-        entity: me.entityName, method: UB.core.UBCommand.methodName.SELECT, fieldList: fieldList
-      }] },
+      cmdData: {
+        params: [{
+          entity: me.entityName, method: UB.core.UBCommand.methodName.SELECT, fieldList: fieldList
+        }]
+      },
       cmpInitConfig: {
         extendedFieldList: extendedFieldList
       },
@@ -3592,13 +3590,10 @@ Ext.define('UB.view.BasePanel', {
   },
 
   onAccessRight: function () {
-    var
-      me = this,
-      entityM, aclEntityName, aclFields = [], promise, lockCreated = false
+    const me = this
+    if (!me.hasHardSecurityMixin || !me.instanceID) return
 
-    if (!me.instanceID) {
-      return
-    }
+    var aclFields = [], promise, lockCreated = false
 
     if (me.isEntityLockable && !me.entityLocked) {
       promise = me.setEntityLocked()
@@ -3607,14 +3602,9 @@ Ext.define('UB.view.BasePanel', {
       promise = Promise.resolve(true)
     }
 
-    aclEntityName = me.entityName + '_acl'
-    entityM = me.domainEntity
-    if (!entityM || !entityM.mixins || !entityM.mixins.aclRls) {
-      return
-    }
-    if (entityM.mixins.aclRls.useUnityName) {
-      aclEntityName = entityM.mixins.unity.entity + '_acl'
-    }
+    const entityM = me.domainEntity
+    const aclEntityName = entityM.mixins.aclRls.aclStorageEntityName
+
     _.forEach(entityM.mixins.aclRls.onEntities, function (attrEntity) {
       var e = $App.domainInfo.get(attrEntity)
       if (e.descriptionAttribute) {
@@ -3627,8 +3617,8 @@ Ext.define('UB.view.BasePanel', {
     promise.then(function () {
       $App.doCommand({
         cmdType: 'showList',
-        cmdData: { params: [
-          {
+        cmdData: {
+          params: [{
             entity: aclEntityName,
             method: 'select',
             fieldList: aclFields, // '*',
@@ -3636,13 +3626,11 @@ Ext.define('UB.view.BasePanel', {
               parentExpr: {
                 expression: '[instanceID]',
                 condition: 'equal',
-                values: {
-                  'instanceID': me.instanceID
-                }
+                value: me.instanceID
               }
             }
-          }
-        ] },
+          }]
+        },
         isModalDialog: true,
         parentContext: { instanceID: me.instanceID },
         hideActions: ['addNewByCurrent'],

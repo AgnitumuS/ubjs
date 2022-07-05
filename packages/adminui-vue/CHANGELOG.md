@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Changed
 - `UtableEntity` - removed cursor: pointer from table that cannot be edited
+- `UToolbar`: for entities with aclRls mixin configured using `sameAs` aclRls editing is not visible
 
 ### Deprecated
 

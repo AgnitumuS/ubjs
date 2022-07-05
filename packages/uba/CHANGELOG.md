@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Changed
 - `uba_group` form is rewritten to Vue
+ - for UB>=5.22.10 migrate hook expect ACL and Many entities HAVE multi-tenancy mixin
 
 ### Deprecated
 

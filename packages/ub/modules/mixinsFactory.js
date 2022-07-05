@@ -60,11 +60,11 @@ function registerMixinModule(mixinName, mixinModule) {
 }
 
 /**
- * Go though all the domain entities and call initialization for all its mixins.
+ * Go through all the domain entities and call initialization for all its mixins.
  * Called by `UB.start()`
  * @protected
  */
-function initializeMixins() {
+function initializeMixins () {
   // initialize domain level mixin handlers
   _orderedMixinNames.forEach(mixinName => {
     const mixinModule = _mixinModulesMap[mixinName]

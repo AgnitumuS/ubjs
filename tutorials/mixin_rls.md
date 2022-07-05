@@ -24,8 +24,11 @@ Starting from UB 5.18.4 RLS cal be defined as a function what accept a `ctxt: ub
  an `ctxt.mParams`. RLS mixin search for function starting from a global scope, so better to place such functions into
  entity module (what exposed into global by UB server), or use `UB.ns('NS.for.your.function')` to create a namespace.
  
-Let's create an RLS function inside RLS namespace (function already exist, here we copy it code for tutorial):   
+Let's create an RLS function inside RLS namespace (function already exist, here we copy code for tutorial):   
 ```javascript
+const BY_OWNER_WHERE_LIST_PREDICATE = '__rlsByOwner'
+const BY_ADM_WHERE_LIST_PREDICATE = '__rlsByAdm'
+
 /**
  * For members of Admin group and for users `root` and `admin` do nothing.
  *
@@ -37,7 +40,7 @@ Let's create an RLS function inside RLS namespace (function already exist, here 
  */
 RLS.allowForAdminOwnerAndAdmTable = function (ctxt) {
   // skip RLS for admin and root and Admin group member
-  if (uba_common.isSuperUser() || Session.uData.roleIDs.includes(uba_common.ROLES.ADMIN.ID)) return
+  if (RLS.isUserAdminOrInAdminGroup()) return
 
   const mParams = ctxt.mParams
   let whereList = mParams.whereList
@@ -47,31 +50,32 @@ RLS.allowForAdminOwnerAndAdmTable = function (ctxt) {
     whereList = mParams.whereList
   }
   // either current user is record owner
-  const byOwner = whereList.getUniqKey()
-  whereList[byOwner] = {
+  whereList[BY_OWNER_WHERE_LIST_PREDICATE] = {
     expression: '[mi_owner]',
     condition: 'equal',
     value: Session.userID
   }
   // or User or one of user role in _adm sub-table
-  const byAdm = whereList.getUniqKey()
   const eName = ctxt.dataStore.entity.name
   const subQ = Repository(`${eName}_adm`)
-    .where('[admSubjID]', 'in', [Session.userID,...Session.uData.roleIDs])
-    .correlation('instanceID', 'ID')
-    .ubql()
-  whereList[byAdm] = {
+          .where('[admSubjID]', 'in', [Session.userID, ...Session.uData.roleIDs, ...Session.uData.groupIDs])
+          .correlation('instanceID', 'ID')
+          .ubql()
+  whereList[BY_ADM_WHERE_LIST_PREDICATE] = {
     expression: '',
     condition: 'subquery',
     subQueryType: 'exists',
     value: subQ
   }
-  const logic = `([${byOwner}]) OR ([${byAdm}])`
+  const logic = `([${BY_OWNER_WHERE_LIST_PREDICATE}]) OR ([${BY_ADM_WHERE_LIST_PREDICATE}])`
   if (!mParams.logicalPredicates) {
     mParams.logicalPredicates = [logic]
   } else {
-    // ubList.push NOT WORK!
-    mParams.logicalPredicates = [...mParams.logicalPredicates, logic]
+    const lp = [...mParams.logicalPredicates]
+    if (lp.indexOf(logic) === -1) {
+      // ubList.push NOT WORK!
+      mParams.logicalPredicates = [...mParams.logicalPredicates, logic]
+    }
   }
 }
 ```

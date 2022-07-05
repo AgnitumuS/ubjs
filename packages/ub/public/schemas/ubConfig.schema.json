@@ -937,6 +937,10 @@
             }
           }
         },
+        "mixinsDefaults": {
+          "type": "object",
+          "description": "Default mixins properties. Keys are mixin codes, values - default mixin config"
+        },
         "fts": {
           "type": "object",
           "description": "Build-in Full Text Search engine settings",

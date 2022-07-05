@@ -608,7 +608,10 @@ ServerApp.leaveCriticalSection = appBinding.leaveCriticalSection
 
 /**
  * Enter a log recursion call.
- * ** IMPORTANT** A thread must call `App.logLeave` once for each time that it entered the log recursion
+ * ** IMPORTANT** A thread must call `App.logLeave` once for each time that it entered the log recursion.
+ * For method with `ctx: ubMethodParam` parameter `App.wrapEnterLeaveForUbMethod` can be used
+ * to create an enter/leave log wrapper
+ *
  * @example
 
  function wrapEnterLeave(enterText, originalMethod) {
@@ -631,6 +634,31 @@ ServerApp.logEnter = appBinding.logEnter
  * @method
  */
 ServerApp.logLeave = appBinding.logLeave
+
+/**
+ * Enter a log recursion call with `enterText`, call `methodImpl` and exit from log recursion call.
+ *
+ * In case `enterText` is `method(myMixin) my_entity.select`, logging will be:
+ *
+ *    20210314 09224807  "  +      method(myMixin) my_entity.select
+ *    20210314 09224807  " debug    some debug (shifted by recursion level automatically)
+ *    20210314 09224807  "  -      00.005.124
+ *
+ * @method
+ * @param {string} enterText Text what will be logged in the beginning of function call
+ * @param {function} originalMethod function what accept one parameter - ctx: ubMethodParam
+ * @returns {function}
+ */
+ServerApp.wrapEnterLeaveForUbMethod = function wrapEnterLeaveForUbMethod (enterText, originalMethod) {
+  return function (ctx) {
+    appBinding.logEnter(enterText)
+    try {
+      originalMethod(ctx)
+    } finally {
+      appBinding.logLeave()
+    }
+  }
+}
 
 /**
  * Partially reload server config - the same as -HUP signal for process
