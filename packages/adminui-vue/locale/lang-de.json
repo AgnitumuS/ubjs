@@ -206,8 +206,7 @@
       "caption": "Dateien hier ablegen oder zum Hochladen anklicken",
       "acceptError": "Ungültige(r) Dateityp(en)",
       "selectedFiles": "Ausgewählt"
-    },
-    "loading": "Loading..."
+    }
   },
   "select": {
     "valueIsUndefined": "Wert \"{0}“ in Entität \"{1}\" nicht gefunden",

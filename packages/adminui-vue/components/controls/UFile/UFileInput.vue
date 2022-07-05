@@ -117,7 +117,7 @@ export default {
     },
     loadingTxt: {
       type: String,
-      default: 'fileInput.loading'
+      default: 'loadingData'
     }
   },
 

@@ -172,8 +172,7 @@
       "caption": "Fayl (lar) ni bu yerga tashlang yoki yuklash uchun bosing",
       "acceptError": "Noto'g'ri fayl (lar) turi",
       "selectedFiles": "Tanlangan"
-    },
-    "loading": "Loading..."
+    }
   },
   "select": {
     "valueIsUndefined": "Qiymat \"{0}\" sub'ektda topilmadi \"{1}\""
