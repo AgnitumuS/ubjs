@@ -73,6 +73,19 @@ what type of store is used for this attribute. Server:
 
 3. Finally, UnityBase update entity and commit database transaction (in case entity is non-virtual)
 
+To enable support for client side large file uploading, set chunk size in `mb` in `ubConfig.json`, parameter `uiSettings.uploadChunkSizeMb`.
+Also, it's possible to pass different `chunkSize` to setDocument's params, or pass `null` or `0` to disable
+
+```javascript
+UB.connection.setDocument(file, {
+  entity: 'my_entity',
+  attribute: 'blobAttribute',
+  origName: 'img.jpg',
+  filename: 'img.jpg',
+  chunkSize: 10
+})
+```
+
 ### Download file from server
 
 For download file from server client call `getDocument` endpoint
