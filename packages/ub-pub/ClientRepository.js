@@ -68,18 +68,19 @@ class ClientRepository extends CustomRepository {
     if (!e || !e.cacheType || (e.cacheType === 'None')) return
     const addAttrIfNotAdded = (expr) => {
       if (!expr) return
-      let attr
-      if (expr && (expr[0] === '[')) {
-        attr = e.attributes[expr.slice(1, -1)] // remove []
-      } else {
-        attr = e.attributes[expr]
+      let exprNb = ''
+      if (expr[0] === '[') {
+        exprNb = expr.slice(1, -1) // remove []
       }
-      if (attr && !(this.fieldList.includes(attr.name) || this.fieldList.includes(expr))) {
-        this.attrs(attr.name)
+      if (!this.fieldList.includes(expr) && !this.fieldList.includes(exprNb)) {
+        this.attrs(expr)
       }
     }
     for (const wn in this.whereList) {
-      addAttrIfNotAdded(this.whereList[wn].expression)
+      const clause = this.whereList[wn]
+      if ((clause.condition !== 'subquery') && (clause.condition !== 'custom')) {
+        addAttrIfNotAdded(clause.expression)
+      }
     }
     for (const orderItem of this.orderList) {
       addAttrIfNotAdded(orderItem.expression)
