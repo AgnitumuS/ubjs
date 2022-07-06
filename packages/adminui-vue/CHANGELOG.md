@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+- `UtableEntity` - fixed sorting in columns that isn't in repository fieldList
 
 ## [5.23.2] - 2022-07-05
 ### Added

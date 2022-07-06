@@ -91,6 +91,11 @@ module.exports = instance => ({
       }
 
       if (state.sort) {
+        // fix an error in sorting when attribute is not in repository fieldList
+        if (state.sort.descriptionAttrColumn && !repo.fieldList.includes(state.sort.descriptionAttrColumn)) {
+          repo.fieldList.push(state.sort.descriptionAttrColumn)
+        }
+
         if (repo.orderList && repo.orderList.length) {
           // clean default repository sort
           repo.orderList = []
