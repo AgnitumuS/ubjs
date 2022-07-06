@@ -87,22 +87,57 @@ class FileSystemBlobStore extends BlobStoreCustom {
    */
   saveContentToTempStore (request, attribute, content) {
     const fn = this.getTempFileName(request)
-    console.debug('temp file will be written to', fn)
-    let fileSize
+    const { chunksTotal, chunkNum, chunkSize } = request
+    let fileSize = 0
+
+    if (chunksTotal > 1 && chunksTotal !== chunkNum + 1)
+      console.debug(`temp file's chunk (${chunkNum + 1} of ${chunksTotal}) will be written to`, fn)
+    else
+      console.debug('temp file will be written to', fn)
+
     try {
-      if (content.writeToFile) {
-        if (!content.writeToFile(fn)) throw new Error(`Error write to ${fn}`)
+      let isFileExists = fs.existsSync(fn)
+      let isChunksValidErr = false
+
+      // Check exists, incomplete file state
+      if (isFileExists) {
+        if (chunkNum === 0) {
+          fs.unlinkSync(fn)
+          isFileExists = false
+        }
+        if (chunkNum > 0 && fs.statSync(fn).size !== chunkNum * chunkSize) isChunksValidErr = true
       } else {
-        fs.writeFileSync(fn, content)
+        if (chunkNum > 0) isChunksValidErr = true
       }
+      if (isChunksValidErr) throw new Error(`Chunks size validation error when uploading the file "${request.fileName}"`)
+
+      // Write file content
+      if (isFileExists) {
+        if (content.appendToFile) {
+          if (!content.appendToFile(fn)) throw new Error(`Error append to ${fn}`)
+        } else {
+          fs.appendFileSync(fn, content.read('bin'))
+        }
+      } else {
+        if (content.writeToFile) {
+          if (!content.writeToFile(fn)) throw new Error(`Error write to ${fn}`)
+        } else {
+          fs.writeFileSync(fn, content.read('bin'))
+        }
+      }
+
+      if (chunksTotal !== chunkNum + 1) return null
+
       fileSize = fs.statSync(fn).size
     } catch (e) {
       if (fs.existsSync(fn)) fs.unlinkSync(fn)
       throw e
     }
+
     const origFn = request.fileName || 'no-file-name.bin'
     const ct = mime.contentType(path.extname(origFn)) || 'application/octet-stream'
     const newMD5 = nhashFile(fn, 'MD5')
+
     return {
       store: this.name,
       fName: origFn,
