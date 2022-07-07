@@ -340,13 +340,14 @@ conn.then(function(conn){
    *  In case user logged out by server side this type persistent not work and UBConnection will call onCredentialRequired handler,
    *  so user will be prompted for credentials
    * @param [cfg.onAuthorizationFail] Callback for authorization failure. See {@link event:authorizationFail} event. Should handle all errors inside!
-   * @param [cfg.onAuthorized] Callback for authorization success. See {@link event:authorized} event.
+   * @param [cfg.onAuthorized] Callback for authorization success.
+   *   See {@link event:authorized} event. On this stage `connection.domain` is still not exists, so do not use Repository inside.
    * @param [cfg.onNeedChangePassword] Callback for a password expiration. See {@link event:passwordExpired} event
    * @param [cfg.onGotApplicationConfig] Called just after application configuration retrieved from server.
    *  Accept one parameter - connection: UBConnection
    *  Usually on this stage application inject some scripts required for authentication (locales, cryptography etc).
    *  Should return a promise then done
-   * @param [cfg.onGotApplicationDomain]
+   * @param [cfg.onGotApplicationDomain] Called after server returns domainInfo and `connection.domain` is initialized
    * @return {Promise<UBConnection>}
    */
   connect: function (cfg) {

@@ -8,7 +8,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
-- `UtableEntity` - removed cursor: pointer from table that cannot be edited
 
 ### Deprecated
 
@@ -16,6 +15,18 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 - `UAutoForm` - fixed loader that existsed in all tabs
+
+## [5.23.2] - 2022-07-05
+### Added
+- `UTableEntity`: the `toolbarBeforePagination` slot to append new buttons to toolbar before pagination
+- `UFileInput` - added indication of file uploading process using loader icon
+
+### Changed
+- `UtableEntity` - removed cursor: pointer from table that cannot be edited
+- `UToolbar`: for entities with aclRls mixin configured using `sameAs` aclRls editing is not visible
+
+### Fixed
+- `UTableEntity`: title for the delete multiple toolbar button
 
 ## [5.23.1] - 2022-06-19
 ### Fixed

@@ -1580,7 +1580,7 @@ UBEntityHistoryMixin.prototype.constructor = UBEntityHistoryMixin
  */
 UBEntityHistoryMixin.prototype.historyType = 'common'
 /**
- * Access control list mixin
+ * Access control list Row Level Security mixin
  * @class
  * @extends UBEntityMixin
  * @param {object} mixinInfo
@@ -1592,9 +1592,6 @@ function UBEntityAclRlsMixin (mixinInfo, i18n, mixinCode) {
 }
 UBEntityAclRlsMixin.prototype = Object.create(UBEntityMixin.prototype)
 UBEntityAclRlsMixin.prototype.constructor = UBEntityAclRlsMixin
-// defaults
-UBEntityAclRlsMixin.prototype.aclRlsUseUnityName = false
-UBEntityAclRlsMixin.prototype.aclRlsSelectionRule = 'exists'
 
 /**
  * Full text search mixin

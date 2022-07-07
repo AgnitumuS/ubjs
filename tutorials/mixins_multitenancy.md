@@ -20,6 +20,12 @@
 
  - for each tenant login to the tenant's administration instance using tenant URL and add a tenant admin user
 
+## Tenant ID (TID)
+
+Every tenant has a numeric ID.  There are special IDs:
+- 1 - system tenant
+- 80-99 - reserved for virtual tenants, to allow server-to-server communication between UB hosts of the same environment
+
 ## Implementation details
 ### Postgres
 Implemented using [Row Security Policies](https://www.postgresql.org/docs/current/ddl-rowsecurity.html).
@@ -96,4 +102,4 @@ The multitenancy connection config
 }
 ```
 
-> we recommend sets a `statement_timeout` to 1 second to minimize influence of one tenant on others   
+> it is recommended to set `statement_timeout` to 1 second to minimize influence of one tenant on others

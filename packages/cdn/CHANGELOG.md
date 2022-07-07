@@ -14,6 +14,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+
+## [5.23.3] - 2022-07-05
+### Fixed
 - Give the "Developer" role full access to the `cdn_classifier` entity 
 
 ## [5.23.2] - 2022-06-19

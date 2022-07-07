@@ -1,8 +1,8 @@
 {
- "isDefault": true,
+ "isDefault": false,
  "entity": "uba_group",
- "formType": "auto",
+ "formType": "vue",
  "caption": "uba_group",
  "description": "uba_group",
- "formDef": "{\"fName\":\"uba_group-fm.def\",\"origName\":\"uba_group-fm.def\",\"ct\":\"text/javascript; charset=UTF-8\",\"size\":824,\"md5\":\"b90c46501aba2ab7d11ab0f0b5ff2ad8\"}"
+ "formCode": "uba_group-fm.vue"
 }

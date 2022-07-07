@@ -81,6 +81,15 @@ function testHTTP (conn, domain, session) {
   assert.strictEqual(resp.statusCode, 200, 'echo binary - response status is 200')
   assert.deepEqual(resp.read('bin'), data.buffer, 'got the same text as send')
 
+  req.setPath('/echoToFile?append=true&part=1')
+  resp = req.end('123')
+  assert.strictEqual(resp.statusCode, 200, 'echo binary append - response status is 200')
+  req.setPath('/echoToFile?append=true&part=2')
+  resp = req.end('456')
+  assert.strictEqual(resp.statusCode, 200, 'echo binary append2 - response status is 200')
+  const appended = resp.read('utf-8')
+  assert.strictEqual(appended, '123456', `req.append - got ${appended} but should be 123456`)
+
   // let t = Date.now()
   // conn.xhr({
   //   endpoint: 'rest/tst_service/sleep3sec',

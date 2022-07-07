@@ -3,7 +3,7 @@
     class="u-file__dropzone"
     :class="{
       hover: dragging,
-      disabled,
+      disabled: isBlocked,
       'u-file__dropzone-border': border
     }"
     @dragleave.prevent.stop="dragging = false"
@@ -12,30 +12,38 @@
     @dragover="dragover"
     @drop.stop.prevent="drop"
   >
-    <u-icon
-      icon="u-icon-cloud-alt"
-      color="control"
-      size="large"
-      class="u-file__dropzone-icon"
-    />
-    <div
-      v-if="value.length"
-      class="text--truncated"
-    >
-      <strong>{{ $ut(selectedPlaceholder) }}:</strong> {{ selectedFileNames }}
-    </div>
-    <div
-      v-else
-      class="u-file__dropzone-placeholder"
-    >
-      {{ $ut(placeholder) }}
-      <div v-if="accept">
-        ({{ accept }})
+    <template v-if="!isLoading">
+      <u-icon
+        icon="u-icon-cloud-alt"
+        color="control"
+        size="large"
+        class="u-file__dropzone-icon"
+      />
+      <div
+        v-if="value.length"
+        class="text--truncated"
+      >
+        <strong>{{ $ut(selectedPlaceholder) }}:</strong> {{ selectedFileNames }}
       </div>
+      <div
+        v-else
+        class="u-file__dropzone-placeholder"
+      >
+        {{ $ut(placeholder) }}
+        <div v-if="accept">({{ accept }})</div>
+      </div>
+    </template>
+
+    <div
+      v-if="isLoading"
+      class="file-loading-container"
+    >
+      <i class="el-icon-loading u-icon_color-control u-icon" />
+      <div class="u-file__dropzone-placeholder">{{ $ut(loadingTxt) }}</div>
     </div>
     <input
       type="file"
-      :disabled="disabled"
+      :disabled="isBlocked"
       :multiple="multiple"
       :accept="accept"
       v-bind="$attrs"
@@ -99,6 +107,17 @@ export default {
     value: {
       type: Array,
       default: () => []
+    },
+    /**
+     * Shows loader. Makes the input disabled
+     */
+    isLoading: {
+      type: Boolean,
+      default: false
+    },
+    loadingTxt: {
+      type: String,
+      default: 'loadingData'
     }
   },
 
@@ -110,10 +129,13 @@ export default {
 
   computed: {
     acceptableFileTypes: function () {
-      return this.accept.split(',').map(a => a.trim())
+      return this.accept.split(',').map((a) => a.trim())
     },
     selectedFileNames: function () {
-      return this.value.map(f => f.name).join('; ')
+      return this.value.map((f) => f.name).join('; ')
+    },
+    isBlocked () {
+      return this.disabled || this.isLoading
     }
   },
 
@@ -125,7 +147,7 @@ export default {
 
     drop (e) {
       this.dragging = false
-      if (this.disabled) return
+      if (this.isBlocked) return
 
       this.upload(e.dataTransfer.files)
     },
@@ -143,10 +165,12 @@ export default {
       }
 
       if (invalid.length) {
-        const invalidFilesNames = invalid.map(f => f.name).join(', ')
+        const invalidFilesNames = invalid.map((f) => f.name).join(', ')
         this.$notify({
           type: 'error',
-          message: `${this.$ut('fileInput.dropZone.acceptError')}: ${invalidFilesNames}`,
+          message: `${this.$ut(
+            'fileInput.dropZone.acceptError'
+          )}: ${invalidFilesNames}`,
           duration: 0
         })
       }
@@ -167,7 +191,7 @@ export default {
     },
 
     dragover (e) {
-      if (this.disabled) return false
+      if (this.isBlocked) return false
       e.preventDefault()
       e.stopPropagation()
       this.dragging = true
@@ -177,10 +201,12 @@ export default {
       if (this.accept === '') {
         return true
       }
-      return this.acceptableFileTypes.some(ft => {
+      return this.acceptableFileTypes.some((ft) => {
         // file type specifier can be either extension or mime
         const lcName = String(ft).toLowerCase()
-        return file.name.toLowerCase().endsWith(lcName) || file.type.includes(lcName)
+        return (
+          file.name.toLowerCase().endsWith(lcName) || file.type.includes(lcName)
+        )
       })
     }
   }
@@ -188,52 +214,59 @@ export default {
 </script>
 
 <style>
-  .u-file__dropzone input {
-    display: none;
-  }
+.u-file__dropzone input {
+  display: none;
+}
 
-  .u-file__dropzone {
-    padding: 20px 12px;
-    border-radius: var(--border-radius);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    justify-content: center;
-    cursor: pointer;
-    line-height: 1;
-    height: 100%;
-    width: 100%;
-  }
+.u-file__dropzone {
+  padding: 20px 12px;
+  border-radius: var(--border-radius);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  justify-content: center;
+  cursor: pointer;
+  line-height: 1;
+  height: 100%;
+  width: 100%;
+}
 
-  .u-file__dropzone-placeholder {
-    color: hsl(var(--hs-text), var(--l-text-description));
-  }
+.u-file__dropzone-placeholder {
+  color: hsl(var(--hs-text), var(--l-text-description));
+}
 
-  .u-file__dropzone-border{
-    border: 1px solid hsl(var(--hs-border), var(--l-layout-border-default));
-  }
+.u-file__dropzone-border {
+  border: 1px solid hsl(var(--hs-border), var(--l-layout-border-default));
+}
 
-  .u-file__dropzone-icon {
-    margin-bottom: 4px;
-  }
+.u-file__dropzone-icon {
+  margin-bottom: 4px;
+}
 
-  .u-file__dropzone:active:not(.disabled),
-  .u-file__dropzone.hover:not(.disabled) {
-    border-color: hsl(var(--hs-primary), var(--l-input-border-hover));
-    color: hsl(var(--hs-primary), var(--l-text-label));
-    background: hsl(var(--hs-primary), var(--l-background-default));
-  }
+.u-file__dropzone:active:not(.disabled),
+.u-file__dropzone.hover:not(.disabled) {
+  border-color: hsl(var(--hs-primary), var(--l-input-border-hover));
+  color: hsl(var(--hs-primary), var(--l-text-label));
+  background: hsl(var(--hs-primary), var(--l-background-default));
+}
 
-  .u-file__dropzone.disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-  }
+.u-file__dropzone.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
 
-  .u-file__dropzone .text--truncated {
-    overflow: hidden;
-    display: -webkit-box;
-    -webkit-line-clamp: 3;
-    -webkit-box-orient: vertical;
-  }
+.u-file__dropzone .text--truncated {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+}
+
+.file-loading-container .el-icon-loading {
+  font-size: 32px;
+  font-weight: 600;
+  margin-bottom: var(--padding);
+  color: hsl(var(--hs-control), var(--l-state-default));
+}
 </style>

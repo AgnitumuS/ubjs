@@ -33,8 +33,8 @@ me.success = function (ctxt) {
 const UBQ_STORE = DataStore('ubq_messages')
 /**
  * Add item to queue.
- *
  * Used by server FTS mixin - do not remove
+ *
  * @method addqueue
  * @param {ubMethodParams} ctxt
  * @param {String} ctxt.mParams.queueCode Queue code to add a item to
@@ -44,7 +44,7 @@ const UBQ_STORE = DataStore('ubq_messages')
  * @published
  * @memberOf ubq_messages_ns.prototype
  * @memberOfModule @unitybase/ubq
- * @return {Boolean}
+ * @returns {Boolean}
  */
 me.addqueue = function (ctxt) {
   console.debug('JS: ubq_messages.addqueue')
@@ -71,9 +71,10 @@ me.addqueue = function (ctxt) {
 /**
  * Take a `.` separated string and return a function it points to (starting from global)
  * Think about it as about safe eval
+ *
  * @private
  * @param {String} path
- * @return {Function|undefined}
+ * @returns {Function|undefined}
  */
 function getFnFromNS (path) {
   let root = global
@@ -177,7 +178,7 @@ function runAndLogTask (task, schedulerName, entryPoint) {
  * @memberOf ubq_messages_ns.prototype
  * @memberOfModule @unitybase/ubq
  * @published
- * @return {Boolean}
+ * @returns {Boolean}
  */
 me.executeSchedulerTask = function executeSchedulerTask (nullCtxt, req, resp) {
   if ((Session.userID !== uba_common.USERS.ROOT.ID) || (App.localIPs.indexOf(Session.callerIP) === -1)) {
@@ -216,6 +217,11 @@ me.executeSchedulerTask = function executeSchedulerTask (nullCtxt, req, resp) {
 
     if (multitenancyEnabled) {
       for (const { TID } of App.serverConfig.security.multitenancy.tenants) {
+        if (TID < 100 && TID >= 80) {
+          // Reserved numbers for virtual tenants, skip
+          continue
+        }
+
         console.log('SCHEDULER: task "%s", switch to tenant %d', taskName, TID)
         Session.setTempTenantID(TID)
         runAndLogTask(task, taskName, entryPoint)
@@ -223,7 +229,6 @@ me.executeSchedulerTask = function executeSchedulerTask (nullCtxt, req, resp) {
     } else {
       runAndLogTask(task, taskName, entryPoint)
     }
-
   } finally {
     if (isSingleton) {
       App.globalCachePut(GLOBAL_CACHE_KEY, '0')

@@ -86,8 +86,8 @@ module.exports = function migrate (cfg) {
         help: 'Output execution time for each command into console'
       })
     cfg = opts.parseVerbose({}, true)
-    if (cfg.verbose) cfg.verboseShort = true
     if (!cfg) return
+    if (cfg.verbose) cfg.verboseShort = true
   }
   cfg.user = 'root'
   // increase receive timeout to 10 minutes - in case DB server is slow we can easily reach 30s timeout
