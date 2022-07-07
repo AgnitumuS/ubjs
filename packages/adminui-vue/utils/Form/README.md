@@ -322,16 +322,16 @@ module.exports.mount = function ({ title, entity, instanceID, formCode, rootComp
 
 ```html
 <template>
-  <!-- класс который растягивает форму на высоту окна и делает правильную работу скрола -->
-  <div class="u-form-layout">
+  <!-- класс который растягивает форму на высоту окна и делает правильную работу скрола. 
+  Лоадер рекомендуется вешать на верхний уровень, чтобы он перекрывал и кнопки управления. Модификатор `v-loading.body` рекомендуется осторожно, т.к. он будет перекрывать заданную область на всех вкладках  -->
+  <div
+    v-loading="loading"
+    class="u-form-layout">
     <!-- тулбар-->
     <u-toolbar />
 
-    <!-- компонент позволяет указать ширину для дочерних u-form-row. Лоадер рекомендуется вешать на него -->
-    <u-form-container
-      v-loading.body="loading"
-      :label-width="160"
-    >
+    <!-- компонент позволяет указать ширину для дочерних u-form-row.  -->
+    <u-form-container :label-width="160">
       <!-- строка формы с заголовком (label) -->
       <u-form-row
         :label="getLabel('code')"

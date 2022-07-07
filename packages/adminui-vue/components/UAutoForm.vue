@@ -1,9 +1,11 @@
 <template>
-  <div class="u-form-layout">
+  <div
+    v-loading="loading"
+    class="u-form-layout"
+  >
     <u-toolbar />
 
     <u-form-container
-      v-loading="loading"
       label-position="top"
       :max-width="800"
     >
@@ -36,8 +38,8 @@ export default {
   computed: {
     fields () {
       return this.entitySchema
-        .filterAttribute(attr => attr.defaultView)
-        .map(a => a.name)
+        .filterAttribute((attr) => attr.defaultView)
+        .map((a) => a.name)
     },
 
     ...mapGetters(['loading'])
