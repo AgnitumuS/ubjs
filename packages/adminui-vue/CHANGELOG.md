@@ -14,7 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
-- `UAutoForm` - fixed loader that existsed in all tabs
+- `all forms` - in all forms, when was modifer `.body` on loader  fixed loader that existsed in all tabs
 
 ## [5.23.2] - 2022-07-05
 ### Added
