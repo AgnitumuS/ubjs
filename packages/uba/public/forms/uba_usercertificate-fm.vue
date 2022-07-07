@@ -1,5 +1,8 @@
 <template>
-<div class="u-form-layout">
+<div
+  v-loading="loading"
+  class="u-form-layout"
+>
   <u-toolbar>
     <u-button
       @click="downloadCert"
@@ -10,7 +13,7 @@
   </u-toolbar>
 
   <u-form-container
-    v-loading="loading"
+    
     label-position="top"
   >
      <!-- place form layout here -->
