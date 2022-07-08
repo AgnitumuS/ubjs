@@ -6,6 +6,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+- `UAutoField` can accept additional listeners in case it resolves to `u-input` (as already done other UAutoField control types)
 
 ### Changed
 

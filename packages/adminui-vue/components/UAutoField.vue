@@ -236,12 +236,14 @@ export default {
           attrs: {
             maxLength: ATTR.size,
             ...baseAttrs
-          }
+          },
+          on: this.buildListenersOnInput
         })
         break
       default:
         cmp = h(this.forceCmp || 'u-input', {
-          attrs: baseAttrs
+          attrs: baseAttrs,
+          on: this.buildListenersOnInput
         })
     }
     return h('u-form-row',
