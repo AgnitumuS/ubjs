@@ -1,8 +1,10 @@
 <template>
-  <div class="u-form-layout">
+  <div
+    v-loading="loading"
+    class="u-form-layout"
+  >
     <u-toolbar />
     <u-form-container
-      v-loading.body="loading"
       class="u-form-max-width"
       label-position="top"
     >
@@ -47,6 +49,7 @@
 <script>
 const { Form, mapInstanceFields } = require('@unitybase/adminui-vue')
 const { mapState, mapGetters } = require('vuex')
+
 module.exports.mount = cfg => {
   Form(cfg)
     .processing({

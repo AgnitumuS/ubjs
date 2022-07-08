@@ -17,6 +17,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - `getDomainInfo,ubql,rest` are excluded from allowed endpoints for `Everyone` role and added for `User` role.
    Anonymous user should not have asses to these endpoints
 
+- `group`, `user certificate` forms:
+    - mode v-loading directive above the toolbar, so all form content will be locked while loading
+    - prevent locking of all opened forms by use `v-loading` instead of `v-loading.body`
+  
 ## [5.23.3] - 2022-07-05
 ### Added
 - `uba_user`: added username trimming before insert/update. This prevents from creating logins what looks like the same 

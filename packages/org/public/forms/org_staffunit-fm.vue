@@ -1,5 +1,8 @@
 <template>
-  <div class="u-form-layout">
+  <div
+    v-loading="loading"
+    class="u-form-layout"
+  >
     <u-toolbar />
     <u-form-container label-position="top">
       <el-tabs v-model="activeTabName">
@@ -92,7 +95,7 @@ module.exports.default = {
       'fullNameDat'
     ]),
     ...mapState(['isNew']),
-    ...mapGetters(['canSave'])
+    ...mapGetters(['loading', 'canSave'])
   },
 
   watch: {

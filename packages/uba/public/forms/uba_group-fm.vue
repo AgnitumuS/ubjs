@@ -1,5 +1,6 @@
 <template>
   <div
+    v-loading="loading"
     class="u-form-layout"
   >
     <u-toolbar/>
@@ -42,6 +43,7 @@
 <script>
 const { Form } = require('@unitybase/adminui-vue')
 const { Repository } = require('@unitybase/ub-pub')
+const { mapGetters } = require('vuex')
 
 module.exports.mount = (cfg) => {
   Form(cfg)
@@ -60,6 +62,7 @@ module.exports.default = {
   name: 'UbaGroup',
 
   computed: {
+    ...mapGetters(['loading']),
     instanceID () {
       return this.$store.state.data.ID
     },

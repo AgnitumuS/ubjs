@@ -1,11 +1,11 @@
 <template>
-  <div class="u-form-layout">
+  <div
+    v-loading="loading"
+    class="u-form-layout"
+  >
     <u-toolbar />
 
-    <u-form-container
-      v-loading="loading"
-      label-position="top"
-    >
+    <u-form-container label-position="top">
       <u-grid :columns="3">
         <u-auto-field attribute-name="code" />
         <span>
@@ -77,7 +77,7 @@ module.exports.default = {
       mainHeight: null // get form height after mount
     }
   },
-  
+
   computed: {
     ...mapInstanceFields([
       'ID',
