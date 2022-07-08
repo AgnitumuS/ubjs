@@ -8,6 +8,15 @@ $context:
 
 Everyone:
   description: Everyone built-in role
+  allowedAppMethods:
+  - auth
+  - timeStamp
+  - statics
+  - getAppInfo
+  - models
+  - getDomainInfo
+  - ubql
+  - rest
   els:
     custom:
     - UBA_AUDIT_SELECT_ONLY: "!uba_audit,[^s]*,Deny direct security audit operation even for all roles"
@@ -16,6 +25,7 @@ Everyone:
 
 # UBA_ADMIN_ALL rule (allow all for Admin) is added during initDB
 Admin:
+  allowedAppMethods: '*'
   description: Admin built-in role
 
 Anonymous:
@@ -23,6 +33,12 @@ Anonymous:
 
 User:
   description: Authorised user built-in role
+  allowedAppMethods:
+  - logout
+  - changePassword
+  - setDocument
+  - getDocument
+  - checkDocument
   els:
     custom:
     - UBA_USER_LANGCH_EVERYONE: "uba_user,changeLanguage,Allow change language for any user"
@@ -38,23 +54,26 @@ Supervisor:
   description: Supervisor built-in role
   els:
     custom:
-    - UBA_USER_EDIT_SUPERVISOR: "uba_user,[iuda]*,Allow CUD operations on users for members of Supervisor group"
-    - UBA_USER_CHPWD_SUPERVISOR: "uba_user,changeOtherUserPassword,Allow change password for any user for members of Supervisor group"
-    - UBA_GROUP_EDIT_SUPERVISOR: "uba_group,[iuda]*,Allow CUD operations on security groups for members of Supervisor group"
-    - UBA_ROLE_READ_SUPERVISOR: "uba_role,select,Allow members of Supervisor group to read roles"
-    - UBA_USER_ROLE_EDIT_SUPERVISOR: "uba_userrole,[iuda]*,Allow grant a role to user for members of Supervisor group"
-    - UBA_USERROLE_READ_SUPERVISOR: "uba_userrole,select,Allow members of Supervisor group to read user roles"
-    - UBA_USER_GROUP_EDIT_SUPERVISOR: "uba_usergroup,[iuda]*,Allow grant a group to user for members of Supervisor group"
-    - UBA_USERGROUP_READ_SUPERVISOR: "uba_usergroup,select,Allow members of Supervisor group to read user groups"
-    - UBA_GROUPROLE_EDIT_SUPERVISOR: "uba_grouprole,[iuda]*,Allow grant a role to group for members of Supervisor group"
-    - UBA_GROUPROLE_READ_SUPERVISOR: "uba_grouprole,select,Allow members of Supervisor group to read groups roles"
-    - UBA_AUDIT_READ_SUPERVISOR: "uba_audit,select,Allow members of Supervisor group to read security audit"
-    - UBA_AUDITTRAIL_READ_SUPERVISOR: "uba_auditTrail,select,Allow members of Supervisor group to read audit trail"
-    - UBA_ADVSEC_EDIT_SUPERVISOR: "uba_advSecurity,[iuda]*,Allow CUD operations on advanced security for members of Supervisor group"
-    - UBA_SESSION_READ_SUPERVISOR: "uba_session,select,Allow view active users sessions for members of Supervisor group"
-    - UBA_SESSION_DELETE_SUPERVISOR: "uba_session,delete,Allow remove active user session for members of Supervisor group"
+    - UBA_USER_EDIT_SUPERVISOR: "uba_user,[iuda]*,Allow CUD operations on users for members of Supervisor role"
+    - UBA_USER_CHPWD_SUPERVISOR: "uba_user,changeOtherUserPassword,Allow change password for any user for members of Supervisor role"
+    - UBA_GROUP_EDIT_SUPERVISOR: "uba_group,[iuda]*,Allow CUD operations on security groups for members of Supervisor role"
+    - UBA_ROLE_READ_SUPERVISOR: "uba_role,select,Allow members of Supervisor role to read roles"
+    - UBA_USER_ROLE_EDIT_SUPERVISOR: "uba_userrole,[iuda]*,Allow grant a role to user for members of Supervisor role"
+    - UBA_USERROLE_READ_SUPERVISOR: "uba_userrole,select,Allow members of Supervisor role to read user roles"
+    - UBA_USER_GROUP_EDIT_SUPERVISOR: "uba_usergroup,[iuda]*,Allow grant a group to user for members of Supervisor role"
+    - UBA_USERGROUP_READ_SUPERVISOR: "uba_usergroup,select,Allow members of Supervisor role to read user groups"
+    - UBA_GROUPROLE_EDIT_SUPERVISOR: "uba_grouprole,[iuda]*,Allow grant a role to group for members of Supervisor role"
+    - UBA_GROUPROLE_READ_SUPERVISOR: "uba_grouprole,select,Allow members of Supervisor role to read groups roles"
+    - UBA_AUDIT_READ_SUPERVISOR: "uba_audit,select,Allow members of Supervisor role to read security audit"
+    - UBA_AUDITTRAIL_READ_SUPERVISOR: "uba_auditTrail,select,Allow members of Supervisor role to read audit trail"
+    - UBA_ADVSEC_EDIT_SUPERVISOR: "uba_advSecurity,[iuda]*,Allow CUD operations on advanced security for members of Supervisor role"
+    - UBA_SESSION_READ_SUPERVISOR: "uba_session,select,Allow view active users sessions for members of Supervisor role"
+    - UBA_SESSION_DELETE_SUPERVISOR: "uba_session,delete,Allow remove active user session for members of Supervisor role"
     - ubm_desktop_adm.*
     - ubm_navshortcut_adm.*
+    - uba_otp.*
+    - uba_els.*
+    - uba_als.*
 
 Developer:
   description: Developer built-in role
@@ -73,5 +92,9 @@ SysOps:
     full: [ub, ubm, ubs, ubq]
     read: [uba]
 
+DataManager:
+  description: Data Manager built-in role
+
 Monitor:
   description: Monitoring built-in role
+  allowedAppMethods: stat

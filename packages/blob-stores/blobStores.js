@@ -120,6 +120,9 @@ function initBLOBStores (appInstance, sessionInstance) {
  * @property {Number} ID
  * @property {String} entity
  * @property {String} attribute
+ * @property {Number} chunksTotal
+ * @property {Number} chunkNum
+ * @property {Number} chunkSize
  * @property {Boolean} [isDirty]
  * @property {String} [fileName]
  * @property {Number} [revision]
@@ -177,6 +180,9 @@ function parseBlobRequestParams (params) {
     ID: ID,
     entity: params.entity,
     attribute: params.attribute,
+    chunksTotal: Number(params.chunksTotal) || 1,
+    chunkNum: Number(params.chunkNum) || 0,
+    chunkSize: Number(params.chunkSize) || 0,
     isDirty: (params.isDirty === true || params.isDirty === 'true' || params.isDirty === '1'),
     // UB <5 compatibility
     fileName: (params.origName || params.origname || params.fileName || params.filename || params.fName),

@@ -1,6 +1,7 @@
 {
     "caption": "AclRls test",
     "descriptionAttribute": "caption",
+    "sqlAlias": "tstAcl",
     "attributes": [
         {
             "name": "caption",
@@ -19,10 +20,14 @@
             "safeDelete": false
         },
         "aclRls": {
-            "useUnityName": false,
-            "onEntities": ["org_unit", "uba_subject"],
-            "entityConnectAttr": "[ID]"
-            //,            "exprMethod": "doc_currentOrgUnitAndAdmSubj"
+            "onEntities": ["org_unit", "uba_subject"]
+        },
+        "fts": {
+          "scope": "Connection",
+          "dataProvider": "Mixin",
+          "indexedAttributes": [
+            "caption"
+          ]
         }
     }
 }

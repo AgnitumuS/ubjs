@@ -22,6 +22,7 @@ me.on('insert:before', checkDuplicateUser)
 me.on('update:before', checkDuplicateUser)
 me.on('insert:before', fillFullNameIfMissing)
 me.on('insert:after', ubaAuditNewUser)
+me.on('update:before', denyBuildInUserRename)
 me.on('update:after', ubaAuditModifyUser)
 me.on('delete:after', ubaAuditDeleteUser)
 me.on('delete:before', denyBuildInUserDeletion)
@@ -37,14 +38,14 @@ function checkDuplicateUser (ctxt) {
   const ID = params.ID
   if (newName) {
     const store = UB.Repository('uba_user').attrs('ID')
-      .where('name', '=', newName.toLowerCase())
+      .where('name', '=', newName.toLowerCase().trim())
       .whereIf(ID, 'ID', '<>', ID)
       .select()
 
     if (!store.eof) {
       throw new UB.UBAbort('<<<Duplicate user name (may be in different case)>>>')
     }
-    params.name = newName.toLowerCase() // convert user name to lower case
+    params.name = newName.toLowerCase().trim() // convert a username to lower case
   }
 }
 
@@ -495,17 +496,70 @@ function ubaAuditDeleteUser (ctx) {
 }
 
 /**
- * Prevent delete a build-in user
+ * Check if the user is a built-in user
+ * @private
+ * @param {string} userName
+ * @returns {boolean}
+ */
+function isBuiltInUser (userName) {
+  return Object.values(UBA_COMMON.USERS).some(r => r.NAME === userName)
+}
+
+/**
+ * Check if the user is a service user defined by the security.disabledAccounts
+ * configuration setting.
+ * @private
+ * @param {string} userName
+ * @returns {boolean}
+ */
+function isDisabledUser (userName) {
+  const disabledAccountsSetting = App.serverConfig.security.disabledAccounts
+  return disabledAccountsSetting && new RegExp(disabledAccountsSetting).test(userName)
+}
+
+/**
+ * Prevent deletion a build-in user
  * @private
  * @param {ubMethodParams} ctx
  */
 function denyBuildInUserDeletion (ctx) {
-  const ID = ctx.mParams.execParams.ID
+  // Get name from "selectBeforeDelete" store
+  const userName = ctx.dataStore.get('name')
 
-  for (const user in UBA_COMMON.USERS) {
-    if (UBA_COMMON.USERS[user].ID === ID) {
-      throw new UB.UBAbort('<<<Removing of built-in user is prohibited>>>')
-    }
+  if (isBuiltInUser(userName)) {
+    throw new UB.UBAbort('<<<Removing of built-in user is prohibited>>>')
+  }
+
+  if (isDisabledUser(userName)) {
+    throw new UB.UBAbort('<<<Removing of service user is prohibited>>>')
+  }
+}
+
+/**
+ * Prevent renaming of a build-in user
+ * @private
+ * @param {ubMethodParams} ctx
+ */
+function denyBuildInUserRename (ctx) {
+  if (ctx.mParams.execParams.name === undefined) {
+    // Request does not contain "name", so name won't be changed
+    return
+  }
+
+  // Get name from "selectBeforeDelete" store
+  const userName = ctx.dataStore.get('name')
+
+  if (userName === ctx.mParams.execParams.name) {
+    // Username in execParams matches username in DB, no change
+    return
+  }
+
+  if (isBuiltInUser(userName)) {
+    throw new UB.UBAbort('<<<Renaming of built-in user is prohibited>>>')
+  }
+
+  if (isDisabledUser(userName)) {
+    throw new UB.UBAbort('<<<Renaming of service user is prohibited>>>')
   }
 }
 

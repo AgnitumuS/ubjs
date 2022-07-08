@@ -216,9 +216,10 @@ adm_desktop:
               formCode: 'uba_audit-securityDashboard'
             }
 
-
+# Submenu in "Studio" desktop
 dev_desktop:
   access: Developer, Supervisor
+  displayOrder: 20
   caption: Studio
   description: System Configuration Tools
   iconCls: u-icon-desktop-studio

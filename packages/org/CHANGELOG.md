@@ -15,6 +15,16 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.23.3] - 2022-07-05
+## [5.23.2] - 2022-06-19
+## [5.23.1] - 2022-06-19
+### Added
+- Full access to ORG for DataManager
+
+### Removed
+- Roles `orgNodeAdmin` and `orgAllNodeAccess`, because they are used in a specific product and
+  not needed in the platform
+
 ## [5.23.0] - 2022-06-15
 ### Changed
 - Move localization for navigation shortcuts and desktop to json files

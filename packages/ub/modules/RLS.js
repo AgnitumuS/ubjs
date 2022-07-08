@@ -10,7 +10,7 @@ const ubaCommon = require('@unitybase/base').uba_common
 /**
  * @namespace
  */
-let RLS = global.RLS = {}
+const RLS = global.RLS = {}
 global['$'] = RLS
 
 RLS.currentOwner = function () {
@@ -73,6 +73,16 @@ RLS.currentUserOrUserGroupInAdmSubtable = function (sender) {
   return `exists (select 1 from ${sender.entity.name}_adm ast where ast.instanceID = [ID] and (${subjects}))`
 }
 
+const BY_OWNER_WHERE_LIST_PREDICATE = '__rlsByOwner'
+const BY_ADM_WHERE_LIST_PREDICATE = '__rlsByAdm'
+
+/**
+ * Returns `true` in case current user is Superuser ( build-in root or admin) or member of Admin group
+ * @returns {boolean}
+ */
+RLS.isSuperUserOrInAdminGroup = function () {
+  return (ubaCommon.isSuperUser() || Session.hasRole(ubaCommon.ROLES.ADMIN.NAME))
+}
 /**
  * For members of Admin group and for users `root` and `admin` do nothing.
  *
@@ -84,7 +94,7 @@ RLS.currentUserOrUserGroupInAdmSubtable = function (sender) {
  */
 RLS.allowForAdminOwnerAndAdmTable = function (ctxt) {
   // skip RLS for admin and root and Admin group member
-  if (ubaCommon.isSuperUser() || Session.hasRole(ubaCommon.ROLES.ADMIN.NAME)) return
+  if (RLS.isUserAdminOrInAdminGroup()) return
 
   const mParams = ctxt.mParams
   let whereList = mParams.whereList
@@ -94,30 +104,77 @@ RLS.allowForAdminOwnerAndAdmTable = function (ctxt) {
     whereList = mParams.whereList
   }
   // either current user is record owner
-  const byOwner = whereList.getUniqKey()
-  whereList[byOwner] = {
+  whereList[BY_OWNER_WHERE_LIST_PREDICATE] = {
     expression: '[mi_owner]',
     condition: 'equal',
     value: Session.userID
   }
   // or User or one of user role in _adm sub-table
-  const byAdm = whereList.getUniqKey()
   const eName = ctxt.dataStore.entity.name
   const subQ = Repository(`${eName}_adm`)
-    .where('[admSubjID]', 'in', [Session.userID,...Session.uData.roleIDs, ...Session.uData.groupIDs])
+    .where('[admSubjID]', 'in', [Session.userID, ...Session.uData.roleIDs, ...Session.uData.groupIDs])
     .correlation('instanceID', 'ID')
     .ubql()
-  whereList[byAdm] = {
+  whereList[BY_ADM_WHERE_LIST_PREDICATE] = {
     expression: '',
     condition: 'subquery',
     subQueryType: 'exists',
     value: subQ
   }
-  const logic = `([${byOwner}]) OR ([${byAdm}])`
+  const logic = `([${BY_OWNER_WHERE_LIST_PREDICATE}]) OR ([${BY_ADM_WHERE_LIST_PREDICATE}])`
   if (!mParams.logicalPredicates) {
     mParams.logicalPredicates = [logic]
   } else {
-    // ubList.push NOT WORK!
-    mParams.logicalPredicates = [...mParams.logicalPredicates, logic]
+    const lp = [...mParams.logicalPredicates]
+    if (lp.indexOf(logic) === -1) {
+      // ubList.push NOT WORK!
+      mParams.logicalPredicates = [...mParams.logicalPredicates, logic]
+    }
+  }
+}
+
+/**
+ * Returns `true` in case current user is admin or root or Admin group member.
+ * Used as default for `aclRls.skipIfFn`
+ *
+ * @returns {boolean}
+ */
+RLS.isUserAdminOrInAdminGroup = function () {
+  return (ubaCommon.isSuperUser() || Session.hasRole(ubaCommon.ROLES.ADMIN.NAME))
+}
+
+/**
+ * Default behavior for get aclRls subjects - return array of IDs for currently logged in user:
+ *  - if `uba_subject` in onEntities: userID + user roles IDs + user groups IDs
+ *  - if `org_unit` in onEntities: orgUnitIDs
+ *
+ * @param {ubMethodParams} ctx
+ * @param {object} [mixinCfg]
+ * @returns {number[]}
+ */
+RLS.getDefaultAclRlsSubjects = function (ctx, mixinCfg) {
+  let result = []
+  // indexOf is OK here, onEntities length is either 1 or 2
+  if (mixinCfg.onEntities.indexOf('uba_subject') >= 0) { // add possible adm subjects
+    result = [Session.userID, ...Session.uData.roleIDs, ...Session.uData.groupIDs]
+  }
+  if (mixinCfg.onEntities.indexOf('org_unit') >= 0) { // add all user org units
+    result.concat(Session.uData.orgUnitIDs.split(',').map(Number))
+  }
+  return result
+}
+
+/**
+ * Helper what validates `RLS.getDefaultAclRlsSubjects` function is applicable for aclRls.onEntities config -
+ * check onEntities contains only uba_subject or/and org_unit
+ * @param mixinCfg
+ * @param entityCode
+ */
+RLS.getDefaultAclRlsSubjects.validator = function (mixinCfg, entityCode) {
+  const admS = new Set(mixinCfg.onEntities)
+  admS.delete('uba_subject')
+  admS.delete('org_unit')
+  if (admS.size !== 0) {
+    throw new Error(`AclRls: used '${entityCode}.mixins.aclRls.subjectIDsFn' require 'onEntities' contains 'uba_subject' or|and 'org_unit'`)
   }
 }

@@ -960,7 +960,7 @@ Ext.define('UB.view.EntityGridPanel', {
       popupMenuItems.push(me.actions[actions.audit])
     }
 
-    if (me.hasHardSecurityMixin) {
+    if (me.hasHardSecurityMixin && !me.domainEntity.mixins.aclRls.sameAs) {
       popupMenuItems.push('-')
       popupMenuItems.push(me.actions[actions.accessRight])
     }
@@ -2641,25 +2641,22 @@ Ext.define('UB.view.EntityGridPanel', {
     let sel = this.getSelectionModel().getSelection()
     if (sel.length < 1) return
 
-    let me = this
-    let aclEntityName = me.entityName + '_acl'
-    let entityM = me.entity
+    const me = this
+    const entityM = me.entity
     if (!entityM || !entityM.mixins || !entityM.mixins.aclRls) {
       return
     }
-    if (entityM.mixins.aclRls.useUnityName) {
-      aclEntityName = entityM.mixins.unity.entity + '_acl'
-    }
-    let aclFields = []
+    const aclEntityName = entityM.mixins.aclRls.aclStorageEntityName
+    const aclFields = []
     _.forEach(entityM.mixins.aclRls.onEntities, function (attrEntity) {
-      let e = $App.domainInfo.get(attrEntity)
+      const e = $App.domainInfo.get(attrEntity)
       aclFields.push(e.sqlAlias + 'ID' + (e.descriptionAttribute ? '.' + e.descriptionAttribute : ''))
     })
 
     $App.doCommand({
       cmdType: 'showList',
-      cmdData: { params: [
-        {
+      cmdData: {
+        params: [{
           entity: aclEntityName,
           method: 'select',
           fieldList: aclFields, // '*',
@@ -2667,13 +2664,11 @@ Ext.define('UB.view.EntityGridPanel', {
             parentExpr: {
               expression: '[instanceID]',
               condition: 'equal',
-              values: {
-                'instanceID': sel[0].get('ID')
-              }
+              value: sel[0].get('ID')
             }
           }
-        }
-      ] },
+        }]
+      },
       isModalDialog: true,
       parentContext: { instanceID: sel[0].get('ID') },
       hideActions: ['addNewByCurrent']

@@ -1,0 +1,8 @@
+$context:
+  type: roles
+
+User:
+  $amendment: true
+  description: Full access to all test entities for all logged in users
+  els:
+    full: [tst]

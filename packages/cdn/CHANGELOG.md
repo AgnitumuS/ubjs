@@ -15,6 +15,15 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.23.3] - 2022-07-05
+### Fixed
+- Give the "Developer" role full access to the `cdn_classifier` entity 
+
+## [5.23.2] - 2022-06-19
+## [5.23.1] - 2022-06-19
+### Added
+- ELS full access to CDN for DataManager
+
 ## [5.23.0] - 2022-06-15
 ### Changed
 - Move localization for navigation shortcuts and desktop to json files

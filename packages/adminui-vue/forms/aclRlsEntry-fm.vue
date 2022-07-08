@@ -93,11 +93,10 @@ function getSortedMappedEntities (unityEntity) {
 
   const getUnityDefaults = entity => connection.domain.get(entity).mixin('unity').defaults
   const getUnityDefaultsKey = entity => Object.keys(getUnityDefaults(entity))
-  const arraysIntersection = (a1, a2) => a1.filter(key => a2.includes(key))
 
   let commonAttributes = getUnityDefaultsKey(entities[0])
   for (let i = 1; i < entities.length; i++) {
-    commonAttributes = arraysIntersection(commonAttributes, getUnityDefaultsKey(entities[i]))
+    commonAttributes = _.intersection(commonAttributes, getUnityDefaultsKey(entities[i]))
   }
 
   if (commonAttributes.length !== 1) {

@@ -15,6 +15,38 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.23.2] - 2022-07-05
+### Added
+ - new method `THTTPRequest.appendToFile(fullFilePath, [encoding])` - append request body content (as binary) to
+   existed file (or creates new one). Return `true` on success. Can be used to bypass moving body content between native<->JS
+  if conversion of the request body is not required. Require UB@5.22.10
+ - added new method `App.wrapEnterLeaveForUbMethod` for logging method execution with timer and recursion shift  
+ - data storage entities for "Many" attributes now added by metadata transformation hook of @unitybase/ub model (instead native server code)
+ - realisation for mixin what implements ACL RLS is moved from native to JS (@unitybase/ub/mixins/aclRlsStorageMixin.js).
+  **CHANGES**
+   - indexes `IDX_*_IIVI(instanceID, valueID)` are replaced by unique indexes `UIDX_*_IIVI(instanceID, valueID)` are added instead
+   - `audit` mixin now enabled for `aclRls` storage and uses main entity as `parentIdentifier`,
+     so changes to ACL will be visible in entity changes history
+   - unneeded indexes `UIDX_*_admSubjentity` are removed
+   - complex indexes for subject attributes like `doc_document_acl(ounitid, instanceid, subjid)` are removed,
+     a simple indexes for ref constraint support like `doc_document_acl(ounitid)` are created instead
+   - check constraints about "all onEntity attributes is not null" (CHK_*_SOMENOTNULL and CHK_*_NOALLNOTNULL)
+     are removed - this verified by aclRlsStorage mixin
+   - **BREAKING** - mixin configuration changed. See https://unitybase.info/api/server-v5/tutorial-entites.html#aclrls---access-control-list-row-level-security
+ - **BREAKING** entity with aclRsl mixin now MUST have an sqlAlias
+
+### Changed
+- Add `TenantUser` built-in role on login of every user, if user is logged in any tenant except
+  the system tenant
+- improved logging for application initialization:
+  - wrap blocks in logEnter\logLeave
+  - all `meta` overrides are logged one-line-per meta file instead of one-line-per-override
+
+### Fixed
+ - `RLS.allowForAdminOwnerAndAdmTable` uses predefined names for added where conditions.
+  This prevents adding the same conditions several times 
+
+## [5.23.1] - 2022-06-19
 ## [5.23.0] - 2022-06-15
 ## [5.22.39] - 2022-06-01
 ## [5.22.38] - 2022-05-26

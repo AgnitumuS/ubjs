@@ -6,6 +6,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+ - 'AsyncConnection.setDocument' - can upload large files using chunks. 
+  To activate, chunk size (mb) can be sets in UB config `uiSettings.adminUI.uploadChunkSizeMb` (by default - no chunked upload).
+  Can be set for individual `setDocument` request by pass `params.chunkSizeMb`
+  
+  **BREAKING** - applications what uses `setDocument:before` should take care about chunked uploads.
 
 ### Changed
 
@@ -15,6 +20,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.23.2] - 2022-07-05
+## [5.23.1] - 2022-06-19
 ## [5.23.0] - 2022-06-15
 ## [5.22.12] - 2022-05-26
 ### Added

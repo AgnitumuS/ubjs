@@ -15,6 +15,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.23.3] - 2022-07-05
+### Fixed
+ - `umb_navshortcut.update` for non-privileged users now works. Before this fix user got server-side error because
+  RLS conditions added twice - once in `selectBeforeUpdate` and once in `selectAfterUpdate` [LDOC-2294]
+
+## [5.23.2] - 2022-06-19
+## [5.23.1] - 2022-06-19
+### Changed
+- Navigation folder "UI" (english) rename to "User Interface"
+- Move Theme Settings to "Studio" desktop, "User Interface" folder from Administration
+
 ## [5.23.0] - 2022-06-15
 ### Changed
 - Move UI (shortcuts and desktops) to "Studio" desktop

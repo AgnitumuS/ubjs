@@ -15,9 +15,40 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.23.3] - 2022-07-05
+### Added
+- `uba_user`: added username trimming before insert/update. This prevents from creating logins what looks like the same 
+
+### Changed
+- for UB>=5.22.10 migrate hook expect ACL and Many entities HAVE multi-tenancy mixin
+- Protected system user accounts from some changes:
+  - System User accounts are:
+    - `root`, `admin` and `anonymous` (all that are in the `uba_common.USERS`)
+    - accounts matching `ubConfig:security.disabledAccounts` regular expressions
+  - Actions the accounts protected against (action are prohibited except when executed by root):
+    - update name
+    - delete account
+- `uba_group` form is rewritten to Vue
+## [5.23.2] - 2022-06-19
+### Fixed
+- Remove obsolete navigation folders: `adm_folder_UI` and `adm_folder_devTools` (now new
+  folders are placed on the "Studio" desktop and have different codes)
+- ELS rule descriptions: change "Supervisor group" to "Supervisor role" to not confuse roles
+  with groups
+- Add full permissions on `uba_otp`, `uba_els`, `uba_als` entities to Supervisor role
+
+## [5.23.1] - 2022-06-19
+### Added
+- The new "DataManager" built-in role.
+
+### Changed
+- For system roles defined allowed app methods (set in `_data` directory)
+- `Studio` (dev_desktop) desktop display order changed to 20, to be just below `Administration`  
+
 ## [5.23.0] - 2022-06-15
 ### Added
-- The new "SysOps" built-in role. Role shall be given to engineers, who help to maintain the system.
+- The new "SysOps" built-in role. Role shall be given to the engineers,
+  who help to maintain the system.
   Role Access:
   - Full access to ubs/ubq/ubm models
   - Read only access to uba mode

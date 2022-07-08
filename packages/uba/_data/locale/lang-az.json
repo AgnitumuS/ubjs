@@ -6,6 +6,7 @@
   "uba_role.Supervisor.description": "Təhlükəsizlik Administratoru (quraşdırılmış rol)",
   "uba_role.Developer.description": "İnkişaf etdirici (quraşdırılmış rol)",
   "uba_role.SysOps.description": "Dəstək mühəndisi (quraşdırılmış rol)",
+  "uba_role.DataManager.description": "Data Manager (quraşdırılmış rol)",
   "uba_role.Monitor.description": "Monitorinq (quraşdırılmış rol)",
   "ubm_desktop.adm_desktop.caption": "Administration",
   "ubm_desktop.adm_desktop.description": "İstifadəçilərin idarəedilməs, interfeys sazlamaları, jurnal (audit, təhlükəsizlik, növbə)",

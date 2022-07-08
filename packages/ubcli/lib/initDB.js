@@ -38,14 +38,14 @@ const _ = require('lodash')
 
 module.exports = initDB
 /**
- * @param {Object} cfg
- * @param {Number} [cfg.clientIdentifier=3] Identifier of the client.
+ * @param {object} cfg
+ * @param {number} [cfg.clientIdentifier=3] Identifier of the client.
  *    Must be between 2 and 8999. Number 1 is for UnityBase developer, 3 for test.
  *    Numbers > 100 is for real installations
- * @param {Boolean} [cfg.dropDatabase=false] Drop a database/schema first
- * @param {Boolean} [cfg.createDatabase=false] Create a new database/schema.
- * @param {String} [cfg.dba] A DBA name. Used in case `createDatabase=true`
- * @param {String} [cfg.dbaPwd] A DBA password. Used in case `createDatabase=true`
+ * @param {boolean} [cfg.dropDatabase=false] Drop a database/schema first
+ * @param {boolean} [cfg.createDatabase=false] Create a new database/schema.
+ * @param {string} [cfg.dba] A DBA name. Used in case `createDatabase=true`
+ * @param {string} [cfg.dbaPwd] A DBA password. Used in case `createDatabase=true`
  */
 function initDB (cfg) {
   if (!cfg) {
@@ -176,8 +176,9 @@ function initDB (cfg) {
 
 /**
  * Create a Everyone & admin roles and a SuperUser named admin with password `admin`
+ *
  * @param {DBConnection} targetConn
- * @param {String} dbDriverName
+ * @param {string} dbDriverName
  * @param {string} adminPwd Password for "admin" user
  * @private
  */
@@ -198,10 +199,19 @@ function fillBuildInRoles (targetConn, dbDriverName, adminPwd) {
   for (const roleName in UBA_COMMON.ROLES) {
     const aRole = UBA_COMMON.ROLES[roleName]
     initSecurity.push(
-      `insert into uba_subject (ID,code,name,sType,mi_unityentity) values(${aRole.ID}, '${aRole.NAME}', '${aRole.DESCR}', 'R', 'uba_role')`,
-      `insert into uba_role (ID,name,description,sessionTimeout,allowedAppMethods${auditTailColumns}) 
-       values(${aRole.ID},'${aRole.NAME}','${aRole.DESCR}',${aRole.TIMEOUT},'${aRole.ENDPOINTS}'${auditTailValues})`
+      `insert into uba_subject (ID,code,name,sType,mi_unityentity) values(${aRole.ID}, '${aRole.NAME}', '${aRole.DESCR}', 'R', 'uba_role')`
     )
+    if (aRole.ENDPOINTS) {
+      initSecurity.push(
+        `insert into uba_role (ID,name,description,sessionTimeout,allowedAppMethods${auditTailColumns}) 
+         values(${aRole.ID},'${aRole.NAME}','${aRole.DESCR}',${aRole.TIMEOUT},'${aRole.ENDPOINTS}'${auditTailValues})`
+      )
+    } else {
+      initSecurity.push(
+        `insert into uba_role (ID,name,description,sessionTimeout${auditTailColumns}) 
+         values(${aRole.ID},'${aRole.NAME}','${aRole.DESCR}',${aRole.TIMEOUT}${auditTailValues})`
+      )
+    }
   }
   // build-in users
   for (const userName in UBA_COMMON.USERS) {

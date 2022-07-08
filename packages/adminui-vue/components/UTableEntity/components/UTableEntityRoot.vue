@@ -3,7 +3,8 @@
     v-loading="loading"
     class="u-table-entity"
     :class="{
-      'u-table-entity__bordered': bordered
+      'u-table-entity__bordered': bordered,
+      'u-table-entity__can-edit': canEdit,
     }"
     tabindex="1"
     @keydown.ctrl.delete.exact="canDelete && deleteRecord(selectedRowId)"
@@ -55,7 +56,7 @@
 
         <u-button
           v-if="showDeleteMultipleBtn"
-          :title="$ut('delete')"
+          :title="$ut('actionDelete')"
           appearance="inverse"
           icon="u-icon-delete"
           color="control"
@@ -63,7 +64,7 @@
           @click="deleteRecord"
         />
 
-        <!-- @slot Prepend new buttons to toolbar before filter -->
+        <!-- @slot Append new buttons to toolbar before filter -->
         <slot
           :close="close"
           :store="$store"
@@ -79,6 +80,14 @@
           :target-column="targetColumn"
           @close="onSortClose"
         />
+
+        <!-- @slot Append new buttons to toolbar before pagination -->
+        <slot
+          :close="close"
+          :store="$store"
+          name="toolbarBeforePagination"
+        />
+
         <pagination v-if="withPagination" />
         <div
           v-else
@@ -942,8 +951,8 @@ export default {
   overflow: auto;
 }
 
-.u-table-entity .u-table tr.selected td.selected,
-.u-table-entity .u-card-grid .u-card.selected {
+.u-table-entity.u-table-entity__can-edit .u-table tr.selected td.selected,
+.u-table-entity.u-table-entity__can-edit .u-card-grid .u-card.selected {
   cursor: pointer;
 }
 

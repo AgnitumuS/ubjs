@@ -1,7 +1,7 @@
 // eslint-disable-next-line camelcase
 const {
   req_read, req_read_json, reg_getHeaders, reg_getMethod, reg_getUrl, reg_getURI, reg_getDecodedURI,
-  reg_getParameters, reg_getDecodedParameters, req_writeToFile
+  reg_getParameters, reg_getDecodedParameters, req_writeToFile, req_appendToFile
 } = process.binding('http_server')
 const queryString = require('querystring')
 let req_getReqId = process.binding('http_server').req_getReqId
@@ -47,6 +47,17 @@ class THTTPRequest {
    */
   writeToFile (fullFilePath, encoding = 'bin') {
     return req_writeToFile(fullFilePath, encoding)
+  }
+
+  /**
+   * Append request body content (as binary) to a file. If file does not exists - creates it. Return true on success
+   * @param {string} fullFilePath
+   * @param {string} [encoding='bin'] Can be 'bin'(default) or 'base64` - in this case
+   *   request body will be converted from base64 into binary before write to file
+   * @return {boolean}
+   */
+  appendToFile (fullFilePath, encoding = 'bin') {
+    return req_appendToFile(fullFilePath, encoding)
   }
 
   /**

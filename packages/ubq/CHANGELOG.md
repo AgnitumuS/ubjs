@@ -15,6 +15,15 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.23.3] - 2022-07-05
+### Changed
+- Execution schedulers for tenants: skip virtual tenants (TID in 80..99)
+
+### Fixed
+- Typo in uk localization of `ubq_runstat` entity caption
+
+## [5.23.2] - 2022-06-19
+## [5.23.1] - 2022-06-19
 ## [5.23.0] - 2022-06-15
 ### Changed
 - In the "Administrator" desktop, move items from "Messages Queue" to "Monitoring Tools"

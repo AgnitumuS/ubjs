@@ -340,6 +340,27 @@ process.startupMode = 'CmdLine'
 process.terminationRequested = function () { }
 
 /**
+ * Get value from global cache. Global cache shared between all threads.
+ * Share the same global cache with `App.globalCacheGet`, what available from worker thread.
+ *
+ * Return '' (empty string) in case key not present in cache.
+ *
+ * @since UB@5.22.10
+ * @param {String} key Key to retrieve
+ * @return {String}
+ */
+process.globalCacheGet = function (key) { }
+
+/**
+ * Put value to global cache. Share the same global cache with `App.globalCachePut`, what available from worker thread.
+ *
+ * @since UB@5.22.10
+ * @param {String} key  Key to put into
+ * @param {String|null} value Value to put into this key. If === null then key will be remover from cache
+ */
+process.globalCachePut = function (key, value) { }
+
+/**
  * Available in shell mode script - starts a local server instance.
  *  - if `withWait` is false (default) server stops after shell script ends,
  *  - if `withWait` is true, program continue execution until STP (Ctrl+C) signal

@@ -29,9 +29,18 @@ const FIXTURES = path.join(GS_PATH, '_autotest', 'fixtures')
  * @param {THTTPResponse} resp
  */
 function echoToFile (req, resp) {
-  fs.writeFileSync(path.join(FIXTURES, 'req'), req.read('bin'))
+  const fn = path.join(FIXTURES, 'req')
+  if (req.parsedParameters.append) {
+    if (req.parsedParameters.part === '1' && fs.existsSync(fn)) {
+      fs.unlinkSync(fn)
+    }
+    req.appendToFile(fn)
+    console.debug(`Appended to ${fn}`)
+  } else {
+    fs.writeFileSync(fn, req.read('bin'))
+  }
   resp.statusCode = 200
-  resp.writeEnd(fs.readFileSync(path.join(FIXTURES, 'req'), { encoding: 'bin' }))
+  resp.writeEnd(fs.readFileSync(fn, { encoding: 'bin' }))
 }
 
 /**

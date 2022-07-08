@@ -16,6 +16,27 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.23.2] - 2022-07-05
+### Added
+- `UTableEntity`: the `toolbarBeforePagination` slot to append new buttons to toolbar before pagination
+- `UFileInput` - added indication of file uploading process using loader icon
+
+### Changed
+- `UtableEntity` - removed cursor: pointer from table that cannot be edited
+- `UToolbar`: for entities with aclRls mixin configured using `sameAs` aclRls editing is not visible
+
+### Fixed
+- `UTableEntity`: title for the delete multiple toolbar button
+
+## [5.23.1] - 2022-06-19
+### Fixed
+- `UMasterDetailView` - fixed regression when open document details: throttle() API is changed in throttle-debounce package
+ ```
+ throttle(50, true fn) -> throttle(50, fn, { noTrailing: true })
+```
+- `UTableEntity` fix restore filters for columns of type `Entity` if custom expression is used 
+- `USidebar` - `edit` action for sidebar item is disabled if no shortcut in focus
+
 ## [5.23.0] - 2022-06-15
 ### Added
  - added muting of `ElDatePicker` placement prop mutation warning

@@ -1,0 +1,14 @@
+$context:
+  type: roles
+
+DataManager:
+  $amendment: true
+  els:
+    full: cdn
+
+Developer:
+  $amendment: true
+  els:
+    full:
+    - cdn_classifier
+    - cdn_classifieritem

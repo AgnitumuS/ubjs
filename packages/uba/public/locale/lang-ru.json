@@ -35,6 +35,7 @@
   "needChangePassword": "Пользователь должен изменить пароль при следующем входе",
   "checkAll": "Выбрать все",
   "roles": "Роли",
+  "users": "Пользователи",
   "uba": {
     "changePassword": {
       "newPassword": {

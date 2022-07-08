@@ -35,6 +35,7 @@
   "needChangePassword": "Der Benutzer muss bei der nächsten Anmeldung sein Kennwort ändern",
   "checkAll": "Alle prüfen",
   "roles": "Rollen",
+  "users": "Benutzer",
   "uba": {
     "changePassword": {
       "newPassword": {
