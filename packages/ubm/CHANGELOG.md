@@ -14,7 +14,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
-
+- `desktop`, `shortcut`, `query`, `sysdictionary` forms:
+  - mode v-loading directive above the toolbar, so all form content will be locked while loading
+  - prevent locking of all opened forms by use `v-loading` instead of `v-loading.body`
+  
 ## [5.23.3] - 2022-07-05
 ### Fixed
  - `umb_navshortcut.update` for non-privileged users now works. Before this fix user got server-side error because

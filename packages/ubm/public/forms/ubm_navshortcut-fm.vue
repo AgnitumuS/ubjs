@@ -77,7 +77,7 @@ module.exports.default = {
       mainHeight: null // get form height after mount
     }
   },
-  
+
   computed: {
     ...mapInstanceFields([
       'ID',

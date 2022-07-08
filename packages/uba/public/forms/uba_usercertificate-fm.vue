@@ -1,49 +1,62 @@
 <template>
-<div
-  v-loading="loading"
-  class="u-form-layout"
->
-  <u-toolbar>
-    <u-button
-      @click="downloadCert"
-      :disabled="!serial"
-      appearance="plain"
-      icon="u-icon-download"
-      slot="left"></u-button>
-  </u-toolbar>
-
-  <u-form-container
-    
-    label-position="top"
+  <div
+    v-loading="loading"
+    class="u-form-layout"
   >
-     <!-- place form layout here -->
-    <u-grid>
-      <u-auto-field attribute-name="userID" />
-      <u-form-row :label="$ut('uba_usercertificate.serial')">
-        {{serial}}
-      </u-form-row>
-
-    </u-grid>
-    <u-form-row
-      v-if="isNew"
-      label=""
-    >
-      <u-file-input
-        :v-model="certificateFile"
-        style="height: 80px"
-        @input="updateCert"
+    <u-toolbar>
+      <u-button
+        slot="left"
+        :disabled="!serial"
+        appearance="plain"
+        icon="u-icon-download"
+        @click="downloadCert"
       />
-    </u-form-row>
-    <u-grid :columns="4">
-      <u-auto-field attribute-name="isForSigning" readonly force-cmp="el-switch" />
-      <u-auto-field attribute-name="disabled" force-cmp="el-switch" />
-      <u-auto-field attribute-name="revoked" force-cmp="el-switch" />
-      <u-auto-field attribute-name="revocationDate" />
-    </u-grid>
-    <u-auto-field attribute-name="description" />
-    <u-auto-field attribute-name="certParsed" readonly />
-  </u-form-container>
-</div>
+    </u-toolbar>
+
+    <u-form-container
+
+      label-position="top"
+    >
+      <!-- place form layout here -->
+      <u-grid>
+        <u-auto-field attribute-name="userID" />
+        <u-form-row :label="$ut('uba_usercertificate.serial')">
+          {{ serial }}
+        </u-form-row>
+      </u-grid>
+      <u-form-row
+        v-if="isNew"
+        label=""
+      >
+        <u-file-input
+          :v-model="certificateFile"
+          style="height: 80px"
+          @input="updateCert"
+        />
+      </u-form-row>
+      <u-grid :columns="4">
+        <u-auto-field
+          attribute-name="isForSigning"
+          readonly
+          force-cmp="el-switch"
+        />
+        <u-auto-field
+          attribute-name="disabled"
+          force-cmp="el-switch"
+        />
+        <u-auto-field
+          attribute-name="revoked"
+          force-cmp="el-switch"
+        />
+        <u-auto-field attribute-name="revocationDate" />
+      </u-grid>
+      <u-auto-field attribute-name="description" />
+      <u-auto-field
+        attribute-name="certParsed"
+        readonly
+      />
+    </u-form-container>
+  </div>
 </template>
 
 <script>

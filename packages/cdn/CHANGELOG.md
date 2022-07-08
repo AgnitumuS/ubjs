@@ -14,6 +14,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+- `city`, `classifier`, `department`, `employee`, `organization`, `person`, `region` forms:
+  - mode v-loading directive above the toolbar, so all form content will be locked while loading
+  - prevent locking of all opened forms by use `v-loading` instead of `v-loading.body`
 
 ## [5.23.3] - 2022-07-05
 ### Fixed

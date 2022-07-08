@@ -14,7 +14,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
-- `all forms` - in all forms the loader has been moved up one lvl. So that the loader blocks the control buttons. Where was the `.body` modifier - it was removed
+- `UAutoForm`, `aclRls form` - mode v-loading directive above the toolbar, so all form content will be locked while loading.
+  Prevent locking of all opened forms by use `v-loading` instead of `v-loading.body`
+
 ## [5.23.2] - 2022-07-05
 ### Added
 - `UTableEntity`: the `toolbarBeforePagination` slot to append new buttons to toolbar before pagination
