@@ -10,7 +10,7 @@
     @keydown.ctrl.delete.exact="canDelete && deleteRecord(selectedRowId)"
     @keydown.ctrl.e.prevent.exact="canEdit && editRecord(selectedRowId)"
     @keydown.ctrl.insert.exact="canAddNew && addNew()"
-    @keydown.ctrl.r.prevent.exact="!loading && refresh()"
+    @keydown.ctrl.r.prevent.exact="!loading && canRefresh && refresh()"
     @keydown.enter.exact="onSelect(selectedRowId)"
     @keydown.left.prevent.exact="move('left')"
     @keydown.right.prevent.exact="move('right')"
@@ -28,14 +28,21 @@
           name="toolbarPrepend"
         />
 
-        <u-button
-          :title="$ut('refresh')"
-          appearance="inverse"
-          icon="u-icon-refresh"
-          color="control"
-          :disabled="loading"
-          @click="refresh"
-        />
+        <!-- @slot Replace refresh button in toolbar panel -->
+        <slot
+          :store="$store"
+          name="toolbarButtonRefresh"
+        >
+          <u-button
+            v-if="showRefresh"
+            :title="$ut('refresh')"
+            appearance="inverse"
+            icon="u-icon-refresh"
+            color="control"
+            :disabled="loading"
+            @click="refresh"
+          />
+        </slot>
 
         <!-- @slot Replace add-new button in toolbar panel -->
         <slot
@@ -110,6 +117,15 @@
               />
             </template>
 
+            <!-- @slot Replace refresh button in toolbar dropdown -->
+            <template #refresh>
+              <slot
+                v-if="showRefresh"
+                :store="$store"
+                name="toolbarDropdownRefresh"
+              />
+              <div v-else />
+            </template>
             <!-- @slot Replace add-new button in toolbar dropdown -->
             <template #add-new>
               <slot
@@ -622,6 +638,8 @@ export default {
     ...mapGetters([
       'showAddNew',
       'canAddNew',
+      'canRefresh',
+      'showRefresh',
       'showCopy',
       'canCopy',
       'showEdit',

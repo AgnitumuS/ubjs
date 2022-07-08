@@ -6,6 +6,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+- `UTableEntity`: ability to hide or replace "Refresh" button, like other buttons
 
 ### Changed
 
