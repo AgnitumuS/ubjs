@@ -111,7 +111,8 @@
         </div>
         <el-row
           type="flex"
-          class="ub-select__list-options--tags">
+          class="ub-select__list-options--tags"
+        >
           <template v-for="button in dropdownButtons">
             <el-button
               v-if="button.visibility"
@@ -182,6 +183,7 @@ export default {
   props: {
     /**
      * Selected IDs array
+     *
      * @model
      */
     value: {
@@ -327,7 +329,7 @@ export default {
       return [...this.additionalButtons, moreButton]
     },
 
-    valueStr() {
+    valueStr () {
       return JSON.stringify(this.value)
     }
   },
@@ -362,8 +364,12 @@ export default {
         return this.repository()
       }
 
+      const attributes = [this.valueAttribute]
+      if (this.displayAttribute && this.displayAttribute !== this.valueAttribute) {
+        attributes.push(this.displayAttribute)
+      }
       return this.$UB.Repository(this.entityName)
-        .attrs(this.valueAttribute, this.getDisplayAttribute)
+        .attrs(attributes)
         .orderBy(this.getDisplayAttribute)
     },
 
