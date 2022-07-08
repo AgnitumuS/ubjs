@@ -19,7 +19,7 @@ const ROLES = {
   EVERYONE: {
     ID: 0,
     NAME: 'Everyone',
-    ENDPOINTS: 'auth,timeStamp,statics,getAppInfo,models,getDomainInfo,ubql,rest',
+    ENDPOINTS: 'auth,timeStamp,statics,getAppInfo,models',
     DESCR: 'Everyone built-in role',
     TIMEOUT: 1000
   },
@@ -40,7 +40,7 @@ const ROLES = {
   USER: {
     ID: 3,
     NAME: 'User',
-    ENDPOINTS: 'logout,changePassword,setDocument,getDocument,checkDocument',
+    ENDPOINTS: 'changePassword,checkDocument,getDocument,getDomainInfo,logout,rest,setDocument,ubql',
     DESCR: 'User built-in role',
     TIMEOUT: 30
   },
