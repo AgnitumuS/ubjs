@@ -6,6 +6,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+- `UTableEntity`: add `refresh` method. This method will refresh data in store. It makes it a bit simpler,
+  when control used as the "ref" and instead of `this.$refs.table.$store.dispatch('refresh')`
+   you can use `this.$refs.table.refresh()`.
 
 ### Changed
 
