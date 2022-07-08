@@ -813,6 +813,10 @@ function createProcessingModule ({
        * @returns {Promise<void>}
        */
       async save (store, closeForm) {
+        if (!store.getters.isDirty) {
+          return
+        }
+
         if (beforeSave) {
           const answer = await beforeSave()
           if (answer === false) {

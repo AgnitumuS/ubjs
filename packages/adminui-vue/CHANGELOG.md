@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+- `save` action now checks `isDirty` property. If form is not dirty, action will do nothing.
 
 ## [5.23.2] - 2022-07-05
 ### Added
@@ -21,7 +22,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - `UFileInput` - added indication of file uploading process using loader icon
 
 ### Changed
-- `UtableEntity` - removed cursor: pointer from table that cannot be edited
+- `UTableEntity` - removed cursor: pointer from table that cannot be edited
 - `UToolbar`: for entities with aclRls mixin configured using `sameAs` aclRls editing is not visible
 
 ### Fixed
