@@ -194,7 +194,7 @@ module.exports = instance => ({
     },
 
     canRefresh (state, getters) {
-      return getters.showRefresh && !getters.loading
+      return getters.showRefresh && !state.loading
     },
 
     showEdit () {

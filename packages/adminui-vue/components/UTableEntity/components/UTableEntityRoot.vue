@@ -10,7 +10,7 @@
     @keydown.ctrl.delete.exact="canDelete && deleteRecord(selectedRowId)"
     @keydown.ctrl.e.prevent.exact="canEdit && editRecord(selectedRowId)"
     @keydown.ctrl.insert.exact="canAddNew && addNew()"
-    @keydown.ctrl.r.prevent.exact="!loading && canRefresh && refresh()"
+    @keydown.ctrl.r.prevent.exact="canRefresh && refresh()"
     @keydown.enter.exact="onSelect(selectedRowId)"
     @keydown.left.prevent.exact="move('left')"
     @keydown.right.prevent.exact="move('right')"
