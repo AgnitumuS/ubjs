@@ -21,6 +21,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 - `UAutoForm`, `aclRls form` - mode v-loading directive above the toolbar, so all form content will be locked while loading.
   Prevent locking of all opened forms by use `v-loading` instead of `v-loading.body`
+- `USelectMultiple`: now `displayAttribute` may be the same as `valueAttribute`
 
 ## [5.23.2] - 2022-07-05
 ### Added
@@ -28,7 +29,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - `UFileInput` - added indication of file uploading process using loader icon
 
 ### Changed
-- `UtableEntity` - removed cursor: pointer from table that cannot be edited
+- `UTableEntity` - removed cursor: pointer from table that cannot be edited
 - `UToolbar`: for entities with aclRls mixin configured using `sameAs` aclRls editing is not visible
 
 ### Fixed
