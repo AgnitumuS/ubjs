@@ -61,6 +61,16 @@ function addManyRefEntities (domainJson, serverConfig) {
         isManyManyRef: true,
         connectionName: entityMeta.connectionName,
         attributes: [{
+          name: 'ID',
+          caption: 'virtualID',
+          dataType: 'BigInt',
+          mapping: [{
+            name: 'AnsiSQL',
+            expressionType: 'Expression',
+            expression: '[sourceID]*100+[destID]'
+          }]
+        },
+        {
           name: 'sourceID',
           caption: 'sourceID',
           dataType: 'Entity',

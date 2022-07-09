@@ -8,6 +8,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
+ - DDL for `"Many" attribute storage table` now generated using the same code as for other entities.
+   This allows support for multi-tenancy and other possible future extensions
+ - DDL: prevent create an index on referential column in case this column already used in the first
+   position of some existed (maybe complex) index
+ - DDL: do not generate comment on column in case it is equal to column name (reduce noise)
 
 ### Deprecated
 
