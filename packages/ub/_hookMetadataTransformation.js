@@ -60,7 +60,7 @@ function addManyRefEntities (domainJson, serverConfig) {
         name: attr.associationManyData,
         isManyManyRef: true,
         connectionName: entityMeta.connectionName,
-        attributes: [{
+        attributes: [{ // virtual ID attribute - just to prevent native code to add an ID attribute and primary key on it
           name: 'ID',
           caption: 'virtualID',
           dataType: 'BigInt',
