@@ -14,6 +14,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+
+## [5.23.4] - 2022-07-11
+### Fixed
  - `getDomainInfo,ubql,rest` are excluded from allowed endpoints for `Everyone` role and added for `User` role.
    Anonymous user should not have asses to these endpoints
 

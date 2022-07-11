@@ -14,6 +14,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+
+## [5.23.3] - 2022-07-11
+### Fixed
  - patterns registered by `formatByPattern.registerDatePattern` are now listed in `formatByPattern.datePatterns`.
    The same is true for  `formatByPattern.registerNumberPattern` and `formatByPattern.numberPatterns`
  - for unknown pattern names `formatByPattern.getDatePattern` and `formatByPattern.getNumberPattern` will return

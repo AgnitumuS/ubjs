@@ -6,17 +6,22 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
-- `UAutoField` can accept additional listeners in case it resolves to `u-input` (as already done other UAutoField control types)
-- `UTableEntity`: ability to hide or replace "Refresh" button, like other buttons
-- `UTableEntity`: add `refresh` method. This method will refresh data in store. It makes it a bit simpler,
-  when control used as the "ref" and instead of `this.$refs.table.$store.dispatch('refresh')`
-   you can use `this.$refs.table.refresh()`.
 
 ### Changed
 
 ### Deprecated
 
 ### Removed
+
+### Fixed
+
+## [5.23.3] - 2022-07-11
+### Added
+- `UAutoField` can accept additional listeners in case it resolves to `u-input` (as already done other UAutoField control types)
+- `UTableEntity`: ability to hide or replace "Refresh" button, like other buttons
+- `UTableEntity`: add `refresh` method. This method will refresh data in store. It makes it a bit simpler,
+  when control used as the "ref" and instead of `this.$refs.table.$store.dispatch('refresh')`
+   you can use `this.$refs.table.refresh()`.
 
 ### Fixed
 - `UAutoForm`, `aclRls form` - mode v-loading directive above the toolbar, so all form content will be locked while loading.

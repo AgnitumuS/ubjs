@@ -6,7 +6,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
-- chunked file upload support (require UB@5.22.11)
 
 ### Changed
 
@@ -15,6 +14,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+
+## [5.23.3] - 2022-07-11
+### Added
+- chunked file upload support (require UB@5.22.11)
 
 ## [5.23.2] - 2022-07-05
 ## [5.23.1] - 2022-06-19
