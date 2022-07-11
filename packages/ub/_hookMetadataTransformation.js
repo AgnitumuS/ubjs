@@ -86,6 +86,7 @@ function addManyRefEntities (domainJson, serverConfig) {
           allowNull: false
         }],
         mixins: {
+          mStorage: {},
           audit: {
             enabled: (entityMeta.mixins && entityMeta.mixins.audit && entityMeta.mixins.audit.enabled),
             parentIdentifier: 'sourceID',

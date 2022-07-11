@@ -6,7 +6,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
- - `"Many" attribute storage entity`: added virtual ID attribute
+ - `"Many" attribute storage entity`: added virtual ID attribute + mStorage mixin to be a subject of DDL generation
 
 ### Changed
 
