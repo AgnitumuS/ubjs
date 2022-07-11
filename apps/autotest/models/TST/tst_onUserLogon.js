@@ -6,8 +6,10 @@ const _ = require('lodash')
 
 /**
  * Check Session.uData persistence. Here we fill Session.uData and check it in tst_service.uDataTest
+ * @param {THTTPRequest} req
  */
-function testOnUserLogin () {
+function testOnUserLogin (req) {
+  console.debug('onLogin parameters are:', req.parsedParameters)
   _.defaults(Session.uData, {
     tstNumArray: [1, 2, 3],
     tstStrArray: ['1', '2', '3'],

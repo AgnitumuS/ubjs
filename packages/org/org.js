@@ -17,11 +17,12 @@ Session.on('login', orgOnUserLogin)
  *
  * We put the user's FullName and array of org_unit IDs
  * in Session.uData - only one session-depended server object
+ *
  * @private
  */
 function orgOnUserLogin () {
   console.debug('Call JS method: ORG.onUserLogin')
-  let data = Session.uData
+  const data = Session.uData
   let staffs = null
   let orgUnitIDs = []
   let tmpArr = []
@@ -51,7 +52,7 @@ function orgOnUserLogin () {
       .selectAsObject()
     // remove staffs for deleted org_employee,
     // because situation when org_employee for userID is deleted but org_employeeonstaff not is possible
-    let delDate = new Date(2100, 1, 1)
+    const delDate = new Date(2100, 1, 1)
     staffs = staffs.filter(s => new Date(s['employeeID.mi_deleteDate']) > delDate)
   } catch (ex) {
     // this possible if we connect to empty database without org_* tables
@@ -66,19 +67,19 @@ function orgOnUserLogin () {
       throw new UB.UBAbort('<<<UserWithoutOrgEmployeeNotAllowed>>>')
     } else {
       // defined by ub model data.employeeShortFIO = ''
-      data['orgUnitIDs'] = ''
+      data.orgUnitIDs = ''
       data.staffUnitID = -1
       data.employeeID = -1
     }
   } else {
-    let permStaffUnitIDsArray = []
-    let tempStaffUnitIDsArray = []
-    let allStaffUnitIDsArray = []
+    const permStaffUnitIDsArray = []
+    const tempStaffUnitIDsArray = []
+    const allStaffUnitIDsArray = []
     let tempEmployeeOnStaffIDsArray = []
     let tempPositionsArray = []
-    let assistantStaffUnitIDsArray = []
-    let assistantEmployeeOnStaffIDsArray = []
-    let assistantPositionsArray = []
+    const assistantStaffUnitIDsArray = []
+    const assistantEmployeeOnStaffIDsArray = []
+    const assistantPositionsArray = []
     let staffUnitID = null
     let employeeOnStaffID = null
     let parentID = null
@@ -86,19 +87,19 @@ function orgOnUserLogin () {
     let employeeOnStaffType = ''
     let permanentOrgUnitIDs = []
 
-    let firstStaff = staffs[0]
+    const firstStaff = staffs[0]
     data.employeeShortFIO = firstStaff['employeeID.shortFIO']
     data.employeeFullFIO = firstStaff['employeeID.fullFIO']
-    data.employeeID = firstStaff['employeeID']
+    data.employeeID = firstStaff.employeeID
 
     for (let i = 0, L = staffs.length; i < L; i++) {
-      let staff = staffs[i]
+      const staff = staffs[i]
       // treePath is something like this: "/2100002161511/2100002322780/" remove empty ""
       tmpArr = staff['staffUnitID.ID.mi_treePath'].split('/').filter(v => !!v).map(v => parseInt(v, 10))
       // drop STAFF type org units from orgUnitIDs array (see [UB-1571] for details)
-      let myOU = tmpArr.pop() // last entry in treePath is my staff, so memorise it
+      const myOU = tmpArr.pop() // last entry in treePath is my staff, so memorise it
       // select orgUnit types
-      let orgUnitTypes = UB.Repository('org_unit').attrs(['ID', 'unitType']).where('ID', 'in', tmpArr).orderBy('mi_treePath').selectAsObject()
+      const orgUnitTypes = UB.Repository('org_unit').attrs(['ID', 'unitType']).where('ID', 'in', tmpArr).orderBy('mi_treePath').selectAsObject()
       tmpArr = []
       orgUnitTypes.forEach(function (unit) {
         if (unit.unitType !== 'STAFF') {
@@ -108,11 +109,11 @@ function orgOnUserLogin () {
       tmpArr.push(myOU)
 
       orgUnitIDs = _.union(orgUnitIDs, tmpArr)
-      employeeOnStaffType = staff['employeeOnStaffType']
+      employeeOnStaffType = staff.employeeOnStaffType
 
-      let currStaffUnitID = staff['staffUnitID']
+      const currStaffUnitID = staff.staffUnitID
       allStaffUnitIDsArray.push(currStaffUnitID)
-      let currEmployeeOnStaffID = staff['ID']
+      const currEmployeeOnStaffID = staff.ID
       if (employeeOnStaffType === 'PERMANENT') {
         staffUnitID = currStaffUnitID // permanentStaffUnit
         employeeOnStaffID = currEmployeeOnStaffID // permanent employeeOnStaff
@@ -126,21 +127,21 @@ function orgOnUserLogin () {
         tempStaffUnitIDsArray.push(currStaffUnitID)
         tempEmployeeOnStaffIDsArray.push(currEmployeeOnStaffID)
         tempPositionsArray.push({
-          staffUnitID: staff['staffUnitID'],
-          employeeOnStaffID: staff['ID'],
+          staffUnitID: staff.staffUnitID,
+          employeeOnStaffID: staff.ID,
           staffUnitFullName: staff['staffUnitID.fullName'],
           staffUnitName: staff['staffUnitID.name'],
-          employeeOnStaffDescription: staff['description']
+          employeeOnStaffDescription: staff.description
         })
       } else if (employeeOnStaffType === 'ASSISTANT') {
         assistantStaffUnitIDsArray.push(currStaffUnitID)
         assistantEmployeeOnStaffIDsArray.push(currEmployeeOnStaffID)
         assistantPositionsArray.push({
-          staffUnitID: staff['staffUnitID'],
-          employeeOnStaffID: staff['ID'],
+          staffUnitID: staff.staffUnitID,
+          employeeOnStaffID: staff.ID,
           staffUnitFullName: staff['staffUnitID.fullName'],
           staffUnitName: staff['staffUnitID.name'],
-          employeeOnStaffDescription: staff['description']
+          employeeOnStaffDescription: staff.description
         })
       }
     }
@@ -162,8 +163,8 @@ function orgOnUserLogin () {
     data.employeeOnStaffID = employeeOnStaffID // permanent employeeOnStaffID
     data.parentID = parentID // permanent staffUnitID parent
     data.parentUnityEntity = parentUnityEntity // permanent staffUnitID parent entity type
-    data['orgUnitIDs'] = orgUnitIDs.join(',') // all orgUnit's chain
-    data['permanentOrgUnitIDs'] = permanentOrgUnitIDs.join(',') // user orgUnit's chain by permanent employeeOnStaffIDs
+    data.orgUnitIDs = orgUnitIDs.join(',') // all orgUnit's chain
+    data.permanentOrgUnitIDs = permanentOrgUnitIDs.join(',') // user orgUnit's chain by permanent employeeOnStaffIDs
     data.tempStaffUnitIDs = tempStaffUnitIDsArray.join(',') // array of temporary staffUnitIDs
     data.tempEmployeeOnStaffIDs = tempEmployeeOnStaffIDsArray.join(',') // array of temporary employeeOnStaffIDs
     data.assistantStaffUnitIDs = assistantStaffUnitIDsArray.join(',') // array of assistant staffUnitIDs
@@ -175,7 +176,7 @@ function orgOnUserLogin () {
     data.tempPositions = JSON.stringify(tempPositionsArray) // stringified array of temporary position objects: {staffUnitID, employeeOnStaffID}
     data.assistantPositions = JSON.stringify(assistantPositionsArray) // stringified array of assistant position objects: {staffUnitID, employeeOnStaffID}
     tempPositionsArray = _.union(tempPositionsArray, assistantPositionsArray)
-    tempPositionsArray.push({ staffUnitID: staffUnitID, employeeOnStaffID: employeeOnStaffID })
+    tempPositionsArray.push({ staffUnitID, employeeOnStaffID })
     data.allPositions = JSON.stringify(tempPositionsArray) // stringified array of permanent + temporary + assistant position objects: {staffUnitID, employeeOnStaffID}
   }
 }

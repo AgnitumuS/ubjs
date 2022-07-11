@@ -531,9 +531,11 @@ $App.connection.userLang()
         params: {
           AUTHTYPE: authParams.authSchema,
           userName: authParams.login,
+          prefUData: authParams.prefUData,
           password: ''
         }
       }
+
       const clientNonce = me.authMock
         ? SHA256('1234567890abcdef').toString()
         : SHA256(new Date().toISOString().slice(0, 16)).toString()
@@ -597,6 +599,7 @@ $App.connection.userLang()
     }
 
     let promise
+    authParams.prefUData = this.getPreferredUData(authParams.login)
     switch (authParams.authSchema) {
       case AUTH_SCHEMA_FOR_ANONYMOUS:
         promise = Promise.resolve({ data: { result: '0+0', uData: JSON.stringify({ login: ANONYMOUS_USER }) }, secretWord: '' })
@@ -617,7 +620,8 @@ $App.connection.userLang()
         promise = this.post(AUTH_METHOD_URL, '', {
           params: {
             USERNAME: '',
-            AUTHTYPE: authParams.authSchema
+            AUTHTYPE: authParams.authSchema,
+            prefUData: authParams.prefUData
           }
         }).then(function (resp) {
           resp.secretWord = resp.headers('X-UB-Nonce')
@@ -2260,6 +2264,36 @@ UBConnection.prototype.userCanChangePassword = function () {
   const auis = (this.appConfig.uiSettings && this.appConfig.uiSettings.adminUI) || {}
   return (lastAuthType === 'UB' || lastAuthType === 'Basic') ||
     (lastAuthType.startsWith('CERT') && auis.authenticationCert && auis.authenticationCert.requireUserName)
+}
+
+/**
+ * Return preferred uData (stored in localStorage for specified user).
+ * Preferred uData passed as `prefUData` URL param during `/auth` handshake and can be used in server-side Session.on('login') handler
+ *
+ * @param {string} [userName] if not passed - localStorage.LAST_LOGIN is used (if sets)
+ * @returns {object|undefined}
+ */
+UBConnection.prototype.getPreferredUData = function (userName) {
+  if (!LDS) return
+  if (!userName) userName = LDS.getItem(ubUtils.LDS_KEYS.LAST_LOGIN)
+  if (!userName) return
+  return LDS.getItem(ubUtils.LDS_KEYS.PREFFERED_UDATA_PREFIX + userName)
+}
+
+/**
+ * Sets currently logged-in user preferred uData (stored in localStorage for specified user).
+ * Preferred uData passed as `prefUData` URL param during `/auth` handshake and can be used in server-side Session.on('login') handler
+ *
+ * @param {object|null} preferredUData If `null` - preferred user data will be deleted
+ */
+UBConnection.prototype.setPreferredUData = function (preferredUData) {
+  if (!this.isAuthorized || !LDS) return
+  const key = ubUtils.LDS_KEYS.PREFFERED_UDATA_PREFIX + this.userLogin()
+  if (!preferredUData) {
+    LDS.removeItem(key)
+  } else {
+    LDS.setItem(key, JSON.stringify(preferredUData))
+  }
 }
 
 /**

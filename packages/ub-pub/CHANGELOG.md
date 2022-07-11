@@ -12,6 +12,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
   
   **BREAKING** - applications what uses `setDocument:before` should take care about chunked uploads.
 
+ - new method `AsyncConnection.setPreferredUData` - store into the `localStorage` some data, what will be available during next
+  login inside `Session.on('login')` as `req.parsedParameters.prefUData`
+
 ### Changed
  - use a global `localStorage` instead of window.localStorage. This allows use `localStorage` polyfill under nodeJS (for example `node-localstorage`)
 
