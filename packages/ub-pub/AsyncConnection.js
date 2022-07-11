@@ -81,7 +81,7 @@ function parseAndTranslateUBErrorMessage (errMsg) {
   }
 }
 
-const LDS = ((typeof window !== 'undefined') && window.localStorage) ? window.localStorage : false
+const LDS = typeof localStorage !== 'undefined' ? localStorage : false
 
 /**
  * Called by UBConnection on first authorized request.
@@ -603,9 +603,6 @@ $App.connection.userLang()
         break
       case 'UB':
         promise = this.authHandshakeUB(authParams)
-        break
-      case 'CERT':
-        promise = this.pki().then(pkiInterface => pkiInterface.authHandshakeCERT(authParams))
         break
       case 'CERT2':
         promise = this.pki().then(pkiInterface => pkiInterface.authHandshakeCERT2(authParams))
