@@ -3,6 +3,7 @@ const BlobStoreCustom = require('./blobStoreCustom')
 const path = require('path')
 const fs = require('fs')
 const mime = require('mime-types')
+const base = require('@unitybase/base')
 
 function getRandomInt (max) {
   return Math.floor(Math.random() * Math.floor(max))
@@ -89,6 +90,8 @@ class FileSystemBlobStore extends BlobStoreCustom {
     const fn = this.getTempFileName(request)
     const { chunksTotal, chunkNum, chunkSize } = request
     let fileSize = 0
+
+    if ((chunksTotal > 1) && (base.ubVersionNum < 50220011)) throw new Error('UB@5.22.11 is require for chunked file upload')
 
     if (chunksTotal > 1 && chunksTotal !== chunkNum + 1) {
       console.debug(`temp file's chunk (${chunkNum + 1} of ${chunksTotal}) will be written to`, fn)

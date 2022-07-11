@@ -6,7 +6,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
-- chunked file upload support
+- chunked file upload support (require UB@5.22.11)
 
 ### Changed
 
