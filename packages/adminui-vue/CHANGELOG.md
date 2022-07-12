@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
+ - `UNavbarUserButton`: replace `el-checkbox` -> `u-checkbox` for `KerberosRememberUserMenu` 
 
 ### Deprecated
 

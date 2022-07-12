@@ -21,12 +21,11 @@
         v-if="negotiateAvailable"
         prevent-close
       >
-        <el-checkbox
+        <u-checkbox
           slot="label"
           v-model="silenceKerberosLogin"
-        >
-          {{ $ut('KerberosRememberUserMenu') }}
-        </el-checkbox>
+          :label="$ut('KerberosRememberUserMenu')"
+        />
       </u-dropdown-item>
 
       <slot />
