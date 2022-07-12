@@ -5,6 +5,7 @@
     :step="getStep"
     :precision="getPrecision"
     v-bind="$attrs"
+    v-on="$listeners"
   >
     <u-locale-button
       v-if="getMultilang"

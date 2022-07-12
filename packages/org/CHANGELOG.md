@@ -15,6 +15,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.23.4] - 2022-07-11
+### Fixed
+- `department`, `employee on staff`, `execgroup`, `profession`, `staff unit`, `org unit` forms:
+  - mode v-loading directive above the toolbar, so all form content will be locked while loading
+  - prevent locking of all opened forms by use `v-loading` instead of `v-loading.body`
+  
 ## [5.23.3] - 2022-07-05
 ## [5.23.2] - 2022-06-19
 ## [5.23.1] - 2022-06-19

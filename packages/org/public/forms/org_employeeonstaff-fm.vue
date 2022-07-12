@@ -1,5 +1,8 @@
 <template>
-  <div class="u-form-layout">
+  <div
+    v-loading="loading"
+    class="u-form-layout"
+  >
     <u-toolbar />
     <u-form-container label-position="top">
       <u-form-row
@@ -34,6 +37,8 @@ const { Form, mapInstanceFields } = require('@unitybase/adminui-vue')
 const fieldList = ['ID', 'employeeID', 'staffUnitID', 'tabNo', 'employeeOnStaffType', 'description', 'mi_dateFrom',
   'mi_dateTo']
 const { required } = require('vuelidate/lib/validators/index')
+const { mapGetters } = require('vuex')
+
 module.exports.mount = cfg => {
   Form(cfg)
     .processing({
@@ -66,7 +71,8 @@ module.exports.default = {
   inject: ['entity', '$v'],
 
   computed: {
-    ...mapInstanceFields(fieldList)
+    ...mapInstanceFields(fieldList),
+    ...mapGetters(['loading'])
   },
 
   methods: {

@@ -1,11 +1,11 @@
 <template>
-  <div class="u-form-layout">
+  <div
+    v-loading="loading"
+    class="u-form-layout"
+  >
     <u-toolbar :show-dropdown="false" />
 
-    <u-form-container
-      v-loading="loading"
-      label-position="top"
-    >
+    <u-form-container label-position="top">
       <u-form-row
         label="aclRlsInfo.subject"
         :readonly="!!singleEntryID"

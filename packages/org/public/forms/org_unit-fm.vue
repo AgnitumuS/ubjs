@@ -1,5 +1,8 @@
 <template>
-  <div class="u-form-layout">
+  <div
+    v-loading="loading"
+    class="u-form-layout"
+  >
     <u-toolbar />
 
     <u-form-container label-position="top">
@@ -13,6 +16,7 @@
 
 <script>
 const { Form, mapInstanceFields } = require('@unitybase/adminui-vue')
+const { mapGetters } = require('vuex')
 
 module.exports.mount = cfg => {
   Form(cfg)
@@ -24,7 +28,14 @@ module.exports.mount = cfg => {
 module.exports.default = {
   name: 'org_unit',
   computed: {
-    ...mapInstanceFields(['ID', 'parentID', 'unitType', 'code', 'caption'])
+    ...mapInstanceFields([
+      'ID',
+      'parentID',
+      'unitType',
+      'code',
+      'caption'
+    ]),
+    ...mapGetters(['loading'])
   }
 }
 </script>

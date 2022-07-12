@@ -15,6 +15,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.23.3] - 2022-07-11
+### Added
+ - `"Many" attribute storage entity`: added virtual ID attribute + mStorage mixin to be a subject of DDL generation
+
 ## [5.23.2] - 2022-07-05
 ### Added
  - new method `THTTPRequest.appendToFile(fullFilePath, [encoding])` - append request body content (as binary) to

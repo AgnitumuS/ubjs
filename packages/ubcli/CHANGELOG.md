@@ -15,6 +15,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.23.3] - 2022-07-11
+### Changed
+ - DDL for `"Many" attribute storage table` now generated using the same code as for other entities.
+   This allows support for multi-tenancy and other possible future extensions
+ - DDL: prevent create an index on referential column in case this column already used in the first
+   position of some existed (maybe complex) index
+ - DDL: do not generate comment on column in case it is equal to column name (reduce noise)
+
 ## [5.23.2] - 2022-07-05
 ### Changed
  - `ubcli migrate` will disable schedulers in starting server instance.

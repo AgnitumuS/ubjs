@@ -37,6 +37,9 @@ const numberPatterns = {
   decimal6: { style: 'decimal', useGrouping: true, maximumFractionDigits: 6, minimumFractionDigits: 6 }
 }
 
+const datePatternNames = Object.keys(datePatterns)
+const numberPatternNames = Object.keys(numberPatterns)
+
 /**
  * lang to ICU locale hook (if defined by setLang2LocaleHook)
  * @private
@@ -175,13 +178,13 @@ module.exports.setLang2LocaleHook = function (newL2lHook) {
  *
  * @type {string[]}
  */
-module.exports.datePatterns = Object.keys(datePatterns)
+module.exports.datePatterns = datePatternNames
 /**
  * Available Number patterns
  *
  * @type {string[]}
  */
-module.exports.numberPatterns = Object.keys(numberPatterns)
+module.exports.numberPatterns = numberPatternNames
 
 /**
  * Registers custom date pattern (should be called once)
@@ -206,6 +209,7 @@ module.exports.registerDatePattern = function (patternName, intlOptions) {
     throw new Error('Invalid intlOptions - should be object')
   }
   datePatterns[patternName] = intlOptions
+  datePatternNames.push(patternName)
 }
 
 /**
@@ -225,6 +229,7 @@ module.exports.registerNumberPattern = function (patternName, intlOptions) {
     throw new Error('Invalid intlOptions - should be object')
   }
   numberPatterns[patternName] = intlOptions
+  numberPatternNames.push(patternName)
 }
 
 /**
@@ -234,7 +239,7 @@ module.exports.registerNumberPattern = function (patternName, intlOptions) {
  * @returns {object} Pattern description for Intl
  */
 module.exports.getDatePattern = function (patternName) {
-  return Object.assign({}, datePatterns[patternName])
+  return datePatterns[patternName] && Object.assign({}, datePatterns[patternName])
 }
 
 /**
@@ -244,7 +249,7 @@ module.exports.getDatePattern = function (patternName) {
  * @returns {object} Pattern description for Intl
  */
 module.exports.getNumberPattern = function (patternName) {
-  return Object.assign({}, numberPatterns[patternName])
+  return numberPatterns[patternName] && Object.assign({}, numberPatterns[patternName])
 }
 
 /**

@@ -296,6 +296,7 @@ where
   genCodeSetCaption (tableName, column, value, oldValue) {
     if (value) value = value.replace(/'/g, "''''")
     if (!value && !oldValue) return // prevent create empty comments
+    if (column === value) return // do not create caption in case it`s the same as column name
     const result = `EXECUTE IMMEDIATE 'comment on ${column ? 'column' : 'table'} ${tableName}${column ? '.' : ''}${column || ''} is ''${value}'''`
     this.DDL.caption.statements.push(result)
   }

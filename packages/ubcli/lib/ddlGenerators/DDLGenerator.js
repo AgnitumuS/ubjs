@@ -8,6 +8,7 @@ const { TableDefinition, strIComp } = require('./AbstractSchema')
 
 /**
  * Return name of the db table for an entity (depending on mapping)
+ *
  * @param {UBEntity} entity
  * @returns {string}
  */
@@ -19,11 +20,12 @@ function getTableDBName (entity) {
 
 /**
  * Create name of the foreign key as it should be in the database
+ *
  * @param {string} sourceTableName
  * @param {string} sourceColumnName
  * @param {string} destTableName
  * @param {string|DDLGenerator.dbDialects} dialect
- * @return {string}
+ * @returns {string}
  */
 function genFKName (sourceTableName, sourceColumnName, destTableName, dialect = DDLGenerator.dbDialects.AnsiSQL) {
   const MAX_IDENTIFIER_LEN = DDLGenerator.MAX_DB_IDENTIFIER_LENGTHS[dialect]
@@ -64,8 +66,9 @@ function genFKName (sourceTableName, sourceColumnName, destTableName, dialect = 
 
 /**
  * Return the name of the attribute in the database according to mapping and dialect
+ *
  * @param {UBEntity} entity
- * @param {String} attributeCode
+ * @param {string} attributeCode
  */
 function getAttributeDBName (entity, attributeCode) {
   const attribute = entity.attributes[attributeCode]
@@ -80,6 +83,15 @@ function getAttributeDBName (entity, attributeCode) {
   }
 }
 
+/**
+ *
+ * @param dialect
+ * @param tableDef
+ * @param sqlAlias
+ * @param attrName
+ * @param isHistory
+ * @param storage
+ */
 function createDefUniqueIndex (dialect, tableDef, sqlAlias, attrName, isHistory, storage) {
   const xDef = {
     isUnique: true,
@@ -94,6 +106,7 @@ function createDefUniqueIndex (dialect, tableDef, sqlAlias, attrName, isHistory,
 
 /**
  * Create a short name based on DDLGenerator.MAX_DB_IDENTIFIER_LENGTHS for a given DB dialect
+ *
  * @param prefix
  * @param root
  * @param suffix
@@ -132,10 +145,11 @@ class DDLGenerator {
 
   /**
    * Generate DD SQL for entity list
+   *
    * @param {Array<string>} names Entity names (might be regular expressions)
    * @param {SyncConnection} conn
    * @param {boolean} [unsafe=false]
-   * @returns {Object} DDL SQL
+   * @returns {object} DDL SQL
    */
   generateDDL (names, conn, unsafe = false) {
     const result = {}
@@ -147,11 +161,9 @@ class DDLGenerator {
 
     const forGeneration = _.filter(domain.entities, (entity) => {
       for (const re of namesRe) {
-        if (re.test(entity.name)
+        if (re.test(entity.name) &&
           // ignore DDL generation for External & Virtual entities
-          && (entity.dsType === UBDomain.EntityDataSourceType.Normal)
-          // many-to-many storage tables are added by addManyTable
-          && !entity.isManyManyRef
+          (entity.dsType === UBDomain.EntityDataSourceType.Normal)
         ) {
           return true
         }
@@ -183,7 +195,7 @@ class DDLGenerator {
 
     for (const dbConnCfg of domain.connections) {
       if (tablesByConnection[dbConnCfg.name] && tablesByConnection[dbConnCfg.name].length) {
-        /** @type {function} */
+        /** @type {Function} */
         const DatabaseInfo = require(`./db/${dbConnCfg.dialect}`)
         const maker = /** @type {DBAbstract} */ new DatabaseInfo(conn, dbConnCfg, tablesByConnection[dbConnCfg.name])
         console.log(`Loading database metadata for connection ${maker.dbConnectionConfig.name} (${maker.dbConnectionConfig.dialect})...`)
@@ -199,9 +211,10 @@ class DDLGenerator {
 
   /**
    * Create reference table structure based on metadata
+   *
    * @param {SyncConnection} conn
    * @param {UBEntity} entity
-   * @return {TableDefinition}
+   * @returns {TableDefinition}
    */
   createReference (conn, entity) {
     const addedAttributes = new Map()
@@ -229,9 +242,7 @@ class DDLGenerator {
       })
     } else if (
       this.multitenancyEnabled &&
-      entity.connectionName === 'main' && // need to avoid attempts to generate DDL for fts connections
-      !entity.isManyManyRef && // workaround of problem that ManyManyRef entities do not have mi_tenantID
-      !entity.name.endsWith('_acl') // workaround of problem that aclRls mixin does not add mi_tenantID
+      entity.connectionName === 'main' // need to avoid attempts to generate DDL for fts connections
     ) {
       tableDef.addPolicy({
         type: 'systemTenantUsers',
@@ -245,8 +256,25 @@ class DDLGenerator {
 
     const defaultLang = conn.getAppInfo().defaultLang
 
+    if (entity.isManyManyRef) { // many 2 many table uses sourceID+destID as a primary key
+      tableDef.primaryKey = { name: 'PK_' + entity.name, keys: ['sourceID', 'destID'] }
+    } else if (entity.attributes.ID) { // in case ID is mapped to non-uniq attribute - skip primary key generation. Example in tst_virtualID.meta
+      let createPK = true
+      const m = entity.attributes.ID.mapping
+      if (m && m.expressionType === UBDomain.ExpressionType.Field) {
+        if (entity.attributes[m.expression]) createPK = entity.attributes[m.expression].isUnique
+      }
+      if (createPK) {
+        tableDef.primaryKey = { name: 'PK_' + sqlAlias, keys: [getAttributeDBName(entity, 'ID')] } // [UB-1386]
+      }
+    }
+    // add dbKeys & indexes before attributes.
+    // In case of attribute with ref constraint we can check some complex index is already exists on column and prevent creates one for ref
+    this.addCustomElements(tableDef, entity)
+
     _.forEach(entity.attributes,
-      /** @param {UBEntityAttribute} attribute
+      /**
+       * @param {UBEntityAttribute} attribute
        * @param {string} attrCode
        */
       (attribute, attrCode) => {
@@ -269,10 +297,10 @@ class DDLGenerator {
           throw new Error('attrNameF is undefined for ' + attrCode)
         }
 
-        if (attribute.dataType === UBDomain.ubDataTypes.Many) {
-          this.addManyTable(entity, attribute)
+        if (attribute.dataType === UBDomain.ubDataTypes.Many) { // no field for Many attribute - data stored in many2many table
           return
         }
+
         DDLGenerator.addTableField(tableDef, attribute, attrCode, null /* attrCode */)
         // multi language
         if (attribute.isMultiLang && ((attribute.dataType === UBDomain.ubDataTypes.String) || (attribute.dataType === UBDomain.ubDataTypes.Text))) {
@@ -308,11 +336,16 @@ class DDLGenerator {
           }
           // indexing
           if (!attribute.isUnique) {
-            tableDef.addIndex({
-              name: formatName('IDX_', sqlAlias, `_${attrNameF}`, entity.connectionConfig.dialect),
-              isUnique: false,
-              keys: [attrName]
-            })
+            // skip create index for ref. constraint column in case some index with this column on the first position already exists
+            if (!tableDef.indexes.some(idx => strIComp(idx.keys[0], attrName)) &&
+              (!tableDef.primaryKey || (tableDef.primaryKey && !strIComp(tableDef.primaryKey.keys[0], attrName)))
+            ) {
+              tableDef.addIndex({
+                name: formatName('IDX_', sqlAlias, `_${attrNameF}`, entity.connectionConfig.dialect),
+                isUnique: false,
+                keys: [attrName]
+              })
+            }
             if (attribute.isMultiLang) {
               for (lang of supportLang) {
                 if (lang !== defaultLang) {
@@ -387,17 +420,6 @@ class DDLGenerator {
       })
     }
 
-    if (entity.attributes.ID) { // in case ID is mapped to non-uniq attribute - skip primary key generation. Example in tst_virtualID.meta
-      let createPK = true
-      const m = entity.attributes.ID.mapping
-      if (m && m.expressionType === UBDomain.ExpressionType.Field) {
-        if (entity.attributes[m.expression]) createPK = entity.attributes[m.expression].isUnique
-      }
-      if (createPK) {
-        tableDef.primaryKey = { name: 'PK_' + sqlAlias, keys: [getAttributeDBName(entity, 'ID')] } // [UB-1386]
-      }
-    }
-
     // reference tables for SUFFIXES index storage
     if (entity.dbExtensions) {
       _.forEach(entity.dbExtensions, (s, tblName) => {
@@ -406,7 +428,6 @@ class DDLGenerator {
         }
       })
     }
-    this.addCustomElements(tableDef, entity)
 
     tableDef.__entity = entity
     this.referenceTableDefs.push(tableDef)
@@ -415,6 +436,7 @@ class DDLGenerator {
 
   /**
    * Add dbKeys and dbExtension indexes
+   *
    * @param {TableDefinition} tableDef
    * @param {UBEntity} entity
    */
@@ -426,6 +448,11 @@ class DDLGenerator {
     const IS_ORACLE = DDLGenerator.isOracle(dialect)
     const isHistory = entity.mixins.dataHistory
 
+    /**
+     *
+     * @param stringToFormat
+     * @param {...any} values
+     */
     function formatBrackets (stringToFormat, ...values) {
       const FORMAT_RE = /{(\d+)}/g
       return stringToFormat.replace(FORMAT_RE, function (m, i) {
@@ -534,8 +561,8 @@ class DDLGenerator {
    *
    * @param {TableDefinition} tableDef
    * @param {UBEntityAttribute} attribute
-   * @param {String} fieldName
-   * @param {String} [baseName=null]
+   * @param {string} fieldName
+   * @param {string} [baseName=null]
    */
   static addTableField (tableDef, attribute, fieldName, baseName = null) {
     let dataType, size, prec, enumGroup
@@ -630,55 +657,8 @@ class DDLGenerator {
   }
 
   /**
-   * Add references definition for "Many" attribute storage table
-   * @param {UBEntity} entity
-   * @param {UBEntityAttribute} attribute
-   */
-  addManyTable (entity, attribute) {
-    const associatedEntity = entity.domain.get(attribute.associatedEntity)
-    this.relatedEntities.push(attribute.associatedEntity)
-    const tableDef = new TableDefinition({
-      name: attribute.associationManyData,
-      caption: ''
-    })
-    tableDef.__entity = entity.domain.get(attribute.associationManyData)
-    tableDef.addColumn({
-      name: 'sourceID',
-      dataType: 'BIGINT',
-      allowNull: false
-    })
-    tableDef.addColumn({
-      name: 'destID',
-      dataType: 'BIGINT',
-      allowNull: false
-    })
-    tableDef.primaryKey = { name: 'PK_' + attribute.associationManyData, keys: ['sourceID', 'destID'] }
-    tableDef.addFK({
-      name: genFKName(attribute.associationManyData, 'SOURCEID', entity.sqlAlias, entity.connectionConfig.dialect),
-      keys: ['sourceID'.toUpperCase()],
-      references: getTableDBName(entity),
-      refPkDefColumn: getAttributeDBName(entity, 'ID'),
-      generateFK: true
-    })
-    if (associatedEntity.connectionName === entity.connectionName) { // referential constraint between different connection not supported
-      tableDef.addFK({
-        name: genFKName(attribute.associationManyData, 'DESTID', associatedEntity.sqlAlias, entity.connectionConfig.dialect),
-        keys: ['destID'.toUpperCase()],
-        references: getTableDBName(associatedEntity),
-        refPkDefColumn: getAttributeDBName(associatedEntity, 'ID'),
-        generateFK: true
-      })
-    }
-    tableDef.addIndex({
-      name: formatName('IDX_', attribute.associationManyData, '_DESTID', entity.connectionConfig.dialect),
-      keys: ['destID'.toUpperCase()]
-    })
-    tableDef.isIndexOrganized = true
-    this.referenceTableDefs.push(tableDef)
-  }
-
-  /**
    * Add references table definition for storing data of "SUFFIX" index
+   *
    * @param {UBEntity} entity
    * @param {UBEntityAttribute} attribute
    * @param {string} tblName
@@ -721,7 +701,7 @@ class DDLGenerator {
   }
 
   /**
-   * @param {String} dialect
+   * @param {string} dialect
    * @returns {boolean}
    */
   static isOracle (dialect) {
@@ -729,7 +709,7 @@ class DDLGenerator {
   }
 
   /**
-   * @param {String} dialect
+   * @param {string} dialect
    * @returns {boolean}
    */
   static isMSSQL (dialect) {

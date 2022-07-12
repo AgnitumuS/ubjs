@@ -325,21 +325,29 @@ module.exports.mount = function ({ title, entity, instanceID, formCode, rootComp
 ```
 
 
-## Рекомендации к написанию шаблона формы
+## Form template recommendations
 
 ```html
 <template>
-  <!-- класс который растягивает форму на высоту окна и делает правильную работу скрола -->
-  <div class="u-form-layout">
+  <!-- 
+    u-form-layout - a class that stretches the form to the height of the window and does the right job of scrolling. 
+    
+    The `v-loading` directive is recommended to be used at the top level so that the toolbar overlaps.
+    
+    The `v-loading.body` modifier is not recommended because it will overlap the given area on all opened forms
+  -->
+  <div
+    v-loading="loading"
+    class="u-form-layout">
     <!-- тулбар-->
     <u-toolbar />
 
-    <!-- компонент позволяет указать ширину для дочерних u-form-row. Лоадер рекомендуется вешать на него -->
-    <u-form-container
-      v-loading.body="loading"
-      :label-width="160"
-    >
-      <!-- строка формы с заголовком (label) -->
+    <!-- u-form-container provides label-width for all child u-form-row  -->
+    <u-form-container :label-width="160">
+      <!-- creates a u-form-row with child control based on entity attribute type -->
+      <u-auto-field attribute-name="code" />
+      
+      <!-- the same as above, but manually defined  -->
       <u-form-row
         :label="getLabel('code')"
         required
@@ -348,9 +356,7 @@ module.exports.mount = function ({ title, entity, instanceID, formCode, rootComp
         <u-base-input v-model="code" />
       </u-form-row>
 
-      <!-- обертка для u-form-row которая смотрит на атрибут в сущности -->
-      <!-- и по его типу рендерит нужный html + определяет валидацию -->
-      <u-auto-field attribute-name="code" />
+      
     </u-form-container>
   </div>
 </template>
@@ -360,11 +366,10 @@ const { mapInstanceFields } = require('@unitybase/adminui-vue')
 const { mapGetters } = require('vuex')
 
 export default {
-  inject: ['$v'], // валидация, 
+  inject: ['$v'], // validation, 
 
   computed: {
-    ...mapInstanceFields(['code', 'caption']), // хелпер для получение/изменения данных формы
-
+    ...mapInstanceFields(['code', 'caption']), // helper to get/set a form data directly, without digging into store
     ...mapGetters(['loading'])
   }
 }

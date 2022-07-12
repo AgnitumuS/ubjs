@@ -241,7 +241,8 @@
 				"executeWhenConnected": [
 					"SET search_path TO ub5_%UB_APP%_%PLATFORM%",
 					"SET ub.tenantID=0",
-					"SET statement_timeout=%UB_DB_STATEMENT_TIME_LIMIT||10000%"
+					"SET statement_timeout=%UB_DB_STATEMENT_TIME_LIMIT||10000%",
+					"SET join_collapse_limit=16"
 				]
 			},
 			//#endif

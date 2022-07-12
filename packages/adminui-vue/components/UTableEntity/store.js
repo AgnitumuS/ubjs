@@ -189,6 +189,14 @@ module.exports = instance => ({
       )
     },
 
+    showRefresh () {
+      return !instance.hideActions.includes('refresh')
+    },
+
+    canRefresh (state, getters) {
+      return getters.showRefresh && !state.loading
+    },
+
     showEdit () {
       return !instance.hideActions.includes('edit')
     },
@@ -613,18 +621,16 @@ module.exports = instance => ({
       }
     },
     async doDelete ({ getters }, ID, attr = 'ID') {
-      let result = false
       try {
         await UB.connection.doDelete({
           entity: getters.entityName,
           execParams: { [attr]: ID }
         })
-        result = true
+        return true
       } catch (err) {
         UB.showErrorWindow(err)
         console.error(new UB.UBAbortError(err))
-      } finally {
-        return result
+        return false
       }
     },
     // delete elements in loop and forms an array of successfully deleted. Stops on first unsuccessful deletion

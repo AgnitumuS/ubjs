@@ -1,9 +1,9 @@
 <template>
-  <div class="u-form-layout">
-    <u-form-container
-      v-loading="loading"
-      label-position="top"
-    >
+  <div
+    v-loading="loading"
+    class="u-form-layout"
+  >
+    <u-form-container label-position="top">
       <u-grid template-columns="1fr 40%">
         <div>
           <u-form-row

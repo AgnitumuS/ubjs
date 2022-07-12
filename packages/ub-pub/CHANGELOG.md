@@ -6,11 +6,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
- - 'AsyncConnection.setDocument' - can upload large files using chunks. 
-  To activate, chunk size (mb) can be sets in UB config `uiSettings.adminUI.uploadChunkSizeMb` (by default - no chunked upload).
-  Can be set for individual `setDocument` request by pass `params.chunkSizeMb`
-  
-  **BREAKING** - applications what uses `setDocument:before` should take care about chunked uploads.
 
 ### Changed
 
@@ -19,6 +14,23 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+
+## [5.23.3] - 2022-07-11
+### Added
+ - 'AsyncConnection.setDocument' - can upload large files using chunks. 
+  To activate, chunk size (mb) can be sets in UB config `uiSettings.adminUI.uploadChunkSizeMb` (by default - no chunked upload).
+  Can be set for individual `setDocument` request by pass `params.chunkSizeMb`
+  
+  **BREAKING** - applications what uses `setDocument:before` should take care about chunked uploads.
+
+ - new method `AsyncConnection.setPreferredUData` - store into the `localStorage` some data, what will be available during next
+  login inside `Session.on('login')` as `req.parsedParameters.prefUData`
+
+### Changed
+ - use a global `localStorage` instead of window.localStorage. This allows use `localStorage` polyfill under nodeJS (for example `node-localstorage`)
+
+### Removed
+ - `CERT` authorization support is remover (in flavor of CERT2)
 
 ## [5.23.2] - 2022-07-05
 ## [5.23.1] - 2022-06-19
