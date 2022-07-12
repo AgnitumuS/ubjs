@@ -1,0 +1,7 @@
+{
+  "deleteBuiltInUserError": "<<<Das Entfernen des integrierten Benutzers ist verboten>>>",
+  "deleteServiceUserError": "<<<Das Entfernen des Dienstbenutzers ist verboten>>>",
+  "renameBuiltInUserError": "<<<Das Umbenennen von eingebauten Benutzern ist verboten>>>",
+  "renameServiceUserError": "<<<Die Umbenennung des Dienstbenutzers ist untersagt>>>",
+  "deleteBuiltInRoleError": "<<<Das Entfernen der eingebauten Rolle ist verboten>>>"
+}

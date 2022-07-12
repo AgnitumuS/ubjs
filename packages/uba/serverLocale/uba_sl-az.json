@@ -1,0 +1,7 @@
+{
+  "deleteBuiltInUserError": "<<<Daxili istifadəçinin silinməsi qadağandır>>>",
+  "deleteServiceUserError": "<<<Xidmət istifadəçisinin silinməsi qadağandır>>>",
+  "renameBuiltInUserError": "<<<Daxili istifadəçinin adının dəyişdirilməsi qadağandır>>>",
+  "renameServiceUserError": "<<<Xidmət istifadəçisinin adının dəyişdirilməsi qadağandır>>>",
+  "deleteBuiltInRoleError": "<<<Daxili rolun çıxarılması qadağandır>>>"
+}

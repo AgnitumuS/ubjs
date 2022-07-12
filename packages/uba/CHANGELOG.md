@@ -6,6 +6,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+- Localization for server errors in `uba_user` and `uba_role`
 
 ### Changed
 
