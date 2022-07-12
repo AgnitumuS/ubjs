@@ -1,14 +1,15 @@
 <template>
   <u-dropdown class="u-navbar__dropdown">
-    <el-button
+    <u-button
+      appearance="inverse"
       circle
-      style="padding: 2px"
+      style="padding: 0"
     >
       <div
         v-if="svgIcon"
         v-html="svgIcon"
       />
-    </el-button>
+    </u-button>
 
     <template #dropdown>
       <u-dropdown-item
