@@ -5,7 +5,7 @@
     <u-toolbar>
       <template v-slot:left>
         <u-button
-          appearance="default"
+          appearance="plain"
           icon="u-icon-key"
           color="primary"
           :title="$ut('changePassword')"
@@ -23,7 +23,7 @@
       <el-tabs v-model="userTabs">
         <el-tab-pane
           name="main"
-          label="MAIN"
+          :label="$ut('mainSettings')"
         >
           <u-auto-field attribute-name="name" required/>
           <u-auto-field attribute-name="firstName"/>
@@ -48,7 +48,11 @@
           <u-auto-field attribute-name="email"/>
           <u-auto-field attribute-name="phone"/>
         </el-tab-pane>
-        <el-tab-pane name="settings" label="SETTINGS">
+        <el-tab-pane
+          name="settings"
+          :label="$ut('otherSettings')"
+        >
+          <u-auto-field attribute-name="avatar"/>
           <u-grid
             :max-width="400"
             column-gap="0"
@@ -96,9 +100,13 @@
             />
           </u-form-row>
         </el-tab-pane>
-        <el-tab-pane name="certificates" label="CERTIFICATES">
+        <el-tab-pane
+          name="certificates"
+          :label="$ut('certificates')"
+        >
           <u-form-row
             :label="$ut('certificates')"
+            :style="{maxWidth: 'none'}"
           >
             <u-table-entity
               :bordered="true"
@@ -106,7 +114,6 @@
               :build-edit-config="getCertConfig"
               :build-copy-config="getCertConfig"
               :build-add-new-config="getCertConfig"
-              :style="{maxWidth: '800px'}"
             />
           </u-form-row>
         </el-tab-pane>
@@ -118,10 +125,10 @@
 </template>
 <script>
 /* global $App */
-
 const { Form } = require('@unitybase/adminui-vue')
 const { Repository } = require('@unitybase/ub-pub')
 const { mapInstanceFields } = require('@unitybase/adminui-vue')
+const { email, required } = require('vuelidate/lib/validators/index')
 
 module.exports.mount = (cfg) => {
   Form(cfg)
@@ -154,6 +161,14 @@ module.exports.mount = (cfg) => {
           .where('userID', '=', state.data.ID)
       }
 
+    })
+    .validation({
+      validations () {
+        return {
+          name: { required },
+          email: { email }
+        }
+      }
     })
     .mount()
 }
