@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.23.4] - 2022-07-12
 ## [5.23.3] - 2022-07-11
 ### Changed
  - DDL for `"Many" attribute storage table` now generated using the same code as for other entities.

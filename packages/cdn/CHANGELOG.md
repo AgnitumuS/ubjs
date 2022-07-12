@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.23.5] - 2022-07-12
 ## [5.23.4] - 2022-07-11
 ### Fixed
 - `city`, `classifier`, `department`, `employee`, `organization`, `person`, `region` forms:

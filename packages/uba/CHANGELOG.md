@@ -6,7 +6,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
-- migration to remove `adm_folder_UI', 'adm_folder_devTools` folders
 
 ### Changed
 
@@ -15,6 +14,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+
+## [5.23.5] - 2022-07-12
+### Added
+- migration to remove `adm_folder_UI', 'adm_folder_devTools` folders
 
 ## [5.23.4] - 2022-07-11
 ### Fixed
