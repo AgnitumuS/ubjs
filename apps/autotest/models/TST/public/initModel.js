@@ -38,3 +38,11 @@ TST.addGridActions = function (createElement) {
     }
   }
 }
+
+window.$App.on('applicationReady', () => {
+  Vue.nextTick(() => {
+    const UserButtonSelectDepartment = require('./components/UserButtonSelectDepartment.vue').default
+    $App.fireEvent('portal:navbar:userButton:appendSlot', UserButtonSelectDepartment, {})
+  })
+})
+
