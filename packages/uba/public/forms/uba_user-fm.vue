@@ -1,6 +1,7 @@
 <template>
   <div
     class="u-form-layout"
+    v-loading="loading"
   >
     <u-toolbar>
       <template v-slot:left>
@@ -235,6 +236,8 @@ module.exports.default = {
       'isNew'
     ]),
 
+    ...mapGetters(['loading']),
+
     fullName: {
       get () {
         return this.$store.state.data.fullName
@@ -329,7 +332,6 @@ module.exports.default = {
         if (!confirm) {
           return cfg
         }
-
       }
       return {
         ...cfg,
