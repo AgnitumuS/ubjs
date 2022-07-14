@@ -15,14 +15,14 @@
     }
   },
   "scripts": {
-    "build": "npm run build:prep && npm run build:icons && npm run build:js",
-    "build:prep": "shx mkdir -p ./dist && shx rm -f ./dist/*.*",
+    "build": "npm run build:icons && npm run build:js",
     "prepare": "npm run build",
     "gen-el-vars": "et -i theme/ub-el.scss",
     "build:theme": "npm run build:el",
     "build:el": "cleancss -O2 -o ./theme/el-theme-compiled.min.css ./theme/el-theme-compiled.css",
     "build:el-node11": "et -c theme/ub-el.scss -o _el-theme && shx cp ./_el-theme/index.css ./theme/el-theme-compiled.css && shx mkdir -p ./theme/fonts && shx cp ./_el-theme/fonts/* ./theme/fonts && cleancss -O2 -o ./theme/el-theme-compiled.min.css ./theme/el-theme-compiled.css",
     "build:icons": "shx rm -rf ./theme/icons && node node_modules/webfont/dist/cli.js ./icons/*.svg --config ./.webfontrc.js --dest-create --verbose",
+    "build:fa": "cleancss -O2 -o ./dist/fonts/fa/css/fa-all4ub.min.css ./dist/fonts/fa/css/fontawesome.css ./dist/fonts/fa/css/regular.css ./dist/fonts/fa/css/solid.css ./dist/fonts/fa/css/v4-shims.css",
     "build:js": "webpack --mode production && cleancss -O2 -o ./dist/adminui-vue.min.css ./dist/adminui-vue.css",
     "analyse-boundle": "webpack --mode production --profile --json > /tmp/wp_stats_adminui_vue.json && webpack-bundle-analyzer /tmp/wp_stats_adminui_vue.json",
     "version": "update-changelog"

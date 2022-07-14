@@ -114,7 +114,7 @@ Vue.use(momentPlugin)
 
 // ------------- UB theme -----------------
 require('normalize.css/normalize.css')
-require('./theme/fonts.css')
+require('./dist/fonts.css')
 require('./theme/icons/ub-icons.css')
 require('./theme/ub-body.css')
 if (BOUNDLED_BY_WEBPACK) {
