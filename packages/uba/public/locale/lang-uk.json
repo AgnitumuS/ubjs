@@ -35,10 +35,15 @@
   "needChangePassword": "Користувач повинен змінити пароль при наступному вході",
   "checkAll": "Обрати усі",
   "roles": "Ролі",
+  "groups": "Групи",
   "users": "Користувачі",
   "field": "поле",
   "addАField": "додати поле",
   "addRole": "додати роль",
+  "mainSettings": "Основні налаштування",
+  "otherSettings": "Додаткова інформація",
+  "groupsAndRoles": "Ролі та групи",
+  "orgStructure": "Організаційна структура",
   "uba": {
     "changePassword": {
       "newPassword": {

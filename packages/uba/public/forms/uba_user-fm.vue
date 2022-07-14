@@ -9,6 +9,7 @@
           icon="u-icon-key"
           color="primary"
           :title="$ut('changePassword')"
+          :disabled="!instanceID"
           @click="showPasswordChangeDialog"
         >
           {{ $ut('changePassword') }}
@@ -48,36 +49,11 @@
           <u-auto-field attribute-name="email"/>
           <u-auto-field attribute-name="phone"/>
         </el-tab-pane>
-        <el-tab-pane
-          name="settings"
-          :label="$ut('otherSettings')"
-        >
-          <u-auto-field attribute-name="avatar"/>
-          <u-grid
-            :max-width="400"
-            column-gap="0"
-            style="max-width: 800px"
-            class="sliders"
-          >
-            <u-auto-field
-              attribute-name="disabled"
-              label-position="left"
-              force-cmp="el-switch"
-              :max-width="400"
-            />
-            <u-auto-field
-              attribute-name="isPending"
-              label-position="left"
-              force-cmp="el-switch"
-              :max-width="400"
-            />
-          </u-grid>
-          <u-auto-field attribute-name="trustedIP"/>
-          <u-auto-field
-            attribute-name="uData" type="textarea"
-            :autosize="{minRows: 2, maxRows: 6}"
-          />
 
+        <el-tab-pane
+          name="groupsAndRoles"
+          :label="$ut('groupsAndRoles')"
+        >
           <u-form-row
             :label="$ut('roles')"
           >
@@ -100,6 +76,46 @@
             />
           </u-form-row>
         </el-tab-pane>
+
+        <el-tab-pane
+          name="settings"
+          :label="$ut('otherSettings')"
+        >
+
+          <u-grid
+            :max-width="400"
+            column-gap="20"
+            style="max-width: 800px"
+            class="sliders"
+          >
+            <u-auto-field
+              attribute-name="avatar"
+              force-cmp="u-file"
+              :preview-mode="{ height: 200,
+        width: 400}"
+            />
+            <div class="sliders-container">
+              <u-auto-field
+                attribute-name="disabled"
+                label-position="right"
+                force-cmp="el-switch"
+                :max-width="400"
+              />
+              <u-auto-field
+                attribute-name="isPending"
+                label-position="right"
+                force-cmp="el-switch"
+                :max-width="400"
+              />
+            </div>
+          </u-grid>
+          <u-auto-field attribute-name="trustedIP"/>
+          <u-auto-field
+            attribute-name="uData" type="textarea"
+            :autosize="{minRows: 2, maxRows: 6}"
+          />
+        </el-tab-pane>
+
         <el-tab-pane
           name="certificates"
           :label="$ut('certificates')"
@@ -117,6 +133,28 @@
             />
           </u-form-row>
         </el-tab-pane>
+
+        <el-tab-pane
+          name="orgStructure"
+          :label="$ut('orgStructure')"
+          v-if="isOrgEnabled"
+        >
+          <div>
+            <u-form-row
+              :label="$ut('userEmployee')"
+              :style="{maxWidth: 'none'}"
+            >
+              <u-table-entity
+                :repository="getEmployeeRepo"
+                :build-edit-config="getEmployeeConfig"
+                :build-copy-config="getEmployeeConfig"
+                :build-add-new-config="getEmployeeConfig"
+                :columns="['employeeID', 'staffUnitID.caption', 'employeeOnStaffType', 'mi_dateFrom']"
+              >
+              </u-table-entity>
+            </u-form-row>
+          </div>
+        </el-tab-pane>
       </el-tabs>
 
     </u-form-container>
@@ -126,8 +164,9 @@
 <script>
 /* global $App */
 const { Form } = require('@unitybase/adminui-vue')
-const { Repository } = require('@unitybase/ub-pub')
+const { Repository, connection } = require('@unitybase/ub-pub')
 const { mapInstanceFields } = require('@unitybase/adminui-vue')
+const { mapState, mapGetters, mapActions } = require('vuex')
 const { email, required } = require('vuelidate/lib/validators/index')
 
 module.exports.mount = (cfg) => {
@@ -180,7 +219,8 @@ module.exports.default = {
     return {
       firstName: '',
       lastName: '',
-      userTabs: 'main'
+      userTabs: 'main',
+      employee: null
     }
   },
 
@@ -191,6 +231,10 @@ module.exports.default = {
       'gender'
     ]),
 
+    ...mapState([
+      'isNew'
+    ]),
+
     fullName: {
       get () {
         return this.$store.state.data.fullName
@@ -199,7 +243,6 @@ module.exports.default = {
       },
       set (fullName) {
         this.$store.commit('SET_DATA', { key: 'fullName', value: fullName })
-        console.log(this.$store.state)
       }
 
     },
@@ -223,15 +266,33 @@ module.exports.default = {
 
     instanceID () {
       return this.$store.state.data.ID
+    },
+
+    userLogin () {
+      return this.$store.state.data.name
+    },
+
+    isOrgEnabled () {
+      return !!connection.domain.models.ORG
     }
   },
 
   methods: {
+    ...mapActions([
+      'save'
+    ]),
+
     getGenderRepository () {
       return Repository('ubm_enum')
         .attrs('code', 'name', 'sortOrder')
         .where('eGroup', '=', 'UBA_USER_GENDER')
         .orderBy('sortOrder')
+    },
+
+    getEmployeeRepo () {
+      return Repository('org_employeeonstaff')
+        .attrs('ID', 'employeeID', 'employeeID.userID', 'staffUnitID.caption', 'employeeOnStaffType', 'mi_dateFrom')
+        .where('employeeID.userID', '=', this.instanceID)
     },
 
     getUserCertificates () {
@@ -253,7 +314,39 @@ module.exports.default = {
       }
     },
 
+    async getEmployeeConfig (cfg) {
+      const employeeID = await Repository('org_employeeonstaff')
+        .attrs('employeeID', 'employeeID.userID')
+        .where('employeeID.userID', '=', this.instanceID)
+        .selectScalar()
+
+      if (!employeeID) {
+        const confirm = await $App.dialogYesNo(
+          'Додати співробітника?',
+          `Користувач ${this.$store.state.data.fullName || this.userLogin} відсутній в організаційній структурі. Додати його?`
+        )
+
+        if (!confirm) {
+          return cfg
+        }
+
+      }
+      return {
+        ...cfg,
+        isModal: true,
+        modalWidth: '800px',
+        props: {
+          parentContext: {
+            employeeID
+          }
+        }
+      }
+    },
+
     showPasswordChangeDialog () {
+      if (this.isNew) {
+        this.save()
+      }
       $App.doCommand({
         cmdType: 'showForm',
         formCode: 'uba_user-changeUserPassword',
@@ -263,7 +356,7 @@ module.exports.default = {
         props: {
           parentContext: {
             userID: this.instanceID,
-            userLogin: this.$store.state.data.name
+            userLogin: this.userLogin
           }
         }
       })
@@ -277,5 +370,13 @@ module.exports.default = {
 .sliders .u-form-row__label {
   width: auto !important;
   min-width: auto !important;
+}
+
+.sliders-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: self-start;
+  padding: 10%;
 }
 </style>
