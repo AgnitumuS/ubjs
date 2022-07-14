@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Changed
  - `UNavbarUserButton`: replace `el-button`->`u-button` for user icon and `el-checkbox` -> `u-checkbox` for `KerberosRememberUserMenu` 
+ - `Roboto*` font files is placed into `/dist/fonts` for both dev and production builds
 
 ### Deprecated
 

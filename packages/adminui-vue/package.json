@@ -15,8 +15,7 @@
     }
   },
   "scripts": {
-    "build": "npm run build:prep && npm run build:icons && npm run build:js",
-    "build:prep": "shx mkdir -p ./dist/fonts && shx rm -f ./dist/*.* && shx rm -f ./dist/fonts/*woff2",
+    "build": "npm run build:icons && npm run build:js",
     "prepare": "npm run build",
     "gen-el-vars": "et -i theme/ub-el.scss",
     "build:theme": "npm run build:el",
