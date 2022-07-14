@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
+ - use compiled `/models/adminui-vue/dist/fonts/fa/css/fa-all4ub.min.css` instead of for separate css for FontAwesome 
 
 ### Deprecated
 
