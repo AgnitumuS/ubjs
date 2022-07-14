@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+- `USelectMultiple`: regression after allowing the same values for `displayAttribute` and `valueAttribute`
 
 ## [5.23.3] - 2022-07-11
 ### Added
