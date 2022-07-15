@@ -162,7 +162,7 @@ function disableBuildInRoleDelete (ctx) {
 
   for (const role in UBA_COMMON.ROLES) {
     if (UBA_COMMON.ROLES[role].ID === ID) {
-      throw new UB.UBAbort(UB.i18n('deleteBuiltInRoleError'))
+      throw new UB.UBAbort(UB.i18n('uba_role_deleteBuiltInRoleProhibited'))
     }
   }
 }

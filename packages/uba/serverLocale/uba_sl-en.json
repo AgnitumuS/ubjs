@@ -1,7 +1,7 @@
 {
-  "deleteBuiltInUserError": "<<<Removing of built-in user is prohibited>>>",
-  "deleteServiceUserError": "<<<Removing of service user is prohibited>>>",
-  "renameBuiltInUserError": "<<<Renaming of built-in user is prohibited>>>",
-  "renameServiceUserError": "<<<Renaming of service user is prohibited>>>",
-  "deleteBuiltInRoleError": "<<<Removing of built-in role is prohibited>>>"
+  "uba_user_deleteBuiltInUserProhibited": "<<<Removing of built-in user is prohibited>>>",
+  "uba_user_deleteServiceUserProhibited": "<<<Removing of service user is prohibited>>>",
+  "uba_user_renameBuiltInUserProhibited": "<<<Renaming of built-in user is prohibited>>>",
+  "uba_user_renameServiceUserProhibited": "<<<Renaming of service user is prohibited>>>",
+  "uba_role_deleteBuiltInRoleProhibited": "<<<Removing of built-in role is prohibited>>>"
 }

@@ -527,11 +527,11 @@ function denyBuildInUserDeletion (ctx) {
   const userName = ctx.dataStore.get('name')
 
   if (isBuiltInUser(userName)) {
-    throw new UB.UBAbort(UB.i18n('deleteBuiltInUserError'))
+    throw new UB.UBAbort(UB.i18n('uba_user_deleteBuiltInUserProhibited'))
   }
 
   if (isDisabledUser(userName)) {
-    throw new UB.UBAbort(UB.i18n('deleteServiceUserError'))
+    throw new UB.UBAbort(UB.i18n('uba_user_deleteServiceUserProhibited'))
   }
 }
 
@@ -555,11 +555,11 @@ function denyBuildInUserRename (ctx) {
   }
 
   if (isBuiltInUser(userName)) {
-    throw new UB.UBAbort(UB.i18n('renameBuiltInUserError'))
+    throw new UB.UBAbort(UB.i18n('uba_user_renameBuiltInUserProhibited'))
   }
 
   if (isDisabledUser(userName)) {
-    throw new UB.UBAbort(UB.i18n('renameServiceUserError'))
+    throw new UB.UBAbort(UB.i18n('uba_user_renameServiceUserProhibited'))
   }
 }
 
