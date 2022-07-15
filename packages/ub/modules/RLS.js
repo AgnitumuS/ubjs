@@ -159,7 +159,7 @@ RLS.getDefaultAclRlsSubjects = function (ctx, mixinCfg) {
     result = [Session.userID, ...Session.uData.roleIDs, ...Session.uData.groupIDs]
   }
   if (mixinCfg.onEntities.indexOf('org_unit') >= 0) { // add all user org units
-    result.concat(Session.uData.orgUnitIDs.split(',').map(Number))
+    result = result.concat(Session.uData.orgUnitIDs.split(',').map(Number))
   }
   return result
 }
