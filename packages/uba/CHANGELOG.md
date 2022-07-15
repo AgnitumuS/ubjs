@@ -14,6 +14,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+- `uba_group` form fixes: 
+  - validation for required fields
+  - adding user into group in modal window
+  - fix column name in users table
+  - auto save new form before adding users into group
 
 ## [5.23.5] - 2022-07-12
 ### Added
