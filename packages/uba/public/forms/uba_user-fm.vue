@@ -142,6 +142,18 @@
         >
           <div>
             <u-form-row
+              :label="$ut('isEmployee')"
+              label-position="left"
+            >
+              <el-switch
+                v-model="employee"
+                @change="setEmployeeStatus"
+
+              >
+              </el-switch>
+            </u-form-row>
+            <u-form-row
+              v-if="employee"
               :label="$ut('userEmployee')"
               :style="{maxWidth: 'none'}"
             >
@@ -200,7 +212,6 @@ module.exports.mount = (cfg) => {
           .attrs('ID', 'userID', 'groupID')
           .where('userID', '=', state.data.ID)
       }
-
     })
     .validation({
       validations () {
@@ -221,11 +232,15 @@ module.exports.default = {
       firstName: '',
       lastName: '',
       userTabs: 'main',
-      employee: null
+      employee: false
     }
   },
 
-  watch: {},
+  /*  watch: {
+      employee(value) {
+        console.log({value})
+      }
+    },*/
 
   computed: {
     ...mapInstanceFields([
@@ -280,6 +295,14 @@ module.exports.default = {
     }
   },
 
+  async created () {
+    const employee = await Repository('org_employee')
+      .attrs('ID')
+      .where('userID', '=', this.instanceID)
+      .selectSingle()
+    this.employee = !!employee
+  },
+
   methods: {
     ...mapActions([
       'save'
@@ -318,9 +341,9 @@ module.exports.default = {
     },
 
     async getEmployeeConfig (cfg) {
-      const employeeID = await Repository('org_employeeonstaff')
-        .attrs('employeeID', 'employeeID.userID')
-        .where('employeeID.userID', '=', this.instanceID)
+      const employeeID = await Repository('org_employee')
+        .attrs('ID')
+        .where('userID', '=', this.instanceID)
         .selectScalar()
 
       if (!employeeID) {
@@ -362,6 +385,32 @@ module.exports.default = {
           }
         }
       })
+    },
+
+    addUserAsToOrgStructure () {
+      const userParams = this.$store.state.data
+      const orgUserProps = {
+        userID: userParams.ID,
+        lastName: userParams.lastName,
+        firstName: userParams.firstName,
+        description: userParams.description,
+        sexType: userParams.gender,
+        fullFIO: userParams.fullName
+      }
+      $App.doCommand({
+        cmdType: 'showForm',
+        formCode: 'org_employee',
+        entity: 'org_employee',
+        title: 'orgEmployee',
+        isModal: true,
+        parentContext: orgUserProps
+      })
+    },
+
+    setEmployeeStatus (isEmployee) {
+      if (isEmployee) {
+        this.addUserAsToOrgStructure()
+      }
     }
   }
 
