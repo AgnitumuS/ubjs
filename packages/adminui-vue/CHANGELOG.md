@@ -14,6 +14,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+- `UChart` rewired:
+  - `@chart-click` handler now works even in case several charts are displayed on page
+  - added date adapter to correctly display time axis (see samples on unitybase.info)
+  - component now registered by `adminui-vue`, so can be used without require, just ```<u-chart>....</u-chart>```
+  - `options` and `chartData` properties now NOT reactive (ChartJs is designed for static data. For dynamic data better to use `d3`)
 
 ## [5.23.4] - 2022-07-14
 ### Added
