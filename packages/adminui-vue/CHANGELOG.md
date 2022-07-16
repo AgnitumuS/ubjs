@@ -20,6 +20,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
   - component now registered by `adminui-vue`, so can be used without require, just ```<u-chart>....</u-chart>```
   - `options` and `chartData` properties now NOT reactive (ChartJs is designed for static data. For dynamic data better to use `d3`)
 
+- `URadio` - prevent `'this' is undefined` error in developer mode (prop validator do not have access to 'this')
+
 ## [5.23.4] - 2022-07-14
 ### Added
 - added compressed bundle for all used FontAwesome CSS's `dist/fonts/fa/css/fa-all4ub.min.css` and use it to generate index page
