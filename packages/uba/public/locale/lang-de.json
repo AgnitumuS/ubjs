@@ -47,5 +47,14 @@
       }
     }
   },
-  "Duplicate user name (may be in different case)": "Doppelter Benutzername (möglicherweise andere Groß- und Kleinschreibung). Versuchen Sie einen anderen Benutzernamen"
+  "Duplicate user name (may be in different case)": "Doppelter Benutzername (möglicherweise andere Groß- und Kleinschreibung). Versuchen Sie einen anderen Benutzernamen",
+  "uba_user_errors": {
+    "deleteBuiltInUserProhibited": "Das Entfernen des integrierten Benutzers ist verboten",
+    "deleteServiceUserProhibited": "Das Entfernen des Dienstbenutzers ist verboten",
+    "renameBuiltInUserProhibited": "Das Umbenennen von eingebauten Benutzern ist verboten",
+    "renameServiceUserProhibited": "Die Umbenennung des Dienstbenutzers ist untersagt"
+  },
+  "uba_role_errors": {
+    "deleteBuiltInRoleProhibited": "Das Entfernen der eingebauten Rolle ist verboten"
+  }
 }
