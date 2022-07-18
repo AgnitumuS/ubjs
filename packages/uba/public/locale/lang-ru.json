@@ -35,7 +35,17 @@
   "needChangePassword": "Пользователь должен изменить пароль при следующем входе",
   "checkAll": "Выбрать все",
   "roles": "Роли",
+  "groups": "Группы",
   "users": "Пользователи",
+  "field": "поле",
+  "addАField": "добавить поле",
+  "addRole": "добавить роль",
+  "mainSettings": "Основные настройки",
+  "otherSettings": "Дополнительная информация",
+  "groupsAndRoles": "Роли и группы",
+  "orgStructure": "Организационная структура",
+  "isEmployee": "Является сотрудником",
+  "userEmployee": "Назначение на должности",
   "uba": {
     "changePassword": {
       "newPassword": {

@@ -8,5 +8,11 @@
   "orgTreeCanNotBeCyclical": "Tree can not be cyclical",
   "orgDepartment": "Department",
   "orgExecutorsGroup": "Executors Group",
-  "orgOrganizationalChart": "Organization Chart"
+  "orgOrganizationalChart": "Organization Chart",
+  "org_dialogs": {
+    "removeFromOrgStructure": {
+      "title": "Deleting an employee",
+      "message": "Remove employee {0} from the organizational structure?"
+    }
+  }
 }

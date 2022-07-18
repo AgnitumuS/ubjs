@@ -8,5 +8,11 @@
   "orgTreeCanNotBeCyclical": "Struktur kann nicht zyklisch sein",
   "orgDepartment": "Abteilung",
   "orgExecutorsGroup": "Ausführenden-Gruppe",
-  "orgOrganizationalChart": "Organigramm"
+  "orgOrganizationalChart": "Organigramm",
+  "org_dialogs": {
+    "removeFromOrgStructure": {
+      "title": "Mitarbeiter löschen",
+      "message": "Mitarbeiter {0} aus der Organisationsstruktur entfernen?"
+    }
+  }
 }

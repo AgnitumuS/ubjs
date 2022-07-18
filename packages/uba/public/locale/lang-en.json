@@ -35,7 +35,17 @@
   "needChangePassword": "User need to change password on next logon",
   "checkAll": "Check all",
   "roles": "Roles",
+  "groups": "Groups",
   "users": "Users",
+  "field": "field",
+  "addАField": "add field",
+  "addRole": "add role",
+  "mainSettings": "Main Settings",
+  "otherSettings": "Additional Information",
+  "groupsAndRoles": "Roles and Groups",
+  "orgStructure": "Organizational Structure",
+  "isEmployee": "Is an Employee",
+  "userEmployee": "Assignment on Staff",
   "uba": {
     "changePassword": {
       "newPassword": {

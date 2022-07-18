@@ -35,7 +35,17 @@
   "needChangePassword": "Der Benutzer muss bei der nächsten Anmeldung sein Kennwort ändern",
   "checkAll": "Alle prüfen",
   "roles": "Rollen",
+  "groups": "Gruppen",
   "users": "Benutzer",
+  "field": "Feld",
+  "addАField": "Feld hinzufügen",
+  "addRole": "Rolle hinzufügen",
+  "mainSettings": "Haupteinstellungen",
+  "otherSettings": "Zusätzliche Information",
+  "groupsAndRoles": "Rollen und Gruppen",
+  "orgStructure": "Organisatorische Struktur",
+  "isEmployee": "Ist ein Angestellter",
+  "userEmployee": "Zuordnung zum Personal",
   "uba": {
     "changePassword": {
       "newPassword": {

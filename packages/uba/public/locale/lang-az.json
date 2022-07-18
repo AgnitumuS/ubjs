@@ -35,7 +35,17 @@
   "needChangePassword": "İstifadəçi növbəti girişdə şifrəni yeniləməlidir",
   "checkAll": "Hamısını seç",
   "roles": "Rollar",
+  "groups": "Qruplar",
   "users": "İstifadəçilər",
+  "field": "sahə",
+  "addАField": "sahə əlavə edin",
+  "addRole": "rol əlavə edin",
+  "mainSettings": "Əsas Parametrlər",
+  "otherSettings": "Əlavə Informasiya",
+  "groupsAndRoles": "Rollar və Qruplar",
+  "orgStructure": "Təşkilati strukturu",
+  "isEmployee": "İşçidir",
+  "userEmployee": "Randevular",
   "uba": {
     "changePassword": {
       "newPassword": {

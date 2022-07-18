@@ -44,6 +44,8 @@
   "otherSettings": "Додаткова інформація",
   "groupsAndRoles": "Ролі та групи",
   "orgStructure": "Організаційна структура",
+  "isEmployee": "Є співробітником",
+  "userEmployee": "Призначення на посади",
   "uba": {
     "changePassword": {
       "newPassword": {
