@@ -31,7 +31,7 @@
           <u-auto-field attribute-name="firstName"/>
           <u-auto-field attribute-name="lastName"/>
           <u-auto-field attribute-name="fullName" v-model="fullName"/>
-          <u-form-row attribute-name="gender" :v-model="fixGender">
+          <u-form-row attribute-name="gender">
             <u-select-enum
               e-group="UBA_USER_GENDER"
               v-model="fixGender"
@@ -73,7 +73,6 @@
           name="settings"
           :label="$ut('otherSettings')"
         >
-
           <u-grid
             :max-width="400"
             column-gap="20"
@@ -165,9 +164,9 @@
 </template>
 <script>
 /* global $App */
-const { Form, dialogYesNo } = require('@unitybase/adminui-vue')
+const { Form, dialogYesNo, mapInstanceFields } = require('@unitybase/adminui-vue')
+const formHelpers = require('@unitybase/adminui-vue').formHelpers
 const { Repository, connection, i18n } = require('@unitybase/ub-pub')
-const { mapInstanceFields } = require('@unitybase/adminui-vue')
 const { mapState, mapGetters, mapActions } = require('vuex')
 const { email, required } = require('vuelidate/lib/validators/index')
 
@@ -218,8 +217,6 @@ module.exports.default = {
 
   data () {
     return {
-      firstName: '',
-      lastName: '',
       userTabs: 'main',
       employee: false
     }
@@ -298,13 +295,6 @@ module.exports.default = {
       'save'
     ]),
 
-    getGenderRepository () {
-      return Repository('ubm_enum')
-        .attrs('code', 'name', 'sortOrder')
-        .where('eGroup', '=', 'UBA_USER_GENDER')
-        .orderBy('sortOrder')
-    },
-
     getEmployeeRepo () {
       return Repository('org_employeeonstaff')
         .attrs('ID', 'employeeID', 'employeeID.userID', 'staffUnitID.caption', 'employeeOnStaffType', 'mi_dateFrom')
@@ -331,23 +321,14 @@ module.exports.default = {
     },
 
     async getEmployeeConfig (cfg) {
-      /*        const employeeID = await Repository('org_employee')
-                .attrs('ID')
-                .where('userID', '=', this.instanceID)
-                .selectScalar()*/
+      if (!this.employeeID) {
+        const employeeID = await Repository('org_employee')
+          .attrs('ID')
+          .where('userID', '=', this.instanceID)
+          .selectScalar()
 
-      /*        console.log(this.employeeID)
-
-              if (!this.employeeID) {
-                const confirm = await $App.dialogYesNo(
-                  'Додати співробітника?',
-                  `Користувач ${this.$store.state.data.fullName || this.userLogin} відсутній в організаційній структурі. Додати його?`
-                )
-
-                if (!confirm) {
-                  return cfg
-                }
-              }*/
+        this.employeeID = employeeID
+      }
       return {
         ...cfg,
         isModal: true,
@@ -389,7 +370,7 @@ module.exports.default = {
         sexType: userParams.gender ? userParams.gender.substring(0, 1).toUpperCase() : '?',
         fullFIO: userParams.fullName
       }
-      const app = await $App.showModal({
+      $App.doCommand({
         cmdType: 'showForm',
         formCode: 'org_employee',
         entity: 'org_employee',
@@ -410,26 +391,16 @@ module.exports.default = {
         return
       }
 
-      connection.query({
-        entity: 'org_employee',
-        method: 'delete',
-        execParams: {
-          ID: this.employeeID
-        }
-      })
+      connection.query(formHelpers.buildDeleteRequest('org_employee', this.employeeID))
 
       const staff = await this.getEmployeeRepo().select()
       if (staff?.length) {
         for (const s of staff) {
-          connection.query({
-            entity: 'org_employeeonstaff',
-            method: 'delete',
-            execParams: {
-              ID: s.ID
-            }
-          })
+          connection.query(formHelpers.buildDeleteRequest('org_employeeonstaff', s.ID))
         }
       }
+
+      this.employeeID = null
     },
 
     async setEmployeeStatus (isEmployee) {
