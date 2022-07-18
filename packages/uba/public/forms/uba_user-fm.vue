@@ -30,22 +30,13 @@
           <u-auto-field attribute-name="name" required/>
           <u-auto-field attribute-name="firstName"/>
           <u-auto-field attribute-name="lastName"/>
-          <u-form-row attribute-name="fullName">
-            <u-base-input v-model="fullName" :value="fullName"/>
-          </u-form-row>
-
-          <u-form-row attribute-name="gender">
-            <u-select-entity
-              :value="gender"
-              :repository="getGenderRepository"
+          <u-auto-field attribute-name="fullName" v-model="fullName"/>
+          <u-form-row attribute-name="gender" :v-model="fixGender">
+            <u-select-enum
+              e-group="UBA_USER_GENDER"
+              v-model="fixGender"
               value-attribute="code"
             />
-            <!--        <u-select-enum
-                      e-group="UBA_USER_GENDER"
-                      v-model="transGender"
-                      value-attribute="code"
-                    />-->
-
           </u-form-row>
           <u-auto-field attribute-name="email"/>
           <u-auto-field attribute-name="phone"/>
@@ -92,8 +83,7 @@
             <u-auto-field
               attribute-name="avatar"
               force-cmp="u-file"
-              :preview-mode="{ height: 200,
-        width: 400}"
+              :preview-mode="{ height: 200, width: 400}"
             />
             <div class="sliders-container">
               <u-auto-field
@@ -143,12 +133,11 @@
           <div>
             <u-form-row
               :label="$ut('isEmployee')"
-              label-position="left"
+              label-position="right"
             >
               <el-switch
                 v-model="employee"
                 @change="setEmployeeStatus"
-
               >
               </el-switch>
             </u-form-row>
@@ -176,8 +165,8 @@
 </template>
 <script>
 /* global $App */
-const { Form } = require('@unitybase/adminui-vue')
-const { Repository, connection } = require('@unitybase/ub-pub')
+const { Form, dialogYesNo } = require('@unitybase/adminui-vue')
+const { Repository, connection, i18n } = require('@unitybase/ub-pub')
 const { mapInstanceFields } = require('@unitybase/adminui-vue')
 const { mapState, mapGetters, mapActions } = require('vuex')
 const { email, required } = require('vuelidate/lib/validators/index')
@@ -236,11 +225,11 @@ module.exports.default = {
     }
   },
 
-  /*  watch: {
-      employee(value) {
-        console.log({value})
-      }
-    },*/
+  watch: {
+    fullName (value) {
+      this.$store.commit('SET_DATA', { key: 'fullName', value })
+    }
+  },
 
   computed: {
     ...mapInstanceFields([
@@ -255,16 +244,16 @@ module.exports.default = {
 
     fullName: {
       get () {
-        return this.$store.state.data.fullName
-          ? this.$store.state.data.fullName
-          : (this.$store.state.data.lastName || '') + ' ' + (this.$store.state.data.firstName || '')
+        return (this.$store.state.data.lastName || '') + ' ' + (this.$store.state.data.firstName || '')
       },
-      set (fullName) {
-        this.$store.commit('SET_DATA', { key: 'fullName', value: fullName })
+      set (value) {
+        this.$store.commit('SET_DATA', { key: 'fullName', value })
       }
-
     },
 
+    /**
+     * Fix for old users with 'F' and 'M' gender values instead of 'male'/'female' in UBA_USER_GENDER enum
+     */
     fixGender: {
       get () {
         switch (this.gender) {
@@ -277,8 +266,8 @@ module.exports.default = {
         }
       },
 
-      set (newGender) {
-        return newGender
+      set (value) {
+        this.$store.commit('SET_DATA', { key: 'gender', value })
       }
     },
 
@@ -295,12 +284,13 @@ module.exports.default = {
     }
   },
 
-  async created () {
+  async mounted () {
     const employee = await Repository('org_employee')
       .attrs('ID')
       .where('userID', '=', this.instanceID)
       .selectSingle()
     this.employee = !!employee
+    this.employeeID = employee?.ID
   },
 
   methods: {
@@ -341,28 +331,30 @@ module.exports.default = {
     },
 
     async getEmployeeConfig (cfg) {
-      const employeeID = await Repository('org_employee')
-        .attrs('ID')
-        .where('userID', '=', this.instanceID)
-        .selectScalar()
+      /*        const employeeID = await Repository('org_employee')
+                .attrs('ID')
+                .where('userID', '=', this.instanceID)
+                .selectScalar()*/
 
-      if (!employeeID) {
-        const confirm = await $App.dialogYesNo(
-          'Додати співробітника?',
-          `Користувач ${this.$store.state.data.fullName || this.userLogin} відсутній в організаційній структурі. Додати його?`
-        )
+      /*        console.log(this.employeeID)
 
-        if (!confirm) {
-          return cfg
-        }
-      }
+              if (!this.employeeID) {
+                const confirm = await $App.dialogYesNo(
+                  'Додати співробітника?',
+                  `Користувач ${this.$store.state.data.fullName || this.userLogin} відсутній в організаційній структурі. Додати його?`
+                )
+
+                if (!confirm) {
+                  return cfg
+                }
+              }*/
       return {
         ...cfg,
         isModal: true,
         modalWidth: '800px',
         props: {
           parentContext: {
-            employeeID
+            employeeID: this.employeeID
           }
         }
       }
@@ -387,17 +379,17 @@ module.exports.default = {
       })
     },
 
-    addUserAsToOrgStructure () {
+    async addUserToOrgStructure () {
       const userParams = this.$store.state.data
       const orgUserProps = {
         userID: userParams.ID,
         lastName: userParams.lastName,
         firstName: userParams.firstName,
         description: userParams.description,
-        sexType: userParams.gender,
+        sexType: userParams.gender ? userParams.gender.substring(0, 1).toUpperCase() : '?',
         fullFIO: userParams.fullName
       }
-      $App.doCommand({
+      const app = await $App.showModal({
         cmdType: 'showForm',
         formCode: 'org_employee',
         entity: 'org_employee',
@@ -407,9 +399,46 @@ module.exports.default = {
       })
     },
 
-    setEmployeeStatus (isEmployee) {
+    async removeUserFromOrgStructure () {
+      const confirm = await dialogYesNo(
+        'org_dialogs.removeFromOrgStructure.title',
+        i18n('org_dialogs.removeFromOrgStructure.message', this.fullName || this.userLogin)
+      )
+
+      if (!confirm) {
+        this.employee = true
+        return
+      }
+
+      connection.query({
+        entity: 'org_employee',
+        method: 'delete',
+        execParams: {
+          ID: this.employeeID
+        }
+      })
+
+      const staff = await this.getEmployeeRepo().select()
+      if (staff?.length) {
+        for (const s of staff) {
+          connection.query({
+            entity: 'org_employeeonstaff',
+            method: 'delete',
+            execParams: {
+              ID: s.ID
+            }
+          })
+        }
+      }
+    },
+
+    async setEmployeeStatus (isEmployee) {
       if (isEmployee) {
-        this.addUserAsToOrgStructure()
+        await this.addUserToOrgStructure()
+      }
+
+      if (!isEmployee) {
+        await this.removeUserFromOrgStructure()
       }
     }
   }
