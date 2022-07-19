@@ -12,6 +12,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Deprecated
 
 ### Removed
+ - removed obsolete `$App.on('buildMainMenu', ..)` code. `buildMainMenu` ExtJS event not fired for a long time,
+   `portal:sidebar:defineSlot` and `portal:navbar:defineSlot` are used instead
 
 ### Fixed
 
