@@ -286,9 +286,6 @@ if (window.$App) {
      */
     $App.fireEvent('portal:navbar:defineSlot', UNavbarDefaultSlot, {})
   })
-  $App.on('buildMainMenu', items => {
-    items.splice(0, 1) // remove top panel ExtJS hamburger menu button
-  })
 }
 
 if (isExt && window.$App && $App.connection.appConfig.uiSettings.adminUI.vueAutoForms) {
