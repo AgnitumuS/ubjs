@@ -43,7 +43,7 @@ function updateEmployeeFullName (ctx) {
     return
   }
 
-  // If any of "fullFIO", "firstName" or "lastName" attributes not provided in execParams, get previous values from
+  // If any of "fullName", "firstName" or "lastName" attributes not provided in execParams, get previous values from
   // "selectBeforeUpdate" dataset
   const oldCurrentDataName = ctx.dataStore.currentDataName
   ctx.dataStore.currentDataName = 'selectBeforeUpdate'
