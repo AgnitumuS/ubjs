@@ -101,5 +101,11 @@ module.exports = {
 
     const URadio = require('../components/controls/URadio.vue').default
     Vue.component(URadio.name, URadio)
+
+    const USplitter = require('../components/USplitter/USplitter.vue').default
+    Vue.component(USplitter.name, USplitter)
+    
+    const UPane = require('../components/USplitter/UPane.vue').default
+    Vue.component(UPane.name, UPane)
   }
 }
