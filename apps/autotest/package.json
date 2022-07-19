@@ -60,6 +60,7 @@
     "node-cron": "^1.1.2",
     "normalize.css": "^8.0.1",
     "pvutils": "^1.0.12",
+    "splitpanes": "^2.4.1",
     "systemjs": "^0.20.13",
     "systemjs-hmr": "^2.0.9",
     "systemjs-plugin-css": "^0.1.32",
