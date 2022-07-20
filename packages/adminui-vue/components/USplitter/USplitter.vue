@@ -49,7 +49,7 @@ export default {
   },
   methods: {
     getStorageKey () {
-      return UB.core?.UBLocalStorageManager?.getKeyUI(this.storegaKey) || 'splitpanes_default_key'
+      return UB.core?.UBLocalStorageManager?.getKeyUI(this.storegeKey) || 'splitpanes_default_key'
     },
     restore () {
       const data = this.getDataFromStore()
@@ -98,7 +98,7 @@ export default {
     },
     init () {
       if (!this.canSaveInStorage) return
-      this.storegaKey = 'splitter'
+      this.storegeKey = 'splitter'
       this.activeTab = UB?.core?.UBApp?.viewport?.centralPanel.getActiveTab()
       this.tabKey = this.activeTab ? this.activeTab.id : location.pathname
       this.indexCurrSplitter = this.getCurrentIndexInDOM()
