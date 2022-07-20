@@ -1,43 +1,59 @@
 <template>
   <Splitpanes
+    ref="splitpane"
     v-bind="$attrs"
     v-on="$listeners"
+    @resized="savePosition"
   >
     <slot />
   </Splitpanes>
 </template>
 
 <script>
+/* global UB */
+
 const { Splitpanes } = require('splitpanes')
 require('splitpanes/dist/splitpanes.css')
 
 export default {
   name: 'USplitter',
   components: { Splitpanes },
+  props: {
+    splitId: {
+      type: [String, Number],
+      default: ''
+    }
+  },
   mounted () {
-    console.log(this)
+    this.$nextTick(() => {
+      this.init()
+    })
   },
   methods: {
+    getStorageKey () {
+      return UB.core.UBLocalStorageManager.getFullKey(this.storegaKey)
+    },
     restore () {
       const data = this.getDataFromStore()
-      if (!Object.keys(data).length || !this.comp.panes) return
-      this.comp.panes.forEach((pane, index) => {
+      if (!Object.keys(data).length) return
+      this.$refs.splitpane.panes.forEach((pane, index) => {
         pane.size = data[index]
       })
-      this.comp.updatePaneComponents()
     },
     getDataFromStore () {
-      let data = localStorage[this.baseKey]
+      let data = localStorage[this.getStorageKey()]
       if (data) data = JSON.parse(data)
       if (!data) data = {}
-      if (!data[this.paneKey]) data[this.paneKey] = {}
-      if (!data[this.paneKey][this.splitId]) { data[this.paneKey][this.splitId] = {} }
+      if (!data[this.tabKey]) data[this.tabKey] = {}
+      if (!data[this.tabKey][this.indexCurrSplitter]) {
+        data[this.tabKey][this.indexCurrSplitter] = {}
+      }
       this.baseData = data
-      return data[this.paneKey][this.splitId]
+      return data[this.tabKey][this.indexCurrSplitter]
     },
     setToStorage (data) {
-      this.baseData[this.paneKey][this.splitId] = data
-      localStorage[this.baseKey] = JSON.stringify(this.baseData)
+      this.baseData[this.tabKey][this.indexCurrSplitter] = data
+      UB.core.UBLocalStorageManager.setItem(this.storegaKey, this.baseData)
     },
     savePosition (panes) {
       const data = this.getDataFromStore()
@@ -46,39 +62,40 @@ export default {
       })
       this.setToStorage(data)
     },
+    getCurrentIndexInDOM () {
+      const splitterElems = this.activeTab
+        ? this.activeTab.el.dom.querySelectorAll('.splitpanes')
+        : document.body.querySelectorAll('.splitpanes')
+      let i = 0
+      for (; i < splitterElems.length; ++i) {
+        if (splitterElems[i] === this.$refs.splitpane.$el) break
+      }
+      return i
+    },
     init () {
-      this.baseKey = 'splitPane'
-      this.paneKey = location.pathname
-      this.comp = this.$slots.default[0].child
+      this.storegaKey = 'splitter'
+      this.activeTab = UB.core.UBApp.viewport.centralPanel.getActiveTab()
+      this.tabKey = this.activeTab ? this.activeTab.id : location.pathname
+      this.indexCurrSplitter = this.getCurrentIndexInDOM()
       this.restore()
-      const that = this
-      this.comp.$watch(
-        'panes',
-        function (newValue) {
-          that.savePosition(newValue)
-        },
-        { deep: true }
-      )
     }
   }
 }
 </script>
 
-<style scoped>
-.splitpanes__pane {
-  background-color: grey;
+<style>
+.splitpanes--vertical > .splitpanes__splitter,
+.splitpanes--vertical > .splitpanes__splitter {
+  width: 7px;
+  border-left: 1px solid #eee;
+  border-right: 1px solid #eee;
+  margin-left: -1px;
 }
-.splitpanes__splitter {
-  background: white;
-}
+.splitpanes--horizontal > .splitpanes__splitter,
 .splitpanes--horizontal > .splitpanes__splitter {
   height: 7px;
   border-top: 1px solid #eee;
-  margin-top: -1px;
-}
-.splitpanes--vertical > .splitpanes__splitter {
-  width: 7px;
-  border-top: 1px solid #eee;
+  border-bottom: 1px solid #eee;
   margin-top: -1px;
 }
 </style>
