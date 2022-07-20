@@ -31,7 +31,7 @@ export default {
   },
   methods: {
     getStorageKey () {
-      return UB.core.UBLocalStorageManager.getFullKey(this.storegaKey)
+      return UB.core.UBLocalStorageManager.getKeyUI(this.storegaKey)
     },
     restore () {
       const data = this.getDataFromStore()
@@ -53,7 +53,7 @@ export default {
     },
     setToStorage (data) {
       this.baseData[this.tabKey][this.indexCurrSplitter] = data
-      UB.core.UBLocalStorageManager.setItem(this.storegaKey, this.baseData)
+      localStorage.setItem(this.getStorageKey(), JSON.stringify(this.baseData))
     },
     savePosition (panes) {
       const data = this.getDataFromStore()
