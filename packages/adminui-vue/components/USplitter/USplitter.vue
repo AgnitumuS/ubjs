@@ -84,18 +84,65 @@ export default {
 </script>
 
 <style>
+.splitpanes{
+  --paneSize: 10px;
+  --paneIconColor: hsl(var(--hs-control), var(--l-state-hover));
+  --paneBorderColor:#eee
+}
+
+.splitpanes .splitpanes__splitter {
+  position: relative;
+}
 .splitpanes--vertical > .splitpanes__splitter,
 .splitpanes--vertical > .splitpanes__splitter {
-  width: 7px;
-  border-left: 1px solid #eee;
-  border-right: 1px solid #eee;
+  width: var(--paneSize);
+  border-left: 1px solid var(--paneBorderColor);
+  border-right: 1px solid var(--paneBorderColor);
   margin-left: -1px;
+  background-color:white;
 }
 .splitpanes--horizontal > .splitpanes__splitter,
 .splitpanes--horizontal > .splitpanes__splitter {
-  height: 7px;
-  border-top: 1px solid #eee;
-  border-bottom: 1px solid #eee;
+  height: var(--paneSize);
+  border-top: 1px solid var(--paneBorderColor);
+  border-bottom: 1px solid var(--paneBorderColor);
   margin-top: -1px;
+  background-color:white;
+}
+
+.splitpanes--vertical > .splitpanes__splitter:after,
+.splitpanes--vertical > .splitpanes__splitter:before {
+  content: '';
+  position: absolute;
+  width: 1px;
+  height: 30px;
+  top: 50%;
+  left: 50%;
+  background-color: var(--paneIconColor);
+  transform: translateY(-50%);
+}
+.splitpanes--vertical > .splitpanes__splitter:after {
+  margin-left: 1px;
+}
+.splitpanes--vertical > .splitpanes__splitter:before {
+  margin-left: -2px;
+}
+
+.splitpanes--horizontal > .splitpanes__splitter:after,
+.splitpanes--horizontal > .splitpanes__splitter:before {
+  content: '';
+  position: absolute;
+  width: 30px;
+  height: 1px;
+  top: 50%;
+  left: 50%;
+  background-color: var(--paneIconColor);
+  transform: translateX(-50%);
+}
+.splitpanes--horizontal > .splitpanes__splitter:after {
+  margin-top: 1px;
+}
+.splitpanes--horizontal > .splitpanes__splitter:before {
+  margin-top: -2px;
 }
 </style>
