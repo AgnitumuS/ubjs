@@ -21,7 +21,7 @@ export default {
   components: { Splitpanes },
   props: {
     /**
-     * Used when to identify when there is more than one on a page splitpanes
+     * Used when to identify when there is more than one on a page splitpanes. If `splitId` is not passed,  will be used the index splitpane in DOM
      */
     splitId: {
       type: [String, Number],
