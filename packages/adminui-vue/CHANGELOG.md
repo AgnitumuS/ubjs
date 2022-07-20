@@ -6,6 +6,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+- `USplitter` - separator for page or blocks with the function of saving to localStorage
 
 ### Changed
 
