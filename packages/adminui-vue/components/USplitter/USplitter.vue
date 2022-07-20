@@ -20,14 +20,23 @@ export default {
   name: 'USplitter',
   components: { Splitpanes },
   props: {
+    /**
+     * Used when to identify when there is more than one on a page splitpanes
+     */
     splitId: {
       type: [String, Number],
       default: ''
     },
+    /**
+     *the class that will be set to the body splitpane
+     */
     customClass: {
       type: String,
       default: ''
     },
+    /**
+     * whether the split panel can be stored in localStorage
+     */
     canSaveInStorage: {
       type: Boolean,
       default: true
@@ -40,7 +49,7 @@ export default {
   },
   methods: {
     getStorageKey () {
-      return UB.core.UBLocalStorageManager.getKeyUI(this.storegaKey)
+      return UB.core?.UBLocalStorageManager?.getKeyUI(this.storegaKey) || 'splitpanes_default_key'
     },
     restore () {
       const data = this.getDataFromStore()
@@ -90,7 +99,7 @@ export default {
     init () {
       if (!this.canSaveInStorage) return
       this.storegaKey = 'splitter'
-      this.activeTab = UB.core.UBApp.viewport.centralPanel.getActiveTab()
+      this.activeTab = UB?.core?.UBApp?.viewport?.centralPanel.getActiveTab()
       this.tabKey = this.activeTab ? this.activeTab.id : location.pathname
       this.indexCurrSplitter = this.getCurrentIndexInDOM()
       UB.connection.on('removedUserDataUI', this.$refs.splitpane.equalize)
@@ -159,6 +168,10 @@ export default {
 }
 .splitpanes--horizontal > .splitpanes__splitter:after {
   margin-top: 1px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 .splitpanes--horizontal > .splitpanes__splitter:before {
   margin-top: -2px;

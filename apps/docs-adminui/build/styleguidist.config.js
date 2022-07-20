@@ -48,7 +48,8 @@ module.exports = {
       c('controls/UFormContainer.vue'), // TODO
       c('controls/UFormRow.vue'), // TODO
       c('controls/UGrid.vue'), // TODO
-      c('UFieldSet.vue')
+      c('UFieldSet.vue'),
+      c('USplitter/USplitter.vue')
     ]
   }, {
     name: 'Presentational',
