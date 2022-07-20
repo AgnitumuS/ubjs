@@ -1,6 +1,7 @@
 <template>
   <Splitpanes
     ref="splitpane"
+    :class="customClass"
     v-bind="$attrs"
     v-on="$listeners"
     @resized="savePosition"
@@ -22,6 +23,14 @@ export default {
     splitId: {
       type: [String, Number],
       default: ''
+    },
+    customClass: {
+      type: String,
+      default: ''
+    },
+    canSaveInStorage: {
+      type: Boolean,
+      default: true
     }
   },
   mounted () {
@@ -56,13 +65,15 @@ export default {
       localStorage.setItem(this.getStorageKey(), JSON.stringify(this.baseData))
     },
     savePosition (panes) {
-      const data = this.getDataFromStore()
+      this.baseData[this.tabKey][this.indexCurrSplitter] = {} // because a different amount of panes can be stored than there is
+      const data = this.baseData[this.tabKey][this.indexCurrSplitter]
       panes.forEach((el, index) => {
         data[index] = el.size
       })
       this.setToStorage(data)
     },
     getCurrentIndexInDOM () {
+      if (this.splitId) return this.splitId
       const splitterElems = this.activeTab
         ? this.activeTab.el.dom.querySelectorAll('.splitpanes')
         : document.body.querySelectorAll('.splitpanes')
@@ -72,13 +83,19 @@ export default {
       }
       return i
     },
+    verification () {
+      const data = this.getDataFromStore()
+      return this.$refs.splitpane.panes.length === Object.keys(data).length
+    },
     init () {
+      if (!this.canSaveInStorage) return
       this.storegaKey = 'splitter'
       this.activeTab = UB.core.UBApp.viewport.centralPanel.getActiveTab()
       this.tabKey = this.activeTab ? this.activeTab.id : location.pathname
       this.indexCurrSplitter = this.getCurrentIndexInDOM()
-      this.restore()
       UB.connection.on('removedUserDataUI', this.$refs.splitpane.equalize)
+      if (!this.verification()) return
+      this.restore()
     }
   }
 }
@@ -88,7 +105,7 @@ export default {
 .splitpanes {
   --paneSize: 10px;
   --paneIconColor: hsl(var(--hs-control), var(--l-state-hover));
-  --paneBorderColor: hsl(var(--hs-control), var(--l-state-disabled));;
+  --paneBorderColor: hsl(var(--hs-control), var(--l-state-disabled));
 }
 
 .splitpanes .splitpanes__splitter {
