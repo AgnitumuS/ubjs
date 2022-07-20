@@ -78,16 +78,17 @@ export default {
       this.tabKey = this.activeTab ? this.activeTab.id : location.pathname
       this.indexCurrSplitter = this.getCurrentIndexInDOM()
       this.restore()
+      UB.connection.on('removedUserDataUI', this.$refs.splitpane.equalize)
     }
   }
 }
 </script>
 
 <style>
-.splitpanes{
+.splitpanes {
   --paneSize: 10px;
   --paneIconColor: hsl(var(--hs-control), var(--l-state-hover));
-  --paneBorderColor:#eee
+  --paneBorderColor: hsl(var(--hs-control), var(--l-state-disabled));;
 }
 
 .splitpanes .splitpanes__splitter {
@@ -99,7 +100,7 @@ export default {
   border-left: 1px solid var(--paneBorderColor);
   border-right: 1px solid var(--paneBorderColor);
   margin-left: -1px;
-  background-color:white;
+  background-color: white;
 }
 .splitpanes--horizontal > .splitpanes__splitter,
 .splitpanes--horizontal > .splitpanes__splitter {
@@ -107,7 +108,7 @@ export default {
   border-top: 1px solid var(--paneBorderColor);
   border-bottom: 1px solid var(--paneBorderColor);
   margin-top: -1px;
-  background-color:white;
+  background-color: white;
 }
 
 .splitpanes--vertical > .splitpanes__splitter:after,
