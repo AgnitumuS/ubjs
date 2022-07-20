@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+- `ubs_settings.addOrUpdateKey` - update `settingValue` in all languages
 
 ## [5.23.5] - 2022-07-12
 ## [5.23.4] - 2022-07-11

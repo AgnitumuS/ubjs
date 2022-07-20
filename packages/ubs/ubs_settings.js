@@ -87,6 +87,7 @@ function getSettingsStore () {
   }
   return _settingsStore
 }
+
 /**
  * Create a new Key or set value for existing key
  * @method addOrUpdateKey
@@ -96,16 +97,29 @@ function getSettingsStore () {
  */
 me.addOrUpdateKey = function (keyData) {
   const existedKeyData = UB.Repository('ubs_settings')
-    .attrs(['ID', 'mi_modifyDate'])
-    .where('[settingKey]', '=', keyData.settingKey)
+    .attrs('ID')
+    .where('settingKey', '=', keyData.settingKey)
     .selectSingle()
   if (existedKeyData) {
-    getSettingsStore().run('update', {
-      execParams: {
-        ID: existedKeyData.ID,
-        settingValue: keyData.settingValue,
-        mi_modifyDate: existedKeyData.mi_modifyDate
+    const execParams = {
+      ID: existedKeyData.ID,
+      mi_modifyDate: existedKeyData.mi_modifyDate
+    }
+
+    const supportedLanguages = UB.App.domainInfo.get('ubs_settings').connectionConfig.supportLang
+    const valueProps = [
+      'settingValue',
+      ...supportedLanguages.map(lang => `settingValue_${lang}`)
+    ]
+    for (const prop of valueProps) {
+      if (prop in keyData) {
+        execParams[prop] = keyData[prop]
       }
+    }
+
+    getSettingsStore().run('update', {
+      execParams,
+      __skipOptimisticLock: true
     })
   } else {
     getSettingsStore().run('insert', { execParams: keyData })
