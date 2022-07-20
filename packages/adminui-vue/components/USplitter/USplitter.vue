@@ -102,6 +102,7 @@ export default {
       this.activeTab = UB?.core?.UBApp?.viewport?.centralPanel.getActiveTab()
       this.tabKey = this.activeTab ? this.activeTab.id : location.pathname
       this.indexCurrSplitter = this.getCurrentIndexInDOM()
+      this.getDataFromStore()
       UB.connection.on('removedUserDataUI', this.$refs.splitpane.equalize)
       if (!this.verification()) return
       this.restore()

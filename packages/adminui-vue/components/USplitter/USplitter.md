@@ -1,5 +1,7 @@
 A wrapper for [Splitpanes](https://antoniandre.github.io/splitpanes/) package with the function of saving to localStorage.
-You can pass any parameter or subscribe to any event that this package supports
+You can pass any parameter or subscribe to any event that this package supports.
+
+Data that has been saved is deleted in the user menu
 
 ## Basic Usage
 
