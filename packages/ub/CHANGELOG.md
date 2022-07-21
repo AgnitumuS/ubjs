@@ -14,6 +14,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+
+## [5.23.5] - 2022-07-21
+### Fixed
  - `RLS`: default `subjectIDsFn` function for the `aclRls` mixin didn't assign
    org unit IDs of the current user into result
 

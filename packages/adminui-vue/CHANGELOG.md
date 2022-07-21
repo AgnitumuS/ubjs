@@ -14,6 +14,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+
+## [5.23.5] - 2022-07-21
+### Fixed
 - `UChart` rewired:
   - `@chart-click` handler now works even in case several charts are displayed on page
   - added date adapter to correctly display time axis (see samples on unitybase.info)

@@ -6,13 +6,18 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
-- Localization for server errors in `uba_user` and `uba_role`
 
 ### Changed
 
 ### Deprecated
 
 ### Removed
+
+### Fixed
+
+## [5.23.6] - 2022-07-21
+### Added
+- Localization for server errors in `uba_user` and `uba_role`
 
 ### Fixed
 - `uba_group` form fixes: 
