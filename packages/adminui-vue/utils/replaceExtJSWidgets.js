@@ -87,7 +87,7 @@ function replaceAutoForms () {
     props: { parentContext },
     entity,
     instanceID,
-    title: UB.connection.domain.get(entity).caption,
+    title: UB.i18n(`${entity}#captionSingular`),
     isModal,
     target,
     uiTag: `afm-${entity}`,

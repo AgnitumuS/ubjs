@@ -1,5 +1,6 @@
 {
   "caption": "Beveiliging op entiteitsniveau (ELS)",
+  "caption": "ELS regel",
   "description": "Beschrijft, welke rol toegangsrechten heeft voor Entiteitenmethoden",
   "documentation": "Beheer op entiteitsniveau. Het systeem controleert de toegang met de regel \"Allowed and NOT Prohibited\"",
   "attributes": [

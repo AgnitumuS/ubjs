@@ -1,5 +1,6 @@
 {
   "caption": "Entity Level Security (ELS)",
+  "captionSingular": "ELS Rule",
   "description": "Describe, which role have access permissions to Entities methods",
   "documentation": "Administering of entity level. The system checks the access by the rule \"Allowed and NOT Prohibited\"",
   "attributes": [

@@ -31,7 +31,11 @@ const UB = module.exports = {
    * - either previously defined dy call to {@link i18nExtend i18nExtend}
    * - or be a combination of entity and attribute names so that `UB.i18n('uba_user')`
    *  or `UB.i18n('uba_role.description')` would be resolved to  localized entity caption or entity attribute caption
-   * - description/documentation of entity/attribute can be localized using hash tag #description / #documentation. See sample below
+   * - description/documentation/captionSingular of entity/attribute can be localized using hashtag:
+   *   - #description - an entity description
+   *   - #documentation - an entity documentation
+   *   - #captionSingular - if entity.captionSingular is defined - entity.captionSingular, else - entity.caption
+   * See samples below
    *
    * @example
 
@@ -62,6 +66,7 @@ const UB = module.exports = {
 
  UB.i18n('uba_user.name#description') // "User login in lower case" (description for uba_user.name attribute)
  UB.i18n('uba_audit#documentation') // "All changes to UBA..." ( documentation for uba_audit entity )
+ UB.i18n('uba_audit#captionSingular') // "Security Audit" ( fallback to caption because uba_audit.captionSingular is not defined in meta)
 
    *
    * @param {String} localeString

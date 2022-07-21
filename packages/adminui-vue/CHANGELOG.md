@@ -8,6 +8,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
+ - vueJS based form title \ tab title will use `entity.captionSingular` in case form caption is empty.
+  We strongly recommend to add captionSingular for all `*.meta` and `*.meta.lang` files and
+  keep `caption` in `ubm_form` empty (simply remove "caption": "..." in `publis/forms/*.ubrow`)
 
 ### Deprecated
 

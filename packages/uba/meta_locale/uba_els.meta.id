@@ -1,5 +1,6 @@
 {
   "caption": "Entity Level Security (ELS)",
+  "caption": "Aturan ELS",
   "description": "Jelaskan, yang peran memiliki izin akses ke metode Entitas",
   "attributes": [
     {

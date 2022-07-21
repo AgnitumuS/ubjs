@@ -1,5 +1,6 @@
 {
   "caption": "Systemrollen",
+  "captionSingular": "Systemrolle",
   "description": "Verwalten von Subsystemrollen",
   "attributes": [
     {
