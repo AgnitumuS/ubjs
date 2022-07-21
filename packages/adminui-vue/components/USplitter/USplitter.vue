@@ -21,14 +21,14 @@ export default {
   components: { Splitpanes },
   props: {
     /**
-     * Used when to identify when there is more than one on a page splitpanes. If `splitId` is not passed,  will be used the index splitpane in DOM
+     * Used to identify splitpane on the page. If `splitId` is not passed,  will be used the index splitpane in DOM
      */
     splitId: {
       type: [String, Number],
       default: ''
     },
     /**
-     *the class that will be set to the body splitpane
+     * the class that will be set in the body of the splitpane
      */
     customClass: {
       type: String,
