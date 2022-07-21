@@ -14,6 +14,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+- Definition of shortcut `ubm_ui_settings`: set `$systemTenantOnly: true` option, so that shortcut won't be created
+  for user tenants, because settings may not be saved per-tenant.
 
 ## [5.23.5] - 2022-07-12
 ## [5.23.4] - 2022-07-11
