@@ -8,6 +8,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
+- Default rendering of boolean columns in `UTableEntity`: use icon `u-icon-check` instead of `u-icon-add`, to
+  make it look different from the "Add" action on toolbar.  Remove displaying icon `u-icon-minus` for negative values
 
 ### Deprecated
 
