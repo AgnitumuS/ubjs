@@ -41,6 +41,7 @@ dev_desktop:
             - description
             - keywords
       - ubm_ui_settings:
+          $systemTenantOnly: true   # disallow for user tenants, because feature does NOT support multitenancy yet
           caption: UI Theme and Logo
           access: SysOps, Developer
           iconCls: u-icon-desktop-administrator
