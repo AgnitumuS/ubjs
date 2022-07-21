@@ -62,6 +62,7 @@ export default {
       return data[this.tabKey][this.indexCurrSplitter]
     },
     setToStorage (data) {
+      this.getDataFromStore() // when a splitpanel is multiple on a page, they may overwrite each other when first opene
       this.baseData[this.tabKey][this.indexCurrSplitter] = data
       localStorage.setItem(this.getStorageKey(), JSON.stringify(this.baseData))
     },
@@ -94,7 +95,6 @@ export default {
       this.activeTab = UB?.core?.UBApp?.viewport?.centralPanel.getActiveTab()
       this.tabKey = this.activeTab ? this.activeTab.id : location.pathname
       this.indexCurrSplitter = this.getCurrentIndexInDOM()
-      this.getDataFromStore()
       UB.connection.on('removedUserDataUI', this.$refs.splitpane.equalize)
       if (!this.verification()) return
       this.restore()
