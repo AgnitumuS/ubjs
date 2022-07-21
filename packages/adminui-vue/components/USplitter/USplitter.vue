@@ -75,7 +75,6 @@ export default {
       this.setToStorage(data)
     },
     getCurrentIndexInDOM () {
-      if (this.splitId) return this.splitId
       const splitterElems = this.activeTab
         ? this.activeTab.el.dom.querySelectorAll('.splitpanes')
         : document.body.querySelectorAll('.splitpanes')
@@ -94,7 +93,7 @@ export default {
       this.storegeKey = 'splitter'
       this.activeTab = UB?.core?.UBApp?.viewport?.centralPanel.getActiveTab()
       this.tabKey = this.activeTab ? this.activeTab.id : location.pathname
-      this.indexCurrSplitter = this.getCurrentIndexInDOM()
+      this.indexCurrSplitter = this.splitId || this.splitId === 0 ? this.splitId : this.getCurrentIndexInDOM()
       UB.connection.on('removedUserDataUI', this.$refs.splitpane.equalize)
       if (!this.verification()) return
       this.restore()
