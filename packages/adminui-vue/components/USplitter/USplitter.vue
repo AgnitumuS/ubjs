@@ -1,7 +1,6 @@
 <template>
   <Splitpanes
     ref="splitpane"
-    :class="customClass"
     v-bind="$attrs"
     v-on="$listeners"
     @resized="savePosition"
@@ -25,13 +24,6 @@ export default {
      */
     splitId: {
       type: [String, Number],
-      default: ''
-    },
-    /**
-     * the class that will be set in the body of the splitpane
-     */
-    customClass: {
-      type: String,
       default: ''
     },
     /**
