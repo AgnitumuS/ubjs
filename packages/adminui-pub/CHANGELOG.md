@@ -12,9 +12,16 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Deprecated
 
 ### Removed
+ - removed obsolete `$App.on('buildMainMenu', ..)` code. `buildMainMenu` ExtJS event not fired for a long time,
+   `portal:sidebar:defineSlot` and `portal:navbar:defineSlot` are used instead
 
 ### Fixed
 
+## [5.23.6] - 2022-07-14
+### Changed
+ - use compiled `/models/adminui-vue/dist/fonts/fa/css/fa-all4ub.min.css` instead of for separate css for FontAwesome 
+
+## [5.23.5] - 2022-07-12
 ## [5.23.4] - 2022-07-11
 ## [5.23.3] - 2022-07-05
 ### Changed

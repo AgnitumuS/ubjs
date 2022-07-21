@@ -10,6 +10,17 @@ const _ = require('lodash')
  */
 function testOnUserLogin (req) {
   console.debug('onLogin parameters are:', req.parsedParameters)
+  if (req.parsedParameters.prefUData) { // client sends preferred uData - validate it and apply if possible
+    try {
+      const prefUData = JSON.parse(req.parsedParameters.prefUData)
+      if (prefUData.depID) {
+        const depID = +prefUData.depID
+        // REAL IMPLEMENTATION MUST VALIDATE TWICE what passed uData keys is applicable for logged-in user,
+        // and if so - apply it to uData
+        Session.uData.depID = depID
+      }
+    } catch (e) { }
+  }
   _.defaults(Session.uData, {
     tstNumArray: [1, 2, 3],
     tstStrArray: ['1', '2', '3'],

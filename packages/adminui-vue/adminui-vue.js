@@ -114,7 +114,7 @@ Vue.use(momentPlugin)
 
 // ------------- UB theme -----------------
 require('normalize.css/normalize.css')
-require('./theme/fonts.css')
+require('./dist/fonts.css')
 require('./theme/icons/ub-icons.css')
 require('./theme/ub-body.css')
 if (BOUNDLED_BY_WEBPACK) {
@@ -285,9 +285,6 @@ if (window.$App) {
      * @event portal:navbar:defineSlot
      */
     $App.fireEvent('portal:navbar:defineSlot', UNavbarDefaultSlot, {})
-  })
-  $App.on('buildMainMenu', items => {
-    items.splice(0, 1) // remove top panel ExtJS hamburger menu button
   })
 }
 

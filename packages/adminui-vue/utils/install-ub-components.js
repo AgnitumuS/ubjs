@@ -42,6 +42,7 @@ module.exports = {
     const UButtonGroup = require('../components/controls/UButtonGroup.vue').default
     const UCrop = require('../components/controls/UCrop.vue').default
     const UFieldSet = require('../components/UFieldSet.vue').default
+    const UChart = require('../components/UChart/UChart.vue').default
     Vue.component(UFormContainer.name, UFormContainer)
     Vue.component(USelectEntity.name, USelectEntity)
     Vue.component(USelectMany.name, USelectMany)
@@ -83,6 +84,7 @@ module.exports = {
     Vue.component(UButtonGroup.name, UButtonGroup)
     Vue.component(UCrop.name, UCrop)
     Vue.component(UFieldSet.name, UFieldSet)
+    Vue.component(UChart.name, UChart)
 
     const HoldFocus = require('../directives/HoldFocus')
     Vue.directive(HoldFocus.name, HoldFocus)

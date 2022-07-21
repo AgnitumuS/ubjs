@@ -1,0 +1,7 @@
+{
+  "uba_user_deleteBuiltInUserProhibited": "<<<Удаление встроенного пользователя запрещено>>>",
+  "uba_user_deleteServiceUserProhibited": "<<<Удаление сервисного пользователя запрещено>>>",
+  "uba_user_renameBuiltInUserProhibited": "<<<Переименование встроенного пользователя запрещено>>>",
+  "uba_user_renameServiceUserProhibited": "<<<Переименование сервисного пользователя запрещено>>>",
+  "uba_role_deleteBuiltInRoleProhibited": "<<<Удаление сервисной роли запрещено>>>"
+}

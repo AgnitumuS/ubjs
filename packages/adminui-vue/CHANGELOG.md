@@ -15,6 +15,27 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+- `UChart` rewired:
+  - `@chart-click` handler now works even in case several charts are displayed on page
+  - added date adapter to correctly display time axis (see samples on unitybase.info)
+  - component now registered by `adminui-vue`, so can be used without require, just ```<u-chart>....</u-chart>```
+  - `options` and `chartData` properties now NOT reactive (ChartJs is designed for static data. For dynamic data better to use `d3`)
+
+- `URadio` - prevent `'this' is undefined` error in developer mode (prop validator do not have access to 'this')
+
+## [5.23.4] - 2022-07-14
+### Added
+- added compressed bundle for all used FontAwesome CSS's `dist/fonts/fa/css/fa-all4ub.min.css` and use it to generate index page
+
+### Changed
+ - `UNavbarUserButton`: replace `el-button`->`u-button` for user icon and `el-checkbox` -> `u-checkbox` for `KerberosRememberUserMenu` 
+ - `Roboto*` font files is placed into `/dist/fonts` for both dev and production builds
+
+### Removed
+- removed deprecated woff, svg, ttf & eof fonts for FontAwesome. Remained woff2 is enough - all modern browsers uses woff2  
+
+### Fixed
+- `USelectMultiple`: regression after allowing the same values for `displayAttribute` and `valueAttribute`
 
 ## [5.23.3] - 2022-07-11
 ### Added

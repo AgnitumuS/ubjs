@@ -1,0 +1,7 @@
+{
+  "uba_user_deleteBuiltInUserProhibited": "<<<Daxili istifadəçinin silinməsi qadağandır>>>",
+  "uba_user_deleteServiceUserProhibited": "<<<Xidmət istifadəçisinin silinməsi qadağandır>>>",
+  "uba_user_renameBuiltInUserProhibited": "<<<Daxili istifadəçinin adının dəyişdirilməsi qadağandır>>>",
+  "uba_user_renameServiceUserProhibited": "<<<Xidmət istifadəçisinin adının dəyişdirilməsi qadağandır>>>",
+  "uba_role_deleteBuiltInRoleProhibited": "<<<Daxili rolun çıxarılması qadağandır>>>"
+}
