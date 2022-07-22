@@ -4,9 +4,9 @@
     v-loading="loading"
   >
     <u-toolbar>
-      <template v-slot:left>
+      <template v-slot:left v-if="!isNew">
         <u-button
-          appearance="plain"
+          appearance="inverse"
           icon="u-icon-key"
           color="primary"
           :title="$ut('changePassword')"
@@ -15,6 +15,22 @@
         >
           {{ $ut('changePassword') }}
         </u-button>
+      </template>
+
+      <template v-slot:right>
+        <indicator-pane/>
+        <el-tag
+          v-if="pending"
+          type="warning"
+        >
+          {{ $ut('isPending') }}
+        </el-tag>
+        <el-tag
+          v-if="disabled"
+          type="danger"
+        >
+          {{ $ut('disabled') }}
+        </el-tag>
       </template>
     </u-toolbar>
 
@@ -28,7 +44,7 @@
           :label="$ut('mainSettings')"
         >
           <u-auto-field attribute-name="name" required/>
-          <u-auto-field attribute-name="firstName"/>
+          <u-auto-field attribute-name="firstName" required/>
           <u-auto-field attribute-name="lastName"/>
           <u-auto-field attribute-name="fullName" v-model="fullName"/>
           <u-form-row attribute-name="gender">
@@ -38,14 +54,38 @@
               value-attribute="code"
             />
           </u-form-row>
-          <u-auto-field attribute-name="email"/>
+          <u-auto-field attribute-name="email" required/>
           <u-auto-field attribute-name="phone"/>
-        </el-tab-pane>
-
-        <el-tab-pane
-          name="groupsAndRoles"
-          :label="$ut('groupsAndRoles')"
-        >
+          <u-grid
+            :max-width="400"
+            column-gap="20"
+            style="max-width: 800px"
+            class="sliders"
+          >
+            <u-auto-field
+              attribute-name="avatar"
+              force-cmp="u-file"
+              :preview-mode="{ height: 200, width: 400}"
+              :remove-default-buttons="['webcam', 'scan', 'scanSettings']"
+              :before-set-document="checkFile"
+            />
+            <div class="sliders-container">
+              <u-auto-field
+                attribute-name="disabled"
+                label-position="right"
+                force-cmp="el-switch"
+                :max-width="400"
+                :readonly="!isSupervisor"
+              />
+              <u-auto-field
+                attribute-name="isPending"
+                label-position="right"
+                force-cmp="el-switch"
+                :max-width="400"
+                :readonly="!isSupervisor"
+              />
+            </div>
+          </u-grid>
           <u-form-row
             :label="$ut('roles')"
           >
@@ -69,41 +109,82 @@
           </u-form-row>
         </el-tab-pane>
 
+        <!--        <el-tab-pane
+                  name="groupsAndRoles"
+                  :label="$ut('groupsAndRoles')"
+                >
+                  <u-form-row
+                    :label="$ut('roles')"
+                  >
+                    <u-select-collection
+                      associated-attr="roleID"
+                      entity-name="uba_userrole"
+                      collection-name="userRoles"
+                      clearable
+                    />
+                  </u-form-row>
+
+                  <u-form-row
+                    :label="$ut('groups')"
+                  >
+                    <u-select-collection
+                      associated-attr="groupID"
+                      entity-name="uba_usergroup"
+                      collection-name="userGroups"
+                      clearable
+                    />
+                  </u-form-row>
+                </el-tab-pane>-->
+
         <el-tab-pane
           name="settings"
           :label="$ut('otherSettings')"
         >
-          <u-grid
-            :max-width="400"
-            column-gap="20"
-            style="max-width: 800px"
-            class="sliders"
-          >
-            <u-auto-field
-              attribute-name="avatar"
-              force-cmp="u-file"
-              :preview-mode="{ height: 200, width: 400}"
-            />
-            <div class="sliders-container">
-              <u-auto-field
-                attribute-name="disabled"
-                label-position="right"
-                force-cmp="el-switch"
-                :max-width="400"
-              />
-              <u-auto-field
-                attribute-name="isPending"
-                label-position="right"
-                force-cmp="el-switch"
-                :max-width="400"
-              />
-            </div>
-          </u-grid>
-          <u-auto-field attribute-name="trustedIP"/>
+          <!--          <u-grid
+                      :max-width="400"
+                      column-gap="20"
+                      style="max-width: 800px"
+                      class="sliders"
+                    >
+                      <u-auto-field
+                        attribute-name="avatar"
+                        force-cmp="u-file"
+                        :preview-mode="{ height: 200, width: 400}"
+                        :remove-default-buttons="['webcam', 'scan', 'scanSettings']"
+                      />
+                      <div class="sliders-container">
+                        <u-auto-field
+                          attribute-name="disabled"
+                          label-position="right"
+                          force-cmp="el-switch"
+                          :max-width="400"
+                        />
+                        <u-auto-field
+                          attribute-name="isPending"
+                          label-position="right"
+                          force-cmp="el-switch"
+                          :max-width="400"
+                        />
+                      </div>
+                    </u-grid>-->
+          <u-auto-field attribute-name="trustedIP" :readonly="!isSupervisor"/>
           <u-auto-field
             attribute-name="uData" type="textarea"
             :autosize="{minRows: 2, maxRows: 6}"
           />
+          <u-form-row
+            :label="$ut('certificates')"
+            :style="{maxWidth: 'none'}"
+          >
+            <u-table-entity
+              :bordered="true"
+              :style="{maxWidth: '800px'}"
+              :repository="getUserCertificates"
+              :build-edit-config="getCertConfig"
+              :build-copy-config="getCertConfig"
+              :build-add-new-config="getCertConfig"
+            />
+          </u-form-row>
         </el-tab-pane>
 
         <el-tab-pane
@@ -168,11 +249,18 @@ const { Form, dialogYesNo, mapInstanceFields } = require('@unitybase/adminui-vue
 const formHelpers = require('@unitybase/adminui-vue').formHelpers
 const { Repository, connection, i18n } = require('@unitybase/ub-pub')
 const { mapState, mapGetters, mapActions } = require('vuex')
-const { email, required } = require('vuelidate/lib/validators/index')
+const { email, required, requiredIf } = require('vuelidate/lib/validators/index')
+const { buildFormsStoreModule } = require('@unitybase/forms/public/controls/dynamic-form/dynamic-form-store-module')
 
 module.exports.mount = (cfg) => {
   Form(cfg)
-    .store()
+    .store(
+      {
+        modules: {
+          form: buildFormsStoreModule({ formEntity: 'org_employee' })
+        }
+      }
+    )
     .processing({
       masterFieldList: [
         'firstName',
@@ -205,7 +293,12 @@ module.exports.mount = (cfg) => {
       validations () {
         return {
           name: { required },
-          email: { email }
+          firstName: {
+            required: requiredIf(() => {
+              return !!this.$store.state.employee
+            })
+          },
+          email: { email, required }
         }
       }
     })
@@ -215,10 +308,21 @@ module.exports.mount = (cfg) => {
 module.exports.default = {
   name: 'UbaUser',
 
+  components: {
+    IndicatorPane: require('@unitybase/forms/public/controls/indicator-pane.vue').default
+  },
+
+  mixins: [
+    require('@unitybase/dfx/public/controls/doc-renderer/file-based-controls-mixin')
+  ],
+
   data () {
     return {
       userTabs: 'main',
-      employee: false
+      employee: true,
+      props: {
+        maxFileSize: 2
+      }
     }
   },
 
@@ -238,6 +342,26 @@ module.exports.default = {
     ]),
 
     ...mapGetters(['loading']),
+
+    pending () {
+      return this.$store.state.data.isPending
+    },
+
+    disabled () {
+      return this.$store.state.data.disabled
+    },
+
+    isSupervisor () {
+      return connection.userData().roles.includes('Supervisor')
+    },
+
+    isEmployee () {
+      return !!this.$store.state.employee
+    },
+
+    acceptFileExtensions () {
+      return ['.jpg', '.png'].join()
+    },
 
     fullName: {
       get () {
@@ -281,13 +405,14 @@ module.exports.default = {
     }
   },
 
-  async mounted () {
+  async created () {
     const employee = await Repository('org_employee')
       .attrs('ID')
       .where('userID', '=', this.instanceID)
       .selectSingle()
     this.employee = !!employee
     this.employeeID = employee?.ID
+    this.$store.commit('SET', { key: 'employee', value: employee })
   },
 
   methods: {
@@ -342,9 +467,9 @@ module.exports.default = {
     },
 
     showPasswordChangeDialog () {
-      if (this.isNew) {
-        this.save()
-      }
+      /*        if (this.isNew) {
+                this.save()
+              }*/
       $App.doCommand({
         cmdType: 'showForm',
         formCode: 'uba_user-changeUserPassword',
@@ -411,6 +536,10 @@ module.exports.default = {
       if (!isEmployee) {
         await this.removeUserFromOrgStructure()
       }
+    },
+
+    checkFile (e) {
+      this.validateFile(e.file)
     }
   }
 
