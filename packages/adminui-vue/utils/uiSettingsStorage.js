@@ -10,24 +10,37 @@ class UISettingsStorage {
    * @returns {string}
    */
   getKey (componentKey, settingsKey, instanceKey) {
-    const keyParts = [componentKey, settingsKey, instanceKey].filter(Boolean)
+    const keyParts = [componentKey, settingsKey, instanceKey].filter(part => part !== undefined)
     return ['portal', ...keyParts].join(':')
   }
 
   /**
    * @param {string} key
-   * @param {string} value
+   * @param {*} value
    */
   setValue (key, value) {
-    this.#localStorage.setItem(key, value)
+    this.#localStorage.setItem(key, JSON.stringify({ data: value }))
   }
 
   /**
    * @param {string} key
-   * @returns {string|null}
+   * @returns {*}
    */
   getValue (key) {
-    return this.#localStorage.getItem(key)
+    const value = this.#localStorage.getItem(key)
+    if (value === null) {
+      return null
+    }
+
+    let parsedValue
+    try {
+      parsedValue = JSON.parse(value)
+    } catch {
+      return null
+    }
+
+    const parsedValueIsObject = typeof parsedValue === 'object' && parsedValue !== null
+    return parsedValueIsObject && 'data' in parsedValue ? parsedValue.data : null
   }
 
   clear () {

@@ -123,8 +123,7 @@ export default {
     },
 
     defaultOpeneds () {
-      const storageValue = this.$uiSettingsStorage.getValue(this.activeShortcutFolderStorageKey)
-      return storageValue ? JSON.parse(storageValue) : []
+      return this.$uiSettingsStorage.getValue(this.activeShortcutFolderStorageKey) ?? []
     },
 
     activeShortcuts () {
@@ -215,7 +214,7 @@ export default {
         .orderBy('caption')
         .select()
 
-      let preferredDesktop = +this.$uiSettingsStorage.getValue(this.preferredDesktopStorageKey)
+      let preferredDesktop = this.$uiSettingsStorage.getValue(this.preferredDesktopStorageKey)
       // desktop can be deleted
       if (!preferredDesktop || !desktops.find(i => i.ID === preferredDesktop)) {
         const defaultDesktop = desktops.find(d => d.isDefault)
@@ -299,7 +298,7 @@ export default {
     initCollapseState () {
       const savedCollapse = this.$uiSettingsStorage.getValue(this.isCollapsedStorageKey)
       if (savedCollapse) {
-        this.isCollapsed = savedCollapse === 'true'
+        this.isCollapsed = savedCollapse === true
       } else {
         this.isCollapsed = window.innerWidth < 1024
       }
@@ -352,7 +351,7 @@ export default {
     },
 
     setActiveFolder (ID, arr) {
-      this.$uiSettingsStorage.setValue(this.activeShortcutFolderStorageKey, JSON.stringify(arr))
+      this.$uiSettingsStorage.setValue(this.activeShortcutFolderStorageKey, arr)
     },
 
     changeDesktop (ID) {

@@ -112,7 +112,7 @@ export default {
       tabs: [],
       activeTabId: null,
       contextMenuTabId: null,
-      isCollapsed: isCollapsedStorageValue === 'true',
+      isCollapsed: isCollapsedStorageValue === true,
       visibleNavbar: true,
       originalExtNavbarHeight: null
     }

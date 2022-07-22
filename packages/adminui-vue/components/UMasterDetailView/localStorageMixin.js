@@ -38,9 +38,9 @@ module.exports = {
      * @param {function(string):void} applyFunc
      */
     applySavedValue (key, applyFunc) {
-      const localStorageString = this.$uiSettingsStorage.getValue(this.uiStorageKey(key))
-      if (localStorageString) {
-        applyFunc(localStorageString)
+      const uiStorageValue = this.$uiSettingsStorage.getValue(this.uiStorageKey(key))
+      if (uiStorageValue) {
+        applyFunc(uiStorageValue)
       }
     },
 
@@ -56,7 +56,7 @@ module.exports = {
         value => {
           this.$uiSettingsStorage.setValue(
             this.uiStorageKey('filters'),
-            JSON.stringify(value)
+            value
           )
         }
       )
@@ -91,15 +91,14 @@ module.exports = {
         value => {
           this.$uiSettingsStorage.setValue(
             this.uiStorageKey('sort'),
-            JSON.stringify(value)
+            value
           )
         }
       )
     },
 
     applySaved (store) {
-      this.applySavedValue('filters', (filtersStr) => {
-        const filters = JSON.parse(filtersStr)
+      this.applySavedValue('filters', (filters) => {
         for (const filter of filters) {
           store.commit('APPLY_FILTER', filter)
         }
@@ -107,8 +106,7 @@ module.exports = {
       this.applySavedValue('viewMode', (viewMode) => {
         this.viewMode = viewMode
       })
-      this.applySavedValue('sort', (sortStr) => {
-        const sort = JSON.parse(sortStr)
+      this.applySavedValue('sort', (sort) => {
         store.commit('SORT', sort)
       })
     },
