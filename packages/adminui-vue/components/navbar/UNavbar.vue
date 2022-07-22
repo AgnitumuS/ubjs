@@ -105,11 +105,14 @@ export default {
   name: 'UNavbar',
 
   data () {
+    const isCollapsedStorageKey = this.$uiSettingsStorage.getKey('sidebar', 'isCollapsed')
+    const isCollapsedStorageValue = this.$uiSettingsStorage.getItem(isCollapsedStorageKey)
+
     return {
       tabs: [],
       activeTabId: null,
       contextMenuTabId: null,
-      isCollapsed: window.localStorage.getItem('portal:sidebar:isCollapsed') === 'true',
+      isCollapsed: isCollapsedStorageValue === 'true',
       visibleNavbar: true,
       originalExtNavbarHeight: null
     }

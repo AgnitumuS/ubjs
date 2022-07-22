@@ -105,7 +105,7 @@ export default {
   name: 'UNavbarUserButton',
 
   data () {
-    const silenceKerberosLogin = window.localStorage[this.$UB.LDS_KEYS.SILENCE_KERBEROS_LOGIN] === 'true'
+    const silenceKerberosLogin = window.localStorage.getItem(this.$UB.LDS_KEYS.SILENCE_KERBEROS_LOGIN) === 'true'
     const negotiateAvailable = this.$UB.connection.authMethods.indexOf('Negotiate') !== -1
     const userName = this.$UB.connection.userData('employeeShortFIO') || this.$UB.connection.userLogin()
     const cfg = this.$UB.connection.appConfig
@@ -117,7 +117,7 @@ export default {
       silenceKerberosLogin,
       scannerEnabled,
       userCanChangePassword,
-      negotiateAvailable: negotiateAvailable,
+      negotiateAvailable,
       userName,
       appVersion,
       iconClass: 'u-icon-person',
@@ -171,7 +171,7 @@ export default {
     doLogout () {
       window.localStorage.setItem(this.$UB.LDS_KEYS.USER_DID_LOGOUT, 'true')
 
-      if (window.localStorage.getItem('lastAuthType').toLowerCase() !== 'openidconnect') {
+      if (window.localStorage.getItem(this.$UB.LDS_KEYS.LAST_AUTH_SCHEMA).toLowerCase() !== 'openidconnect') {
         this.$UB.core.UBApp.logout()
         return
       }
@@ -200,6 +200,7 @@ export default {
 
     resetGUIToDefault () {
       this.$UB.core.UBLocalStorageManager.removeUserDataUI()
+      this.$uiSettingsStorage.clear()
       this.$notify({
         title: this.$ut('executed'),
         message: this.$ut('resetGUIToDefault'),

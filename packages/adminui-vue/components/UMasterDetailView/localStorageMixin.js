@@ -1,11 +1,11 @@
 /**
  * Sets watchers for "view mode" and "filters".
- * Store results in localStorage and apply it by "onInitialLoad" method
+ * Store results in the uiSettingsStorage and apply it by "onInitialLoad" method
  */
 module.exports = {
   props: {
     /**
-     * If passed will store applied filters in localStorage
+     * If passed will store applied filters in the uiSettingsStorage
      */
     shortcutCode: [String, undefined]
   },
@@ -27,18 +27,18 @@ module.exports = {
      * @param {string} moduleName
      * @returns {string}
      */
-    localStorageKey (moduleName) {
-      return `UTableEntity:${moduleName}:${this.shortcutCode}`
+    uiStorageKey (moduleName) {
+      return this.$uiSettingsStorage.getKey('UTableEntity', moduleName, this.shortcutCode)
     },
 
     /**
-     * Checks localStorage value by key and run callback which apply this value
+     * Checks uiSettingsStorage value by key and run callback which apply this value
      *
      * @param {string} key
      * @param {function(string):void} applyFunc
      */
     applySavedValue (key, applyFunc) {
-      const localStorageString = window.localStorage.getItem(this.localStorageKey(key))
+      const localStorageString = this.$uiSettingsStorage.getItem(this.uiStorageKey(key))
       if (localStorageString) {
         applyFunc(localStorageString)
       }
@@ -54,8 +54,8 @@ module.exports = {
       return store.watch(
         state => state.filters,
         value => {
-          window.localStorage.setItem(
-            this.localStorageKey('filters'),
+          this.$uiSettingsStorage.setItem(
+            this.uiStorageKey('filters'),
             JSON.stringify(value)
           )
         }
@@ -71,8 +71,8 @@ module.exports = {
       return this.$watch(
         () => this.viewMode,
         value => {
-          window.localStorage.setItem(
-            this.localStorageKey('viewMode'),
+          this.$uiSettingsStorage.setItem(
+            this.uiStorageKey('viewMode'),
             value
           )
         }
@@ -89,8 +89,8 @@ module.exports = {
       return store.watch(
         state => state.sort,
         value => {
-          window.localStorage.setItem(
-            this.localStorageKey('sort'),
+          this.$uiSettingsStorage.setItem(
+            this.uiStorageKey('sort'),
             JSON.stringify(value)
           )
         }

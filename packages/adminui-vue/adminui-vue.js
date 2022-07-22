@@ -187,6 +187,15 @@ const lookups = require('./utils/lookups')
 module.exports.lookups = lookups
 Vue.use(lookups)
 
+// ----------- UI Settings Storage -----------
+const uiSettingsStorage = require('./utils/uiSettingsStorage')
+/**
+ * Manager of UI Settings
+ * @type {UISettingsStorage}
+ */
+module.exports.uiSettingsStorage = uiSettingsStorage
+Vue.prototype.$uiSettingsStorage = uiSettingsStorage
+
 // ---------------- Column Templates ------------------
 /**
  * The module provides column settings, cell templates,s and filter templates by

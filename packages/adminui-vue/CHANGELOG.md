@@ -6,8 +6,51 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+- `uiSettingsStorage`: module for setting/getting/clearing UI settings. It is recommended
+  to use this module instead of the `localStorage` for persisting some settings on UI.
+  These settings are cleared on the `Reset GUI Settings` action and emit the `portal:resetGUI`
+  event. Also, it is added to `Vue.prototype.$uiSettingsStorage`. Example:
+```vue
+<script>
+export default {
+  name: 'MyComponentName',
+
+  computed: {
+    someSettingKey() {
+      return this.$uiSettingsStorage.getKey('MyComponentName', 'someSettingName')
+    },
+
+    someSetting: {
+      get() {
+        return this.$uiSettingsStorage.getItem(this.someSettingKey)
+      },
+      set(value) {
+        this.$uiSettingsStorage.setItem(this.someSettingKey)
+      }
+    }
+  },
+
+  mounted() {
+    this.subscribeResetUISettings()
+  },
+
+  methods: {
+    subscribeResetUISettings() {
+      const listener = () => {
+        // some logic
+      }
+      this.$UB.connection.on('portal:resetGUI', listener)
+      this.$once('hook:beforeDestroy', () => {
+        this.$UB.connection.removeListener('portal:resetGUI', listener)
+      })
+    }
+  }
+}
+</script>
+```
 
 ### Changed
+- Migrate from using the `localStorage` to `uiSettingsStorage` in appropriate places
 
 ### Deprecated
 

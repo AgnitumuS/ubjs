@@ -57,8 +57,7 @@ export default {
 
   computed: {
     authSchema () {
-      // console.debug('authSchema ####', window.localStorage.getItem('lastAuthType').toLowerCase())
-      return window.localStorage.getItem('lastAuthType').toLowerCase()
+      return window.localStorage.getItem(this.$UB.LDS_KEYS.LAST_AUTH_SCHEMA).toLowerCase()
     },
 
     logoUrl () {

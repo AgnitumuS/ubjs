@@ -109,9 +109,22 @@ export default {
   },
 
   computed: {
+    activeShortcutFolderStorageKey () {
+      return this.$uiSettingsStorage.getKey('sidebar', 'activeShortcutFolder')
+    },
+
+    isCollapsedStorageKey () {
+      return this.$uiSettingsStorage.getKey('sidebar', 'isCollapsed')
+    },
+
+    preferredDesktopStorageKey () {
+      const userLogin = UB.connection.userData().login
+      return this.$uiSettingsStorage.getKey(userLogin, 'desktop')
+    },
+
     defaultOpeneds () {
-      const arr = localStorage.getItem('portal:sidebar:activeShortcutFolder')
-      return arr ? JSON.parse(arr) : []
+      const storageValue = this.$uiSettingsStorage.getItem(this.activeShortcutFolderStorageKey)
+      return storageValue ? JSON.parse(storageValue) : []
     },
 
     activeShortcuts () {
@@ -139,7 +152,7 @@ export default {
 
   watch: {
     isCollapsed (value) {
-      window.localStorage.setItem('portal:sidebar:isCollapsed', value)
+      this.$uiSettingsStorage.setItem(this.isCollapsedStorageKey, value)
       this.$UB.core.UBApp.fireEvent('portal:sidebar:collapse', value)
       let { full, collapsed } = $App.viewport.leftPanel.defaultSizes
 
@@ -202,8 +215,7 @@ export default {
         .orderBy('caption')
         .select()
 
-      const userLogin = UB.connection.userData().login
-      let preferredDesktop = +window.localStorage.getItem(`${userLogin}:desktop`)
+      let preferredDesktop = +this.$uiSettingsStorage.getItem(this.preferredDesktopStorageKey)
       // desktop can be deleted
       if (!preferredDesktop || !desktops.find(i => i.ID === preferredDesktop)) {
         const defaultDesktop = desktops.find(d => d.isDefault)
@@ -281,12 +293,11 @@ export default {
     },
 
     saveInLocalStorage (ID) {
-      const userLogin = UB.connection.userData().login
-      window.localStorage.setItem(`${userLogin}:desktop`, ID)
+      this.$uiSettingsStorage.setItem(this.preferredDesktopStorageKey, ID)
     },
 
     initCollapseState () {
-      const savedCollapse = window.localStorage.getItem('portal:sidebar:isCollapsed')
+      const savedCollapse = this.$uiSettingsStorage.getItem(this.isCollapsedStorageKey)
       if (savedCollapse) {
         this.isCollapsed = savedCollapse === 'true'
       } else {
@@ -341,7 +352,7 @@ export default {
     },
 
     setActiveFolder (ID, arr) {
-      localStorage.setItem('portal:sidebar:activeShortcutFolder', JSON.stringify(arr))
+      this.$uiSettingsStorage.setItem(this.activeShortcutFolderStorageKey, JSON.stringify(arr))
     },
 
     changeDesktop (ID) {
