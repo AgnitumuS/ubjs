@@ -38,7 +38,7 @@ module.exports = {
      * @param {function(string):void} applyFunc
      */
     applySavedValue (key, applyFunc) {
-      const localStorageString = this.$uiSettingsStorage.getItem(this.uiStorageKey(key))
+      const localStorageString = this.$uiSettingsStorage.getValue(this.uiStorageKey(key))
       if (localStorageString) {
         applyFunc(localStorageString)
       }
@@ -54,7 +54,7 @@ module.exports = {
       return store.watch(
         state => state.filters,
         value => {
-          this.$uiSettingsStorage.setItem(
+          this.$uiSettingsStorage.setValue(
             this.uiStorageKey('filters'),
             JSON.stringify(value)
           )
@@ -71,7 +71,7 @@ module.exports = {
       return this.$watch(
         () => this.viewMode,
         value => {
-          this.$uiSettingsStorage.setItem(
+          this.$uiSettingsStorage.setValue(
             this.uiStorageKey('viewMode'),
             value
           )
@@ -89,7 +89,7 @@ module.exports = {
       return store.watch(
         state => state.sort,
         value => {
-          this.$uiSettingsStorage.setItem(
+          this.$uiSettingsStorage.setValue(
             this.uiStorageKey('sort'),
             JSON.stringify(value)
           )

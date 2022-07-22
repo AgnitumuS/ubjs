@@ -315,7 +315,7 @@ export default {
   },
 
   mounted () {
-    const videoRatioFromStorage = this.$uiSettingsStorage.getItem(this.videoRatioStorageKey)
+    const videoRatioFromStorage = this.$uiSettingsStorage.getValue(this.videoRatioStorageKey)
     this.fullScreen = this.startFullScreen
     this.videoRatio = videoRatioFromStorage ? JSON.parse(videoRatioFromStorage) : this.videoRatios[0]
   },
@@ -547,7 +547,7 @@ export default {
 
     clearForm () {
       this.stopStream()
-      this.$uiSettingsStorage.setItem(this.videoRatioStorageKey, JSON.stringify(this.videoRatio))
+      this.$uiSettingsStorage.setValue(this.videoRatioStorageKey, JSON.stringify(this.videoRatio))
       this.pages = []
       this.previewImageSrc = null
       this.canvas = null

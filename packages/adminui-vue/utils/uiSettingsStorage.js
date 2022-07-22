@@ -18,7 +18,7 @@ class UISettingsStorage {
    * @param {string} key
    * @param {string} value
    */
-  setItem (key, value) {
+  setValue (key, value) {
     this.#localStorage.setItem(key, value)
   }
 
@@ -26,7 +26,7 @@ class UISettingsStorage {
    * @param {string} key
    * @returns {string|null}
    */
-  getItem (key) {
+  getValue (key) {
     return this.#localStorage.getItem(key)
   }
 

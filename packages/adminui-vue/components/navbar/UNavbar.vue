@@ -106,7 +106,7 @@ export default {
 
   data () {
     const isCollapsedStorageKey = this.$uiSettingsStorage.getKey('sidebar', 'isCollapsed')
-    const isCollapsedStorageValue = this.$uiSettingsStorage.getItem(isCollapsedStorageKey)
+    const isCollapsedStorageValue = this.$uiSettingsStorage.getValue(isCollapsedStorageKey)
 
     return {
       tabs: [],

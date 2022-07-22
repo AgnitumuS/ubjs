@@ -22,10 +22,10 @@ export default {
 
     someSetting: {
       get() {
-        return this.$uiSettingsStorage.getItem(this.someSettingKey)
+        return this.$uiSettingsStorage.getValue(this.someSettingKey)
       },
       set(value) {
-        this.$uiSettingsStorage.setItem(this.someSettingKey)
+        this.$uiSettingsStorage.setValue(this.someSettingKey)
       }
     }
   },
