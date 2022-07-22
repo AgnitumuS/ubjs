@@ -6,6 +6,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+ - `Administration`->`Maintenance Tools` -> `Messages` shortcut: added form for viewing message (on double click)  
 
 ### Changed
 

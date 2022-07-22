@@ -202,8 +202,7 @@ export default {
       this.isVisible = false
       $App.doCommand({
         cmdType: 'showForm',
-        entity: 'ubs_message_edit',
-        title: this.$ut('messageSendTitle')
+        entity: 'ubs_message_edit'
       })
     },
 
