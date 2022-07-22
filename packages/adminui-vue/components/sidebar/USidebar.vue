@@ -118,7 +118,7 @@ export default {
     },
 
     preferredDesktopStorageKey () {
-      const userLogin = UB.connection.userData().login
+      const userLogin = UB.connection.userData('login')
       return this.$uiSettingsStorage.getKey(userLogin, 'desktop')
     },
 
