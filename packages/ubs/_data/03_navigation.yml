@@ -109,14 +109,23 @@ adm_desktop:
               renderer: 'vue',
               cmdType: 'showList',
               cmdData: {
-                entityName: 'ubs_message_edit',
+                entityName: 'ubs_message',
                 columns: [
                   'messageBody',
                   'messageType',
                   'complete',
                   'startDate',
                   'expireDate'
-                ]
+                ],
+                buildAddNewConfig(cfg) {
+                  cfg.entity = 'ubs_message_edit'
+                  delete cfg.formCode
+                  return cfg
+                },
+                buildEditConfig(cfg) {
+                  cfg.formCode = 'ubs_message_view'
+                  return cfg
+                } 
               }
             }
 
