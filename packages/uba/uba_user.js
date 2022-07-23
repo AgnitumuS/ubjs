@@ -43,7 +43,7 @@ function checkDuplicateUser (ctxt) {
       .select()
 
     if (!store.eof) {
-      throw new UB.UBAbort('<<<Duplicate user name (may be in different case)>>>')
+      throw new UB.UBAbort('<<<uba_user_errors.duplicateUserName>>>')
     }
     params.name = newName.toLowerCase().trim() // convert a username to lower case
   }

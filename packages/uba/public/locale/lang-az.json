@@ -47,8 +47,8 @@
       }
     }
   },
-  "Duplicate user name (may be in different case)": "Bu istifadəçi adı olan (hərflərə həssas olmayan) istifadəçi artıq qeydiyyatdan keçib. Başqa bir giriş cəhd edin",
   "uba_user_errors": {
+    "duplicateUserName": "Bu istifadəçi adı olan (hərflərə həssas olmayan) istifadəçi artıq qeydiyyatdan keçib. Başqa bir giriş cəhd edin",
     "deleteBuiltInUserProhibited": "Daxili istifadəçinin silinməsi qadağandır",
     "deleteServiceUserProhibited": "Xidmət istifadəçisinin silinməsi qadağandır",
     "renameBuiltInUserProhibited": "Daxili istifadəçinin adının dəyişdirilməsi qadağandır",
