@@ -46,5 +46,14 @@
       }
     }
   },
-  "Duplicate user name (may be in different case)": "Корбаре, ки ин номи корбариро дорад (ба ҳарф ҳассос нест) аллакай ба қайд гирифта шудааст. Воридшавии дигарро санҷед"
+  "uba_user_errors": {
+    "duplicateUserName": "Корбаре, ки ин номи корбариро дорад (ба ҳарф ҳассос нест) аллакай ба қайд гирифта шудааст. Воридшавии дигарро санҷед",
+    "deleteBuiltInUserProhibited": "Removing of built-in user is prohibited",
+    "deleteServiceUserProhibited": "Removing of service user is prohibited",
+    "renameBuiltInUserProhibited": "Renaming of built-in user is prohibited",
+    "renameServiceUserProhibited": "Renaming of service user is prohibited"
+  },
+  "uba_role_errors": {
+    "deleteBuiltInRoleProhibited": "Removing of built-in role is prohibited"
+  }
 }

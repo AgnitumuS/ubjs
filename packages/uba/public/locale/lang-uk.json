@@ -50,5 +50,14 @@
       }
     }
   },
-  "Duplicate user name (may be in different case)": "Користувача з таким логіном (без врахування регістру) вже зареєстровано. Спробуйте інший логін"
+  "uba_user_errors": {
+    "duplicateUserName": "Користувача з таким логіном (без врахування регістру) вже зареєстровано. Спробуйте інший логін",
+    "deleteBuiltInUserProhibited": "Видалення вбудованого користувача заборонено",
+    "deleteServiceUserProhibited": "Видалення сервісного користувача заборонено",
+    "renameBuiltInUserProhibited": "Перейменування вбудованого користувача заборонено",
+    "renameServiceUserProhibited": "Перейменування сервісного користувача заборонено"
+  },
+  "uba_role_errors": {
+    "deleteBuiltInRoleProhibited": "Видалення сервісної ролі заборонено"
+  }
 }
