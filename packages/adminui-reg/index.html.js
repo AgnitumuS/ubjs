@@ -97,8 +97,9 @@ function generateIndexPage (req, resp, indexName, addCSP = true) {
     const cspNonce = nsha256('' + Date.now()).substr(0, 8)
     App.globalCachePut(GC_KEYS.COMPILED_INDEX_NONCE, cspNonce)
     let customThemeCSS, customThemeJS
-    debugger
+
     if (uiSettings.adminUI.customTheme) {
+      // eslint-disable-next-line no-undef,camelcase
       const allThemes = ubm_desktop.getUIThemes()
       const ct = allThemes.find(t => t.name === uiSettings.adminUI.customTheme)
       if (ct) {
@@ -208,15 +209,19 @@ but "browser" section in package.json is not defined. Will fallback to "browser"
       if (!uiSettings.cspAllow) {
         cspAllow = uiSettings.cspAllow = {}
       }
-      initCspAllow(cspAllow, cspAllowP, 'defaultSrc', 'https://localhost:8083 http://localhost:8081')
-      initCspAllow(cspAllow, cspAllowP, 'scriptSrc', 'https://localhost:8083 http://localhost:8081 resource://pdf.js/build/ resource://pdf.js/web/')
-      initCspAllow(cspAllow, cspAllowP, 'connectSrc', 'https://localhost:8083 http://localhost:8081')
-      initCspAllow(cspAllow, cspAllowP, 'objectSrc', 'https://localhost:8083 http://localhost:8081')
+      // in case IIT client-side library can be injected - allow access to localhost:8083 localhost:8081
+      const isIITUsed = uiSettings.adminUI.encryptionImplementation && uiSettings.adminUI.encryptionImplementation.some(p => p.includes('iit'))
+      const allowedLocalPorts = isIITUsed ? 'https://localhost:8083 http://localhost:8081' : ''
+      initCspAllow(cspAllow, cspAllowP, 'defaultSrc', allowedLocalPorts)
+      initCspAllow(cspAllow, cspAllowP, 'scriptSrc', `${allowedLocalPorts} resource://pdf.js/build/ resource://pdf.js/web/`)
+      initCspAllow(cspAllow, cspAllowP, 'connectSrc', allowedLocalPorts)
+      initCspAllow(cspAllow, cspAllowP, 'objectSrc', allowedLocalPorts)
       initCspAllow(cspAllow, cspAllowP, 'styleSrc')
       initCspAllow(cspAllow, cspAllowP, 'imgSrc')
       initCspAllow(cspAllow, cspAllowP, 'frameSrc')
       initCspAllow(cspAllow, cspAllowP, 'fontSrc')
       initCspAllow(cspAllow, cspAllowP, 'baseUri', 'resource:')
+      initCspAllow(cspAllow, cspAllowP, 'frameAncestors')
 
       const wsNotifier = App.serverConfig.uiSettings.adminUI.amqpNotificationUrl || ''
       const cspHeaders =
@@ -230,7 +235,8 @@ but "browser" section in package.json is not defined. Will fallback to "browser"
         `style-src 'self' 'unsafe-inline' data: ${cspAllowP.styleSrc}; ` +
         `font-src 'self' data: ${cspAllowP.fontSrc}; ` +
         `frame-src 'self' ${cspAllowP.frameSrc} blob:; ` + // blob src required for chrome PDF viewer. Self - for JS PDF viewer
-        `img-src 'self' https://unitybase.info ${cspAllowP.imgSrc} data: blob:;` // blob: is for pictures inside tinyMCE
+        `img-src 'self' https://unitybase.info ${cspAllowP.imgSrc} data: blob:; ` + // blob: is for pictures inside tinyMCE
+        `frame-ancestors 'self' ${cspAllowP.frameAncestors}; `
       cspHeader = '\r\nContent-Security-Policy: ' + cspHeaders
       console.debug(cspHeaders)
     }
