@@ -16,7 +16,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
-
+- `UToolbar`: added horizontal autoscroll for small screens
 ## [5.23.5] - 2022-07-21
 ### Fixed
 - `UChart` rewired:
