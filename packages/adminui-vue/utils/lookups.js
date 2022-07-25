@@ -2,7 +2,7 @@
  * A reactive (in terms of Vue reactivity) entities data cache.
  * To be used for entities with small (< 2000 rows) amount of data to lookup a display value for specified ID.
  *
- * Module is injected into `Vue.prototype` as `$lookups` and exported as `@unotybase/adminui-vue`.lookups.
+ * Module is injected into `Vue.prototype` as `$lookups` and exported as `@unitybase/adminui-vue`.lookups.
  *
  * The flow:
  *   - `subscribe` method loads entity data (ID, description attribute and optionally addition attributes specified in attr array)

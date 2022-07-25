@@ -6,32 +6,22 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
-- `uiSettingsStorage`: module for setting/getting/clearing UI settings. It is recommended
-  to use this module instead of the `localStorage` for persisting some settings on UI.
-  These settings are cleared on the `Reset GUI Settings` action and emit the `portal:resetGUI`
-  event. Also, it is added to `Vue.prototype.$uiSettingsStorage`. Example:
-```vue
-<script>
-export default {
-  name: 'MyComponentName',
+- `uiSettingsStorage`: module for storing UI settings. It is recommended
+  to use this module instead of the `localStorage`.
+  Module is injected into `Vue.prototype` as `$uiSettings` and exported as `@unitybase/adminui-vue`.uiSettings.
+```javascript
+// inside vue can be used as this.$uiSettings
+// restore some setting
+this.videoRatio = this.$uiSettings.get('UFileWebcamButton', 'videoRatio') ?? this.videoRatios[0]
+// save setting
+this.$uiSettings.put(this.videoRatios[0], 'UFileWebcamButton', 'videoRatio')
 
-  computed: {
-    someSettingKey() {
-      return this.$uiSettingsStorage.getKey('MyComponentName', 'someSettingName')
-    },
-
-    someSetting: {
-      get() {
-        return this.$uiSettingsStorage.getValue(this.someSettingKey)
-      },
-      set(value) {
-        this.$uiSettingsStorage.setValue(this.someSettingKey)
-      }
-    }
-  }
-}
-</script>
+// or from adminui-vue exports
+const App = require('@unitybase/adminui-vue')
+const isCollapsed = App.uiSettings.get('sidebar', 'isCollapsed')
 ```
+
+User can clear all settings using `User menu` -> `Reset GUI Settings`
 
 ### Changed
 - Migrate from using the `localStorage` to `uiSettingsStorage` in appropriate places

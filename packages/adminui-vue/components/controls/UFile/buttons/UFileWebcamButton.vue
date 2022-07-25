@@ -307,16 +307,12 @@ export default {
 
     isPictureTaken () {
       return this.previewImageSrc !== null
-    },
-
-    videoRatioStorageKey () {
-      return this.$uiSettingsStorage.getKey('UFileWebcamButton', 'videoRatio')
     }
   },
 
   mounted () {
     this.fullScreen = this.startFullScreen
-    this.videoRatio = this.$uiSettingsStorage.getValue(this.videoRatioStorageKey) ?? this.videoRatios[0]
+    this.videoRatio = this.$uiSettings.get('UFileWebcamButton', 'videoRatio') ?? this.videoRatios[0]
   },
 
   methods: {
@@ -546,7 +542,7 @@ export default {
 
     clearForm () {
       this.stopStream()
-      this.$uiSettingsStorage.setValue(this.videoRatioStorageKey, this.videoRatio)
+      this.$uiSettings.put(this.videoRatio,'UFileWebcamButton', 'videoRatio')
       this.pages = []
       this.previewImageSrc = null
       this.canvas = null

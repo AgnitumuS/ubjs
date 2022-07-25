@@ -105,14 +105,11 @@ export default {
   name: 'UNavbar',
 
   data () {
-    const isCollapsedStorageKey = this.$uiSettingsStorage.getKey('sidebar', 'isCollapsed')
-    const isCollapsedStorageValue = this.$uiSettingsStorage.getValue(isCollapsedStorageKey)
-
     return {
       tabs: [],
       activeTabId: null,
       contextMenuTabId: null,
-      isCollapsed: isCollapsedStorageValue === true,
+      isCollapsed: this.$uiSettings.get('sidebar', 'isCollapsed') === true,
       visibleNavbar: true,
       originalExtNavbarHeight: null
     }
@@ -120,12 +117,13 @@ export default {
 
   watch: {
     visibleNavbar (value) {
+      const centralPanel = this.$UB.core.UBApp.viewport.centralPanel
       if (value) {
-        this.$UB.core.UBApp.viewport.centralPanel.tabBar.setHeight(this.originalExtNavbarHeight)
-        this.$UB.core.UBApp.viewport.centralPanel.setMargin(`-${this.originalExtNavbarHeight} 0 0 0`)
+        centralPanel.tabBar.setHeight(this.originalExtNavbarHeight)
+        centralPanel.setMargin(`-${this.originalExtNavbarHeight} 0 0 0`)
       } else {
-        this.$UB.core.UBApp.viewport.centralPanel.tabBar.setHeight(0)
-        this.$UB.core.UBApp.viewport.centralPanel.setMargin(`-${this.originalExtNavbarHeight} 0 0 0`)
+        centralPanel.tabBar.setHeight(0)
+        centralPanel.setMargin(`-${this.originalExtNavbarHeight} 0 0 0`)
       }
     }
   },
@@ -136,12 +134,13 @@ export default {
   },
 
   mounted () {
-    this.tabs = window.$App.viewport.centralPanel.items.items
+    const centralPanel = this.$UB.core.UBApp.viewport.centralPanel
+    this.tabs = centralPanel.items.items
       .map(({ id, title, titleTooltip }) => ({ id, title, titleTooltip }))
 
     this.originalExtNavbarHeight = this.$el.offsetHeight
-    this.$UB.core.UBApp.viewport.centralPanel.tabBar.setHeight(this.originalExtNavbarHeight)
-    this.$UB.core.UBApp.viewport.centralPanel.setMargin(`-${this.originalExtNavbarHeight} 0 0 0`)
+    centralPanel.tabBar.setHeight(this.originalExtNavbarHeight)
+    centralPanel.setMargin(`-${this.originalExtNavbarHeight} 0 0 0`)
   },
 
   methods: {

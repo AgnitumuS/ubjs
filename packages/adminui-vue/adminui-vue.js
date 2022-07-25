@@ -190,11 +190,11 @@ Vue.use(lookups)
 // ----------- UI Settings Storage -----------
 const uiSettingsStorage = require('./utils/uiSettingsStorage')
 /**
- * Manager of UI Settings
- * @type {UISettingsStorage}
+ * UI Settings storage
+ * @type {module:uiSettings}
  */
-module.exports.uiSettingsStorage = uiSettingsStorage
-Vue.prototype.$uiSettingsStorage = uiSettingsStorage
+module.exports.uiSettings = uiSettingsStorage
+Vue.prototype.$uiSettings = uiSettingsStorage
 
 // ---------------- Column Templates ------------------
 /**

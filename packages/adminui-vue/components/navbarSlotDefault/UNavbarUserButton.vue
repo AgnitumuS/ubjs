@@ -200,7 +200,7 @@ export default {
 
     resetGUIToDefault () {
       this.$UB.core.UBLocalStorageManager.removeUserDataUI()
-      this.$uiSettingsStorage.clear()
+      this.$uiSettings.clear()
       this.$notify({
         title: this.$ut('executed'),
         message: this.$ut('resetGUIToDefault'),
