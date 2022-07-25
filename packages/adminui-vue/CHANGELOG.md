@@ -51,6 +51,8 @@ export default {
 
 ### Changed
 - Migrate from using the `localStorage` to `uiSettingsStorage` in appropriate places
+- Default rendering of boolean columns in `UTableEntity`: use icon `u-icon-check` instead of `u-icon-add`, to
+  make it look different from the "Add" action on toolbar.  Remove displaying icon `u-icon-minus` for negative values
 
 ### Deprecated
 

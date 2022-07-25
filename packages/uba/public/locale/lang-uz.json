@@ -46,5 +46,26 @@
   "needChangePassword": "Keyingi kirishda foydalanuvchi parolini o'zgartirishi kerak",
   "checkAll": "Barchasini tanlash",
   "roles": "Rollar",
-  "Duplicate user name (may be in different case)": "Bu foydalanuvchi nomiga ega (katta katta-kichik harflardan farqli) foydalanuvchi allaqachon roʻyxatdan oʻtgan. Boshqa loginni sinab ko'ring"
+  "users": "Users",
+  "uba": {
+    "changePassword": {
+      "newPassword": {
+        "matchWithLoginError": "Password matches the login",
+        "fieldRequirementsError": "Does not meet the requirements"
+      },
+      "retypePassword": {
+        "errorText": "Passwords mismatch"
+      }
+    }
+  },
+  "uba_user_errors": {
+    "duplicateUserName": "Bu foydalanuvchi nomiga ega (katta katta-kichik harflardan farqli) foydalanuvchi allaqachon roʻyxatdan oʻtgan. Boshqa loginni sinab ko'ring",
+    "deleteBuiltInUserProhibited": "Removing of built-in user is prohibited",
+    "deleteServiceUserProhibited": "Removing of service user is prohibited",
+    "renameBuiltInUserProhibited": "Renaming of built-in user is prohibited",
+    "renameServiceUserProhibited": "Renaming of service user is prohibited"
+  },
+  "uba_role_errors": {
+    "deleteBuiltInRoleProhibited": "Removing of built-in role is prohibited"
+  }
 }

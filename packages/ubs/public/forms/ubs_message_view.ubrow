@@ -1,0 +1,6 @@
+{
+ "formType": "vue",
+ "isDefault": false,
+ "entity": "ubs_message",
+ "formCode": "ubs_message_view-fm.vue"
+}

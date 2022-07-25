@@ -19,6 +19,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
  - `RLS`: default `subjectIDsFn` function for the `aclRls` mixin didn't assign
    org unit IDs of the current user into result
+- Logging in `commitBLOBStores` - more consistent and do not output lines for entities without blob attributes.
 
 ## [5.23.4] - 2022-07-12
 ## [5.23.3] - 2022-07-11
