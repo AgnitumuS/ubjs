@@ -28,22 +28,6 @@ export default {
         this.$uiSettingsStorage.setValue(this.someSettingKey)
       }
     }
-  },
-
-  mounted() {
-    this.subscribeResetUISettings()
-  },
-
-  methods: {
-    subscribeResetUISettings() {
-      const listener = () => {
-        // some logic
-      }
-      this.$UB.connection.on('portal:resetGUI', listener)
-      this.$once('hook:beforeDestroy', () => {
-        this.$UB.connection.removeListener('portal:resetGUI', listener)
-      })
-    }
   }
 }
 </script>
