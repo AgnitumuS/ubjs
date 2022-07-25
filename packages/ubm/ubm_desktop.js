@@ -97,7 +97,7 @@ let loadedThemes
  * Return available UI themes - a content of `ui-themes.json` files in models root.
  * If `uiSettings.adminUI.customTheme` is defined in ubConfig - theme will be injected in the end of index page
  *
- * @param {ubMethodParams} ctx
+ * @param {ubMethodParams} [ctx]
  * @memberOf ubm_desktop_ns.prototype
  * @memberOfModule @unitybase/ubm
  * @published

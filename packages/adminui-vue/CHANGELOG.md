@@ -9,11 +9,16 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - `UTableEntity` - added loader when opening the form for editing
  - `Form.js` - Vue-form generates a new event `{{entity_name}}:loaded` after downloading data.
 ### Changed
+- Default rendering of boolean columns in `UTableEntity`: use icon `u-icon-check` instead of `u-icon-add`, to
+  make it look different from the "Add" action on toolbar.  Remove displaying icon `u-icon-minus` for negative values
 
 ### Deprecated
 
 ### Removed
 
+### Fixed
+
+## [5.23.5] - 2022-07-21
 ### Fixed
 - `UChart` rewired:
   - `@chart-click` handler now works even in case several charts are displayed on page
