@@ -190,7 +190,15 @@ Vue.use(lookups)
 // ----------- UI Settings Storage -----------
 const uiSettingsStorage = require('./utils/uiSettingsStorage')
 /**
- * UI Settings storage
+ * Storage for User Interface settings. Wrapper around `localStorage`
+ * @example
+ * // inside vue can be used as this.$uiSettings
+ * this.videoRatio = this.$uiSettings.get('UFileWebcamButton', 'videoRatio') ?? this.videoRatios[0]
+ * this.$uiSettings.put(this.videoRatios[0], 'UFileWebcamButton', 'videoRatio')
+ *
+ * // or from adminui-vue exports
+ * const App = require('@unitybase/adminui-vue')
+ * const isCollapsed = App.uiSettings.get('sidebar', 'isCollapsed')
  * @type {module:uiSettings}
  */
 module.exports.uiSettings = uiSettingsStorage

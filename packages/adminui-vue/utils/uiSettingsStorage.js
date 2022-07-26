@@ -1,5 +1,5 @@
 /**
- * Storage for User Interface settings. Wrapper around `localStorage`ю
+ * Storage for User Interface settings. Wrapper around `localStorage`
  *
  * It is recommended to use this module instead of direct access to the `localStorage`.
  *
@@ -7,6 +7,15 @@
  *
  * Module is injected into `Vue.prototype` as `$uiSettings` and exported as `@unitybase/adminui-vue`.uiSettings
  *
+ * @example
+// inside vue can be used as this.$uiSettings
+// restore some setting
+this.videoRatio = this.$uiSettings.get('UFileWebcamButton', 'videoRatio') ?? this.videoRatios[0]
+// save setting
+this.$uiSettings.put(this.videoRatios[0], 'UFileWebcamButton', 'videoRatio')
+// or from adminui-vue exports
+const App = require('@unitybase/adminui-vue')
+const isCollapsed = App.uiSettings.get('sidebar', 'isCollapsed')
  * @module uiSettings
  * @memberOf module:@unitybase/adminui-vue
  */
