@@ -72,7 +72,7 @@ class ClientRepository extends CustomRepository {
       if (expr[0] === '[') {
         exprNb = expr.slice(1, -1) // remove []
       }
-      if (!this.fieldList.includes(expr) && !this.fieldList.includes(exprNb)) {
+      if (!this.fieldList.includes(expr) && (!exprNb || !this.fieldList.includes(exprNb))) {
         this.attrs(expr)
       }
     }
