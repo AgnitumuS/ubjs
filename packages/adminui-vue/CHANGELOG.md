@@ -33,7 +33,7 @@ User can clear all settings using `User menu` -> `Reset GUI Settings`
 ### Removed
 
 ### Fixed
-
+- `UToolbar`: added horizontal autoscroll for small screens
 ## [5.23.5] - 2022-07-21
 ### Fixed
 - `UChart` rewired:
