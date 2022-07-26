@@ -213,7 +213,7 @@ module.exports.mount = (cfg) => {
         },
         actions: {
           async addUserToOrgStructure ({ state }) {
-            if (state.employee?.ID || !state.toOrg) {
+            if (state.form.employee?.ID || !state.toOrg) {
               return
             }
 
@@ -243,10 +243,10 @@ module.exports.mount = (cfg) => {
               .misc({ __mip_disablecache: true })
               .selectSingle()
 
-            for (const key in employee) {
-              commit('form/SET', { key, value: employee[key] })
-            }
-            commit('SET', { key: 'employee', value: employee })
+            /*              for (const key in employee) {
+                            commit('form/SET', {key, value: employee[key]})
+                          }*/
+            commit('form/SET', { key: 'employee', value: employee })
             commit('form/SET', { key: 'orgCode', value: employee?.code })
           }
         }
@@ -280,16 +280,20 @@ module.exports.mount = (cfg) => {
           .where('userID', '=', state.data.ID)
       },
 
-      async inited ({ state, commit, dispatch }) {
-        Vue.set(state, 'employee', undefined)
+      async inited ({ state, dispatch }) {
+        Vue.set(state.form, 'employee', undefined)
         Vue.set(state.form, 'orgCode', null)
         Vue.set(state, 'toOrg', true)
         await dispatch('getEmployeeData')
       },
 
-      async saved ({ state, commit, dispatch }) {
+      async saved ({ dispatch, state }) {
         await dispatch('addUserToOrgStructure')
         await dispatch('getEmployeeData')
+        debugger
+        state.$formServices.setTitle(
+          UB.i18n('title', state.data.name || '')
+        )
       }
     })
     .validation({
@@ -324,6 +328,10 @@ module.exports.default = {
   components: {
     IndicatorPane: require('@unitybase/forms/public/controls/indicator-pane.vue').default
   },
+
+  inject: [
+    '$formServices'
+  ],
 
   mixins: [
     require('@unitybase/dfx/public/controls/doc-renderer/file-based-controls-mixin')
@@ -375,10 +383,10 @@ module.exports.default = {
 
     employee: {
       get () {
-        return !!this.$store.state.employee
+        return !!this.$store.state.form.employee
       },
       set (value) {
-        this.$store.commit('SET', { key: 'employee', value })
+        this.$store.commit('form/SET', { key: 'employee', value })
       }
     },
 
@@ -440,6 +448,13 @@ module.exports.default = {
     }
   },
 
+  created () {
+    this.$store.commit('SET', { key: '$formServices', value: this.$formServices })
+    this.$formServices.setTitle(
+      this.$ut('title', this.userLogin || '')
+    )
+  },
+
   methods: {
     ...mapActions([
       'save'
@@ -472,7 +487,7 @@ module.exports.default = {
     },
 
     async getEmployeeConfig (cfg) {
-      let employeeID = this.$store.state.employee?.ID
+      let employeeID = this.$store.state.form.employee?.ID
       if (!employeeID) {
         employeeID = await Repository('org_employee')
           .attrs('ID')
