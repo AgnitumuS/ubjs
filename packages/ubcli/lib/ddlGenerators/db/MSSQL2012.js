@@ -250,6 +250,8 @@ ORDER BY i.object_id, c.name`
   /** @override */
   genCodeSetCaption (tableName, column, value, oldValue) {
     if (value) value = value.replace(/'/g, "''")
+    if (!value && !oldValue) return // prevent create empty comments
+    if (column === value) return // do not create caption in case it`s the same as column name
     const proc = oldValue === null ? 'sp_addextendedproperty' : 'sp_updateextendedproperty'
     let result = `EXEC ${proc} @name = N'${DB_DESCRIPTION_PROPERTY}', @value = N'${value === null ? (column || tableName) : value}',@level0type = N'SCHEMA',  @level0name= N'dbo', @level1type = N'TABLE',  @level1name = N'${tableName}'`
     if (column) result += `, @level2type = N'Column', @level2name = '${column}'`

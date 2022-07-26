@@ -8,6 +8,8 @@ module.exports = {
     alias: {
       vue: 'vue/dist/vue.common.js'
     },
+    // prevent using `exports` from package.json (if used - throttle-debounce cause error because element uses v1 but ub v5)
+    exportsFields: [''],
     // 2 line below force webpack to lookup modules in docs_adminui/node_modules first
     // instead of resolve a same module (@unitybase/ub-pub for example) from several
     // symlinked locations created by `lerna link`

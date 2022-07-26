@@ -1,5 +1,6 @@
 ﻿{
-  "caption": "tst_dictionary",
+  "caption": "Test organizations",
+  "captionSingular": "Test organization",
   "description": "ub test dictionary",
   "connectionName": "",
   "sqlAlias": "tdict",

@@ -248,7 +248,7 @@ class DBAbstract {
    * @param {TableDefinition} table
    */
   genCodeEnableRls (table) {
-    throw new Error('RLS is not supported by this DB')
+    throw new Error('Database-level RLS required for multi-tenancy is not supported by this DBMS')
   }
 
   /**
@@ -258,7 +258,7 @@ class DBAbstract {
    * @param {TableDefinition} table
    */
   genCodeDisableRls (table) {
-    throw new Error('RLS is not supported by this DB')
+    throw new Error('Database-level RLS required for multi-tenancy is not supported by this DBMS')
   }
 
   /**

@@ -1,5 +1,6 @@
 {
   "caption": "Sicherheit auf Entitätsebene (ELS)",
+  "caption": "ELS-Regel",
   "description": "Beschreiben, welche Rollen Zugriffsrechte für die Methoden der Entitäten haben",
   "documentation": "Verwaltung der Entitätsebene. Das System prüft den Zugriff anhand der Regel \"Erlaubt und NICHT verboten\"",
   "attributes": [

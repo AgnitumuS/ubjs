@@ -1,5 +1,6 @@
 <template>
   <div
+    v-loading="loading"
     class="u-form-layout"
   >
     <u-toolbar/>
@@ -31,7 +32,9 @@
           :bordered="true"
           :repository="getUsersRepository"
           :style="{maxWidth: '800px'}"
-          :columns="columns"
+          :build-add-new-config="userGroupConfig"
+          :build-copy-config="userGroupConfig"
+          :build-edit-config="userGroupConfig"
         />
       </u-form-row>
 
@@ -42,6 +45,7 @@
 <script>
 const { Form } = require('@unitybase/adminui-vue')
 const { Repository } = require('@unitybase/ub-pub')
+const { mapGetters, mapActions, mapState } = require('vuex')
 
 module.exports.mount = (cfg) => {
   Form(cfg)
@@ -53,6 +57,7 @@ module.exports.mount = (cfg) => {
           .where('groupID', '=', state.data.ID)
       }
     })
+    .validation()
     .mount()
 }
 
@@ -60,18 +65,39 @@ module.exports.default = {
   name: 'UbaGroup',
 
   computed: {
+    ...mapState(['isNew']),
+
+    ...mapGetters(['loading']),
+
     instanceID () {
       return this.$store.state.data.ID
-    },
-
-    columns () {
-      return [{ id: 'userID.name', label: '' }]
     }
   },
 
   methods: {
+    ...mapActions(['save']),
+
     getUsersRepository () {
-      return Repository('uba_usergroup').attrs('userID.name').where('groupID', '=', this.instanceID)
+      return Repository('uba_usergroup')
+        .attrs('userID.name')
+        .where('groupID', '=', this.instanceID)
+    },
+
+    userGroupConfig (cfg) {
+      if (this.isNew) {
+        this.save()
+      }
+
+      return {
+        ...cfg,
+        isModal: true,
+        modalWidth: '800px',
+        props: {
+          parentContext: {
+            groupID: this.instanceID
+          }
+        }
+      }
     }
   }
 

@@ -370,7 +370,10 @@ export default {
       this.setCurrentSelected()
       this.emitSelectedEvent()
       this.deleteMultipleShowSuccessAlert(resultArr)
-      this.$store.dispatch('refresh')
+      return this.refresh()
+    },
+    refresh () {
+      return this.$store.dispatch('refresh')
     },
     deleteMultipleShowSuccessAlert (arr = []) {
       const { getDescription } = this
@@ -561,8 +564,8 @@ export default {
         row.scrollIntoView()
         const className = 'new-row'
         row.classList.add(className)
-        row.addEventListener('animationend', (ev)=>{
-          ev.target.classList.remove(className);
+        row.addEventListener('animationend', (ev) => {
+          ev.target.classList.remove(className)
         }, { once: true })
       } catch (err) {
         console.error(err)

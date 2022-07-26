@@ -1,11 +1,11 @@
 <template>
-  <div class="u-form-layout">
+  <div
+    v-loading="loading"
+    class="u-form-layout"
+  >
     <u-toolbar />
 
-    <u-form-container
-      v-loading.body="loading"
-      label-position="top"
-    >
+    <u-form-container label-position="top">
       <el-tabs>
         <el-tab-pane :label="$ut('General')">
           <u-grid template-columns="1fr 350px">

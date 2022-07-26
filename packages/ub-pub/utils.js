@@ -352,5 +352,10 @@ module.exports.LDS_KEYS = {
   /**
    * locale, preferred by user. Empty in case of first login
    */
-  PREFERRED_LOCALE: 'preferredLocale'
+  PREFERRED_LOCALE: 'preferredLocale',
+  /**
+   * User preferred uData keys, passed as prefUData URL param during `/auth` handshake (for example organization ID in case used assigned to several og them)
+   * Server-side on('login') event handler MUST verify passed preferred keys and can apply it into uData
+   */
+  PREFFERED_UDATA_PREFIX: 'UDATA_PREFFERED_'
 }

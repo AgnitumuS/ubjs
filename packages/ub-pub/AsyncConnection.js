@@ -81,7 +81,7 @@ function parseAndTranslateUBErrorMessage (errMsg) {
   }
 }
 
-const LDS = ((typeof window !== 'undefined') && window.localStorage) ? window.localStorage : false
+const LDS = typeof localStorage !== 'undefined' ? localStorage : false
 
 /**
  * Called by UBConnection on first authorized request.
@@ -531,9 +531,11 @@ $App.connection.userLang()
         params: {
           AUTHTYPE: authParams.authSchema,
           userName: authParams.login,
+          prefUData: authParams.prefUData,
           password: ''
         }
       }
+
       const clientNonce = me.authMock
         ? SHA256('1234567890abcdef').toString()
         : SHA256(new Date().toISOString().slice(0, 16)).toString()
@@ -597,15 +599,13 @@ $App.connection.userLang()
     }
 
     let promise
+    authParams.prefUData = this.getPreferredUData(authParams.login)
     switch (authParams.authSchema) {
       case AUTH_SCHEMA_FOR_ANONYMOUS:
         promise = Promise.resolve({ data: { result: '0+0', uData: JSON.stringify({ login: ANONYMOUS_USER }) }, secretWord: '' })
         break
       case 'UB':
         promise = this.authHandshakeUB(authParams)
-        break
-      case 'CERT':
-        promise = this.pki().then(pkiInterface => pkiInterface.authHandshakeCERT(authParams))
         break
       case 'CERT2':
         promise = this.pki().then(pkiInterface => pkiInterface.authHandshakeCERT2(authParams))
@@ -620,7 +620,8 @@ $App.connection.userLang()
         promise = this.post(AUTH_METHOD_URL, '', {
           params: {
             USERNAME: '',
-            AUTHTYPE: authParams.authSchema
+            AUTHTYPE: authParams.authSchema,
+            prefUData: authParams.prefUData
           }
         }).then(function (resp) {
           resp.secretWord = resp.headers('X-UB-Nonce')
@@ -1880,24 +1881,60 @@ UBConnection.prototype.getDocument = function (params, options) {
  * @param {string} params.attribute Entity attribute name
  * @param {number} params.id ID of the record
  * @param {string} params.origName
+ * @param {number} [params.chunkSizeMb] Chunks size in Mb. Can be set for each request individually.
+ *   - If not defined - uiSettings.adminUI.uploadChunkSizeMb is used
+ *   - if === 0 - chunked upload will be disabled
  * @param {string} [params.fileName] If not specified, `params.origName` will be used
  * @param {string} [params.encoding] Encoding of `data`. Either omit for binary data
  *   or set to `base64` for base64 encoded data
  * @param {function} [onProgress] Optional onProgress callback
  * @return {Promise<Object>} Promise resolved blob store metadata
  */
-UBConnection.prototype.setDocument = function (content, params, onProgress) {
+UBConnection.prototype.setDocument = async function (content, params, onProgress) {
+  let chunkSize = params.chunkSizeMb === undefined
+    ? this.appConfig.uiSettings?.adminUI?.uploadChunkSizeMb || 0
+    : params.chunkSizeMb
+  chunkSize = chunkSize * (1024 * 1024) // Mb -> bytes
   const xhrParams = {
     url: 'setDocument',
     method: 'POST',
-    data: content,
     headers: {
       'Content-Type': 'application/octet-stream'
-    },
-    params: params
+    }
   }
-  if (onProgress) xhrParams.onProgress = onProgress
-  return this.xhr(xhrParams).then(serverResponse => serverResponse.data.result)
+
+  // Use chunked upload only if it's enabled and file size > chunk size
+  if (chunkSize && (content.size > chunkSize)) {
+    const fileChunk = []
+    let fileStreamPos = 0
+    let endPos = chunkSize
+
+    while (fileStreamPos < content.size) {
+      fileChunk.push(content.slice(fileStreamPos, endPos))
+      fileStreamPos = endPos
+      endPos = fileStreamPos + chunkSize
+    }
+
+    xhrParams.params = {
+      ...params,
+      chunkSize,
+      chunksTotal: fileChunk.length
+    }
+
+    for (let i = 0; i < fileChunk.length; i++) {
+      xhrParams.data = new File([fileChunk[i]], String(i))
+      xhrParams.params.chunkNum = i
+      if (onProgress) xhrParams.onProgress = onProgress
+      const res = await this.xhr(xhrParams)
+      if (res.data.success && res.data.result) return res.data.result
+    }
+    throw new ubUtils.UBError('File upload error')
+  } else {
+    xhrParams.params = params
+    if (onProgress) xhrParams.onProgress = onProgress
+    xhrParams.data = content
+    return this.xhr(xhrParams).then(serverResponse => serverResponse.data.result)
+  }
 }
 
 /**
@@ -2227,6 +2264,36 @@ UBConnection.prototype.userCanChangePassword = function () {
   const auis = (this.appConfig.uiSettings && this.appConfig.uiSettings.adminUI) || {}
   return (lastAuthType === 'UB' || lastAuthType === 'Basic') ||
     (lastAuthType.startsWith('CERT') && auis.authenticationCert && auis.authenticationCert.requireUserName)
+}
+
+/**
+ * Return preferred uData (stored in localStorage for specified user).
+ * Preferred uData passed as `prefUData` URL param during `/auth` handshake and can be used in server-side Session.on('login') handler
+ *
+ * @param {string} [userName] if not passed - localStorage.LAST_LOGIN is used (if sets)
+ * @returns {object|undefined}
+ */
+UBConnection.prototype.getPreferredUData = function (userName) {
+  if (!LDS) return
+  if (!userName) userName = LDS.getItem(ubUtils.LDS_KEYS.LAST_LOGIN)
+  if (!userName) return
+  return LDS.getItem(ubUtils.LDS_KEYS.PREFFERED_UDATA_PREFIX + userName)
+}
+
+/**
+ * Sets currently logged-in user preferred uData (stored in localStorage for specified user).
+ * Preferred uData passed as `prefUData` URL param during `/auth` handshake and can be used in server-side Session.on('login') handler
+ *
+ * @param {object|null} preferredUData If `null` - preferred user data will be deleted
+ */
+UBConnection.prototype.setPreferredUData = function (preferredUData) {
+  if (!this.isAuthorized || !LDS) return
+  const key = ubUtils.LDS_KEYS.PREFFERED_UDATA_PREFIX + this.userLogin()
+  if (!preferredUData) {
+    LDS.removeItem(key)
+  } else {
+    LDS.setItem(key, JSON.stringify(preferredUData))
+  }
 }
 
 /**

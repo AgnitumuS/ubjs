@@ -15,13 +15,79 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.23.6] - 2022-07-26
+### Added
+- `uiSettingsStorage`: module for storing UI settings. It is recommended
+  to use this module instead of the `localStorage`.
+  Module is injected into `Vue.prototype` as `$uiSettings` and exported as `@unitybase/adminui-vue`.uiSettings.
+```javascript
+// inside vue can be used as this.$uiSettings
+// restore some setting
+this.videoRatio = this.$uiSettings.get('UFileWebcamButton', 'videoRatio') ?? this.videoRatios[0]
+// save setting
+this.$uiSettings.put(this.videoRatios[0], 'UFileWebcamButton', 'videoRatio')
+
+// or from adminui-vue exports
+const App = require('@unitybase/adminui-vue')
+const isCollapsed = App.uiSettings.get('sidebar', 'isCollapsed')
+```
+
+User can clear all settings using `User menu` -> `Reset GUI Settings`
+
+### Changed
+- Migrate from using the `localStorage` to `uiSettingsStorage` in appropriate places
+- Default rendering of boolean columns in `UTableEntity`: use icon `u-icon-check` instead of `u-icon-add`, to
+  make it look different from the "Add" action on toolbar.  Remove displaying icon `u-icon-minus` for negative values
+ - vueJS based form title \ tab title will use `entity.captionSingular` in case form caption is empty.
+  We strongly recommend to add captionSingular for all `*.meta` and `*.meta.lang` files and
+  keep `caption` in `ubm_form` empty (simply remove "caption": "..." in `publis/forms/*.ubrow`)
+
+### Fixed
+- `UToolbar`: added horizontal autoscroll for small screens
+## [5.23.5] - 2022-07-21
+### Fixed
+- `UChart` rewired:
+  - `@chart-click` handler now works even in case several charts are displayed on page
+  - added date adapter to correctly display time axis (see samples on unitybase.info)
+  - component now registered by `adminui-vue`, so can be used without require, just ```<u-chart>....</u-chart>```
+  - `options` and `chartData` properties now NOT reactive (ChartJs is designed for static data. For dynamic data better to use `d3`)
+
+- `URadio` - prevent `'this' is undefined` error in developer mode (prop validator do not have access to 'this')
+
+## [5.23.4] - 2022-07-14
+### Added
+- added compressed bundle for all used FontAwesome CSS's `dist/fonts/fa/css/fa-all4ub.min.css` and use it to generate index page
+
+### Changed
+ - `UNavbarUserButton`: replace `el-button`->`u-button` for user icon and `el-checkbox` -> `u-checkbox` for `KerberosRememberUserMenu` 
+ - `Roboto*` font files is placed into `/dist/fonts` for both dev and production builds
+
+### Removed
+- removed deprecated woff, svg, ttf & eof fonts for FontAwesome. Remained woff2 is enough - all modern browsers uses woff2  
+
+### Fixed
+- `USelectMultiple`: regression after allowing the same values for `displayAttribute` and `valueAttribute`
+
+## [5.23.3] - 2022-07-11
+### Added
+- `UAutoField` can accept additional listeners in case it resolves to `u-input` (as already done other UAutoField control types)
+- `UTableEntity`: ability to hide or replace "Refresh" button, like other buttons
+- `UTableEntity`: add `refresh` method. This method will refresh data in store. It makes it a bit simpler,
+  when control used as the "ref" and instead of `this.$refs.table.$store.dispatch('refresh')`
+   you can use `this.$refs.table.refresh()`.
+
+### Fixed
+- `UAutoForm`, `aclRls form` - mode v-loading directive above the toolbar, so all form content will be locked while loading.
+  Prevent locking of all opened forms by use `v-loading` instead of `v-loading.body`
+- `USelectMultiple`: now `displayAttribute` may be the same as `valueAttribute`
+
 ## [5.23.2] - 2022-07-05
 ### Added
 - `UTableEntity`: the `toolbarBeforePagination` slot to append new buttons to toolbar before pagination
 - `UFileInput` - added indication of file uploading process using loader icon
 
 ### Changed
-- `UtableEntity` - removed cursor: pointer from table that cannot be edited
+- `UTableEntity` - removed cursor: pointer from table that cannot be edited
 - `UToolbar`: for entities with aclRls mixin configured using `sameAs` aclRls editing is not visible
 
 ### Fixed

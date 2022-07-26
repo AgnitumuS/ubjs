@@ -15,6 +15,37 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.23.7] - 2022-07-26
+### Added
+- localization for server errors in `uba_user` and `uba_role`
+
+### Changed
+- use key `uba_user_errors.duplicateUserName` instead of 'Duplicate user name (may be in different case)'
+
+## [5.23.6] - 2022-07-21
+### Added
+- Localization for server errors in `uba_user` and `uba_role`
+
+### Fixed
+- `uba_group` form fixes: 
+  - validation for required fields
+  - adding user into group in modal window
+  - fix column name in users table
+  - auto save new form before adding users into group
+
+## [5.23.5] - 2022-07-12
+### Added
+- migration to remove `adm_folder_UI', 'adm_folder_devTools` folders
+
+## [5.23.4] - 2022-07-11
+### Fixed
+ - `getDomainInfo,ubql,rest` are excluded from allowed endpoints for `Everyone` role and added for `User` role.
+   Anonymous user should not have asses to these endpoints
+
+- `group`, `user certificate` forms:
+    - mode v-loading directive above the toolbar, so all form content will be locked while loading
+    - prevent locking of all opened forms by use `v-loading` instead of `v-loading.body`
+  
 ## [5.23.3] - 2022-07-05
 ### Added
 - `uba_user`: added username trimming before insert/update. This prevents from creating logins what looks like the same 

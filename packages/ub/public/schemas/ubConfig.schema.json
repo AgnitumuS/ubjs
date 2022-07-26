@@ -1015,6 +1015,13 @@
                 "type": "string"
               }
             },
+            "frameAncestors": {
+              "type": "array",
+              "description": "Additional rules for `frame-ancestors` - see https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy/frame-ancestors",
+              "items": {
+                "type": "string"
+              }
+            },
             "fontSrc": {
               "type": "array",
               "description": "Additional rules for `font-src`",
@@ -1208,6 +1215,11 @@
             "lookupCacheRefreshIntervalSec": {
               "type": "Number",
               "description": "a timeout (in seconds) after which\n   pressing a \"Refresh\" in UTableEntity will refresh a table data AND lookups caches for entities used by current table.\n   Default is 0 - do not refresh lookups. *WARNING* - entities with `Session` and `SessionEntity` cache type will not be refreshed",
+              "default": 0
+            },
+            "uploadChunkSizeMb": {
+              "type": "Number",
+              "description": "If > 0 - split content of setDocument into chunks to allow huge file upload. *WARNING* - 'setDocument:before' in this case should take special care about chunked upload",
               "default": 0
             }
           }

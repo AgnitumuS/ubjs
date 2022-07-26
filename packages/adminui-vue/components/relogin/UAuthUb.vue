@@ -87,7 +87,7 @@ module.exports = {
       this.$refs.ubAuthForm.validate((valid) => {
         if (valid) {
           this.resolveAuth({
-            authSchema: window.localStorage.getItem('lastAuthType'),
+            authSchema: window.localStorage.getItem(this.$UB.LDS_KEYS.LAST_AUTH_SCHEMA),
             login: this.login.trim(),
             password: this.authData.password
           })

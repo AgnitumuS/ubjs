@@ -14,9 +14,6 @@ Everyone:
   - statics
   - getAppInfo
   - models
-  - getDomainInfo
-  - ubql
-  - rest
   els:
     custom:
     - UBA_AUDIT_SELECT_ONLY: "!uba_audit,[^s]*,Deny direct security audit operation even for all roles"
@@ -39,6 +36,9 @@ User:
   - setDocument
   - getDocument
   - checkDocument
+  - getDomainInfo
+  - ubql
+  - rest
   els:
     custom:
     - UBA_USER_LANGCH_EVERYONE: "uba_user,changeLanguage,Allow change language for any user"

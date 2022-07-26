@@ -15,6 +15,15 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.23.7] - 2022-07-26
+## [5.23.6] - 2022-07-21
+## [5.23.5] - 2022-07-12
+## [5.23.4] - 2022-07-11
+### Fixed
+- `city`, `classifier`, `department`, `employee`, `organization`, `person`, `region` forms:
+  - mode v-loading directive above the toolbar, so all form content will be locked while loading
+  - prevent locking of all opened forms by use `v-loading` instead of `v-loading.body`
+
 ## [5.23.3] - 2022-07-05
 ### Fixed
 - Give the "Developer" role full access to the `cdn_classifier` entity 

@@ -18,6 +18,34 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.23.4] - 2022-07-26
+### Added
+ - new property in entity metafile `captionSingular` - an entity caption in singular.
+  If defined it will be used on UI as a form (single row) caption in case form caption is empty (recommended).
+  Require server UB@5.22.12, for versions below  5.22.12 `captionSingular` is ignored even if defined in meta
+
+ - `UB.i18n` can accept `#captionSingular` hashtag ```UB.i18n('uba_audit#captionSingular')```.
+  If `entity.captionSingular` is defined - return `entity.captionSingular`,
+  else - `entity.caption` (the same as ```UB.i18n('uba_audit')```)
+  
+
+## [5.23.3] - 2022-07-11
+### Added
+ - 'AsyncConnection.setDocument' - can upload large files using chunks. 
+  To activate, chunk size (mb) can be sets in UB config `uiSettings.adminUI.uploadChunkSizeMb` (by default - no chunked upload).
+  Can be set for individual `setDocument` request by pass `params.chunkSizeMb`
+  
+  **BREAKING** - applications what uses `setDocument:before` should take care about chunked uploads.
+
+ - new method `AsyncConnection.setPreferredUData` - store into the `localStorage` some data, what will be available during next
+  login inside `Session.on('login')` as `req.parsedParameters.prefUData`
+
+### Changed
+ - use a global `localStorage` instead of window.localStorage. This allows use `localStorage` polyfill under nodeJS (for example `node-localstorage`)
+
+### Removed
+ - `CERT` authorization support is remover (in flavor of CERT2)
+
 ## [5.23.2] - 2022-07-05
 ## [5.23.1] - 2022-06-19
 ## [5.23.0] - 2022-06-15

@@ -46,9 +46,9 @@ Table below lists the build-in roles UnityBase define by default.
 | Supervisor| All rights for Users & Groups management. Soft-lock removing| | |
 | Developer | Reserved for change entity definitions | | |
 | Monitor   | Application statistics | stat| | 
-| User      | Read for common dictionaries (cdn* org*), UI (ubm*) and settings (ubs_settings)| logout,changePassword | | 
+| User      | Read for common dictionaries (cdn* org*), UI (ubm*) and settings (ubs_settings)| changePassword,checkDocument,getDocument,getDomainInfo,logout,rest,setDocument,ubql | | 
 | Anonymous | None | | |
-| Everyone  | | auth,timeStamp,statics,getAppInfo,models,getDomainInfo,ubql | |
+| Everyone  | | auth,timeStamp,statics,getAppInfo,models | |
 
 Roles `Anonymous`, `Everyone` and `User` are runtime roles. It assigned automatically by UnityBase server:
  

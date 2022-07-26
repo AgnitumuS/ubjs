@@ -236,10 +236,13 @@ TubDataStore.commitBLOBStores = function (ctx, isUpdate) {
   if (!entity.blobAttributes.length) return false
 
   if (entity.isUnity) {
-    console.debug('skip processing blobStores for UNITY update call', entity.name)
+    console.debug('Skip processing blobStores for UNITY "%s" update call', entity.name)
     return false
   }
-  console.debug('Start processing documents for entity', entity.name)
+  if (!entity.blobAttributes.length) {
+    return false
+  }
+  console.debug('Start processing blobStores for entity "%s"', entity.name)
 
   const execParams = ctx.mParams.execParams
   const modifiedBlobs = []
@@ -349,7 +352,7 @@ TubDataStore.insert = function (ubq) {
 /**
  * Run UBQL command with `insert` method. **WARNING** better to use insert method - it is faster because values is not parsed.
  *
- * In case `fieldList` is passed - result will contains new values for attributes specified in `fieldList` as Object, otherwise - null
+ * In case `fieldList` is passed - result will contain new values for attributes specified in `fieldList` as Object, otherwise - null
  *
  * In opposite to `insert` method values in result are PARSED based on Domain (as in AsyncConnection) - so values
  * for boolean attributes is true/false, date is typeof Date etc.

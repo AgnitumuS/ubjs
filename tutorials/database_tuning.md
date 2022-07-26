@@ -61,6 +61,26 @@
     "executeWhenConnected": ["SET lc_messages TO 'en_US.UTF-8'"]
  },...]
  ```
+
+#### Optimization for queries with many joins
+For queries with more when `join_collapse_limit` (8 by default) Postgres do not use statistic and perform joining in
+order table are listed in FROM clause. So some queries can run VERY slow.
+
+We recommend to increase `join_collapse_limit` to 16.
+
+In this case `query prepare` stage is takes a bit more time (but UB aggressively cache prepared planes, so it happens rarely),
+but query execution plane became MUCH faster in most case.
+
+Recommended way is to set this parameter per-connection (instead of globally in postgresql.conf) by adding
+`SET join_collapse_limit = 16` into `executeWhenConnected` ubConfig connection parameter:
+
+ ```json
+ "connections": [{
+    "driver": "PostgreSQL",
+    ...
+    "executeWhenConnected": ["SET join_collapse_limit = 16", ]
+ },...]
+ ```
   
 ### MS SQL server (Linux)
   Under Linux ODBC is used for SQL Server connection. Connection parameters can be defined either in 

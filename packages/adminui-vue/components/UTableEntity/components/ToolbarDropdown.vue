@@ -14,12 +14,14 @@
     <template slot="dropdown">
       <slot name="prepend" />
 
-      <u-dropdown-item
-        icon="u-icon-refresh"
-        :label="$ut('refresh') + ' (Ctrl + R)'"
-        :disabled="loading"
-        @click="refresh"
-      />
+      <slot name="refresh">
+        <u-dropdown-item
+          icon="u-icon-refresh"
+          :label="$ut('refresh') + ' (Ctrl + R)'"
+          :disabled="!canRefresh"
+          @click="refresh"
+        />
+      </slot>
       <slot name="add-new">
         <u-dropdown-item
           icon="u-icon-add"
@@ -131,6 +133,7 @@ export default {
       'canEdit',
       'canDelete',
       'canAudit',
+      'canRefresh',
       'hasSelectedRow',
       'hasDataHistoryMixin',
       'canCreateNewVersion'

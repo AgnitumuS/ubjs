@@ -168,13 +168,15 @@ After this for each  `doc_document.select` call `aclRls mixin` will add
 ```
 condition.
 
-Value of `admSubjIDs` parameters - is result of function, what specified in `aclRls.subjectIDsFn` parameter.
-In out example we do not add `subjectIDsFn` parameter, so default `RLS.getDefaultAclRlsSubjects` will be used.
+The `admSubjIDs` parameter value is returned by function, specified in the `aclRls.subjectIDsFn` mixin parameter.
+If the mixin parameter is not provided, the default `RLS.getDefaultAclRlsSubjects` implementation will be used.
 
-> default `RLS.getDefaultAclRlsSubjects` is applicable only in case onEntities contains only uba_subject or/and org_unit
+> The default `RLS.getDefaultAclRlsSubjects` is applicable for cases,
+> when onEntities contains uba_subject or/and org_unit only. In other cases, it is required to specify `subjectIDsFn`
+> and develop a custom implementation.
 
-Filtering condition can be changed from `Exist` to `In` by specifying `aclRls.selectionRule: "In"`.
-Form our experience `exists` is faster in most case.
+Filtering condition can be changed from `Exist` to `In` by specifying `aclRls.selectionRule: "In"`,
+but this is not recommended, because some DBMS generate more efficient query plan with `Exists` method.
 
 It is possible to disable adding an `aclRls` filter by specifying function name in `aclRls.skipIfFn`.
 If function returns `true` - filtering condition is not added.

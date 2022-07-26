@@ -15,6 +15,22 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.23.7] - 2022-07-26
+### Changed
+ - VueJS form template (used when new form is created using UI) - `v-loading="loading"` is moved above the toolbar 
+
+## [5.23.6] - 2022-07-21
+### Fixed
+- Definition of shortcut `ubm_ui_settings`: set `$systemTenantOnly: true` option, so that shortcut won't be created
+  for user tenants, because settings may not be saved per-tenant.
+
+## [5.23.5] - 2022-07-12
+## [5.23.4] - 2022-07-11
+### Fixed
+- `desktop`, `shortcut`, `query`, `sysdictionary` forms:
+  - mode v-loading directive above the toolbar, so all form content will be locked while loading
+  - prevent locking of all opened forms by use `v-loading` instead of `v-loading.body`
+  
 ## [5.23.3] - 2022-07-05
 ### Fixed
  - `umb_navshortcut.update` for non-privileged users now works. Before this fix user got server-side error because

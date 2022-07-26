@@ -511,6 +511,8 @@ function UBEntity (entityInfo, entityMethods, i18n, entityCode, domain) {
   let mixinInfo, i18nMixin
 
   if (i18n && ((typeof process === 'undefined') || !process.isServer)) { // merge i18n only on client side
+    // compatibility: in case entity.captionSingular is not defined in lang file - use captionSingular = caption
+    if (i18n && !i18n.captionSingular && i18n.caption) i18n.captionSingular = i18n.caption
     _.merge(entityInfo, i18n)
     // verify entity is valid after merging i18n: at last all attributes have dataType
     _.forEach(entityInfo.attributes, (attrDef, attrKey) => {
@@ -551,6 +553,7 @@ function UBEntity (entityInfo, entityMethods, i18n, entityCode, domain) {
   this.name = entityInfo.name
 
   if (entityInfo.caption) this.caption = entityInfo.caption
+  if (entityInfo.captionSingular) this.captionSingular = entityInfo.captionSingular
   if (entityInfo.description) this.description = entityInfo.description
   if (entityInfo.documentation) this.documentation = entityInfo.documentation
   if (entityInfo.descriptionAttribute) this.descriptionAttribute = entityInfo.descriptionAttribute
@@ -695,10 +698,15 @@ UBEntity.prototype.forJSONReplacer = {
 }
 
 /**
- * Entity caption
+ * Entity caption in plural
  * @type {string}
  */
 UBEntity.prototype.caption = ''
+/**
+ * Entity caption in singular
+ * @type {string}
+ */
+UBEntity.prototype.captionSingular = ''
 /**
  * Entity description
  * @type {string}
