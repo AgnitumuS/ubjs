@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.23.8] - 2022-07-26
 ## [5.23.7] - 2022-07-26
 ### Added
 - localization for server errors in `uba_user` and `uba_role`
