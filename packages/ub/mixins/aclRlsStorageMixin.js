@@ -54,8 +54,9 @@ function aclRlsStorageInsert (ctx) {
   })
   if (!valueID) throw new UBAbort('One of subject must be non-null in execParams')
   execParams.valueID = valueID
+  const entityCode = ctx.dataStore.entityCode || ctx.mParams.entity // TODO - remove hack after adding ctx.entityCode
   // validate record not exists. If exists - skip insertion and add existed record ID into result
-  const existedID = Repository(ctx.mParams.entity).attrs('ID')
+  const existedID = Repository(entityCode).attrs('ID')
     .where('instanceID', '=', instanceID)
     .where('valueID', '=', valueID)
     .selectScalar()
