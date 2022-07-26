@@ -960,7 +960,7 @@ Ext.define('UB.view.EntityGridPanel', {
       popupMenuItems.push(me.actions[actions.audit])
     }
 
-    if (me.hasHardSecurityMixin && !me.domainEntity.mixins.aclRls.sameAs) {
+    if (me.hasHardSecurityMixin && !me.entity.mixins.aclRls.sameAs) {
       popupMenuItems.push('-')
       popupMenuItems.push(me.actions[actions.accessRight])
     }
