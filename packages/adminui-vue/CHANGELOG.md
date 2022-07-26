@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+- `mountModal`, `mountTableEntityAsModal`: remove dialog element from DOM after destroying of Vue instance
 
 ## [5.23.6] - 2022-07-26
 ### Added
