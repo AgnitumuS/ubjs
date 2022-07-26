@@ -10,7 +10,6 @@
           icon="u-icon-key"
           color="primary"
           :title="$ut('changePassword')"
-          :disabled="!instanceID"
           @click="showPasswordChangeDialog"
         >
           {{ $ut('changePassword') }}
@@ -43,130 +42,101 @@
           name="main"
           :label="$ut('mainSettings')"
         >
-          <u-auto-field attribute-name="name" required/>
-          <u-auto-field attribute-name="firstName" required/>
-          <u-auto-field attribute-name="lastName"/>
-          <u-auto-field attribute-name="fullName" v-model="fullName"/>
-          <u-form-row attribute-name="gender">
-            <u-select-enum
-              e-group="UBA_USER_GENDER"
-              v-model="fixGender"
-              value-attribute="code"
-            />
-          </u-form-row>
-          <u-auto-field attribute-name="email" required/>
-          <u-auto-field attribute-name="phone"/>
           <u-grid
+            class="main-settings"
             :max-width="400"
-            column-gap="20"
-            style="max-width: 800px"
-            class="sliders"
+            style="max-width: 1200px;"
+            template-columns="3fr 3fr 2fr"
+            template-rows="1fr 1fr 1fr"
           >
+            <u-auto-field attribute-name="firstName" :required="toOrg"/>
+
+            <u-auto-field attribute-name="lastName" :required="toOrg"/>
             <u-auto-field
               attribute-name="avatar"
               force-cmp="u-file"
-              :preview-mode="{ height: 200, width: 400}"
+              :preview-mode="{ height: 200, width: 200}"
               :remove-default-buttons="['webcam', 'scan', 'scanSettings']"
               :before-set-document="checkFile"
+              class="avatar"
             />
-            <div class="sliders-container">
-              <u-auto-field
-                attribute-name="disabled"
-                label-position="right"
-                force-cmp="el-switch"
-                :max-width="400"
-                :readonly="!isSupervisor"
+            <u-auto-field attribute-name="fullName" v-model="fullName" :required="toOrg"/>
+            <u-auto-field attribute-name="name" required/>
+            <u-auto-field attribute-name="email"/>
+            <u-auto-field attribute-name="phone"/>
+            <u-form-row attribute-name="gender">
+              <u-select-enum
+                e-group="UBA_USER_GENDER"
+                v-model="fixGender"
+                value-attribute="code"
               />
-              <u-auto-field
-                attribute-name="isPending"
-                label-position="right"
-                force-cmp="el-switch"
-                :max-width="400"
-                :readonly="!isSupervisor"
+            </u-form-row>
+            <u-form-row
+              :required="toOrg"
+              :label="$ut('ІПН')"
+            >
+              <u-base-input v-model="orgCode" :disabled="employee"/>
+            </u-form-row>
+
+            <u-form-row
+              :label="$ut('roles')"
+              class="roles"
+            >
+              <u-select-collection
+                associated-attr="roleID"
+                entity-name="uba_userrole"
+                collection-name="userRoles"
+                clearable
               />
-            </div>
+            </u-form-row>
+
+            <u-form-row
+              :label="$ut('groups')"
+              class="groups"
+              style="{width: '800px'}"
+            >
+              <u-select-collection
+                associated-attr="groupID"
+                entity-name="uba_usergroup"
+                collection-name="userGroups"
+                clearable
+              />
+            </u-form-row>
+
+            <u-auto-field
+              attribute-name="disabled"
+              label-position="right"
+              force-cmp="el-switch"
+              :max-width="400"
+              :readonly="!isSupervisor"
+              class="slider"
+            />
+            <u-auto-field
+              attribute-name="isPending"
+              label-position="right"
+              force-cmp="el-switch"
+              :max-width="400"
+              :readonly="!isSupervisor"
+              class="slider"
+            />
+            <u-form-row
+              :label="$ut('addToOrgStructure')"
+              label-position="right"
+              class="slider"
+            >
+              <el-switch
+                v-model="toOrg"
+                :disabled="employee"
+              >
+              </el-switch>
+            </u-form-row>
           </u-grid>
-          <u-form-row
-            :label="$ut('roles')"
-          >
-            <u-select-collection
-              associated-attr="roleID"
-              entity-name="uba_userrole"
-              collection-name="userRoles"
-              clearable
-            />
-          </u-form-row>
-
-          <u-form-row
-            :label="$ut('groups')"
-          >
-            <u-select-collection
-              associated-attr="groupID"
-              entity-name="uba_usergroup"
-              collection-name="userGroups"
-              clearable
-            />
-          </u-form-row>
         </el-tab-pane>
-
-        <!--        <el-tab-pane
-                  name="groupsAndRoles"
-                  :label="$ut('groupsAndRoles')"
-                >
-                  <u-form-row
-                    :label="$ut('roles')"
-                  >
-                    <u-select-collection
-                      associated-attr="roleID"
-                      entity-name="uba_userrole"
-                      collection-name="userRoles"
-                      clearable
-                    />
-                  </u-form-row>
-
-                  <u-form-row
-                    :label="$ut('groups')"
-                  >
-                    <u-select-collection
-                      associated-attr="groupID"
-                      entity-name="uba_usergroup"
-                      collection-name="userGroups"
-                      clearable
-                    />
-                  </u-form-row>
-                </el-tab-pane>-->
 
         <el-tab-pane
           name="settings"
           :label="$ut('otherSettings')"
         >
-          <!--          <u-grid
-                      :max-width="400"
-                      column-gap="20"
-                      style="max-width: 800px"
-                      class="sliders"
-                    >
-                      <u-auto-field
-                        attribute-name="avatar"
-                        force-cmp="u-file"
-                        :preview-mode="{ height: 200, width: 400}"
-                        :remove-default-buttons="['webcam', 'scan', 'scanSettings']"
-                      />
-                      <div class="sliders-container">
-                        <u-auto-field
-                          attribute-name="disabled"
-                          label-position="right"
-                          force-cmp="el-switch"
-                          :max-width="400"
-                        />
-                        <u-auto-field
-                          attribute-name="isPending"
-                          label-position="right"
-                          force-cmp="el-switch"
-                          :max-width="400"
-                        />
-                      </div>
-                    </u-grid>-->
           <u-auto-field attribute-name="trustedIP" :readonly="!isSupervisor"/>
           <u-auto-field
             attribute-name="uData" type="textarea"
@@ -188,24 +158,6 @@
         </el-tab-pane>
 
         <el-tab-pane
-          name="certificates"
-          :label="$ut('certificates')"
-        >
-          <u-form-row
-            :label="$ut('certificates')"
-            :style="{maxWidth: 'none'}"
-          >
-            <u-table-entity
-              :bordered="true"
-              :repository="getUserCertificates"
-              :build-edit-config="getCertConfig"
-              :build-copy-config="getCertConfig"
-              :build-add-new-config="getCertConfig"
-            />
-          </u-form-row>
-        </el-tab-pane>
-
-        <el-tab-pane
           name="orgStructure"
           :label="$ut('orgStructure')"
           v-if="isOrgEnabled"
@@ -215,23 +167,23 @@
               :label="$ut('isEmployee')"
               label-position="right"
             >
-              <el-switch
+              <el-checkbox
                 v-model="employee"
-                @change="setEmployeeStatus"
+                disabled
               >
-              </el-switch>
+              </el-checkbox>
             </u-form-row>
             <u-form-row
               v-if="employee"
               :label="$ut('userEmployee')"
-              :style="{maxWidth: 'none'}"
+              :max-width="800"
             >
               <u-table-entity
                 :repository="getEmployeeRepo"
                 :build-edit-config="getEmployeeConfig"
                 :build-copy-config="getEmployeeConfig"
                 :build-add-new-config="getEmployeeConfig"
-                :columns="['employeeID', 'staffUnitID.caption', 'employeeOnStaffType', 'mi_dateFrom']"
+                :columns="['staffUnitID.caption', 'employeeOnStaffType', 'mi_dateFrom']"
               >
               </u-table-entity>
             </u-form-row>
@@ -258,6 +210,45 @@ module.exports.mount = (cfg) => {
       {
         modules: {
           form: buildFormsStoreModule({ formEntity: 'org_employee' })
+        },
+        actions: {
+          async addUserToOrgStructure ({ state }) {
+            if (state.employee?.ID || !state.toOrg) {
+              return
+            }
+
+            const userParams = state.data
+            const orgUserProps = {
+              userID: userParams.ID,
+              lastName: userParams.lastName,
+              firstName: userParams.firstName,
+              description: userParams.description,
+              sexType: userParams.gender ? userParams.gender.substring(0, 1).toUpperCase() : '?',
+              fullFIO: userParams.fullName,
+              code: state.form.orgCode
+            }
+
+            await connection.query({
+              entity: 'org_employee',
+              method: 'insert',
+              execParams: orgUserProps,
+              __skipOptimisticLock: true
+            })
+          },
+
+          async getEmployeeData ({ state, commit }) {
+            const employee = await Repository('org_employee')
+              .attrs('ID', 'userID', 'code', 'firstName', 'lastName')
+              .where('userID', '=', state.data.ID)
+              .misc({ __mip_disablecache: true })
+              .selectSingle()
+
+            for (const key in employee) {
+              commit('form/SET', { key, value: employee[key] })
+            }
+            commit('SET', { key: 'employee', value: employee })
+            commit('form/SET', { key: 'orgCode', value: employee?.code })
+          }
         }
       }
     )
@@ -287,6 +278,18 @@ module.exports.mount = (cfg) => {
         userGroups: ({ state }) => Repository('uba_usergroup')
           .attrs('ID', 'userID', 'groupID')
           .where('userID', '=', state.data.ID)
+      },
+
+      async inited ({ state, commit, dispatch }) {
+        Vue.set(state, 'employee', undefined)
+        Vue.set(state.form, 'orgCode', null)
+        Vue.set(state, 'toOrg', true)
+        await dispatch('getEmployeeData')
+      },
+
+      async saved ({ state, commit, dispatch }) {
+        await dispatch('addUserToOrgStructure')
+        await dispatch('getEmployeeData')
       }
     })
     .validation({
@@ -295,10 +298,20 @@ module.exports.mount = (cfg) => {
           name: { required },
           firstName: {
             required: requiredIf(() => {
-              return !!this.$store.state.employee
+              return !!this.$store.state.toOrg
             })
           },
-          email: { email, required }
+          lastName: {
+            required: requiredIf(() => {
+              return !!this.$store.state.toOrg
+            })
+          },
+          fullName: {
+            required: requiredIf(() => {
+              return !!this.$store.state.toOrg
+            })
+          },
+          email: { email }
         }
       }
     })
@@ -319,7 +332,6 @@ module.exports.default = {
   data () {
     return {
       userTabs: 'main',
-      employee: true,
       props: {
         maxFileSize: 2
       }
@@ -343,6 +355,33 @@ module.exports.default = {
 
     ...mapGetters(['loading']),
 
+    orgCode: {
+      get () {
+        return this.$store.state.form.orgCode
+      },
+      set (value) {
+        this.$store.commit('form/SET', { key: 'orgCode', value })
+      }
+    },
+
+    toOrg: {
+      get () {
+        return this.$store.state.toOrg
+      },
+      set (value) {
+        this.$store.commit('SET', { key: 'toOrg', value })
+      }
+    },
+
+    employee: {
+      get () {
+        return !!this.$store.state.employee
+      },
+      set (value) {
+        this.$store.commit('SET', { key: 'employee', value })
+      }
+    },
+
     pending () {
       return this.$store.state.data.isPending
     },
@@ -353,10 +392,6 @@ module.exports.default = {
 
     isSupervisor () {
       return connection.userData().roles.includes('Supervisor')
-    },
-
-    isEmployee () {
-      return !!this.$store.state.employee
     },
 
     acceptFileExtensions () {
@@ -405,16 +440,6 @@ module.exports.default = {
     }
   },
 
-  async created () {
-    const employee = await Repository('org_employee')
-      .attrs('ID')
-      .where('userID', '=', this.instanceID)
-      .selectSingle()
-    this.employee = !!employee
-    this.employeeID = employee?.ID
-    this.$store.commit('SET', { key: 'employee', value: employee })
-  },
-
   methods: {
     ...mapActions([
       'save'
@@ -424,6 +449,7 @@ module.exports.default = {
       return Repository('org_employeeonstaff')
         .attrs('ID', 'employeeID', 'employeeID.userID', 'staffUnitID.caption', 'employeeOnStaffType', 'mi_dateFrom')
         .where('employeeID.userID', '=', this.instanceID)
+        .misc({ __mip_disablecache: true })
     },
 
     getUserCertificates () {
@@ -446,13 +472,13 @@ module.exports.default = {
     },
 
     async getEmployeeConfig (cfg) {
-      if (!this.employeeID) {
-        const employeeID = await Repository('org_employee')
+      let employeeID = this.$store.state.employee?.ID
+      if (!employeeID) {
+        employeeID = await Repository('org_employee')
           .attrs('ID')
           .where('userID', '=', this.instanceID)
+          .misc({ __mip_disablecache: true })
           .selectScalar()
-
-        this.employeeID = employeeID
       }
       return {
         ...cfg,
@@ -460,16 +486,13 @@ module.exports.default = {
         modalWidth: '800px',
         props: {
           parentContext: {
-            employeeID: this.employeeID
+            employeeID
           }
         }
       }
     },
 
     showPasswordChangeDialog () {
-      /*        if (this.isNew) {
-                this.save()
-              }*/
       $App.doCommand({
         cmdType: 'showForm',
         formCode: 'uba_user-changeUserPassword',
@@ -485,58 +508,57 @@ module.exports.default = {
       })
     },
 
-    async addUserToOrgStructure () {
-      const userParams = this.$store.state.data
-      const orgUserProps = {
-        userID: userParams.ID,
-        lastName: userParams.lastName,
-        firstName: userParams.firstName,
-        description: userParams.description,
-        sexType: userParams.gender ? userParams.gender.substring(0, 1).toUpperCase() : '?',
-        fullFIO: userParams.fullName
-      }
-      $App.doCommand({
-        cmdType: 'showForm',
-        formCode: 'org_employee',
-        entity: 'org_employee',
-        title: 'orgEmployee',
-        isModal: true,
-        parentContext: orgUserProps
-      })
-    },
+    /*      async addUserToOrgStructure() {
+            const userParams = this.$store.state.data
+            const orgUserProps = {
+              userID: userParams.ID,
+              lastName: userParams.lastName,
+              firstName: userParams.firstName,
+              description: userParams.description,
+              sexType: userParams.gender ? userParams.gender.substring(0, 1).toUpperCase() : '?',
+              fullFIO: userParams.fullName,
+              code: this.orgCode
+            }
 
-    async removeUserFromOrgStructure () {
-      const confirm = await dialogYesNo(
-        'org_dialogs.removeFromOrgStructure.title',
-        i18n('org_dialogs.removeFromOrgStructure.message', this.fullName || this.userLogin)
-      )
+            await connection.query({
+              entity: 'org_employee',
+              method: 'insert',
+              execParams: orgUserProps
+            })
+          },
 
-      if (!confirm) {
-        this.employee = true
-        return
-      }
+          async removeUserFromOrgStructure() {
+            const confirm = await dialogYesNo(
+              'org_dialogs.removeFromOrgStructure.title',
+              i18n('org_dialogs.removeFromOrgStructure.message', this.fullName || this.userLogin)
+            )
 
-      connection.query(formHelpers.buildDeleteRequest('org_employee', this.employeeID))
+            if (!confirm) {
+              this.employee = true
+              return
+            }
 
-      const staff = await this.getEmployeeRepo().select()
-      if (staff?.length) {
-        for (const s of staff) {
-          connection.query(formHelpers.buildDeleteRequest('org_employeeonstaff', s.ID))
-        }
-      }
+            connection.query(formHelpers.buildDeleteRequest('org_employee', this.employeeID))
 
-      this.employeeID = null
-    },
+            const staff = await this.getEmployeeRepo().select()
+            if (staff?.length) {
+              for (const s of staff) {
+                connection.query(formHelpers.buildDeleteRequest('org_employeeonstaff', s.ID))
+              }
+            }
 
-    async setEmployeeStatus (isEmployee) {
-      if (isEmployee) {
-        await this.addUserToOrgStructure()
-      }
+            this.employeeID = null
+          },*/
 
-      if (!isEmployee) {
-        await this.removeUserFromOrgStructure()
-      }
-    },
+    /*      async setEmployeeStatus(isEmployee) {
+            if (isEmployee) {
+              await this.addUserToOrgStructure()
+            }
+
+            if (!isEmployee) {
+              await this.removeUserFromOrgStructure()
+            }
+          },*/
 
     checkFile (e) {
       this.validateFile(e.file)
@@ -547,16 +569,33 @@ module.exports.default = {
 </script>
 
 <style>
-.sliders .u-form-row__label {
+.slider .u-form-row__label {
   width: auto !important;
   min-width: auto !important;
 }
 
-.sliders-container {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: self-start;
-  padding: 10%;
+.main-settings {
+  grid-template-areas:
+    ". . avatar"
+    ". . avatar"
+    ". . avatar"
+    ". . avatar"
+    "roles roles avatar"
+    "groups groups avatar"
+    ". . .";
+}
+
+.avatar {
+  grid-area: avatar;
+}
+
+.roles {
+  grid-area: roles;
+  max-width: calc(1200px * 0.75 - 40px) !important;
+}
+
+.groups {
+  grid-area: groups;
+  max-width: calc(1200px * 0.75 - 40px) !important;
 }
 </style>
