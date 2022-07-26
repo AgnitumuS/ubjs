@@ -151,6 +151,7 @@ export default {
   },
 
   beforeDestroy () {
+    if (!this._unwatchList) return
     for (const unwatchFn of this._unwatchList) {
       unwatchFn()
     }
