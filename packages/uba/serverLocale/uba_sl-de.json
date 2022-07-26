@@ -1,7 +1,0 @@
-{
-  "uba_user_deleteBuiltInUserProhibited": "<<<Das Entfernen des integrierten Benutzers ist verboten>>>",
-  "uba_user_deleteServiceUserProhibited": "<<<Das Entfernen des Dienstbenutzers ist verboten>>>",
-  "uba_user_renameBuiltInUserProhibited": "<<<Das Umbenennen von eingebauten Benutzern ist verboten>>>",
-  "uba_user_renameServiceUserProhibited": "<<<Die Umbenennung des Dienstbenutzers ist untersagt>>>",
-  "uba_role_deleteBuiltInRoleProhibited": "<<<Das Entfernen der eingebauten Rolle ist verboten>>>"
-}

@@ -224,8 +224,6 @@
 </template>
 
 <script>
-const LS_RATIO_KEY = 'UFileWebcamButton__videoRatio'
-
 export default {
   name: 'UFileWebcamButton',
   inject: {
@@ -314,7 +312,7 @@ export default {
 
   mounted () {
     this.fullScreen = this.startFullScreen
-    this.videoRatio = JSON.parse(window.localStorage.getItem(LS_RATIO_KEY)) || this.videoRatios[0]
+    this.videoRatio = this.$uiSettings.get('UFileWebcamButton', 'videoRatio') ?? this.videoRatios[0]
   },
 
   methods: {
@@ -544,7 +542,7 @@ export default {
 
     clearForm () {
       this.stopStream()
-      window.localStorage.setItem(LS_RATIO_KEY, JSON.stringify(this.videoRatio))
+      this.$uiSettings.put(this.videoRatio,'UFileWebcamButton', 'videoRatio')
       this.pages = []
       this.previewImageSrc = null
       this.canvas = null

@@ -1,19 +1,19 @@
-﻿const UB = require('@unitybase/ub')
-const App = UB.App
-const Session = UB.Session
-/* global org_employee */
+﻿/* global org_employee */
 // eslint-disable-next-line camelcase
 const me = org_employee
+const { App, Session, Repository, DataStore } = require('@unitybase/ub')
 
 const ubaAuditPresent = App.domainInfo.has('uba_audit')
 let auditStore
 if (ubaAuditPresent) {
-  auditStore = UB.DataStore('uba_audit')
+  auditStore = DataStore('uba_audit')
 }
 
 me.on('update:after', updateCaptionAndLogToAudit)
 me.on('insert:after', ubaAuditLinkUser)
 me.on('delete:after', ubaAuditLinkUserDelete)
+
+global.uba_user.on('update:after', updateEmployeeFullName)
 
 /**
  * @private
@@ -26,17 +26,83 @@ function updateCaptionAndLogToAudit (ctx) {
 }
 
 /**
+ * Update name of employee
+ * @private
+ * @param {ubMethodParams} ctx
+ * @param {boolean} [ctx.mParams.__syncEmployee]
+ */
+function updateEmployeeFullName (ctx) {
+  if (ctx.mParams.__syncEmployee === false) {
+    // Ability to explicitly skip the synchronization of employee
+    return
+  }
+
+  let { fullName, firstName, lastName } = ctx.mParams.execParams
+  if (fullName === undefined && firstName === undefined && lastName === undefined && !ctx.mParams.__syncEmployee) {
+    // No name-related attributes updated, do not touch employee in such a case
+    return
+  }
+
+  // If any of "fullName", "firstName" or "lastName" attributes not provided in execParams, get previous values from
+  // "selectBeforeUpdate" dataset
+  const oldCurrentDataName = ctx.dataStore.currentDataName
+  ctx.dataStore.currentDataName = 'selectBeforeUpdate'
+  try {
+    if (fullName === undefined) fullName = ctx.dataStore.get('fullName')
+    if (firstName === undefined) firstName = ctx.dataStore.get('firstName')
+    if (lastName === undefined) lastName = ctx.dataStore.get('lastName')
+  } finally {
+    ctx.dataStore.currentDataName = oldCurrentDataName
+  }
+
+  const employee = Repository('org_employee')
+    .attrs('ID', 'firstName', 'lastName', 'fullFIO')
+    .where('userID', '=', ctx.mParams.execParams.ID)
+    .selectSingle({
+      fullFIO: 'fullName'
+    })
+  if (!employee) {
+    // No employee to sync
+    return
+  }
+
+  if (firstName === employee.firstName && lastName === employee.lastName && fullName === employee.fullName) {
+    // No changes to employee name, do not touch it
+    return
+  }
+
+  console.log('Sync employee name attributes with user')
+  DataStore('org_employee').run('update', {
+    execParams: {
+      ID: employee.ID,
+      firstName,
+      lastName,
+      fullFIO: fullName
+    },
+    __skipOptimisticLock: true,
+    __syncUser: false
+  })
+}
+
+/**
  * Update uba_user.fullName for all users of current employee
  * @private
  * @param {ubMethodParams} ctx
+ * @param {boolean} [ctx.mParams.__syncUser]
  * @param {boolean} allowSelectBeforeUpdate
  *   Allow get properties missing in execParams from 'selectBeforeUpdate'
  *   data store.  Pass "true" for update method and "false" for insert method.
  */
 function updateUserFullName (ctx, allowSelectBeforeUpdate) {
+  if (ctx.mParams.__syncUser === false) {
+    // Ability to explicitly skip the synchronization of user
+    return
+  }
+
   let { fullFIO, firstName, lastName, userID } = ctx.mParams.execParams
-  if (fullFIO === undefined && firstName === undefined && lastName === undefined && !ctx.mParams.syncUser) {
+  if (fullFIO === undefined && firstName === undefined && lastName === undefined && !ctx.mParams.__syncUser) {
     // No name-related attributes updated, do not touch user in such a case
+    return
   }
 
   if (allowSelectBeforeUpdate) {
@@ -59,7 +125,8 @@ function updateUserFullName (ctx, allowSelectBeforeUpdate) {
     return
   }
 
-  const userStore = UB.DataStore('uba_user')
+  console.log('Sync user name attributes with employee')
+  const userStore = DataStore('uba_user')
   userStore.run('update', {
     execParams: {
       ID: userID,
@@ -67,7 +134,8 @@ function updateUserFullName (ctx, allowSelectBeforeUpdate) {
       firstName,
       lastName
     },
-    __skipOptimisticLock: true
+    __skipOptimisticLock: true,
+    __syncEmployee: false
   })
 }
 
@@ -83,7 +151,7 @@ function updateStaffUnitCaption (ctxt) {
   const needUpdate = attrsForUpdate.find(attrName => attrName.startsWith('shortFIO'))
   if (!needUpdate) return
   // and employee is assigned to staff
-  const myStaffs = UB.Repository('org_employeeonstaff')
+  const myStaffs = Repository('org_employeeonstaff')
     .attrs('staffUnitID')
     .where('[employeeID]', '=', execParams.ID)
     .select()
@@ -92,10 +160,10 @@ function updateStaffUnitCaption (ctxt) {
   const updParams = {
     ['caption_' + App.defaultLang + '^']: ''
   }
-  const staffUnitStore = UB.DataStore('org_staffunit')
+  const staffUnitStore = DataStore('org_staffunit')
   while (!myStaffs.eof) {
     const staffID = myStaffs.get(0)
-    const currentRow = UB.Repository('org_staffunit').attrs(['ID']).selectById(staffID)
+    const currentRow = Repository('org_staffunit').attrs(['ID']).selectById(staffID)
     if (currentRow) {
       updParams.ID = staffID
       staffUnitStore.run('update', {
@@ -120,7 +188,7 @@ function ubaAuditLinkUser (ctx) {
   if (!execParams.userID) return
 
   const userName = Session.uData.login
-  const linkUserName = UB.Repository('uba_user').attrs('name')
+  const linkUserName = Repository('uba_user').attrs('name')
     .where('[ID]', '=', execParams.userID)
     .selectScalar()
 
@@ -166,7 +234,7 @@ function ubaAuditLinkUserModify (ctx) {
   if (params.userID !== oldValues.userID) {
     actionUser = Session.uData.login
     if (oldValues.userID) {
-      linkUser = UB.Repository('uba_user').attrs('name').where('[ID]', '=', oldValues.userID).select()
+      linkUser = Repository('uba_user').attrs('name').where('[ID]', '=', oldValues.userID).select()
       auditStore.run('insert', {
         execParams: {
           entity: 'org_employee',
@@ -182,7 +250,7 @@ function ubaAuditLinkUserModify (ctx) {
       })
     }
     if (params.userID) {
-      linkUser = UB.Repository('uba_user').attrs('name').where('[ID]', '=', params.userID).select()
+      linkUser = Repository('uba_user').attrs('name').where('[ID]', '=', params.userID).select()
       auditStore.run('insert', {
         execParams: {
           entity: 'org_employee',
@@ -224,7 +292,7 @@ function ubaAuditLinkUserDelete (ctx) {
   }
   if (oldValues.userID) {
     const actionUser = Session.uData.login
-    linkUser = UB.Repository('uba_user').attrs('name').where('[ID]', '=', oldValues.userID).select()
+    linkUser = Repository('uba_user').attrs('name').where('[ID]', '=', oldValues.userID).select()
     auditStore.run('insert', {
       execParams: {
         entity: 'uba_user',

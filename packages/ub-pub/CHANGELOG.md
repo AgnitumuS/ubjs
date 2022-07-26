@@ -15,6 +15,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.23.4] - 2022-07-26
+### Added
+ - new property in entity metafile `captionSingular` - an entity caption in singular.
+  If defined it will be used on UI as a form (single row) caption in case form caption is empty (recommended).
+  Require server UB@5.22.12, for versions below  5.22.12 `captionSingular` is ignored even if defined in meta
+
+ - `UB.i18n` can accept `#captionSingular` hashtag ```UB.i18n('uba_audit#captionSingular')```.
+  If `entity.captionSingular` is defined - return `entity.captionSingular`,
+  else - `entity.caption` (the same as ```UB.i18n('uba_audit')```)
+  
+
 ## [5.23.3] - 2022-07-11
 ### Added
  - 'AsyncConnection.setDocument' - can upload large files using chunks. 

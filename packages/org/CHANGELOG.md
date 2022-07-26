@@ -15,6 +15,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.23.7] - 2022-07-26
+### Fixed
+- Synchronization between `uba_user` and `org_employee` now work in 2 ways:
+  - attributes:
+    - `uba_user.firstName <=> org_employee.firstName'
+    - `uba_user.lastName <=> org_employee.lastName'
+    - `uba_user.fullName <=> org_employee.fullFIO'
+  - `uba_user` support flag `__syncEmployee: false` to skip the sync
+  - `org_employee` support flag `__syncUser: false` to skip the sync
+
+## [5.23.6] - 2022-07-21
 ## [5.23.5] - 2022-07-12
 ## [5.23.4] - 2022-07-11
 ### Fixed

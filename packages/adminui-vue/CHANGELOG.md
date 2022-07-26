@@ -15,11 +15,45 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+
+## [5.23.6] - 2022-07-26
+### Added
+- `uiSettingsStorage`: module for storing UI settings. It is recommended
+  to use this module instead of the `localStorage`.
+  Module is injected into `Vue.prototype` as `$uiSettings` and exported as `@unitybase/adminui-vue`.uiSettings.
+```javascript
+// inside vue can be used as this.$uiSettings
+// restore some setting
+this.videoRatio = this.$uiSettings.get('UFileWebcamButton', 'videoRatio') ?? this.videoRatios[0]
+// save setting
+this.$uiSettings.put(this.videoRatios[0], 'UFileWebcamButton', 'videoRatio')
+
+// or from adminui-vue exports
+const App = require('@unitybase/adminui-vue')
+const isCollapsed = App.uiSettings.get('sidebar', 'isCollapsed')
+```
+
+User can clear all settings using `User menu` -> `Reset GUI Settings`
+
+### Changed
+- Migrate from using the `localStorage` to `uiSettingsStorage` in appropriate places
+- Default rendering of boolean columns in `UTableEntity`: use icon `u-icon-check` instead of `u-icon-add`, to
+  make it look different from the "Add" action on toolbar.  Remove displaying icon `u-icon-minus` for negative values
+ - vueJS based form title \ tab title will use `entity.captionSingular` in case form caption is empty.
+  We strongly recommend to add captionSingular for all `*.meta` and `*.meta.lang` files and
+  keep `caption` in `ubm_form` empty (simply remove "caption": "..." in `publis/forms/*.ubrow`)
+
+### Fixed
+- `UToolbar`: added horizontal autoscroll for small screens
+## [5.23.5] - 2022-07-21
+### Fixed
 - `UChart` rewired:
   - `@chart-click` handler now works even in case several charts are displayed on page
   - added date adapter to correctly display time axis (see samples on unitybase.info)
   - component now registered by `adminui-vue`, so can be used without require, just ```<u-chart>....</u-chart>```
   - `options` and `chartData` properties now NOT reactive (ChartJs is designed for static data. For dynamic data better to use `d3`)
+
+- `URadio` - prevent `'this' is undefined` error in developer mode (prop validator do not have access to 'this')
 
 ## [5.23.4] - 2022-07-14
 ### Added

@@ -140,7 +140,22 @@ export default {
     PreviewForm: require('./PreviewForm.vue').default
   },
 
-  mixins: [require('./localStorageMixin')],
+  props: {
+    /**
+     * Used as `instance` part to store soring, filters and viewMode into $uiSettings
+     */
+    shortcutCode: {
+      type: String,
+      default: undefined
+    }
+  },
+
+  beforeDestroy () {
+    if (!this._unwatchList) return
+    for (const unwatchFn of this._unwatchList) {
+      unwatchFn()
+    }
+  },
 
   data () {
     return {
@@ -272,6 +287,52 @@ export default {
         }
       }
       return cfg
+    },
+
+    /**
+     * UMasterDetailView call this method to restore saved "view mode", "sort" and "filters",
+     * watching on it and persist while changed
+     *
+     * @param {Vue} masterTableInstance Master table instance
+     * @param {Store} masterTableInstance.$store Master instance store
+     */
+    initLocalStorageWatcher (masterTableInstance) {
+      if (this.shortcutCode === undefined) return
+
+      const store = masterTableInstance.$store
+
+      const savedFilters = this.$uiSettings.get('UTableEntity', 'filters', this.shortcutCode)
+      if (savedFilters) {
+        for (const filter of savedFilters) {
+          store.commit('APPLY_FILTER', filter)
+        }
+      }
+      const savedViewMode = this.$uiSettings.get('UTableEntity', 'viewMode', this.shortcutCode)
+      if (savedViewMode) {
+        this.viewMode = savedViewMode
+      }
+
+      const savedSort = this.$uiSettings.get('UTableEntity', 'sort', this.shortcutCode)
+      if (savedSort) {
+        store.commit('SORT', savedSort)
+      }
+
+      this.unwatchList = [
+        store.watch(
+          state => state.filters,
+          value => { this.$uiSettings.put(value, 'UTableEntity', 'filters', this.shortcutCode) }
+        ),
+        this.$watch(
+          () => this.viewMode,
+          value => { this.$uiSettings.put(value, 'UTableEntity', 'viewMode', this.shortcutCode) }
+        ),
+        store.watch(
+          state => state.sort,
+          value => {
+            this.$uiSettings.put(value, 'UTableEntity', 'sort', this.shortcutCode)
+          }
+        )
+      ]
     },
 
     onInitialLoad (masterTableInstance) {

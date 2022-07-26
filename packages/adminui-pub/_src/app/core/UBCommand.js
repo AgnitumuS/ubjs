@@ -755,9 +755,9 @@ Ext.define('UB.core.UBCommand', {
 
     const title = options.title ||
       (me.caption || (me.formParam
-        ? (me.formParam.caption || me.formParam.description)
+        ? me.formParam.caption
         : null) ||
-        $App.domainInfo.get(me.entity).caption) +
+        UB.i18n(`${me.entity}#captionSingular`)) +
       parentName + history
 
     if (!me.createOnly) {
