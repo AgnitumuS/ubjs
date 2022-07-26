@@ -6,8 +6,25 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+- `uiSettingsStorage`: module for storing UI settings. It is recommended
+  to use this module instead of the `localStorage`.
+  Module is injected into `Vue.prototype` as `$uiSettings` and exported as `@unitybase/adminui-vue`.uiSettings.
+```javascript
+// inside vue can be used as this.$uiSettings
+// restore some setting
+this.videoRatio = this.$uiSettings.get('UFileWebcamButton', 'videoRatio') ?? this.videoRatios[0]
+// save setting
+this.$uiSettings.put(this.videoRatios[0], 'UFileWebcamButton', 'videoRatio')
+
+// or from adminui-vue exports
+const App = require('@unitybase/adminui-vue')
+const isCollapsed = App.uiSettings.get('sidebar', 'isCollapsed')
+```
+
+User can clear all settings using `User menu` -> `Reset GUI Settings`
 
 ### Changed
+- Migrate from using the `localStorage` to `uiSettingsStorage` in appropriate places
 - Default rendering of boolean columns in `UTableEntity`: use icon `u-icon-check` instead of `u-icon-add`, to
   make it look different from the "Add" action on toolbar.  Remove displaying icon `u-icon-minus` for negative values
 
