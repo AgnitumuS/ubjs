@@ -6,6 +6,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+## [5.23.6] - 2022-07-26
+### Added
 - `uiSettingsStorage`: module for storing UI settings. It is recommended
   to use this module instead of the `localStorage`.
   Module is injected into `Vue.prototype` as `$uiSettings` and exported as `@unitybase/adminui-vue`.uiSettings.
@@ -30,10 +41,6 @@ User can clear all settings using `User menu` -> `Reset GUI Settings`
  - vueJS based form title \ tab title will use `entity.captionSingular` in case form caption is empty.
   We strongly recommend to add captionSingular for all `*.meta` and `*.meta.lang` files and
   keep `caption` in `ubm_form` empty (simply remove "caption": "..." in `publis/forms/*.ubrow`)
-
-### Deprecated
-
-### Removed
 
 ### Fixed
 - `UToolbar`: added horizontal autoscroll for small screens

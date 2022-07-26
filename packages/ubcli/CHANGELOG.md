@@ -8,14 +8,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
- - `ubcli generateNginxCfg` - `add_header X-Frame-Options sameorigin;` directives are removed in flavor of 
- `uiSettings.cspAllow.frameAncestors` content security policy
 
 ### Deprecated
 
 ### Removed
 
 ### Fixed
+
+## [5.23.6] - 2022-07-26
+### Changed
+ - `ubcli generateNginxCfg` - `add_header X-Frame-Options sameorigin;` directives are removed in flavor of 
+ `uiSettings.cspAllow.frameAncestors` content security policy
 
 ## [5.23.5] - 2022-07-21
 ## [5.23.4] - 2022-07-12

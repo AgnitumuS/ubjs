@@ -6,16 +6,21 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
-- localization for server errors in `uba_user` and `uba_role`
 
 ### Changed
-- use key `uba_user_errors.duplicateUserName` instead of 'Duplicate user name (may be in different case)'
 
 ### Deprecated
 
 ### Removed
 
 ### Fixed
+
+## [5.23.7] - 2022-07-26
+### Added
+- localization for server errors in `uba_user` and `uba_role`
+
+### Changed
+- use key `uba_user_errors.duplicateUserName` instead of 'Duplicate user name (may be in different case)'
 
 ## [5.23.6] - 2022-07-21
 ### Added

@@ -8,13 +8,16 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
- - VueJS form template (used when new form is created using UI) - `v-loading="loading"` is moved above the toolbar 
 
 ### Deprecated
 
 ### Removed
 
 ### Fixed
+
+## [5.23.7] - 2022-07-26
+### Changed
+ - VueJS form template (used when new form is created using UI) - `v-loading="loading"` is moved above the toolbar 
 
 ## [5.23.6] - 2022-07-21
 ### Fixed

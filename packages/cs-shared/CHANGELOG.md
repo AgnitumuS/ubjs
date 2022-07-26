@@ -6,8 +6,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
- - defined new `UBEntity.captionSingular` property; for compatibility in case in i18n `captionSingular` is empty 
-   then `caption` from i18n will be used instead
 
 ### Changed
 
@@ -16,6 +14,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+
+## [5.23.4] - 2022-07-26
+### Added
+ - defined new `UBEntity.captionSingular` property; for compatibility in case in i18n `captionSingular` is empty 
+   then `caption` from i18n will be used instead
 
 ## [5.23.3] - 2022-07-11
 ### Fixed

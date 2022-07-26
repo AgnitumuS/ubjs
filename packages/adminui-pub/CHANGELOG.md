@@ -8,15 +8,18 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
- - extJS based form title \ tab title will use `entity.captionSingular` in case form caption is empty.
-   We strongly recommend to add captionSingular for all `*.meta` and `*.meta.lang` files and
-   keep `caption` in `ubm_form` empty (simply remove "caption": "..." in `publis/forms/*.ubrow`) 
 
 ### Deprecated
 
 ### Removed
 
 ### Fixed
+
+## [5.23.8] - 2022-07-26
+### Changed
+ - extJS based form title \ tab title will use `entity.captionSingular` in case form caption is empty.
+   We strongly recommend to add captionSingular for all `*.meta` and `*.meta.lang` files and
+   keep `caption` in `ubm_form` empty (simply remove "caption": "..." in `publis/forms/*.ubrow`) 
 
 ## [5.23.7] - 2022-07-21
 ### Removed

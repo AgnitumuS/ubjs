@@ -14,6 +14,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+
+## [5.23.7] - 2022-07-26
+### Fixed
 - Synchronization between `uba_user` and `org_employee` now work in 2 ways:
   - attributes:
     - `uba_user.firstName <=> org_employee.firstName'
