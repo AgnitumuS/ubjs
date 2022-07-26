@@ -15,11 +15,10 @@
 		"authenticationMethods": []
 	},
 	"javascript": {
-		"fullGCPeriod": 100000
+		"fullGCPeriod": 1000000
 	},
 	"application": {
 		"defaultLang": "en",
-		"rootHandler": "index.html",
 		"domain": {
 			"models": [
 				{
@@ -36,10 +35,10 @@
 				"driver": "PostgreSQL",
 				"isDefault": true,
 				"dialect": "PostgreSQL",
-				"serverName": "postgresql://localhost:5432",
-				"databaseName": "postgres",
-				"userID": "benchmarkdbuse",
-				"password": "benchmarkdbuser",
+				"serverName": "",
+				"databaseName": "postgresql://benchmarkdbuser:benchmarkdbpass@tfb-database:5432/hello_world",
+				"userID": "benchmarkdbuser",
+				"password": "benchmarkdbpass",
 				"supportLang": [
 					"en"
 				],
@@ -50,21 +49,13 @@
 			{
 				"name": "mdb",
 				"storeType": "Virtual",
-				"tempPath": "./_temp"
-			},
-			{
-				"name": "avatars",
-				"isDefault": true,
-				"path": "./stores/avatars",
-				"historyDepth": 0,
-				"storeSize": "Simple",
-				"keepOriginalFileNames": false
+				"tempPath": "%UB_APPHOME%_temp"
 			}
 		]
 	},
 	"uiSettings": {
 		"adminUI": {
-			"applicationName": "Techempower(SQLite3)",
+			"applicationName": "Techempower(Postgres)",
 			"defaultPasswordForDebugOnly": "admin",
 			"themeName": "UBGrayTheme",
 			"endpoint": "ubadmin"
