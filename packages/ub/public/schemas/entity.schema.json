@@ -9,7 +9,11 @@
     "properties": {
         "caption": {
             "type": "string",
-            "description": "Entity caption. Used in UI as a form/grid caption"
+            "description": "Entity caption in plural. Used in UI as a grid caption"
+        },
+        "captionSingular": {
+            "type": "string",
+            "description": "Entity caption in singular. Used in UI as a form (single row) caption"
         },
         "description": {
             "type": "string",

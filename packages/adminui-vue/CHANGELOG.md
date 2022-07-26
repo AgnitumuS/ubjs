@@ -27,6 +27,9 @@ User can clear all settings using `User menu` -> `Reset GUI Settings`
 - Migrate from using the `localStorage` to `uiSettingsStorage` in appropriate places
 - Default rendering of boolean columns in `UTableEntity`: use icon `u-icon-check` instead of `u-icon-add`, to
   make it look different from the "Add" action on toolbar.  Remove displaying icon `u-icon-minus` for negative values
+ - vueJS based form title \ tab title will use `entity.captionSingular` in case form caption is empty.
+  We strongly recommend to add captionSingular for all `*.meta` and `*.meta.lang` files and
+  keep `caption` in `ubm_form` empty (simply remove "caption": "..." in `publis/forms/*.ubrow`)
 
 ### Deprecated
 

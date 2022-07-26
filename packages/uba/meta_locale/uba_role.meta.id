@@ -1,5 +1,6 @@
 {
   "caption": "peran sistem",
+  "captionSingular": "peran sistem",
   "description": "Mengelola peran subsistem",
   "attributes": [
     {

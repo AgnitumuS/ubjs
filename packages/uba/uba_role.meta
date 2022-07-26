@@ -1,5 +1,6 @@
 {
   "caption": "System Roles",
+  "captionSingular": "System Role",
   "description": "Administering subsystem roles",
   "connectionName": "",
   "cacheType": "None",
