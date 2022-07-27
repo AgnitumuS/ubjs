@@ -20,7 +20,7 @@ export default {
   components: { Splitpanes },
   props: {
     /**
-     * Used to identify splitpane on the page. If `splitId` is not passed,  will be used the index splitpane in DOM
+     * Used to identify splitpane on the page. Recommended for use. If `splitId` is not passed,  will be used the index splitpane in DOM
      */
     splitId: {
       type: [String, Number],
@@ -40,9 +40,6 @@ export default {
     })
   },
   methods: {
-    getStorageKey () {
-      return UB.core?.UBLocalStorageManager?.getKeyUI(this.storegeKey) || 'splitpanes_default_key'
-    },
     restore () {
       const data = this.getDataFromStore()
       if (!Object.keys(data).length) return
@@ -51,24 +48,13 @@ export default {
       })
     },
     getDataFromStore () {
-      let data = localStorage[this.getStorageKey()]
-      if (data) data = JSON.parse(data)
-      if (!data) data = {}
-      if (!data[this.tabKey]) data[this.tabKey] = {}
-      if (!data[this.tabKey][this.indexCurrSplitter]) {
-        data[this.tabKey][this.indexCurrSplitter] = {}
-      }
-      this.baseData = data
-      return data[this.tabKey][this.indexCurrSplitter]
+      return this.$uiSettings.getByKey(this.storegeKey) || {}
     },
     setToStorage (data) {
-      this.getDataFromStore() // when a splitpanel is multiple on a page, they may overwrite each other when first opene
-      this.baseData[this.tabKey][this.indexCurrSplitter] = data
-      localStorage.setItem(this.getStorageKey(), JSON.stringify(this.baseData))
+      return this.$uiSettings.putByKey(data, this.storegeKey)
     },
     savePosition (panes) {
-      this.baseData[this.tabKey][this.indexCurrSplitter] = {} // because a different amount of panes can be stored than there is
-      const data = this.baseData[this.tabKey][this.indexCurrSplitter]
+      const data = this.getDataFromStore()
       panes.forEach((el, index) => {
         data[index] = el.size
       })
@@ -90,11 +76,10 @@ export default {
     },
     init () {
       if (!this.canSaveInStorage) return
-      this.storegeKey = 'splitter'
       this.activeTab = UB?.core?.UBApp?.viewport?.centralPanel.getActiveTab()
       this.tabKey = this.activeTab ? this.activeTab.id : location.pathname
       this.indexCurrSplitter = this.splitId || this.splitId === 0 ? this.splitId : this.getCurrentIndexInDOM()
-      UB.connection.on('removedUserDataUI', this.$refs.splitpane.equalize)
+      this.storegeKey = this.$uiSettings.buildKey('splitter', this.tabKey, this.indexCurrSplitter.toString())
       if (!this.verification()) return
       this.restore()
     }
