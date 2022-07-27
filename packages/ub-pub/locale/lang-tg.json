@@ -123,8 +123,12 @@
     "signingTime": "Вақти мондани имзо",
     "signatureStatus": "Ҳолати имзо",
     "signatureAuthor": "Имзокунанда",
+    "signAlgo": "Signature algorithm",
+    "signType": "Signature type",
+    "mediaSerial": "Media #",
     "certificate": {
       "_": "Шаҳодатнома (Сертификат)",
+      "certKind": "Certificate type",
       "keyUsage": "Таъйиноти калид",
       "serial": "Рақами бақайдгирӣ",
       "validFrom": "Оғози мӯҳлати эътибор",

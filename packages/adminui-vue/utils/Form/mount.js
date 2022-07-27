@@ -85,6 +85,12 @@ function mountModal ({
       }
     },
 
+    destroyed () {
+      if (this.$el) {
+        document.body.removeChild(this.$el)
+      }
+    },
+
     methods: {
       setTitle (value) {
         this.titleText = value
@@ -517,6 +523,12 @@ function mountTableEntityAsModal ({
     provide () {
       return {
         close: () => { this.dialogVisible = false }
+      }
+    },
+
+    destroyed () {
+      if (this.$el) {
+        document.body.removeChild(this.$el)
       }
     },
 

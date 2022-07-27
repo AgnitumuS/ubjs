@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 ### Added
 - `USplitter` - separator for page or blocks with the function of saving to localStorage
+ - added visualisation for new signature validation attributes (signAlgo, signType, mediaSerial, certificate.certKind)
 
 ### Changed
 
@@ -15,6 +16,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+ - `UMasterDetailView` - clean `_unwatchList` correctly
+
+## [5.23.7] - 2022-07-26
+### Fixed
+- `mountModal`, `mountTableEntityAsModal`: remove dialog element from DOM after destroying of Vue instance
 
 ## [5.23.6] - 2022-07-26
 ### Added

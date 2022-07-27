@@ -102,8 +102,12 @@
     "signingTime": "Imzolanish vaqti",
     "signatureStatus": "Imzo holati",
     "signatureAuthor": "Imzo chekuvchi",
+    "signAlgo": "Signature algorithm",
+    "signType": "Signature type",
+    "mediaSerial": "Media #",
     "certificate": {
       "_": "Sertifikat",
+      "certKind": "Certificate type",
       "keyUsage": "Kalitdan foydalanish",
       "validFrom": "Amal qilish muddatining boshlanishi",
       "validTo": "Amal qilish muddati tugashi",

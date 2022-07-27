@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.23.7] - 2022-07-26
 ## [5.23.6] - 2022-07-26
 ### Changed
  - `ubcli generateNginxCfg` - `add_header X-Frame-Options sameorigin;` directives are removed in flavor of 

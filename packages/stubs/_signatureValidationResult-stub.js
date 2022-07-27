@@ -11,8 +11,12 @@
  * @property {boolean} hardwareKeyUsed Is hardware token used to made signature
  * @property {Date} signingTime Time of signing. In case tspValid this time is taken from authorised source using TSP protocol, in other case - this is **UNTRUSTED** time of local signer computer
  * @property {Boolean} isDigitalStamp Is signature certificate is a digital time stamp
+ * @property {string} signAlgo Signature algorithm (DSTU-4145,  RSA,  ECDSA)
+ * @property {string} signType Type of signature (Qualified, Advanced)
+ * @property {string} mediaSerial For hardware keys - serial number of hardware key
  *
- * @property {Object} certificate Signer certificate information. In case valid===false certificate may not exists (or broken) and this property is empty object
+ * @property {Object} certificate Signer certificate information. In case valid===false certificate may not exist (or broken) and this property is empty object
+ * @property {String} certificate.certKind Certificate kind ('Qualified' \ 'Advanced')
  * @property {String} certificate.keyUsage String with key usage information
  * @property {String} certificate.serial Certificate serial number
  * @property {Date} certificate.validFrom Certificate valid starting from this date

@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.23.9] - 2022-07-26
 ## [5.23.8] - 2022-07-26
 ### Added
  - added `uiSettings.cspAllow.frameAncestors` rules what controls for what sites our client app can be embedded indo iframe.

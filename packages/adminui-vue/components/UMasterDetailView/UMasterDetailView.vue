@@ -317,7 +317,7 @@ export default {
         store.commit('SORT', savedSort)
       }
 
-      this.unwatchList = [
+      this._unwatchList = [
         store.watch(
           state => state.filters,
           value => { this.$uiSettings.put(value, 'UTableEntity', 'filters', this.shortcutCode) }

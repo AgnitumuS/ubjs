@@ -99,6 +99,8 @@
   "selectSigningCertificate": "Select certificate for signing",
   "certificate": "Certificate",
   "certificates": "Certificates",
+  "Qualified": "Qualified",
+  "Advanced": "Advanced",
   "SignatureVerificationResultObj": {
     "_": "Signature(s) verification result",
     "valid": {
@@ -124,8 +126,12 @@
     "signingTime": "Signing time",
     "signatureStatus": "Signature status",
     "signatureAuthor": "Signer",
+    "signAlgo": "Signature algorithm",
+    "signType": "Signature type",
+    "mediaSerial": "Media #",
     "certificate": {
       "_": "Certificate",
+      "certKind": "Certificate type",
       "keyUsage": "Key usage",
       "serial": "Serial #",
       "validFrom": "Valid from",
