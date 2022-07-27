@@ -98,6 +98,9 @@
   "selectSigningCertificate": "Оберіть файл з сертифікатом, призначеним для підпису",
   "certificate": "Сертифікат",
   "certificates": "Сертифікати",
+  "Qualified": "Кваліфікований",
+  "Advanced": "Удосконалений",
+  "DSTU-4145": "ДСТУ-4145",
   "SignatureVerificationResultObj": {
     "_": "Результат перевірки підпису(ів)",
     "valid": {
@@ -123,8 +126,12 @@
     "signingTime": "Час нанесення підпису",
     "signatureStatus": "Статус підпису",
     "signatureAuthor": "Підписувач",
+    "signAlgo": "Алгоритм підпису",
+    "signType": "Тип підпису",
+    "mediaSerial": "СН носія",
     "certificate": {
       "_": "Сертифікат",
+      "certKind": "Тип сертифікату",
       "keyUsage": "Призначення ключів",
       "serial": "Реєстраційний номер",
       "validFrom": "Початок строку дії",

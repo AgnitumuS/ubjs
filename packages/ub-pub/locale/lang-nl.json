@@ -124,8 +124,12 @@
     "signingTime": "Ondertekentijd",
     "signatureStatus": "Handtekeningstatus",
     "signatureAuthor": "Ondertekenaar",
+    "signAlgo": "Signature algorithm",
+    "signType": "Signature type",
+    "mediaSerial": "Media #",
     "certificate": {
       "_": "Certificaat",
+      "certKind": "Certificate type",
       "keyUsage": "Sleutelgebruik",
       "serial": "Serienummer",
       "validFrom": "Geldig vanaf",
