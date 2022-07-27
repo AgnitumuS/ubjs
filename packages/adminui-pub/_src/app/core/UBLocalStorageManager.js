@@ -157,6 +157,5 @@ Ext.define('UB.core.UBLocalStorageManager', {
         localStorage.removeItem(key)
       }
     })
-    UB.connection.emit('removedUserDataUI')
   }
 })

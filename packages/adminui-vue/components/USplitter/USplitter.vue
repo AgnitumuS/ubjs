@@ -41,24 +41,16 @@ export default {
   },
   methods: {
     restore () {
-      const data = this.getDataFromStore()
-      if (!Object.keys(data).length) return
+      if (!this.baseData.length) return
       this.$refs.splitpane.panes.forEach((pane, index) => {
-        pane.size = data[index]
+        pane.size = this.baseData[index]
       })
     },
     getDataFromStore () {
-      return this.$uiSettings.getByKey(this.storegeKey) || {}
-    },
-    setToStorage (data) {
-      return this.$uiSettings.putByKey(data, this.storegeKey)
+      return this.$uiSettings.getByKey(this.storageKey) || []
     },
     savePosition (panes) {
-      const data = this.getDataFromStore()
-      panes.forEach((el, index) => {
-        data[index] = el.size
-      })
-      this.setToStorage(data)
+      this.$uiSettings.putByKey(panes.map(p => p.size), this.storageKey)
     },
     getCurrentIndexInDOM () {
       const splitterElems = this.activeTab
@@ -71,15 +63,15 @@ export default {
       return i
     },
     verification () {
-      const data = this.getDataFromStore()
-      return this.$refs.splitpane.panes.length === Object.keys(data).length
+      return this.$refs.splitpane.panes.length === this.baseData.length
     },
     init () {
       if (!this.canSaveInStorage) return
       this.activeTab = UB?.core?.UBApp?.viewport?.centralPanel.getActiveTab()
       this.tabKey = this.activeTab ? this.activeTab.id : location.pathname
       this.indexCurrSplitter = this.splitId || this.splitId === 0 ? this.splitId : this.getCurrentIndexInDOM()
-      this.storegeKey = this.$uiSettings.buildKey('splitter', this.tabKey, this.indexCurrSplitter.toString())
+      this.storageKey = this.$uiSettings.buildKey('splitter', this.tabKey, this.indexCurrSplitter.toString())
+      this.baseData = this.getDataFromStore()
       if (!this.verification()) return
       this.restore()
     }
