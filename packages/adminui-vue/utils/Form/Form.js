@@ -49,14 +49,14 @@ const formCaptionMixin = (entity, titleTemplate) => ({
 
   computed: {
     formTitle () {
-      const entityName = this.$ut(entity + 'captionSingular')
+      const entityName = this.$ut(entity + '#captionSingular')
       if (this.$store.state.isNew) {
         return entityName
       }
 
       const entityInfo = this.$UB.connection.domain.get(entity)
       const captionMixin = entityInfo.mixins.caption
-      const template = titleTemplate || captionMixin?.template || '{code} {name}'
+      const template = titleTemplate || captionMixin?.template
 
       // Parse arguments out of template
       const re = /{(\w+(\.\w+)*)}/g
