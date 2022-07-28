@@ -14,6 +14,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+- `org_employeeonstaff` form:
+  - do not show date_to if year equal 9999
+  - fixes in 'en' translations
 
 ## [5.23.8] - 2022-07-26
 ## [5.23.7] - 2022-07-26
