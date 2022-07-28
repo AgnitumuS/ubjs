@@ -8,5 +8,6 @@
   "orgTreeCanNotBeCyclical": "Ağaç dövri ola bilməz",
   "orgDepartment": "Şəbə",
   "orgExecutorsGroup": "İcraçı qrupu",
-  "orgOrganizationalChart": "Orqanoqram"
+  "orgOrganizationalChart": "Orqanoqram",
+  "org_employeeonstaff:singular": "Əməkdaşların təyinatları"
 }

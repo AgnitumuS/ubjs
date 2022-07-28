@@ -8,5 +8,6 @@
   "orgTreeCanNotBeCyclical": "Tree can not be cyclical",
   "orgDepartment": "Department",
   "orgExecutorsGroup": "Executors Group",
-  "orgOrganizationalChart": "Organization Chart"
+  "orgOrganizationalChart": "Organization Chart",
+  "org_employeeonstaff:singular": "Employee on staff"
 }

@@ -8,5 +8,6 @@
   "orgTreeCanNotBeCyclical": "Struktur kann nicht zyklisch sein",
   "orgDepartment": "Abteilung",
   "orgExecutorsGroup": "Ausführenden-Gruppe",
-  "orgOrganizationalChart": "Organigramm"
+  "orgOrganizationalChart": "Organigramm",
+  "org_employeeonstaff:singular": "Angestellter Mitarbeiter"
 }

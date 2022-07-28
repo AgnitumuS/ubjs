@@ -57,7 +57,7 @@
       "caption": "Caption",
       "description": "Caption",
       "allowNull": true,
-      "isMultiLang": true
+      "isMultiLang": false
     }
   ],
   "mixins": {
@@ -65,6 +65,10 @@
       "simpleAudit": true,
       "safeDelete": true
     },
-    "dataHistory": {}
+    "dataHistory": {},
+    "caption": {
+       "attribute": "caption",
+       "template": "{tabNo} {employeeID.fullFIO}"
+    }
   }
 }

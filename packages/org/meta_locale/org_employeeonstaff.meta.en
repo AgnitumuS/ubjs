@@ -5,7 +5,7 @@
   "attributes": [
     {
       "name": "tabNo",
-      "caption": "Employee №",
+      "caption": "# Employee",
       "description": "Employee number"
     },
     {
@@ -15,12 +15,12 @@
     },
     {
       "name": "staffUnitID",
-      "caption": "Staff unit",
+      "caption": "Staff Unit",
       "description": "Internal organization staff unit"
     },
     {
       "name": "employeeOnStaffType",
-      "caption": "Assignment type",
+      "caption": "Assignment Type",
       "description": "Assignment type"
     },
     {
