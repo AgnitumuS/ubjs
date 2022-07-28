@@ -16,6 +16,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
  - `UMasterDetailView` - clean `_unwatchList` correctly
+ - `Form`: set default title correctly
 
 ## [5.23.7] - 2022-07-26
 ### Fixed
