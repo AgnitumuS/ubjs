@@ -99,7 +99,7 @@ class UForm {
     this.uiTag = uiTag
     if (this.entity && UB.connection.domain.has(this.entity)) {
       this.entitySchema = UB.connection.domain.get(this.entity)
-      this.title = title || this.entitySchema.getEntityCaption()
+      this.title = title || this.entitySchema.captionSingular || this.entitySchema.getEntityCaption()
       this.fieldList = this.entitySchema.getAttributeNames()
     } else {
       this.entitySchema = null
