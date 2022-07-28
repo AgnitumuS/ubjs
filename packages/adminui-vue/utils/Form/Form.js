@@ -49,9 +49,9 @@ const formCaptionMixin = (entity, titleTemplate) => ({
 
   computed: {
     formTitle () {
-      const entityName = this.$ut(entity + ':singular')
+      const entityName = this.$ut(entity + 'captionSingular')
       if (this.$store.state.isNew) {
-        return this.$ut('ux_formCaption_newInstance', { entity: entityName })
+        return entityName
       }
 
       const entityInfo = this.$UB.connection.domain.get(entity)
