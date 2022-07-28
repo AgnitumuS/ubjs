@@ -296,23 +296,27 @@ class UForm {
       }
     }
 
+    const mountOptions = {
+      component: this.component,
+      props: this.props,
+      store: this.$store,
+      validator: this.validator,
+      title: this.title,
+      titleTooltip: this.titleTooltip,
+      onClose: this.onClose,
+      provide: {
+        formCode: this.formCode,
+        entity: this.entity,
+        entitySchema: this.entitySchema,
+        fieldList: this.fieldList
+      }
+    }
+
     if (this.isModal) {
       mountModal({
-        component: this.component,
-        props: this.props,
-        store: this.$store,
-        validator: this.validator,
-        title: this.title,
-        titleTooltip: this.titleTooltip,
+        ...mountOptions,
         modalClass: this.modalClass,
-        modalWidth: this.modalWidth,
-        onClose: this.onClose,
-        provide: {
-          formCode: this.formCode,
-          entity: this.entity,
-          entitySchema: this.entitySchema,
-          fieldList: this.fieldList
-        }
+        modalWidth: this.modalWidth
       })
     } else if (this.target === undefined || (this.target.getId && this.target.getId() === 'ubCenterViewport')) {
       if (!this.tabId) {
@@ -325,41 +329,17 @@ class UForm {
           : undefined
       }
       const existsTab = document.getElementById(this.tabId)
-      if( existsTab ) return // for slow network
+      if (existsTab) return // for slow network
       mountTab({
-        component: this.component,
-        props: this.props,
-        store: this.$store,
-        validator: this.validator,
-        title: this.title,
-        titleTooltip: this.titleTooltip,
+        ...mountOptions,
         tabId: this.tabId,
         uiTag: this.uiTag,
-        openInBackgroundTab: this.openInBackgroundTab,
-        onClose: this.onClose,
-        provide: {
-          formCode: this.formCode,
-          entity: this.entity,
-          entitySchema: this.entitySchema,
-          fieldList: this.fieldList
-        }
+        openInBackgroundTab: this.openInBackgroundTab
       })
     } else {
       mountContainer({
-        component: this.component,
-        props: this.props,
-        store: this.$store,
-        validator: this.validator,
-        title: this.title,
-        titleTooltip: this.titleTooltip,
-        target: this.target,
-        onClose: this.onClose,
-        provide: {
-          formCode: this.formCode,
-          entity: this.entity,
-          entitySchema: this.entitySchema,
-          fieldList: this.fieldList
-        }
+        ...mountOptions,
+        target: this.target
       })
     }
   }

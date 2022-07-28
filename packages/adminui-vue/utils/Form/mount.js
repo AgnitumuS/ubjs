@@ -1,5 +1,6 @@
 /**
  * Mount helpers for Vue components
+ *
  * @module mountUtils
  * @memberOf module:@unitybase/adminui-vue
  */
@@ -49,27 +50,44 @@ function mountModal ({
   }
   const instance = new Vue({
     store,
+
+    provide () {
+      return {
+        $v: validator ? validator.getValidationState() : undefined,
+        validator,
+        $formServices: {
+          setTitle: this.setTitle,
+          close: () => {
+            beforeClose({
+              close: () => {
+                this.dialogVisible = false
+              },
+              store
+            })
+          },
+          forceClose: () => {
+            this.dialogVisible = false
+          }
+        },
+        isModal: true,
+        ...provide
+      }
+    },
+
     data () {
       return {
         dialogVisible: false,
         titleText
       }
     },
+
     computed: {
       isDirty () {
-        if (this.$store) {
-          return this.$store.getters.isDirty
-        } else {
-          return false
-        }
+        return this.$store ? this.$store.getters.isDirty : false
       },
 
       isNew () {
-        if (this.$store) {
-          return this.$store.state.isNew
-        } else {
-          return false
-        }
+        return this.$store ? this.$store.state.isNew : false
       },
 
       title () {
@@ -96,28 +114,7 @@ function mountModal ({
         this.titleText = value
       }
     },
-    provide () {
-      return {
-        $v: validator ? validator.getValidationState() : undefined,
-        validator,
-        $formServices: {
-          setTitle: this.setTitle,
-          close: () => {
-            beforeClose({
-              close: () => {
-                this.dialogVisible = false
-              },
-              store
-            })
-          },
-          forceClose: () => {
-            this.dialogVisible = false
-          }
-        },
-        isModal: true,
-        ...provide
-      }
-    },
+
     render (h) {
       return h(Dialog, {
         ref: 'dialog',
@@ -153,6 +150,7 @@ function mountModal ({
       ])
     }
   })
+
   instance.$mount()
   document.body.appendChild(instance.$el)
   instance.dialogVisible = true
@@ -201,6 +199,7 @@ function mountTab ({
         titleTooltipText
       }
     },
+
     computed: {
       isDirty () {
         if (this.$store) {
@@ -228,6 +227,7 @@ function mountTab ({
         return this.$ut(this.titleTooltipText) || this.title
       }
     },
+
     watch: {
       title: {
         immediate: true,
@@ -254,6 +254,7 @@ function mountTab ({
       }
     },
     render: (h) => h(component, { props }),
+
     provide () {
       return {
         $v: validator ? validator.getValidationState() : undefined,
