@@ -16,7 +16,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 - `org_employeeonstaff` form:
   - do not show date_to if year equal 9999
-  - form caption formatted as `{tabNo} {employee.fullFIO}`
   - fixes in 'en' translations
 
 ## [5.23.8] - 2022-07-26

@@ -8,6 +8,5 @@
   "orgTreeCanNotBeCyclical": "Дерево не може бути циклічним",
   "orgDepartment": "Підрозділ",
   "orgExecutorsGroup": "Група виконавців",
-  "orgOrganizationalChart": "Органограма",
-  "org_employeeonstaff:singular": "Призначення працівника"
+  "orgOrganizationalChart": "Органограма"
 }

@@ -39,7 +39,7 @@
 
 <script>
 const { Form, mapInstanceFields } = require('@unitybase/adminui-vue')
-const fieldList = ['ID', 'employeeID', 'employeeID.fullFIO', 'staffUnitID', 'tabNo', 'employeeOnStaffType', 'description', 'mi_dateFrom',
+const fieldList = ['ID', 'employeeID', 'staffUnitID', 'tabNo', 'employeeOnStaffType', 'description', 'mi_dateFrom',
   'mi_dateTo']
 const { required } = require('vuelidate/lib/validators/index')
 const { mapGetters } = require('vuex')
@@ -74,10 +74,6 @@ module.exports.mount = cfg => {
 module.exports.default = {
   name: 'org_employeeonstaff',
   inject: ['entity', '$v'],
-
-  mixins: [
-    require('@unitybase/dom/public/mixins/form-caption-mixin')
-  ],
 
   computed: {
     ...mapInstanceFields(fieldList),
