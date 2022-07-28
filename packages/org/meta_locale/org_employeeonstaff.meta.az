@@ -1,6 +1,6 @@
 {
   "caption": "Daxili təşkilatın təyinatları",
-  "captionSingular": "Əməkdaşların təyinatları"
+  "captionSingular": "Əməkdaşların təyinatları",
   "description": "Daxili təşkilatın təyinatları üzrə sorğu kitabçası",
   "documentation": "Hansı işçinin hansı ştat vahidində işlədiyini göstərən açıqlama (təyinat). Həmçinin təyinat tipi də mövcuddur (müvəqqəti, daimi, yarımştat və s.)",
   "attributes": [
