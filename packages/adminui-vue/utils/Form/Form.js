@@ -42,6 +42,51 @@ module.exports.Form = function Form (cfg) {
   return new UForm(cfg)
 }
 
+const formCaptionMixin = (entity, titleTemplate) => ({
+  watch: {
+    formTitle: 'updateFormTitle'
+  },
+
+  computed: {
+    formTitle () {
+      const entityName = this.$ut(entity + ':singular')
+      if (this.$store.state.isNew) {
+        return this.$ut('ux_formCaption_newInstance', { entity: entityName })
+      }
+
+      const entityInfo = this.$UB.connection.domain.get(entity)
+      const captionMixin = entityInfo.mixins.caption
+      const template = titleTemplate || captionMixin?.template || '{code} {name}'
+
+      // Parse arguments out of template
+      const re = /{(\w+(\.\w+)*)}/g
+      let reMatch
+      let value = template
+      while ((reMatch = re.exec(template)) !== null) {
+        const attr = reMatch[1]
+        const attrValue = this.$store.state.data[attr] || ''
+        value = value.replace('{' + attr + '}', attrValue)
+      }
+
+      // If trimmedValue is empty, return entityName without parentheses
+      const trimmedValue = value.trim()
+      return trimmedValue ? `${trimmedValue} (${entityName})` : entityName
+    }
+  },
+
+  mounted () {
+    this.updateFormTitle()
+  },
+
+  methods: {
+    updateFormTitle () {
+      if (typeof this.setTitle === 'function') {
+        this.setTitle(this.formTitle)
+      }
+    }
+  }
+})
+
 /**
  * @.classdesc
  * Creates a store for the form and renders it to the tab or modal window.
@@ -93,6 +138,7 @@ class UForm {
   }) {
     this.component = component || rootComponent
     this.props = props
+    this.mixins = undefined
     this.storeConfig = {}
     this.$store = undefined
     this.entity = entity
@@ -296,9 +342,17 @@ class UForm {
       }
     }
 
+    if (this.title && this.title.indexOf('{') !== -1) {
+      if (!this.mixins) {
+        this.mixins = []
+      }
+      this.mixins.push(formCaptionMixin(this.entity, this.title))
+    }
+
     const mountOptions = {
       component: this.component,
       props: this.props,
+      mixins: this.mixins,
       store: this.$store,
       validator: this.validator,
       title: this.title,
