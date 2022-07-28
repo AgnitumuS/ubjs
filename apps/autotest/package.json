@@ -1,6 +1,6 @@
 {
   "name": "autotest",
-  "version": "5.23.10",
+  "version": "5.23.11",
   "description": "Autotest for UnityBase",
   "repository": "https://git-pub.intecracy.com/unitybase/ubjs/tree/master/apps/autotest",
   "private": true,
@@ -32,7 +32,7 @@
     "@unitybase/http-proxy": "^5.23.8",
     "@unitybase/mailer": "^5.23.2",
     "@unitybase/openid-connect": "^5.23.8",
-    "@unitybase/org": "^5.23.9",
+    "@unitybase/org": "^5.23.10",
     "@unitybase/pdf": "^5.3.1",
     "@unitybase/systemjs-plugin-vue-ub": "^1.5.1",
     "@unitybase/ub": "^5.23.8",

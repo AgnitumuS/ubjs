@@ -14,6 +14,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+
+## [5.23.10] - 2022-07-28
+### Fixed
 - Critical regression typo on `org_emloyeeonstaff` localization
 
 ## [5.23.9] - 2022-07-28
