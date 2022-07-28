@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.23.8] - 2022-07-28
 ## [5.23.7] - 2022-07-26
 ### Fixed
  - fixed regression for `aclRlsStorage` mixin when entity used from server side as `store.run('insert', {..})`

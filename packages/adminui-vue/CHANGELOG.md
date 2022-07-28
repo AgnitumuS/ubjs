@@ -6,13 +6,18 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
- - added visualisation for new signature validation attributes (signAlgo, signType, mediaSerial, certificate.certKind)
 
 ### Changed
 
 ### Deprecated
 
 ### Removed
+
+### Fixed
+
+## [5.23.8] - 2022-07-28
+### Added
+ - added visualisation for new signature validation attributes (signAlgo, signType, mediaSerial, certificate.certKind)
 
 ### Fixed
  - `UMasterDetailView` - clean `_unwatchList` correctly
