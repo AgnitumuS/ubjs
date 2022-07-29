@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+- `org_staffunit` form: proper validation for 'position' field
 
 ## [5.23.10] - 2022-07-28
 ### Fixed
