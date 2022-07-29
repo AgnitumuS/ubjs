@@ -6,6 +6,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+- `uba_group` form - multiselect for users in group
 
 ### Changed
 
@@ -14,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+- `uba_group` form - fix unnecessary table refreshes
 
 ## [5.23.9] - 2022-07-28
 ## [5.23.8] - 2022-07-26
