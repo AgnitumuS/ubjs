@@ -1,5 +1,5 @@
 ﻿{
-    "caption": "Планувальники задач",
+    "caption": "Планувальники завдань",
     "description": "",
     "attributes": [
         {
@@ -8,7 +8,7 @@
         },
         {
             "name": "name",
-            "caption": "Назва задачі"
+            "caption": "Назва завдання"
         },
         {
             "name": "schedulingCondition",
