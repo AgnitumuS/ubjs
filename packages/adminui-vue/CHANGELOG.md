@@ -16,7 +16,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+
+## [5.23.8] - 2022-07-28
+### Added
+ - added visualisation for new signature validation attributes (signAlgo, signType, mediaSerial, certificate.certKind)
+
+### Fixed
  - `UMasterDetailView` - clean `_unwatchList` correctly
+ - `Form`: use `entitySchema.captionSingular` if available as default title for form
 
 ## [5.23.7] - 2022-07-26
 ### Fixed

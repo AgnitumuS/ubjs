@@ -6,7 +6,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
- - added i19n for new signature validation attributes (signAlgo, signType, mediaSerial, certificate.certKind)
 
 ### Changed
 
@@ -15,6 +14,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+
+## [5.23.5] - 2022-07-28
+### Added
+ - added i19n for new signature validation attributes (signAlgo, signType, mediaSerial, certificate.certKind)
 
 ## [5.23.4] - 2022-07-26
 ### Added

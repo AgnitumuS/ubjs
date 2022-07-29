@@ -24,10 +24,15 @@
         :label="'mi_dateFrom'"
         attribute-name="mi_dateFrom"
       />
-      <u-auto-field
-        :label="'mi_dateTo'"
+      <u-form-row
         attribute-name="mi_dateTo"
-      />
+        :label="'mi_dateTo'"
+      >
+        <u-date-picker
+          v-model="mi_dateTo"
+          type="datetime"
+        />
+      </u-form-row>
     </u-form-container>
   </div>
 </template>
@@ -72,7 +77,19 @@ module.exports.default = {
 
   computed: {
     ...mapInstanceFields(fieldList),
-    ...mapGetters(['loading'])
+    ...mapGetters(['loading']),
+
+    mi_dateTo: {
+      get () {
+        if (this.$store.state.data.mi_dateTo?.getFullYear() === 9999) {
+          return null
+        }
+        return this.$store.state.data.mi_dateTo
+      },
+      set (value) {
+        this.$store.commit('SET_DATA', { key: 'mi_dateTo', value })
+      }
+    }
   },
 
   methods: {
