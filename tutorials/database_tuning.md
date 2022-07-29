@@ -83,7 +83,13 @@ Recommended way is to set this parameter per-connection (instead of globally in 
  ```
   
 ### MS SQL server (Linux)
-  Under Linux ODBC is used for SQL Server connection. Connection parameters can be defined either in 
+#### Setup Microsoft ODBC
+  See [Installing the Microsoft ODBC driver for sql server](https://docs.microsoft.com/en-us/sql/connect/odbc/linux-mac/installing-the-microsoft-odbc-driver-for-sql-server?view=sql-server-ver15)
+
+> ODBC Driver setup steps `optional: for bcp and sqlcmd` and `optional: for unixODBC development headers`
+> ARE NOT REQUIRED
+
+  After installing Microsoft ODBC connection parameters can be defined in one of the sources: 
     - `/etc/odbcinst.ini` driver settings applied to all databases
     - `/etc/odbc.ini` per database for all users 
     - `~/.odbc.ini` per database for current user
