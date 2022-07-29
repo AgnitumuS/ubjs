@@ -52,15 +52,11 @@ export default {
     savePosition (panes) {
       this.$uiSettings.putByKey(panes.map(p => p.size), this.storageKey)
     },
-    getCurrentIndexInDOM () {
+    getIndexSplitterInDOM () {
       const splitterElems = this.activeTab
         ? this.activeTab.el.dom.querySelectorAll('.splitpanes')
         : document.body.querySelectorAll('.splitpanes')
-      let i = 0
-      for (; i < splitterElems.length; ++i) {
-        if (splitterElems[i] === this.$refs.splitpane.$el) break
-      }
-      return i
+      return Array.from(splitterElems).indexOf(this.$refs.splitpane.$el)
     },
     verification () {
       return this.$refs.splitpane.panes.length === this.baseData.length
@@ -69,7 +65,7 @@ export default {
       if (!this.canSaveInStorage) return
       this.activeTab = UB?.core?.UBApp?.viewport?.centralPanel.getActiveTab()
       this.tabKey = this.activeTab ? this.activeTab.id : location.pathname
-      this.indexCurrSplitter = this.splitId || this.splitId === 0 ? this.splitId : this.getCurrentIndexInDOM()
+      this.indexCurrSplitter = this.splitId || this.splitId === 0 ? this.splitId : this.getIndexSplitterInDOM()
       this.storageKey = this.$uiSettings.buildKey('splitter', this.tabKey, this.indexCurrSplitter.toString())
       this.baseData = this.getDataFromStore()
       if (!this.verification()) return
