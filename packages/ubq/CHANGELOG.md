@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+- uk locale for ubq_scheduler
 
 ## [5.23.9] - 2022-07-28
 ## [5.23.8] - 2022-07-26
