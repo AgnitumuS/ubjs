@@ -73,7 +73,7 @@ class ClientRepository extends CustomRepository {
         exprNb = expr.slice(1, -1) // remove []
       }
       if (!this.fieldList.includes(expr) && (!exprNb || !this.fieldList.includes(exprNb))) {
-        this.attrs(expr)
+        this.attrs(exprNb || expr)
       }
     }
     for (const wn in this.whereList) {
