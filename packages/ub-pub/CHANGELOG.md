@@ -6,6 +6,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+  - `ClientRepository` for cached entities will add all attributes from `where` and `order` into fieldList.
+    This prevents error `Filtering by attribute "..." which is not in fieldList is not allowed for cached entity`.
+    Before this fix only simple attributes are added, for example `parentAdminUnitID.name` fails if not in fieldList
 
 ### Changed
 
