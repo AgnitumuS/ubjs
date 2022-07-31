@@ -89,6 +89,8 @@ Recommended way is to set this parameter per-connection (instead of globally in 
 > ODBC Driver setup steps `optional: for bcp and sqlcmd` and `optional: for unixODBC development headers`
 > ARE NOT REQUIRED
 
+> in case `whereis libodbc.so.1` do nor show library path - made a symlink `libodbc.so.2 -> libodbc.so.1`
+
   After installing Microsoft ODBC connection parameters can be defined in one of the sources: 
     - `/etc/odbcinst.ini` driver settings applied to all databases
     - `/etc/odbc.ini` per database for all users 
@@ -96,7 +98,12 @@ Recommended way is to set this parameter per-connection (instead of globally in 
   
   > home catalogue for `unitybase` unit is /opt/unitybase/apps
  
-  For production, we recommend disabling of `Trace` and sets `KeepAlive` to 10 (second) in the `/etc/odbc.ini`. Example:
+  For production, we recommend disabling `Trace` and sets `KeepAlive` to 10 (second) in the `.ini`.
+  
+  In `mssqlODBC 18` *TLS is ON* by default, so eiter valid certificate should be installed on MS SQL server side,
+  or `Encrypt=no` added into connection properties.
+
+Example:
 ```
 [my_production_database]
 Driver=ODBC Driver 17 for SQL Server
@@ -105,6 +112,7 @@ Server=tcp:ms16.unitybase.info,1405
 Database=master
 Trace=No
 KeepAlive=10
+Encrypt=no
 ```
 
 ubConfig section example:
