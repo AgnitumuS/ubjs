@@ -20,11 +20,14 @@ export default {
   components: { Splitpanes },
   props: {
     /**
-     * Used to identify splitpane on the page. Recommended for use. If `splitId` is not passed,  will be used the index splitpane in DOM
+     * Used to identify splitpane on application. You must create a unique ID for the entire application. Paying attention to where it will be used.
+     * For example, if the splitter is used in a form: `formID + indexSplitter`, if in a popup: `popupName + indexSplitter`.
+     * `indexSplitter` is needed to distinguish between splitters on the same page
      */
     splitId: {
       type: [String, Number],
-      default: ''
+      default: '',
+      required: true
     },
     /**
      * whether the split panel can be stored in localStorage
@@ -52,21 +55,13 @@ export default {
     savePosition (panes) {
       this.$uiSettings.putByKey(panes.map(p => p.size), this.storageKey)
     },
-    getIndexSplitterInDOM () {
-      const splitterElems = this.activeTab
-        ? this.activeTab.el.dom.querySelectorAll('.splitpanes')
-        : document.body.querySelectorAll('.splitpanes')
-      return Array.from(splitterElems).indexOf(this.$refs.splitpane.$el)
-    },
     verification () {
       return this.$refs.splitpane.panes.length === this.baseData.length
     },
     init () {
       if (!this.canSaveInStorage) return
       this.activeTab = UB?.core?.UBApp?.viewport?.centralPanel.getActiveTab()
-      this.tabKey = this.activeTab ? this.activeTab.id : location.pathname
-      this.indexCurrSplitter = this.splitId || this.splitId === 0 ? this.splitId : this.getIndexSplitterInDOM()
-      this.storageKey = this.$uiSettings.buildKey('splitter', this.tabKey, this.indexCurrSplitter.toString())
+      this.storageKey = this.$uiSettings.buildKey('splitter', this.splitId)
       this.baseData = this.getDataFromStore()
       if (!this.verification()) return
       this.restore()
