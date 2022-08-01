@@ -6,9 +6,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
-  - `ClientRepository` for cached entities will add all attributes from `where` and `order` into fieldList.
-    This prevents error `Filtering by attribute "..." which is not in fieldList is not allowed for cached entity`.
-    Before this fix only simple attributes are added, for example `parentAdminUnitID.name` fails if not in fieldList
+- `ClientRepository` for cached entities will add all attributes from `where` and `order` into fieldList.
+  This prevents error `Filtering by attribute "..." which is not in fieldList is not allowed for cached entity`.
+  Before this fix only simple attributes are added, for example `parentAdminUnitID.name` fails if not in fieldList
 
 ### Changed
 
@@ -17,10 +17,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+ - i18n for new signature validation attributes for de and ru locales
 
 ## [5.23.5] - 2022-07-28
 ### Added
- - added i19n for new signature validation attributes (signAlgo, signType, mediaSerial, certificate.certKind)
+ - added i18n for new signature validation attributes (signAlgo, signType, mediaSerial, certificate.certKind)
 
 ## [5.23.4] - 2022-07-26
 ### Added
