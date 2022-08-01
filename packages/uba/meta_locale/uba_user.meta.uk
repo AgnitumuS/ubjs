@@ -29,12 +29,12 @@
     {
       "name": "email",
       "caption": "Email",
-      "description": "Email користувача (може бути використано для повідомленнь)"
+      "description": "Email користувача (може бути виконистано для повідомленнь)"
     },
     {
       "name": "phone",
       "caption": "Телефон",
-      "description": "Телефон користувача (може бути використано для СМС)"
+      "description": "Телефон користувача (може бути виконистано для СМС)"
     },
     {
       "name": "avatar",
@@ -58,6 +58,11 @@
       "name": "uData",
       "caption": "Додаткові дані",
       "description": "Додаткові дані"
+    },
+    {
+      "name": "trustedIP",
+      "caption": "Довірені IP",
+      "description": "Довірені IP-адреси користувача"
     },
     {
       "name": "lastPasswordChangeDate",

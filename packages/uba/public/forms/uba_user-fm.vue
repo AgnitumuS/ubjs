@@ -4,7 +4,10 @@
     v-loading="loading"
   >
     <u-toolbar>
-      <template v-slot:left v-if="!isNew">
+      <template
+        v-slot:left
+        v-if="!isNew"
+      >
         <u-button
           appearance="inverse"
           icon="u-icon-key"
@@ -57,7 +60,7 @@
               force-cmp="u-file"
               :preview-mode="{ height: 200, width: 200}"
               :remove-default-buttons="['webcam', 'scan', 'scanSettings']"
-              :before-set-document="checkFile"
+              :before-set-document="validateFile"
               class="avatar"
             />
             <u-auto-field attribute-name="fullName" v-model="fullName" :required="toOrg"/>
@@ -73,9 +76,12 @@
             </u-form-row>
             <u-form-row
               :required="toOrg"
-              :label="$ut('ІПН')"
+              :label="$ut('org_employee.code')"
             >
-              <u-base-input v-model="orgCode" :disabled="employee"/>
+              <u-base-input
+                v-model="orgCode"
+                :disabled="employee"
+              />
             </u-form-row>
 
             <u-form-row
@@ -123,6 +129,7 @@
               :label="$ut('addToOrgStructure')"
               label-position="right"
               class="slider"
+              v-if="isOrgEnabled"
             >
               <el-switch
                 v-model="toOrg"
@@ -197,23 +204,32 @@
 </template>
 <script>
 /* global $App */
-const { Form, dialogYesNo, mapInstanceFields } = require('@unitybase/adminui-vue')
-const formHelpers = require('@unitybase/adminui-vue').formHelpers
-const { Repository, connection, i18n } = require('@unitybase/ub-pub')
+const { Form, mapInstanceFields } = require('@unitybase/adminui-vue')
+const { Repository, connection, UBAbortError } = require('@unitybase/ub-pub')
 const { mapState, mapGetters, mapActions } = require('vuex')
 const { email, required, requiredIf } = require('vuelidate/lib/validators/index')
-const { buildFormsStoreModule } = require('@unitybase/forms/public/controls/dynamic-form/dynamic-form-store-module')
 
 module.exports.mount = (cfg) => {
   Form(cfg)
     .store(
       {
         modules: {
-          form: buildFormsStoreModule({ formEntity: 'org_employee' })
+          org: {
+            namespaced: true,
+            state: {
+              employee: undefined,
+              orgCode: null
+            },
+            mutations: {
+              SET (state, { key, value }) {
+                state[key] = value
+              }
+            }
+          }
         },
         actions: {
           async addUserToOrgStructure ({ state }) {
-            if (state.form.employee?.ID || !state.toOrg) {
+            if (state.org.employee?.ID || !state.toOrg) {
               return
             }
 
@@ -225,7 +241,7 @@ module.exports.mount = (cfg) => {
               description: userParams.description,
               sexType: userParams.gender ? userParams.gender.substring(0, 1).toUpperCase() : '?',
               fullFIO: userParams.fullName,
-              code: state.form.orgCode
+              code: state.org.orgCode
             }
 
             await connection.query({
@@ -243,11 +259,8 @@ module.exports.mount = (cfg) => {
               .misc({ __mip_disablecache: true })
               .selectSingle()
 
-            /*              for (const key in employee) {
-                            commit('form/SET', {key, value: employee[key]})
-                          }*/
-            commit('form/SET', { key: 'employee', value: employee })
-            commit('form/SET', { key: 'orgCode', value: employee?.code })
+            commit('org/SET', { key: 'employee', value: employee })
+            commit('org/SET', { key: 'orgCode', value: employee?.code })
           }
         }
       }
@@ -281,8 +294,6 @@ module.exports.mount = (cfg) => {
       },
 
       async inited ({ state, dispatch }) {
-        Vue.set(state.form, 'employee', undefined)
-        Vue.set(state.form, 'orgCode', null)
         Vue.set(state, 'toOrg', true)
         await dispatch('getEmployeeData')
       },
@@ -290,10 +301,6 @@ module.exports.mount = (cfg) => {
       async saved ({ dispatch, state }) {
         await dispatch('addUserToOrgStructure')
         await dispatch('getEmployeeData')
-        debugger
-        state.$formServices.setTitle(
-          UB.i18n('title', state.data.name || '')
-        )
       }
     })
     .validation({
@@ -302,17 +309,17 @@ module.exports.mount = (cfg) => {
           name: { required },
           firstName: {
             required: requiredIf(() => {
-              return !!this.$store.state.toOrg
+              return this.$store.state.toOrg
             })
           },
           lastName: {
             required: requiredIf(() => {
-              return !!this.$store.state.toOrg
+              return this.$store.state.toOrg
             })
           },
           fullName: {
             required: requiredIf(() => {
-              return !!this.$store.state.toOrg
+              return this.$store.state.toOrg
             })
           },
           email: { email }
@@ -326,23 +333,14 @@ module.exports.default = {
   name: 'UbaUser',
 
   components: {
-    IndicatorPane: require('@unitybase/forms/public/controls/indicator-pane.vue').default
+    IndicatorPane: require('./controls/indicator-pane.vue').default
   },
-
-  inject: [
-    '$formServices'
-  ],
-
-  mixins: [
-    require('@unitybase/dfx/public/controls/doc-renderer/file-based-controls-mixin')
-  ],
 
   data () {
     return {
       userTabs: 'main',
-      props: {
-        maxFileSize: 2
-      }
+      maxFileSize: 2,
+      acceptFileExtensions: ['.jpg', '.png']
     }
   },
 
@@ -365,10 +363,10 @@ module.exports.default = {
 
     orgCode: {
       get () {
-        return this.$store.state.form.orgCode
+        return this.$store.state.org.orgCode
       },
       set (value) {
-        this.$store.commit('form/SET', { key: 'orgCode', value })
+        this.$store.commit('org/SET', { key: 'orgCode', value })
       }
     },
 
@@ -383,10 +381,10 @@ module.exports.default = {
 
     employee: {
       get () {
-        return !!this.$store.state.form.employee
+        return !!this.$store.state.org.employee
       },
       set (value) {
-        this.$store.commit('form/SET', { key: 'employee', value })
+        this.$store.commit('org/SET', { key: 'employee', value })
       }
     },
 
@@ -400,10 +398,6 @@ module.exports.default = {
 
     isSupervisor () {
       return connection.userData().roles.includes('Supervisor')
-    },
-
-    acceptFileExtensions () {
-      return ['.jpg', '.png'].join()
     },
 
     fullName: {
@@ -448,13 +442,6 @@ module.exports.default = {
     }
   },
 
-  created () {
-    this.$store.commit('SET', { key: '$formServices', value: this.$formServices })
-    this.$formServices.setTitle(
-      this.$ut('title', this.userLogin || '')
-    )
-  },
-
   methods: {
     ...mapActions([
       'save'
@@ -487,7 +474,7 @@ module.exports.default = {
     },
 
     async getEmployeeConfig (cfg) {
-      let employeeID = this.$store.state.form.employee?.ID
+      let employeeID = this.$store.state.org.employee?.ID
       if (!employeeID) {
         employeeID = await Repository('org_employee')
           .attrs('ID')
@@ -523,60 +510,22 @@ module.exports.default = {
       })
     },
 
-    /*      async addUserToOrgStructure() {
-            const userParams = this.$store.state.data
-            const orgUserProps = {
-              userID: userParams.ID,
-              lastName: userParams.lastName,
-              firstName: userParams.firstName,
-              description: userParams.description,
-              sexType: userParams.gender ? userParams.gender.substring(0, 1).toUpperCase() : '?',
-              fullFIO: userParams.fullName,
-              code: this.orgCode
-            }
+    validateFile (e) {
+      const file = e.file
+      const maxFileSizeInBytes = this.maxFileSize * 1024 ** 2
+      if (file.size > maxFileSizeInBytes) {
+        const errorMessage = this.$ut('uba_user_errors.maxFileSizeLimitExceeded', this.maxFileSize)
+        this.$dialogError(errorMessage, 'error')
+        throw new UBAbortError(errorMessage)
+      }
 
-            await connection.query({
-              entity: 'org_employee',
-              method: 'insert',
-              execParams: orgUserProps
-            })
-          },
-
-          async removeUserFromOrgStructure() {
-            const confirm = await dialogYesNo(
-              'org_dialogs.removeFromOrgStructure.title',
-              i18n('org_dialogs.removeFromOrgStructure.message', this.fullName || this.userLogin)
-            )
-
-            if (!confirm) {
-              this.employee = true
-              return
-            }
-
-            connection.query(formHelpers.buildDeleteRequest('org_employee', this.employeeID))
-
-            const staff = await this.getEmployeeRepo().select()
-            if (staff?.length) {
-              for (const s of staff) {
-                connection.query(formHelpers.buildDeleteRequest('org_employeeonstaff', s.ID))
-              }
-            }
-
-            this.employeeID = null
-          },*/
-
-    /*      async setEmployeeStatus(isEmployee) {
-            if (isEmployee) {
-              await this.addUserToOrgStructure()
-            }
-
-            if (!isEmployee) {
-              await this.removeUserFromOrgStructure()
-            }
-          },*/
-
-    checkFile (e) {
-      this.validateFile(e.file)
+      const fileName = (file.name || file.fName).split('.')
+      const fileType = '.' + fileName[fileName.length - 1]
+      if (!this.acceptFileExtensions.includes(fileType)) {
+        const errorMessage = this.$ut('uba_user_errors.fileFormatNotAccepted', this.acceptFileExtensions.join(', '))
+        this.$dialogError(errorMessage, 'error')
+        throw new UBAbortError(errorMessage)
+      }
     }
   }
 

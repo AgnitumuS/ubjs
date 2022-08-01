@@ -62,6 +62,11 @@
             "description": "Дополнительные данные"
         },
         {
+            "name": "trustedIP",
+            "caption": "Доверенные IP",
+            "description": "Доверенные IP-адреса пользователя"
+        },
+        {
             "name": "lastPasswordChangeDate",
             "caption": "Дата последнего изменения пароля",
             "description": "Дата последнего изменения пароля"
