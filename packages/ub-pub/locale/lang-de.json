@@ -93,6 +93,8 @@
   "selectSigningCertificate": "Signaturzertifikat auswählen",
   "certificate": "Zertifikat",
   "certificates": "Zertifikate",
+  "Qualified": "Qualifiziert",
+  "Advanced": "Fortschrittlich",
   "SignatureVerificationResultObj": {
     "_": "Ergebnis der Signaturprüfung",
     "valid": {
@@ -118,9 +120,9 @@
     "signingTime": "Zeitpunkt der Signatur",
     "signatureStatus": "Signaturstatus",
     "signatureAuthor": "Unterzeichner",
-    "signAlgo": "Signature algorithm",
-    "signType": "Signature type",
-    "mediaSerial": "Media #",
+    "signAlgo": "Signatur algorithmus",
+    "signType": "Signatur typ",
+    "mediaSerial": "Medien #",
     "certificate": {
       "_": "Zertifikat",
       "certKind": "Art des Zertifikats",
