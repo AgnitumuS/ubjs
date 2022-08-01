@@ -12,10 +12,7 @@ More examples in the package [documentation](https://antoniandre.github.io/split
     <u-splitter :split-id="location.href + 0">
     <u-pane>1</u-pane>
       <u-pane>
-        <u-splitter
-          horizontal
-          :split-id="location.href + 1"
-          >
+        <u-splitter horizontal>
           <u-pane>3</u-pane>
           <u-pane>4</u-pane>
         </u-splitter>
