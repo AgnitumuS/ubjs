@@ -101,6 +101,7 @@
   "certificates": "Сертификаты",
   "Qualified": "Квалифицированный",
   "Advanced": "Усовершенствованный",
+  "DSTU-4145": "ДСТУ-4145",
   "SignatureVerificationResultObj": {
     "_": "Результат проверки подписи(ей)",
     "valid": {
