@@ -1,5 +1,6 @@
 {
   "caption": "Types stafeenheden",
+  "captionSingular": "Type stafeenheid",
   "description": "Woordenboek van types stafeenheden",
   "attributes": [
     {

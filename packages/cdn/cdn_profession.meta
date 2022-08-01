@@ -1,5 +1,6 @@
 {
   "caption": "Standard Professions",
+  "captionSingular": "Profession",
   "description": "Dictionary of standard professions",
   "connectionName": "",
   "sqlAlias": "cdnprof",

@@ -1,5 +1,6 @@
 {
   "caption": "Organisationseinheiten",
+  "captionSingular": "Organisationseinheit",
   "description": "Liste der Organisationseinheiten",
   "documentation": "Wörterbuch, das von Unity Mixin aus Organisationen (org_organization), Abteilungen (org_department) und Personaleinheiten (org_staffunit) zusammengestellt wird. Das Wörterbuch ist selbstreferentiell, was den Aufbau einer Hierarchie aller Organisationseinheiten in einem Baum ermöglicht",
   "attributes": [

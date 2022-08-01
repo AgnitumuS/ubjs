@@ -1,5 +1,6 @@
 {
   "caption": "Населені пункти",
+  "captionSingular": "Населений пункт",
   "description": "Довідник населених пунктів",
   "attributes": [
     {

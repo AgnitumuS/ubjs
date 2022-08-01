@@ -1,5 +1,6 @@
 ﻿{
     "caption": "Geavanceerde beveiliging",
+    "captionSingular": "Geavanceerde beveiliging",
     "description": "Geavanceerde beveiligingsinstellingen",
     "attributes": [
         {

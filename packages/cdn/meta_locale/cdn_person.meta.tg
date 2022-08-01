@@ -1,5 +1,6 @@
 ﻿{
     "caption": "Рӯйхати шахсони воқеӣ",
+    "captionSingular": "Шахси ҷисмонӣ",
     "description": "Маълумотномаи шахсони воқеӣ ",
     "attributes": [
         {

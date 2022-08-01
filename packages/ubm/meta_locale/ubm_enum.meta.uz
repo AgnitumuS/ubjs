@@ -1,5 +1,6 @@
 {
   "caption": "Sanab o'tilgan qiymatlar",
+  "captionSingular": "Hisoblangan qiymat",
   "description": "Sanab o'tilgan qiymatlar",
   "attributes": [
     {

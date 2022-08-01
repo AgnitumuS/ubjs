@@ -1,5 +1,6 @@
 {
   "caption": "Ausführende für Ausführenden-Gruppen",
+  "captionSingular": "Ausführende für Ausführend-Grupp",
   "description": "Executors who attached to group and used for executors auto-filling in resolutions on group addition",
   "attributes": [
     {

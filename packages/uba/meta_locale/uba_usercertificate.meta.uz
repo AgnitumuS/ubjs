@@ -1,5 +1,6 @@
 {
   "caption": "Sertifikatlar",
+  "captionSingular": "Foydalanuvchi sertifikati",
   "description": "Foydalanuvchi sertifikatlari",
   "attributes": [
     {

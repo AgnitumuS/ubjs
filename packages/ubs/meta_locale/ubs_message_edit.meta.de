@@ -1,5 +1,6 @@
 {
   "caption": "Nachrichten",
+  "captionSingular": "Nachrichten",
   "description": "Systemnachrichten",
   "documentation": "Systemnachrichten",
   "attributes": [

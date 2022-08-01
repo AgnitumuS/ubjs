@@ -1,5 +1,6 @@
 {
   "caption": "Aktiv blokirovkalar",
+  "captionSingular": "Faol blokirovka",
   "description": "Pessimistik aktiv blokirovkalar",
   "attributes": [
     {

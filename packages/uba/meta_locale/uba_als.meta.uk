@@ -1,5 +1,6 @@
 {
   "caption": "Права на атрибути (ALS)",
+  "captionSingular": "Правило ALS",
   "description": "Рівень атрибутивної безпеки",
   "documentation": "",
   "attributes": [

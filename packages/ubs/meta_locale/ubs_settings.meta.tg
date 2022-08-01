@@ -1,5 +1,6 @@
 ﻿{
     "caption": "Танзимоти система",
+    "captionSingular": "Танзимоти система",
     "attributes": [
         {
             "name": "settingKey",

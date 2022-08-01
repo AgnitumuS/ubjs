@@ -1,5 +1,6 @@
 {
   "caption": "Hisob-kitob raqamlari",
+  "captionSingular": "Tashkilotning joriy hisobi",
   "description": "Tashkilotlarning hisob-kitob hisobvaraqlari ma'lumotnomasi",
   "attributes": [
     {

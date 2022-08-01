@@ -1,5 +1,6 @@
 {
   "caption": "Список будинків",
+  "captionSingular": "будинок",
   "description": "Список будинків",
   "attributes": [
     {

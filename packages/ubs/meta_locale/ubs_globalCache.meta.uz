@@ -1,5 +1,6 @@
 {
   "caption": "Server keshi",
+  "captionSingular": "Server keshi",
   "description": "Global server keshi",
   "attributes": [
     {

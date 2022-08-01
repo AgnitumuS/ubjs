@@ -1,5 +1,6 @@
 {
   "caption": "Valuta's",
+  "captionSingular": "Mata uang",
   "description": "Valutawoordenboek",
   "attributes": [
     {

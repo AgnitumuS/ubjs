@@ -1,5 +1,6 @@
 {
   "caption": "Registratie sleutel teller",
+  "captionSingular": "Registratie sleutel teller",
   "description": "Registratie sleutel teller",
   "attributes": [
     {

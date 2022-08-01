@@ -1,5 +1,6 @@
 ﻿{
     "caption": "Сохраненные фильтры",
+    "captionSingular": "Збережений фільтр",
     "description": "Сохраненные фильтры",
     "attributes": [
         {

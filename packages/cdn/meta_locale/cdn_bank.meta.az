@@ -1,5 +1,6 @@
 {
   "caption": "Bank bölmələri",
+  "captionSingular": "Bank",
   "description": "Bank bölmələri üzrə sorğu kitabçası",
   "attributes": [
     {

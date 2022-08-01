@@ -1,5 +1,6 @@
 {
   "caption": "Externe Organisationen",
+  "captionSingular": "Externe Organisation",
   "description": "Liste der externen Organisationen",
   "attributes": [
     {

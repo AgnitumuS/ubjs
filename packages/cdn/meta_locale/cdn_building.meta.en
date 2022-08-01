@@ -1,5 +1,6 @@
 {
   "caption": "List of Buildings",
+  "captionSingular": "building",
   "description": "List of buildings",
   "attributes": [
     {

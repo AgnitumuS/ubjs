@@ -1,5 +1,6 @@
 {
   "caption": "Correspondent Indexes",
+  "captionSingular": "Correspondent index",
   "description": "Correspondent indexes directory",
   "connectionName": "",
   "sqlAlias": "coridx",

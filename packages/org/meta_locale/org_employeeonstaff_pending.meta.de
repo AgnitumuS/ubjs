@@ -1,5 +1,6 @@
 {
   "caption": "Zuweisung mit ausstehendem Datum",
+  "captionSingular": "Zuweisung mit ausstehendem Datum",
   "description": "Zuweisung mit ausstehendem Datum",
   "attributes": [
     {

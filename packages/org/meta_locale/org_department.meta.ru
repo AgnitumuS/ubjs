@@ -1,5 +1,6 @@
 {
   "caption": "Внутренние подразделения",
+  "captionSingular": "Внешнее подразделение",
   "description": "Справочник внутренних подразделений",
   "documentation": "",
   "attributes": [

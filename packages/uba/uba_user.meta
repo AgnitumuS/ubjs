@@ -4,6 +4,7 @@
 	"cacheType": "None",
 
 	"caption": "Users",
+	"captionSingular": "User",
 	"descriptionAttribute": "name",
 
 

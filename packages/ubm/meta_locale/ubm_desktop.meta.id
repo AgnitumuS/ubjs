@@ -1,5 +1,6 @@
 {
   "caption": "Desktop",
+  "captionSingular": "Desktop",
   "description": "desktop aplikasi",
   "attributes": [
     {

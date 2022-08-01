@@ -1,5 +1,6 @@
 {
   "caption": "ER діаграми",
+  "captionSingular": "ER діаграма",
   "description": "Діаграми сутностей",
   "attributes": [
     {

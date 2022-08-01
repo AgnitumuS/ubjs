@@ -1,5 +1,6 @@
 {
   "caption": "Sneltoetsen",
+  "captionSingular": "Label",
   "description": "Metadata voor ingebouwde navigatiebalken",
   "attributes": [
     {

@@ -1,5 +1,6 @@
 {
   "caption": "diagram",
+  "captionSingular": "diagram",
   "description": "diagram",
   "attributes": [
     {

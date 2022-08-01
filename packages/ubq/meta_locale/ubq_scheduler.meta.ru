@@ -1,5 +1,6 @@
 ﻿{
     "caption": "Планировщики задач",
+    "captionSingular": "Планировщик задач",
     "description": "Запланированные задания",
     "attributes": [
         {

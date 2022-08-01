@@ -1,5 +1,6 @@
 {
   "caption": "Sozialer Status",
+  "captionSingular": "Sozialer Status",
   "description": "Wörterbuch des sozialen Status",
   "documentation": "Das Verzeichnis enthält eine Liste des sozialen Status von Personen",
   "attributes": [

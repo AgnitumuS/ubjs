@@ -1,5 +1,6 @@
 {
   "caption": "Dem Benutzer zugewiesene Rollen",
+  "captionSingular": "Die Rolle wird dem Benutzer zugewiesen",
   "attributes": [
     {
       "name": "userID",

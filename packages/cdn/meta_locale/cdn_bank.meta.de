@@ -1,5 +1,6 @@
 {
   "caption": "Bankfilialen",
+  "captionSingular": "Bank",
   "description": "Bankfilialenverzeichnis",
   "attributes": [
     {

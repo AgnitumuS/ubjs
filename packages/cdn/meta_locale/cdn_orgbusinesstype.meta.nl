@@ -1,5 +1,6 @@
 {
   "caption": "Organisatietypes",
+  "captionSingular": "Type van organisatie",
   "description": "Woordenboek van organisatietypes (BV enz.)",
   "attributes": [
     {

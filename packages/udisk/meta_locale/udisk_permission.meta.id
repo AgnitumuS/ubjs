@@ -1,5 +1,6 @@
 {
   "caption": "akses umum",
+  "captionSingular": "Akses Kanan",
   "description": "akses umum",
   "attributes": [
     {

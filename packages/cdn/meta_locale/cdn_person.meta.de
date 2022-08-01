@@ -1,5 +1,6 @@
 {
   "caption": "Natürliche Personen",
+  "captionSingular": "Physische Person",
   "description": "Wörterbuch der natürlichen Personen",
   "documentation": "Das Verzeichnis enthält eine Liste von (natürlichen) Personen",
   "attributes": [

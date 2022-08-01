@@ -1,5 +1,6 @@
 {
-  "caption": "Files",
+  "caption": "Dateien",
+  "captionSingular": "Datei",
   "description": "Files",
   "attributes": [
     {

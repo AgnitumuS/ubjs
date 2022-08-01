@@ -1,5 +1,6 @@
 {
   "caption": "Security Audit",
+  "captionSingular": "Security Audit",
   "description": "Audit perubahan keamanan",
   "attributes": [
     {

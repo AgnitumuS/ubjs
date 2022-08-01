@@ -1,5 +1,6 @@
 {
   "caption": "Файлы",
+  "captionSingular": "Файл",
   "description": "Файлы",
   "attributes": [
     {

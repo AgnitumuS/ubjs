@@ -1,5 +1,6 @@
 {
   "caption": "jenis kontak",
+  "captionSingular": "Jenis kontak",
   "description": "direktori jenis kontak",
   "attributes": [
     {

@@ -1,5 +1,6 @@
 {
   "caption": "System Woordenboeken",
+  "captionSingular": "Systeemwoordenboek",
   "attributes": [
     {"name": "code", "caption": "Code"},
     {"name": "name", "caption": "Naam"},

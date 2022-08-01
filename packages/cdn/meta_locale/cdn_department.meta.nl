@@ -1,5 +1,6 @@
 {
   "caption": "Externe afdelingen",
+  "captionSingular": "Externe verdeling",
   "description": "Woordenboek van externe afdelingen",
   "attributes": [
     {

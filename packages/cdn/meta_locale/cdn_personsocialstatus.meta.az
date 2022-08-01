@@ -1,5 +1,6 @@
 {
   "caption": "Sosial status",
+  "captionSingular": "Sosial status",
   "description": "Sosial vəziyyəti Handbook",
   "documentation": "Kataloq şəxslər üçün sosial statusu siyahısı depolar",
   "attributes": [

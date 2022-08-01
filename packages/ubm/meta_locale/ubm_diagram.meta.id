@@ -1,5 +1,6 @@
 {
   "caption": "EntityDiagrams",
+  "captionSingular": "EntityDiagram",
   "description": "diagram hubungan entitas",
   "attributes": [
     {

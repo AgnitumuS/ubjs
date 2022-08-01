@@ -1,5 +1,6 @@
 {
   "caption": "Numeratorlar (Rezerv)",
+  "captionSingular": "Hesablayıcı (Rezerv)",
   "description": "Qeydiyyat açarlarının rezerv edilmiş sayğacları",
   "attributes": [
     {

@@ -1,5 +1,6 @@
 {
   "caption": "Tellers (reserve)",
+  "captionSingular": "Teller (Reserve)",
   "description": "Gereserveerde tellers voor registratiesleutels",
   "attributes": [
     {

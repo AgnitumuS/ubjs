@@ -1,5 +1,6 @@
 {
   "caption": "Report Templates",
+  "captionSingular": "Report Template",
   "description": "Report templates",
   "attributes": [
     {

@@ -1,5 +1,6 @@
 {
   "caption": "indeks posting",
+  "captionSingular": "Kode Pos",
   "description": "indeks posting",
   "attributes": [
     {

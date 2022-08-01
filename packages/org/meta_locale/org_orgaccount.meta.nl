@@ -1,5 +1,6 @@
 {
   "caption": "Vereffeningsrekeningen",
+  "captionSingular": "Zichtrekening van de organisatie",
   "description": "Vereffeningsrekeningen voor interne organisaties",
   "attributes": [
     {

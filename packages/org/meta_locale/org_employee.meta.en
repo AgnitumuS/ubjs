@@ -1,5 +1,6 @@
 {
   "caption": "Employees of Internal Organizations",
+  "captionSingular": "Employee of organization",
   "description": "List of employees of internal organizations",
   "documentation": "This dictionary contains list of departments.  Employee is assigned to staff units in org_employeeonstaff entity",
   "attributes": [
