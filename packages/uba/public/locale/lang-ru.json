@@ -65,7 +65,9 @@
     "deleteBuiltInUserProhibited": "Удаление встроенного пользователя запрещено",
     "deleteServiceUserProhibited": "Удаление сервисного пользователя запрещено",
     "renameBuiltInUserProhibited": "Переименование встроенного пользователя запрещено",
-    "renameServiceUserProhibited": "Переименование сервисного пользователя запрещено"
+    "renameServiceUserProhibited": "Переименование сервисного пользователя запрещено",
+    "maxFileSizeLimitExceeded": "Размер файла превышает лимит в {0} Мб",
+    "fileFormatNotAccepted": "Формат файла невалиден, ожидается {0}"
   },
   "uba_role_errors": {
     "deleteBuiltInRoleProhibited": "Удаление сервисной роли запрещено"

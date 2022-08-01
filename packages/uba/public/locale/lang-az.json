@@ -65,7 +65,9 @@
     "deleteBuiltInUserProhibited": "Daxili istifadəçinin silinməsi qadağandır",
     "deleteServiceUserProhibited": "Xidmət istifadəçisinin silinməsi qadağandır",
     "renameBuiltInUserProhibited": "Daxili istifadəçinin adının dəyişdirilməsi qadağandır",
-    "renameServiceUserProhibited": "Daxili rolun çıxarılması qadağandır"
+    "renameServiceUserProhibited": "Daxili rolun çıxarılması qadağandır",
+    "maxFileSizeLimitExceeded": "Faylın ölçüsü {0} Mb limiti aşır",
+    "fileFormatNotAccepted": "Faylın formatı düzgün deyil, {0} gözlənilir"
   },
   "uba_role_errors": {
     "deleteBuiltInRoleProhibited": "Daxili rolun çıxarılması qadağandır"

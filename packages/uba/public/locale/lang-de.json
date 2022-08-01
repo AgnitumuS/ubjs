@@ -65,7 +65,9 @@
     "deleteBuiltInUserProhibited": "Das Entfernen des integrierten Benutzers ist verboten",
     "deleteServiceUserProhibited": "Das Entfernen des Dienstbenutzers ist verboten",
     "renameBuiltInUserProhibited": "Das Umbenennen von eingebauten Benutzern ist verboten",
-    "renameServiceUserProhibited": "Die Umbenennung des Dienstbenutzers ist untersagt"
+    "renameServiceUserProhibited": "Die Umbenennung des Dienstbenutzers ist untersagt",
+    "maxFileSizeLimitExceeded": "Dateigröße überschreitet den Höchstwert von {0} MB",
+    "fileFormatNotAccepted": "Ungültiges Dateiformat, {0} erwartet"
   },
   "uba_role_errors": {
     "deleteBuiltInRoleProhibited": "Das Entfernen der eingebauten Rolle ist verboten"
