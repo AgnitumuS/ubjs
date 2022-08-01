@@ -1,5 +1,6 @@
 {
   "caption": "Files",
+  "captionSingular": "File",
   "description": "Files",
   "connectionName": "",
   "sqlAlias": "udiskc",

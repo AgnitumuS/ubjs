@@ -1,5 +1,6 @@
 {
   "caption": "unit organisasi",
+  "captionSingular": "Unit organisasi",
   "description": "Daftar unit organisasi",
   "attributes": [
     {

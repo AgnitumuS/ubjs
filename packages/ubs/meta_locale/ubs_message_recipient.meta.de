@@ -1,5 +1,6 @@
 {
   "caption": "Nachrichtenempfänger",
+  "captionSingular": "Nachrichtenempfänger",
   "description": "Empfänger von Systemnachrichten",
   "documentation": "Empfänger von Systemnachrichten",
   "attributes": [

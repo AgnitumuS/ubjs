@@ -1,5 +1,6 @@
 ﻿{
     "caption": "Serverin keşi",
+    "captionSingular": "Serverin keşi",
     "description": "Serverin qlobal keşi",
     "attributes": [
         {

@@ -1,5 +1,6 @@
 {
   "caption": "Desktops",
+  "captionSingular": "Bureaublad",
   "description": "Desktops van applicaties",
   "attributes": [
     {

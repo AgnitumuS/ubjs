@@ -1,5 +1,6 @@
 {
   "caption": "Bestanden",
+  "captionSingular": "Mengajukan",
   "description": "Bestanden",
   "attributes": [
     {

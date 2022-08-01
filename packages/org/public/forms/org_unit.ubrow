@@ -1,8 +1,9 @@
 {
- "isDefault": false,
- "entity": "org_unit",
- "formType": "vue",
- "caption": "orgUnit",
  "description": "orgUnit",
- "formCode": "{\"fName\":\"org_unit-fm.vue\",\"origName\":\"org_unit-fm.vue\",\"ct\":\"script/x-vue\",\"size\":738,\"md5\":\"2843d0ab5ae37eba037a185c57b04de6\"}"
+ "caption": null,
+ "formType": "vue",
+ "formDef": null,
+ "formCode": "org_unit-fm.vue",
+ "entity": "org_unit",
+ "isDefault": false
 }

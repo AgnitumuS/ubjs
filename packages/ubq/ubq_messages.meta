@@ -1,5 +1,6 @@
 {
   "caption": "Message Queue",
+  "captionSingular": "Queue Item",
   "description": "Message queue",
   "connectionName": "",
   "sqlAlias": "mqm",

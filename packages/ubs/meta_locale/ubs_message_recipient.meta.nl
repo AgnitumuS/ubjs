@@ -1,5 +1,6 @@
 {
   "caption": "Ontvangers van berichten",
+  "captionSingular": "Ontvanger van bericht",
   "description": "Ontvanger van systeemberichten",
   "documentation": "Ontvanger van systeemberichten",
   "attributes": [

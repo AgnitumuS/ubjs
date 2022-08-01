@@ -1,5 +1,6 @@
 {
   "caption": "Pendaftaran kunci meja",
+  "captionSingular": "Penghitung kunci pendaftaran",
   "description": "Pendaftaran kunci meja",
   "attributes": [
     {

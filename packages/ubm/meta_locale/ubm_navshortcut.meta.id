@@ -1,5 +1,6 @@
 {
   "caption": "Jalan pintas",
+  "captionSingular": "Label",
   "description": "Shortcut untuk memulai fungsi",
   "attributes": [
     {

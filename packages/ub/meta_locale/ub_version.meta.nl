@@ -1,3 +1,4 @@
 {
-  "caption": "Modellen versies"
+  "caption": "Modellen versies",
+  "captionSingular": "Modelversie"
 }

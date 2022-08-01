@@ -1,5 +1,6 @@
 {
   "caption": "Отримувачі повідомлень",
+  "captionSingular": "Отримувач повідомлень",
   "description": "Отримувачі повідомлень",
   "documentation": "Отримувачі повідомлень",
   "attributes": [

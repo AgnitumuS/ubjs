@@ -1,9 +1,9 @@
 {
- "isDefault": false,
- "entity": "org_organization",
- "formType": "auto",
- "caption": "orgOrganization",
  "description": "orgOrganization",
- "formDef": "{\"fName\":\"org_organization-fm.def\",\"origName\":\"org_organization-fm.def\",\"ct\":\"text/javascript; charset=UTF-8\",\"size\":3037,\"md5\":\"1488255937cbe27a6c89d5fc5d70fbb0\"}",
- "formCode": "{\"fName\":\"org_organization-fm.js\",\"origName\":\"org_organization-fm.js\",\"ct\":\"text/javascript; charset=UTF-8\",\"size\":437,\"md5\":\"ae285781136f54aa202d8aa537f1f59e\"}"
+ "caption": null,
+ "formType": "auto",
+ "formDef": "org_organization-fm.def",
+ "formCode": "org_organization-fm.js",
+ "entity": "org_organization",
+ "isDefault": false
 }

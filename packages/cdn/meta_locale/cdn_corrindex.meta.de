@@ -1,5 +1,6 @@
 {
   "caption": "Korrespondentenindizes",
+  "captionSingular": "Korrespondentenindex",
   "description": "Verzeichnis der Korrespondenzindizes",
   "attributes": [
     {

@@ -1,5 +1,6 @@
 {
   "caption": "Message Recipient",
+  "captionSingular": "Message Recipient",
   "description": "System messages recipients",
   "connectionName": "",
   "sqlAlias": "msg_rc",

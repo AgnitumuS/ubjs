@@ -1,5 +1,6 @@
 {
   "caption": "Numerators (Reserve)",
+  "captionSingular": "Numerator (Reserve)",
   "description": "counter disediakan untuk kunci pendaftaran",
   "attributes": [
     {

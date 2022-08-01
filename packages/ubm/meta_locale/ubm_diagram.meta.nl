@@ -1,5 +1,6 @@
 {
   "caption": "ER-diagrammen",
+  "captionSingular": "ER-diagramme",
   "description": "Entiteitsverhouding diagrammen",
   "attributes": [
     {

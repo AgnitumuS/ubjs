@@ -1,5 +1,6 @@
 {
   "caption": "Scheduler run statistic",
+  "captionSingular": "Statistik peluncuran penjadwal",
   "description": "Scheduler run statistic",
   "attributes": [
     {

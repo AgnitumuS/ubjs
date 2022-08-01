@@ -1,5 +1,6 @@
 {
   "caption": "Daxili təşkilatın əməkdaşları",
+  "captionSingular": "Təşkilatın işçisi",
   "description": "Daxili təşkilatın əməkdaşları üzrə sorğu kitabçası",
   "documentation": "Bu sorğu kitabçasında əməkdaşların siyahısı saxlanılır. Əməkdaş ştat vahidinə, əsasən org_employeeonstaff-a təyin olunur",
   "attributes": [

@@ -1,5 +1,6 @@
 {
   "caption": "Standaardberoepen",
+  "captionSingular": "Standaard Beroep",
   "description": "Woordenboek van standaardberoepen",
   "attributes": [
     {

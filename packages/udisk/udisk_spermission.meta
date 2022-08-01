@@ -1,5 +1,6 @@
 {
   "caption": "Access Rights",
+  "captionSingular": "Access Right",
   "description": "Access Rights",
   "connectionName": "",
   "sqlAlias": "udiskps",

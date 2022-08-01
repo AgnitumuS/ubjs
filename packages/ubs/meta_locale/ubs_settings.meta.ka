@@ -1,5 +1,6 @@
 ﻿{
     "caption": "\u1CA1ისტემის პარამეტრები",
+    "captionSingular": "ისტემის პარამეტრები",
     "attributes": [
         {
             "name": "settingKey",

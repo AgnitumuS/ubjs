@@ -1,5 +1,6 @@
 {
   "caption": "Administratieve onderwerpen",
+  "captionSingular": "Onderwerp van administratie",
   "description": "Administratieve onderwerpen",
   "attributes": [
     {

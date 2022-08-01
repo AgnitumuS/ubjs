@@ -1,5 +1,6 @@
 {
   "caption": "Nationaliteit",
+  "captionSingular": "Nationaliteit",
   "description": "NNationaliteit",
   "attributes": [
     {

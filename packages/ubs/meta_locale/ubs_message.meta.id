@@ -1,5 +1,6 @@
 {
   "caption": "pesan",
+  "captionSingular": "Pesan",
   "description": "pesan sistem",
   "attributes": [
     {

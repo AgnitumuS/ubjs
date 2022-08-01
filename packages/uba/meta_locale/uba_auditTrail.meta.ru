@@ -1,5 +1,6 @@
 ﻿{
   "caption": "Аудит данных",
+  "captionSingular": "Аудит данных",
   "description": "Журнал аудита изменений данных",
   "attributes": [
     {

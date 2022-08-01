@@ -1,5 +1,6 @@
 {
   "caption": "Запросы к данным",
+  "captionSingular": "Запрос данных",
   "attributes": [
     {"name": "code", "caption": "Код"},
     {"name": "name", "caption": "Наименование"},

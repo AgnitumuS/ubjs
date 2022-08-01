@@ -1,5 +1,6 @@
 {
   "caption": "Benutzerzertifikate",
+  "captionSingular": "Zertifikat",
   "description": "Benutzerzertifikate",
   "attributes": [
     {

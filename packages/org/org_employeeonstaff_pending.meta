@@ -1,5 +1,6 @@
 ﻿{
   "caption": "Assignment With Pending Date",
+  "captionSingular": "Assignment With Pending Date",
   "description": "Assignment with pending date",
   "documentation": "Entity which contains links to assignments with pending date",
   "connectionName": "",

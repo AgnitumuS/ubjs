@@ -1,5 +1,6 @@
 {
   "caption": "İnzibati vahid",
+  "captionSingular": "İnzibati vahid",
   "description": "İnzibati vahid (ölkə, region, yaşayış məntəqəsi)",
   "documentation": "Ölkə, region və yaşayış məntəqələri üçün ümumi əcdad",
   "attributes": [

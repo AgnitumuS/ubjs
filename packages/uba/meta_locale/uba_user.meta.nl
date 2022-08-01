@@ -1,5 +1,6 @@
 {
   "caption": "Gebruikers",
+  "captionSingular": "Gebruiker",
   "description": "Gebruikers",
   "attributes": [
     {

@@ -1,5 +1,6 @@
 {
   "caption": "Системні довідники",
+  "captionSingular": "Системний довідник",
   "attributes": [
     {"name": "code", "caption": "Код"},
     {"name": "name", "caption": "Найменування"},

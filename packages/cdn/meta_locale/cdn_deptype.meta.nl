@@ -1,5 +1,6 @@
 {
   "caption": "Afdelingstypes",
+  "captionSingular": "Afdelingstype:",
   "description": "Woordenboek van afdelingstypen",
   "attributes": [
     {

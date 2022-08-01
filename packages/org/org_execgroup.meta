@@ -1,5 +1,6 @@
 ﻿{
   "caption": "Executors Groups",
+  "captionSingular": "Executor Group",
   "description": "List of typical executors groups for tasks executors",
   "connectionName": "",
   "sqlAlias": "orgExGr",

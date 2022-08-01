@@ -1,5 +1,6 @@
 {
     "caption": "Bank Branches",
+    "captionSingular": "Bank",
     "description": "Bank branches directory",
     "connectionName": "",
     "sqlAlias": "bank",

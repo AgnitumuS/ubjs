@@ -1,5 +1,6 @@
 {
   "caption": "Interne Abteilungen",
+  "captionSingular": "Interne Teilung",
   "description": "Interne Abteilungen",
   "documentation": "Dieses Wörterbuch enthält eine Liste der Abteilungen. Jede Abteilung verlinkt mit org_unit über Unity Mixin",
   "attributes": [

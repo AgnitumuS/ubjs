@@ -1,5 +1,6 @@
 {
   "caption": "List of Buildings",
+  "captionSingular": "Building",
   "description": "List of buildings",
   "connectionName": "",
   "sqlAlias": "building",

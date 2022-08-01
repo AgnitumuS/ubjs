@@ -1,3 +1,4 @@
 {
-  "caption": "Toegepaste bestanden"
+  "caption": "Toegepaste bestanden",
+  "captionSingular": "Toegepaste migratie"
 }

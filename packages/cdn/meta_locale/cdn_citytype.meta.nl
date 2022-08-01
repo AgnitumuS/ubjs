@@ -1,5 +1,6 @@
 {
   "caption": "Types steden",
+  "captionSingular": "Soort schikking",
   "description": "Kaart van stadstypes",
   "attributes": [
     {

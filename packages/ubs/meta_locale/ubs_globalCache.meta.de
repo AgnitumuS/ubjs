@@ -1,5 +1,6 @@
 {
   "caption": "Serverseitiger Cache",
+  "captionSingular": "Serverseitiger Cache",
   "description": "Serverseitiger globaler Cache",
   "documentation": "Schreibgeschützter Zugriff auf den serverseitigen globalen Cache (für Entwickler)",
   "attributes": [

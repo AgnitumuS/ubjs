@@ -1,5 +1,6 @@
 {
   "caption": "Executors for Executors Groups",
+  "captionSingular": "Executor for Executor Group",
   "description": "Executors who attached to group and used for executors auto-filling in resolutions on group addition",
   "connectionName": "",
   "sqlAlias": "orgExGrM",

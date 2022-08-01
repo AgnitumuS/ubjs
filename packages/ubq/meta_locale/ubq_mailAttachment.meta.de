@@ -1,5 +1,6 @@
 {
   "caption": "E-Mail-Anhang",
+  "captionSingular": "E-Mail-Anhang",
   "description": "E-Mail-Anhang",
   "documentation": "Von Erzeugern gepostete Anhänge speichern. Verbraucher lesen Dokumente aus dieser Tabelle und verwenden sie in entsprechenden Aufgaben",
   "attributes": [

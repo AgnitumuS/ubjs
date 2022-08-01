@@ -1,5 +1,6 @@
 {
   "caption": "Bank bo`limi",
+  "captionSingular": "Bank",
   "description": "Bank bo`limlari ma`lumotnomasi",
   "attributes": [
     {

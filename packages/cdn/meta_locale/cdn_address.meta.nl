@@ -1,5 +1,6 @@
 {
   "caption": "Adressen",
+  "captionSingular": "Address",
   "description": "Adressenlijst",
   "attributes": [
     {

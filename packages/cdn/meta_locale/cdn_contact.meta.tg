@@ -1,5 +1,6 @@
 ﻿{
     "caption": "Маълумот барои тамос",
+    "captionSingular": "Тамос",
     "description": "Маълумотнома барои тамос",
     "attributes": [
         {

@@ -1,5 +1,6 @@
 {
   "caption": "Verknüpfungen",
+  "captionSingular": "Etikett",
   "description": "Metadaten für die Erstellung von Navigationsleisten",
   "attributes": [
     {

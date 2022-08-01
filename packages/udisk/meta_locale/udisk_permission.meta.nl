@@ -1,5 +1,6 @@
 {
   "caption": "Toegangsrechten",
+  "captionSingular": "Toegangs rechten",
   "description": "Toegangsrechten",
   "attributes": [
     {

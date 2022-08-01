@@ -1,5 +1,6 @@
 ﻿{
     "caption": "Очередь сообщений",
+    "captionSingular": "Элемент очереди",
     "description": "Очередь сообщений",
     "attributes": [
         {

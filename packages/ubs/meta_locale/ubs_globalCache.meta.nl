@@ -1,5 +1,6 @@
 ﻿{
     "caption": "Cache aan serverzijde",
+    "captionSingular": "Cache aan serverzijde",
     "description": "Globale servercache",
     "attributes": [
         {
