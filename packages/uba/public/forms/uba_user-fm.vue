@@ -49,9 +49,9 @@
             template-columns="3fr 3fr 2fr"
             template-rows="1fr 1fr 1fr"
           >
-            <u-auto-field attribute-name="firstName" :required="toOrg"/>
+            <u-auto-field attribute-name="firstName" :required="addToOrgStructure"/>
 
-            <u-auto-field attribute-name="lastName" :required="toOrg"/>
+            <u-auto-field attribute-name="lastName" :required="addToOrgStructure"/>
             <u-auto-field
               attribute-name="avatar"
               force-cmp="u-file"
@@ -60,7 +60,7 @@
               :before-set-document="validateFile"
               class="avatar"
             />
-            <u-auto-field attribute-name="fullName" v-model="fullName" :required="toOrg"/>
+            <u-auto-field attribute-name="fullName" v-model="fullName" :required="addToOrgStructure"/>
             <u-auto-field attribute-name="name" required/>
             <u-auto-field attribute-name="email"/>
             <u-auto-field attribute-name="phone"/>
@@ -72,7 +72,7 @@
               />
             </u-form-row>
             <u-form-row
-              :required="toOrg"
+              :required="addToOrgStructure"
               :label="$ut('org_employee.code')"
             >
               <u-base-input
@@ -129,7 +129,7 @@
               v-if="isOrgEnabled"
             >
               <el-switch
-                v-model="toOrg"
+                v-model="addToOrgStructure"
                 :disabled="employee"
               >
               </el-switch>
@@ -201,7 +201,7 @@
 </template>
 <script>
 /* global $App */
-const { Form, dialogYesNo, mapInstanceFields } = require('@unitybase/adminui-vue')
+const { Form, mapInstanceFields } = require('@unitybase/adminui-vue')
 const { Repository, connection, UBAbortError } = require('@unitybase/ub-pub')
 const { mapState, mapGetters, mapActions } = require('vuex')
 const { email, required, requiredIf } = require('vuelidate/lib/validators/index')
@@ -226,8 +226,7 @@ module.exports.mount = (cfg) => {
         },
         actions: {
           async addUserToOrgStructure ({ state }) {
-            debugger
-            if (state.org.employee?.ID || !state.toOrg) {
+            if (state.org.employee?.ID || !state.addToOrgStructure) {
               return
             }
 
@@ -292,7 +291,7 @@ module.exports.mount = (cfg) => {
       },
 
       async inited ({ state, dispatch }) {
-        Vue.set(state, 'toOrg', !!connection.domain.models.ORG)
+        Vue.set(state, 'addToOrgStructure', !!connection.domain.models.ORG)
         await dispatch('getEmployeeData')
       },
 
@@ -307,17 +306,17 @@ module.exports.mount = (cfg) => {
           name: { required },
           firstName: {
             required: requiredIf(() => {
-              return this.$store.state.toOrg
+              return this.$store.state.addToOrgStructure
             })
           },
           lastName: {
             required: requiredIf(() => {
-              return this.$store.state.toOrg
+              return this.$store.state.addToOrgStructure
             })
           },
           fullName: {
             required: requiredIf(() => {
-              return this.$store.state.toOrg
+              return this.$store.state.addToOrgStructure
             })
           },
           email: { email }
@@ -368,12 +367,12 @@ module.exports.default = {
       }
     },
 
-    toOrg: {
+    addToOrgStructure: {
       get () {
-        return this.$store.state.toOrg
+        return this.$store.state.addToOrgStructure
       },
       set (value) {
-        this.$store.commit('SET', { key: 'toOrg', value })
+        this.$store.commit('SET', { key: 'addToOrgStructure', value })
       }
     },
 

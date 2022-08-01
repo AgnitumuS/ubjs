@@ -6,6 +6,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+- `uba_user` form is rewritten to Vue with new features:
+  - connection between `uba_user` and `org_employee` forms, which includes:
+    - auto add new users into organizational structure (`org_employee`) if ORG model enabled 
+    on environment and flag `addToOrgStructure` opted-in
+    - tab with user employment on staff and ability to add/remove employments
+  - badges on toolbar with `pending` and `disabled` user statuses
+  - multi-select for user roles and groups
+  - validation for user avatar: PNG and JPG files only and file size limit up to 2 MB
 
 ### Changed
 
@@ -14,6 +22,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+- fixed an error when trying to change password for user that is not saved yet - now 'Change password' button 
+  is available only after user saving 
 
 ## [5.23.9] - 2022-07-28
 ## [5.23.8] - 2022-07-26
