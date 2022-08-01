@@ -23,18 +23,11 @@ export default {
      * Used to identify splitpane on application. You must create a unique ID for the entire application. Paying attention to where it will be used.
      * For example, if the splitter is used in a form: `formID + indexSplitter`, if in a popup: `popupName + indexSplitter`.
      * `indexSplitter` is needed to distinguish between splitters on the same page
+     * WARNING! If the `splitId` is not passed the positioning will not be saved
      */
     splitId: {
       type: [String, Number],
-      default: '',
-      required: true
-    },
-    /**
-     * whether the split panel can be stored in localStorage
-     */
-    canSaveInStorage: {
-      type: Boolean,
-      default: true
+      default: undefined
     }
   },
   mounted () {
@@ -59,9 +52,9 @@ export default {
       return this.$refs.splitpane.panes.length === this.baseData.length
     },
     init () {
-      if (!this.canSaveInStorage) return
+      if (this.splitId === undefined) return
       this.activeTab = UB?.core?.UBApp?.viewport?.centralPanel.getActiveTab()
-      this.storageKey = this.$uiSettings.buildKey('splitter', this.splitId)
+      this.storageKey = this.$uiSettings.buildKey('splitter', this.splitId.toString())
       this.baseData = this.getDataFromStore()
       if (!this.verification()) return
       this.restore()
