@@ -16,48 +16,48 @@
 </template>
 
 <script>
-  const {mapState} = require('vuex')
 
-  export default {
-    name: 'IndicatorPane',
+export default {
+  name: 'IndicatorPane',
 
-    computed: {
+  data () {
+    return {
+      indicators: []
+    }
+  },
 
-      indicators() {
-        return this.scriptModule?.getIndicators() || []
-      },
+  computed: {
+    visibleIndicators () {
+      return this.indicators.filter(indicator => this.isVisibleIndicator(indicator))
+    }
+  },
 
-      visibleIndicators() {
-        return this.indicators.filter(indicator => this.isVisibleIndicator(indicator))
-      }
+  methods: {
+    isVisibleIndicator (indicator) {
+      return indicator.text && (indicator.visible || !('visible' in indicator))
     },
 
-    methods: {
-      isVisibleIndicator(indicator) {
-        return indicator.text && (indicator.visible || !('visible' in indicator))
-      },
+    getIndicatorType (indicator) {
+      return ['success', 'info', 'warning', 'danger'].find(type => type === indicator.type) || ''
+    },
 
-      getIndicatorType(indicator) {
-        return ['success', 'info', 'warning', 'danger'].find(type => type === indicator.type) || ''
-      },
+    getIndicatorSize (indicator) {
+      return ['medium', 'small', 'mini'].find(size => size === indicator.size) || ''
+    },
 
-      getIndicatorSize(indicator) {
-        return ['medium', 'small', 'mini'].find(size => size === indicator.size) || ''
-      },
-
-      getIndicatorStyle(indicator) {
-        return ['dark', 'light', 'plain'].find(style => style === indicator.style) || 'light'
-      }
+    getIndicatorStyle (indicator) {
+      return ['dark', 'light', 'plain'].find(style => style === indicator.style) || 'light'
     }
   }
+}
 </script>
 
 <style>
-  .indicator-pane {
-    margin: 0 20px 0 0;
-  }
+.indicator-pane {
+  margin: 0 20px 0 0;
+}
 
-  .indicator-pane__indicator {
-    margin: 0 0 0 15px;
-  }
+.indicator-pane__indicator {
+  margin: 0 0 0 15px;
+}
 </style>
