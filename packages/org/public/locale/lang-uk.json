@@ -8,11 +8,5 @@
   "orgTreeCanNotBeCyclical": "Дерево не може бути циклічним",
   "orgDepartment": "Підрозділ",
   "orgExecutorsGroup": "Група виконавців",
-  "orgOrganizationalChart": "Органограма",
-  "org_dialogs": {
-    "removeFromOrgStructure": {
-      "title": "Видалення співробітника",
-      "message": "Видалити співробітника {0} з організаційної структури?"
-    }
-  }
+  "orgOrganizationalChart": "Органограма"
 }

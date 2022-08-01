@@ -8,11 +8,5 @@
   "orgTreeCanNotBeCyclical": "Ağaç dövri ola bilməz",
   "orgDepartment": "Şəbə",
   "orgExecutorsGroup": "İcraçı qrupu",
-  "orgOrganizationalChart": "Orqanoqram",
-  "org_dialogs": {
-    "removeFromOrgStructure": {
-      "title": "Bir işçinin silinməsi",
-      "message": "İşçi {0} təşkilati strukturdan çıxarılsın?"
-    }
-  }
+  "orgOrganizationalChart": "Orqanoqram"
 }
