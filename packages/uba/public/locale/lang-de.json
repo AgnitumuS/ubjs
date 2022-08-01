@@ -46,6 +46,9 @@
   "orgStructure": "Organisatorische Struktur",
   "isEmployee": "Ist ein Angestellter",
   "userEmployee": "Zuordnung zum Personal",
+  "isPending": "Ausstehend",
+  "disabled": "Deaktiviert",
+  "addToOrgStructure": "Zur Organisationsstruktur hinzufügen",
   "uba": {
     "changePassword": {
       "newPassword": {

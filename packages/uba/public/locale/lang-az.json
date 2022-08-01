@@ -46,6 +46,9 @@
   "orgStructure": "Təşkilati strukturu",
   "isEmployee": "İşçidir",
   "userEmployee": "Randevular",
+  "isPending": "Gözləyən",
+  "disabled": "Əlil",
+  "addToOrgStructure": "Təşkilat strukturuna əlavə edin",
   "uba": {
     "changePassword": {
       "newPassword": {

@@ -46,9 +46,9 @@
   "orgStructure": "Організаційна структура",
   "isEmployee": "Є співробітником",
   "userEmployee": "Призначення на посади",
-  "trustedIP": "Довірені IP",
   "isPending": "Очікує підтвердження",
   "disabled": "Відключений",
+  "addToOrgStructure": "Додати в оргструктуру",
   "uba": {
     "changePassword": {
       "newPassword": {

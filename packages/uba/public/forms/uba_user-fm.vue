@@ -4,10 +4,7 @@
     v-loading="loading"
   >
     <u-toolbar>
-      <template
-        v-slot:left
-        v-if="!isNew"
-      >
+      <template v-slot:left v-if="!isNew">
         <u-button
           appearance="inverse"
           icon="u-icon-key"
@@ -204,7 +201,7 @@
 </template>
 <script>
 /* global $App */
-const { Form, mapInstanceFields } = require('@unitybase/adminui-vue')
+const { Form, dialogYesNo, mapInstanceFields } = require('@unitybase/adminui-vue')
 const { Repository, connection, UBAbortError } = require('@unitybase/ub-pub')
 const { mapState, mapGetters, mapActions } = require('vuex')
 const { email, required, requiredIf } = require('vuelidate/lib/validators/index')
@@ -229,6 +226,7 @@ module.exports.mount = (cfg) => {
         },
         actions: {
           async addUserToOrgStructure ({ state }) {
+            debugger
             if (state.org.employee?.ID || !state.toOrg) {
               return
             }
@@ -294,7 +292,7 @@ module.exports.mount = (cfg) => {
       },
 
       async inited ({ state, dispatch }) {
-        Vue.set(state, 'toOrg', true)
+        Vue.set(state, 'toOrg', !!connection.domain.models.ORG)
         await dispatch('getEmployeeData')
       },
 

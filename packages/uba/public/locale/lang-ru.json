@@ -46,6 +46,9 @@
   "orgStructure": "Организационная структура",
   "isEmployee": "Является сотрудником",
   "userEmployee": "Назначение на должности",
+  "isPending": "Ожидает подтверждения",
+  "disabled": "Отключен",
+  "addToOrgStructure": "Добавить в оргструктуру",
   "uba": {
     "changePassword": {
       "newPassword": {

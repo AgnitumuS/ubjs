@@ -46,6 +46,9 @@
   "orgStructure": "Organizational Structure",
   "isEmployee": "Is an Employee",
   "userEmployee": "Assignment on Staff",
+  "isPending": "Pending",
+  "disabled": "Disabled",
+  "addToOrgStructure": "Add to Organizational Structure",
   "uba": {
     "changePassword": {
       "newPassword": {
