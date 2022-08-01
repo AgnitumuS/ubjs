@@ -39,7 +39,10 @@ export default {
   },
   props: {
     /**
-     * Property name of element in items to be used as id
+     * Property name of element in items to be used as id.
+     *
+     * Component can`t validate property exists in all `items` objects (since prop validator do no have access to this),
+     * so this is developer responsibility
      */
     idProp: {
       type: String,
@@ -57,11 +60,7 @@ export default {
      */
     items: {
       type: Array,
-      default: () => [],
-      validator (value) {
-        if (!value.length) return true
-        return !value.some((item) => item[this.idProp] === undefined)
-      }
+      default: () => []
     },
     /**
      * Group name. MUST be defined to use more when one group of radio in page

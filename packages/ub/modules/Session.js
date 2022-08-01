@@ -611,7 +611,7 @@ Session._getRBACInfo = function (userID) {
     uData.roleIDs.push(UBA_COMMON.ROLES.USER.ID)
   }
   if (Session.tenantID > 1) {
-    // Multitenant mode, and the current tenant is not the system tenant
+    // Multi-tenant mode, and the current tenant is not the system tenant
     roleNamesArr.push(UBA_COMMON.ROLES.TENANT_USER.NAME)
     uData.roleIDs.push(UBA_COMMON.ROLES.TENANT_USER.ID)
   }
@@ -620,7 +620,6 @@ Session._getRBACInfo = function (userID) {
     .attrs('ID', 'name')
     .exists(
       Repository('uba_userrole')
-        .attrs('ID')
         .where('userID', '=', userID)
         .correlation('roleID', 'ID'),
       'userHasRole'
@@ -630,7 +629,6 @@ Session._getRBACInfo = function (userID) {
         .attrs('ID')
         .exists(
           Repository('uba_usergroup')
-            .attrs('ID')
             .where('userID', '=', userID)
             .whereIf(GROUP_IDS_LIMIT.length, 'groupID', 'in', GROUP_IDS_LIMIT)
             .whereIf(GROUP_IDS_EXCLUDE.length, 'groupID', 'notIn', GROUP_IDS_EXCLUDE)

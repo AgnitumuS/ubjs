@@ -57,5 +57,14 @@
       }
     }
   },
-  "Duplicate user name (may be in different case)": "Duplicate user name (may be in different case). Try another login"
+  "uba_user_errors": {
+    "duplicateUserName": "Duplicate user name (may be in different case). Try another login",
+    "deleteBuiltInUserProhibited": "Removing of built-in user is prohibited",
+    "deleteServiceUserProhibited": "Removing of service user is prohibited",
+    "renameBuiltInUserProhibited": "Renaming of built-in user is prohibited",
+    "renameServiceUserProhibited": "Renaming of service user is prohibited"
+  },
+  "uba_role_errors": {
+    "deleteBuiltInRoleProhibited": "Removing of built-in role is prohibited"
+  }
 }

@@ -26,18 +26,19 @@ fi
 
 TESTCASE='init database'
 
-npx ubcli createStore -cfg $UB_CFG -noLogo
+ubcli createStore -cfg $UB_CFG -noLogo
 if [ ! $? = 0 ]; then err; fi
 
-npx ubcli initDB -host http://localhost:$PORT -cfg $UB_CFG -dba $UB_DBA -dbaPwd $UB_DBAPWD -p admin -drop -create -cd
+mkdir -p "$UB_APPDATA"localdb
+ubcli initDB -host http://localhost:$PORT -cfg $UB_CFG -dba $UB_DBA -dbaPwd $UB_DBAPWD -p admin -drop -create -cd
 if [ ! $? = 0 ]; then err; fi
 
 TESTCASE='generateDDL'
-npx ubcli generateDDL -host http://localhost:$PORT -cfg $UB_CFG -autorun
+ubcli generateDDL -host http://localhost:$PORT -cfg $UB_CFG -autorun
 if [ ! $? = 0 ]; then err; fi
 
 TESTCASE='initialize'
-npx ubcli initialize -host http://localhost:$PORT -cfg $UB_CFG -u root
+ubcli initialize -host http://localhost:$PORT -cfg $UB_CFG -u root
 if [ ! $? = 0 ]; then err; fi
 
 echo Application is ready

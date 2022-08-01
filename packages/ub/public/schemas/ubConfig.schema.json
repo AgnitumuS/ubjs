@@ -1015,6 +1015,13 @@
                 "type": "string"
               }
             },
+            "frameAncestors": {
+              "type": "array",
+              "description": "Additional rules for `frame-ancestors` - see https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy/frame-ancestors",
+              "items": {
+                "type": "string"
+              }
+            },
             "fontSrc": {
               "type": "array",
               "description": "Additional rules for `font-src`",

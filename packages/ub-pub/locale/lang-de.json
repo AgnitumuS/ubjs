@@ -118,8 +118,12 @@
     "signingTime": "Zeitpunkt der Signatur",
     "signatureStatus": "Signaturstatus",
     "signatureAuthor": "Unterzeichner",
+    "signAlgo": "Signature algorithm",
+    "signType": "Signature type",
+    "mediaSerial": "Media #",
     "certificate": {
       "_": "Zertifikat",
+      "certKind": "Art des Zertifikats",
       "keyUsage": "Schlüsselverwendung",
       "serial": "Seriennummer",
       "validFrom": "Gültig ab",

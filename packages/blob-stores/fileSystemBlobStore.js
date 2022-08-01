@@ -91,7 +91,7 @@ class FileSystemBlobStore extends BlobStoreCustom {
     const { chunksTotal, chunkNum, chunkSize } = request
     let fileSize = 0
 
-    if ((chunksTotal > 1) && (base.ubVersionNum < 50220011)) throw new Error('UB@5.22.11 is require for chunked file upload')
+    if ((chunksTotal > 1) && (base.ubVersionNum < 5022011)) throw new Error('UB@5.22.11 is require for chunked file upload')
 
     if (chunksTotal > 1 && chunksTotal !== chunkNum + 1) {
       console.debug(`temp file's chunk (${chunkNum + 1} of ${chunksTotal}) will be written to`, fn)

@@ -6,6 +6,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+ - `sql` mode added (SQL syntax highlight)
 
 ### Changed
 

@@ -6,7 +6,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
-- migration to remove `adm_folder_UI', 'adm_folder_devTools` folders
 
 ### Changed
 
@@ -15,6 +14,30 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+
+## [5.23.9] - 2022-07-28
+## [5.23.8] - 2022-07-26
+## [5.23.7] - 2022-07-26
+### Added
+- localization for server errors in `uba_user` and `uba_role`
+
+### Changed
+- use key `uba_user_errors.duplicateUserName` instead of 'Duplicate user name (may be in different case)'
+
+## [5.23.6] - 2022-07-21
+### Added
+- Localization for server errors in `uba_user` and `uba_role`
+
+### Fixed
+- `uba_group` form fixes: 
+  - validation for required fields
+  - adding user into group in modal window
+  - fix column name in users table
+  - auto save new form before adding users into group
+
+## [5.23.5] - 2022-07-12
+### Added
+- migration to remove `adm_folder_UI', 'adm_folder_devTools` folders
 
 ## [5.23.4] - 2022-07-11
 ### Fixed

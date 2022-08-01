@@ -365,8 +365,8 @@ export default {
       }
 
       const attributes = [this.valueAttribute]
-      if (this.displayAttribute && this.displayAttribute !== this.valueAttribute) {
-        attributes.push(this.displayAttribute)
+      if (this.getDisplayAttribute && this.getDisplayAttribute !== this.valueAttribute) {
+        attributes.push(this.getDisplayAttribute)
       }
       return this.$UB.Repository(this.entityName)
         .attrs(attributes)

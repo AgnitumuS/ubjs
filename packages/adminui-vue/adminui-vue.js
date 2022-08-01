@@ -114,7 +114,7 @@ Vue.use(momentPlugin)
 
 // ------------- UB theme -----------------
 require('normalize.css/normalize.css')
-require('./theme/fonts.css')
+require('./dist/fonts.css')
 require('./theme/icons/ub-icons.css')
 require('./theme/ub-body.css')
 if (BOUNDLED_BY_WEBPACK) {
@@ -186,6 +186,23 @@ const lookups = require('./utils/lookups')
  */
 module.exports.lookups = lookups
 Vue.use(lookups)
+
+// ----------- UI Settings Storage -----------
+const uiSettingsStorage = require('./utils/uiSettingsStorage')
+/**
+ * Storage for User Interface settings. Wrapper around `localStorage`
+ * @example
+ * // inside vue can be used as this.$uiSettings
+ * this.videoRatio = this.$uiSettings.get('UFileWebcamButton', 'videoRatio') ?? this.videoRatios[0]
+ * this.$uiSettings.put(this.videoRatios[0], 'UFileWebcamButton', 'videoRatio')
+ *
+ * // or from adminui-vue exports
+ * const App = require('@unitybase/adminui-vue')
+ * const isCollapsed = App.uiSettings.get('sidebar', 'isCollapsed')
+ * @type {module:uiSettings}
+ */
+module.exports.uiSettings = uiSettingsStorage
+Vue.prototype.$uiSettings = uiSettingsStorage
 
 // ---------------- Column Templates ------------------
 /**
@@ -285,9 +302,6 @@ if (window.$App) {
      * @event portal:navbar:defineSlot
      */
     $App.fireEvent('portal:navbar:defineSlot', UNavbarDefaultSlot, {})
-  })
-  $App.on('buildMainMenu', items => {
-    items.splice(0, 1) // remove top panel ExtJS hamburger menu button
   })
 }
 

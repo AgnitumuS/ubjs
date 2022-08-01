@@ -540,6 +540,7 @@ export default {
   display: flex;
   flex-shrink: 0;
   align-items: center;
+  overflow-y: auto;
 }
 
 .u-toolbar > .u-button:not(:first-child) {

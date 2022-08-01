@@ -15,6 +15,18 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.23.9] - 2022-07-28
+## [5.23.8] - 2022-07-26
+## [5.23.7] - 2022-07-26
+### Changed
+ - VueJS form template (used when new form is created using UI) - `v-loading="loading"` is moved above the toolbar 
+
+## [5.23.6] - 2022-07-21
+### Fixed
+- Definition of shortcut `ubm_ui_settings`: set `$systemTenantOnly: true` option, so that shortcut won't be created
+  for user tenants, because settings may not be saved per-tenant.
+
+## [5.23.5] - 2022-07-12
 ## [5.23.4] - 2022-07-11
 ### Fixed
 - `desktop`, `shortcut`, `query`, `sysdictionary` forms:

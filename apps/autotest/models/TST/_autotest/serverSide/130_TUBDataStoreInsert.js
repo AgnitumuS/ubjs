@@ -1,8 +1,13 @@
 const UB = require('@unitybase/ub')
+const Session = UB.Session
+
 const assert = require('assert')
 const _ = require('lodash')
 
-function testTUBDataStoreMethods(){
+/**
+ *
+ */
+function testTUBDataStoreMethods () {
   const STORE = UB.DataStore('tst_dictionary')
   const ID = STORE.insert({
     fieldList: ['ID'],
@@ -36,13 +41,34 @@ function testTUBDataStoreMethods(){
       code: 'test_insertROWObj',
       filterValue: 2
     }
-  }, {mi_modifyDate: 'modifiedAt'})
+  }, { mi_modifyDate: 'modifiedAt' })
   assert.ok((typeof objectRespIns === 'object') && (objectRespIns.modifiedAt instanceof Date) && (objectRespIns.code === 'test_insertROWObj'),
     `STORE.insertAsObject should return Object with parsed Date but got ${JSON.stringify(objectRespIns)}`)
+
+  const elsUID = UB.Repository('uba_user').attrs('ID').where('name', '=', 'testelsuser').selectScalar()
+  Session.runAsUser(elsUID, () => {
+    const tstAclStore = UB.DataStore('tst_aclrls')
+    const tstAclID = tstAclStore.generateID()
+    tstAclStore.run('insert', {
+      execParams: {
+        ID: tstAclID,
+        caption: 'acl rls insertion test'
+      }
+    })
+    const ouID = UB.Repository('org_unit').attrs('ID').limit(1).selectScalar()
+    const aclRlsStore = UB.DataStore('tst_aclrls_acl')
+    // run method without ctx.mParams.entity - aclRlsStorage mixin should pass
+    aclRlsStore.run('insert', {
+      execParams: {
+        instanceID: tstAclID,
+        ounitID: ouID
+      }
+    })
+  })
 }
 
 (function () {
-  let res = { success: true }
+  const res = { success: true }
   try {
     testTUBDataStoreMethods()
   } catch (e) {

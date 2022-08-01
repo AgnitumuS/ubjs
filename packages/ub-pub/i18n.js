@@ -4,7 +4,7 @@ const __i18n = {
   monkeyRequestsDetected: 'Your request has been processed, but we found that it is repeated several times. Maybe you key fuse?'
 }
 const FORMAT_RE = /{([0-9a-zA-Z_]+)(?::([^\}]+))?}/g
-const DOMAIN_RE = /^(\w+)(\.(\w+))?(#(documentation|description))?$/
+const DOMAIN_RE = /^(\w+)(\.(\w+))?(#(documentation|description|captionSingular))?$/
 
 function domainBasedLocalization (localeString) {
   // $App is accessible only inside adminUI
@@ -32,8 +32,10 @@ function domainBasedLocalization (localeString) {
   if (attributeName === undefined) {
     // A valid entity name, resolve to the entity's caption
     // Remember in __i18n for performance
-    __i18n[localeString] = entity[hash]
-    return entity[hash]
+    // for empty captionSingular - fallback to caption
+    const l = ((hash === 'captionSingular') && !entity[hash]) ? entity.caption : entity[hash]
+    __i18n[localeString] = l
+    return l
   }
 
   let attr = entity.attributes[attributeName]
