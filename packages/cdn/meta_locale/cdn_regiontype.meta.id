@@ -1,5 +1,6 @@
 {
   "caption": "jenis Region",
+  "captionSingular": "Jenis wilayah",
   "description": "jenis Region kamus",
   "attributes": [
     {

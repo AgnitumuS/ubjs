@@ -1,5 +1,6 @@
 {
   "caption": "Akun saat ini",
+  "captionSingular": "Akun organisasi saat ini",
   "description": "Organisasi giro kamus",
   "attributes": [
     {

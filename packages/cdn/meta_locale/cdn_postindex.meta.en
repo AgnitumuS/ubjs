@@ -1,5 +1,6 @@
 {
   "caption": "ZIP Codes",
+  "captionSingular": "ZIP Code",
   "description": "ZIP codes",
   "attributes": [
     {

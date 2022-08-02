@@ -1,5 +1,6 @@
 {
   "caption": "Verwaltungseinheit",
+  "captionSingular": "Verwaltungseinheit",
   "description": "Verwaltungseinheit (Land, Region, Stadt)",
   "documentation": "Übergeordnetes Hauptelement für Länder, Regionen und Städte",
   "attributes": [

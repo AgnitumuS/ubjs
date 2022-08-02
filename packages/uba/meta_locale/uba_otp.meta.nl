@@ -1,5 +1,6 @@
 {
   "caption": "Eenmalige wachtwoorden",
+  "captionSingular": "Eenmalig wachtwoord",
   "description": "Eenmalige wachtwoorden",
   "attributes": [
     {

@@ -1,5 +1,6 @@
 {
   "caption": "Адреси",
+  "captionSingular": "Адреса",
   "description": "Довідник адрес",
   "attributes": [
     {

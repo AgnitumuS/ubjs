@@ -1,5 +1,6 @@
 {
   "caption": "Opgesomde waarden",
+  "captionSingular": "Opgetelde waarde",
   "description": "Opgesomde waarden",
   "attributes": [
     {

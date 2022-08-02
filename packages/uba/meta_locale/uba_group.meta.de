@@ -1,5 +1,6 @@
 {
   "caption": "Benutzergruppen",
+  "captionSingular": "Benutzergruppe",
   "description": "Benutzergruppen",
   "attributes": [
     {

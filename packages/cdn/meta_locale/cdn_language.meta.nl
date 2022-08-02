@@ -1,5 +1,6 @@
 {
   "caption": "Taallijst",
+  "captionSingular": "Taal",
   "attributes": [
     {
       "name": "code",

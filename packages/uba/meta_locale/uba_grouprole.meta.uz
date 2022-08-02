@@ -1,5 +1,6 @@
 {
   "caption": "Rollar guruhi",
+  "captionSingular": "Guruhning roli",
   "description": "Foydalanuvchi guruhlariga tayinlangan rollar",
   "attributes": [
     {

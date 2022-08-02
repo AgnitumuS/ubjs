@@ -1,5 +1,6 @@
 {
   "caption": "Regionstypen",
+  "captionSingular": "Art der Region",
   "description": "Wörterbuch der Regionstypen",
   "attributes": [
     {

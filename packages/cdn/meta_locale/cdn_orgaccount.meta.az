@@ -1,5 +1,6 @@
 {
   "caption": "Hesablaşma hesabları",
+  "captionSingular": "Current account of the counterparty",
   "description": "Təşkilatların hesablaşma hesabları üzrə sorğu kitabçaları",
   "attributes": [
     {

@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 - `USplitter` - separator for page or blocks with the function of saving to localStorage
  - added visualisation for new signature validation attributes (signAlgo, signType, mediaSerial, certificate.certKind)
+- new icon: `u-icon-download-all-with-signatures`
 
 ### Changed
 

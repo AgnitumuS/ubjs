@@ -1,5 +1,6 @@
 {
   "caption": "Lijst van gebouwen",
+  "captionSingular": "gebouw",
   "description": "Lijst van gebouwen",
   "attributes": [
     {

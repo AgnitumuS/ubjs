@@ -1,5 +1,6 @@
 {
   "caption": "Uitvoerdersgroepen",
+  "captionSingular": "Groep artiesten",
   "description": "Lijst met typische uitvoerdersgroepen voor opdrachtuitvoerders",
   "attributes": [
     {

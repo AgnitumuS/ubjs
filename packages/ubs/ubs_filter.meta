@@ -1,5 +1,6 @@
 {
   "caption": "Saved UI Filters",
+  "captionSingular": "Saved UI Filter",
   "description": "Stored UI filters",
   "connectionName": "",
   "sqlAlias": "sfilter",

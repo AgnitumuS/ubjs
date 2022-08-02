@@ -1,5 +1,6 @@
 {
   "caption": "Advanced Security",
+  "captionSingular": "Advanced Security",
   "description": "Advanced security settings",
   "connectionName": "",
   "cacheType": "None",

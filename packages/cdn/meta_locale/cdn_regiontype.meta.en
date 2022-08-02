@@ -1,5 +1,6 @@
 {
   "caption": "Region Types",
+  "captionSingular": "Type of region",
   "description": "Region types dictionary",
   "attributes": [
     {

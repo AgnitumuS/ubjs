@@ -1,5 +1,6 @@
 ﻿{
   "caption": "Aktiv kilidlər",
+  "captionSingular": "Aktiv bloklama",
   "description": "Pessimistic locks",
   "attributes": [
     {

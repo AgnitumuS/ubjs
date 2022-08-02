@@ -1,5 +1,6 @@
 {
   "caption": "Zähler",
+  "captionSingular": "Gespeicherter Filter",
   "description": "Gespeicherte UI-Filter",
   "documentation": "doCmd.showList.autofilter verwendet diese Entität zur Speicherung von Benutzerfilterdefinitionen",
   "attributes": [

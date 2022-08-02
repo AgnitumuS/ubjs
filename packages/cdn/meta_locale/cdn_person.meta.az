@@ -1,5 +1,6 @@
 {
   "caption": "Fiziki şəxslərin siyahısı",
+  "captionSingular": "Fiziki Şəxs",
   "description": "Fiziki şəxslər üzrə siyahı",
   "documentation": "Bu sorğu kitabçasında şəxslərin (fiziki şəxslərin) siyahısı saxlanılır",
   "attributes": [

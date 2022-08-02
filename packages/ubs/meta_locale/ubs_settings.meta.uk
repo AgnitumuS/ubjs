@@ -1,5 +1,6 @@
 {
   "caption": "Налаштування системи",
+  "captionSingular": "Налаштування системи",
   "attributes": [
     {
       "name": "settingKey",

@@ -1,5 +1,6 @@
 {
   "caption": "Национальность",
+  "captionSingular": "Национальность",
   "description": "Национальность",
   "attributes": [
     {

@@ -1,5 +1,6 @@
 {
   "caption": "Regionen",
+  "captionSingular": "Region",
   "description": "Wörterbuch der Regionen",
   "attributes": [
     {

@@ -1,5 +1,6 @@
 {
   "caption": "Modellversionen",
+  "captionSingular": "Modellversion",
   "description": "Aktuelle Anwendungsmodellversionen. Von Migrations-Hooks zur Ausführung benutzerdefinierter Aktionen verwendet. Durch das Migrationsszenario nach erfolgreicher Migration aktualisiert",
   "attributes": [
     {

@@ -1,5 +1,6 @@
 {
   "caption": "Təsnifatçının qeydi",
+  "captionSingular": "Təsnifatçının qeydi",
   "attributes": [
     {
       "name": "code",

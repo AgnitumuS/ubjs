@@ -1,5 +1,6 @@
 ﻿{
     "caption": "Индекси почта",
+    "captionSingular": "Индекси почта",
     "description": "Индекси почта",
     "attributes": [
         {

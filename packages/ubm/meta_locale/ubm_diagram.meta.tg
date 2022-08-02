@@ -1,5 +1,6 @@
 ﻿{
     "caption": "ER диаграммаҳо",
+    "captionSingular": "Диаграммаи ER",
     "description": "Моҳияти диаграмма",
     "attributes": [
         {

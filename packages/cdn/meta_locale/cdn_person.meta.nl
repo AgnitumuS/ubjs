@@ -1,5 +1,6 @@
 {
   "caption": "Natuurlijke personen",
+  "captionSingular": "Fysieke persoon",
   "description": "Woordenboek van natuurlijke personen",
   "documentation": "De kaart slaat een lijst van personen (natuurlijke personen) op",
   "attributes": [

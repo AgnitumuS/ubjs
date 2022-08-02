@@ -1,5 +1,6 @@
 {
   "caption": "Vorige wachtwoorden",
+  "captionSingular": "Vorig wachtwoord",
   "description": "Hashes van eerdere wachtwoorden",
   "attributes": [
     {

@@ -1,5 +1,6 @@
 {
   "caption": "Страны",
+  "captionSingular": "Страна",
   "description": "Справочник стран",
   "attributes": [
     {

@@ -1,5 +1,6 @@
 ﻿{
   "caption": "Pessimistische vergrendelingen",
+  "captionSingular": "Actieve blokkering",
   "description": "Pessimistische vergrendelingen",
   "attributes": [
     {

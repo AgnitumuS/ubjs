@@ -1,5 +1,6 @@
 {
   "caption": "Типы регионов",
+  "captionSingular": "Тип региона",
   "description": "Справочник типов регионов",
   "attributes": [
     {

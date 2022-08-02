@@ -1,5 +1,6 @@
 {
   "caption": "Переліки",
+  "captionSingular": "Елемент переліу",
   "description": "Перераховані значення (групи значень)",
   "attributes": [
     {

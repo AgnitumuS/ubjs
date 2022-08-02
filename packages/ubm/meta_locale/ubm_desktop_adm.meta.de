@@ -1,5 +1,6 @@
 {
   "caption": "Desktopverwaltung",
+  "captionSingular": "Desktop-Verwaltung",
   "attributes": [
     {
       "name": "instanceID",

@@ -1,5 +1,6 @@
 {
   "caption": "Personenkategorie",
+  "captionSingular": "Personenkategorie",
   "description": "Personenkategorie",
   "documentation": "Das Verzeichnis enthält eine Liste von Kategorien oder natürlichen Personen",
   "attributes": [

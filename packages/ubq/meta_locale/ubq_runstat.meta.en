@@ -1,5 +1,6 @@
 {
   "caption": "Scheduler Run Statistic",
+  "captionSingular": "Scheduler Run Statistic",
   "description": "Scheduler run statistic",
   "attributes": [
     {

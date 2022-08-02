@@ -1,5 +1,6 @@
 ﻿{
   "caption": "Desktops",
+  "captionSingular": "Desktop",
   "description": "Application desktops",
   "connectionName": "",
   "sqlAlias": "desk",

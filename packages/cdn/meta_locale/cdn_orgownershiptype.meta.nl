@@ -1,5 +1,6 @@
 {
   "caption": "Types eigendom",
+  "captionSingular": "Types eigendom",
   "description": "Types eigendom",
   "attributes": [
     {

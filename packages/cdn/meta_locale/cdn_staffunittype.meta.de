@@ -1,5 +1,6 @@
 {
   "caption": "Typen von Personaleinheiten",
+  "captionSingular": "Art der Stabstelle",
   "description": "Wörterbuch der Personaleinheiten",
   "attributes": [
     {

@@ -1,5 +1,6 @@
 {
   "caption": "Регионы",
+  "captionSingular": "Регион",
   "description": "Справочник регионов",
   "attributes": [
     {

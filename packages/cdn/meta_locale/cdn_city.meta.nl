@@ -1,5 +1,6 @@
 {
   "caption": "Steden",
+  "captionSingular": "Nederzetting",
   "description": "Stadskaarten",
   "attributes": [
     {
