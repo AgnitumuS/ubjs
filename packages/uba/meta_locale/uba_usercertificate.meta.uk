@@ -1,5 +1,6 @@
 {
   "caption": "Сертифікати",
+  "captionSingular": "Сертифікат",
   "description": "Сертифікати користувача",
   "attributes": [
     {

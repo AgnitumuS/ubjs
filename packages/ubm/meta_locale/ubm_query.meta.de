@@ -1,5 +1,6 @@
 {
   "caption": "Datenabfragen",
+  "captionSingular": "Datenabfrage",
   "attributes": [
     {
       "name": "code",

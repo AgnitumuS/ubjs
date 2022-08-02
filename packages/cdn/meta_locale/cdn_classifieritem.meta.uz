@@ -1,5 +1,6 @@
 {
   "caption": "Klassifikator qaydnomasi",
+  "captionSingular": "Klassifikator qaydnomasi",
   "attributes": [
     {
       "name": "code",

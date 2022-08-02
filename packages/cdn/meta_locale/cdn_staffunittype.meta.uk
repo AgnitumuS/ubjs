@@ -1,5 +1,6 @@
 {
   "caption": "Типы штатних одиниць",
+  "captionSingular": "Тип штатної одиниці",
   "description": "Довідник типів штатних одиниць",
   "attributes": [
     {

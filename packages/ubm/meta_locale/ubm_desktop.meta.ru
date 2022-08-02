@@ -1,5 +1,6 @@
 {
   "caption": "Рабочие столы",
+  "captionSingular": "Рабочий стол",
   "description": "Рабочие столы приложения",
   "attributes": [
     {

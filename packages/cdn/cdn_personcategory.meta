@@ -1,5 +1,6 @@
 {
   "caption": "The Category",
+  "captionSingular": "The Category",
   "description": "The category",
   "documentation": "The directory stores a list of categories or physical persons",
   "connectionName": "",

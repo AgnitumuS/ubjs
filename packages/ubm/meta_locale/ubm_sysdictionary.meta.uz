@@ -1,5 +1,6 @@
 {
   "caption": "Tizim ma`lumotnomalari",
+  "captionSingular": "Tizimli lug'at",
   "attributes": [
     {
       "name": "code",

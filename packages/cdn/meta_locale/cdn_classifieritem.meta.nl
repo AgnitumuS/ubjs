@@ -1,5 +1,6 @@
 ﻿{
   "caption": "Сlassifier-item",
+  "captionSingular": "Сlassifier-item",
   "attributes": [
     {
       "name": "code",

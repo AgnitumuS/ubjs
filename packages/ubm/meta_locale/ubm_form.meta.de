@@ -1,5 +1,6 @@
 {
   "caption": "Systemformulare",
+  "captionSingular": "Systemform",
   "description": "Definition von Schnittstellenformularen",
   "attributes": [
     {

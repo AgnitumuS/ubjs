@@ -1,5 +1,6 @@
 {
   "caption": "Təşkilatı vahidlər",
+  "captionSingular": "Təşkilat bölməsi",
   "description": "Təşkilati vahidlər üzrə sorğu kitabçası",
   "documentation": "UNİTY üzrə təşkilat (org_organization), şöbə (org_department) və ştat vahidlərinin (org_staffunit) yığıldığı sorğu kitabçası. Sorğu kitabçasında bütün təşkilati vahidlər üzrə iyerarxiyanı bir ağacda qurmaq mümkündür",
   "attributes": [

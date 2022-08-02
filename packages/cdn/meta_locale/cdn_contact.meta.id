@@ -1,5 +1,6 @@
 {
   "caption": "kontak",
+  "captionSingular": "Kontak",
   "description": "direktori kontak",
   "attributes": [
     {

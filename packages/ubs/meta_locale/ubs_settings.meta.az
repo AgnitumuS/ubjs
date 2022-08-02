@@ -1,5 +1,6 @@
 {
   "caption": "Sistem Parametrləri",
+  "captionSingular": "Sistem Parametrləri",
   "attributes": [
     {
       "name": "settingKey",

@@ -1,5 +1,6 @@
 {
   "caption": "Beheer van desktops",
+  "captionSingular": "Bureaubladbeheer",
   "attributes": [
     {
       "name": "instanceID",

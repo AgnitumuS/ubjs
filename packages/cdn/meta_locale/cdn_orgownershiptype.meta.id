@@ -1,5 +1,6 @@
 {
   "caption": "Jenis kepemilikan",
+  "captionSingular": "Jenis kepemilikan",
   "description": "Jenis kamus kepemilikan",
   "attributes": [
     {

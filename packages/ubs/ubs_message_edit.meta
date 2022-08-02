@@ -1,5 +1,6 @@
 {
   "caption": "Message",
+  "captionSingular": "Message",
   "description": "System messages",
   "connectionName": "",
   "sqlAlias": "msgEdit",

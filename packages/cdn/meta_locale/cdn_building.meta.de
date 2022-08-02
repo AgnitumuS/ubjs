@@ -1,5 +1,6 @@
 {
   "caption": "Gebäudeliste",
+  "captionSingular": "Gebäude",
   "description": "Gebäudeliste",
   "attributes": [
     {

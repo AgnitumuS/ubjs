@@ -1,5 +1,6 @@
 {
   "caption": "Поштові індекси",
+  "captionSingular": "Поштовий індекс",
   "description": "Поштові індекси",
   "attributes": [
     {

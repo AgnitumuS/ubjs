@@ -1,5 +1,6 @@
 {
   "caption": "Kontakttypen",
+  "captionSingular": "Kontaktart",
   "description": "Kontakttypenverzeichnis",
   "attributes": [
     {

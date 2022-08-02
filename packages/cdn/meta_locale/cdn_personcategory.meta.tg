@@ -1,5 +1,6 @@
 ﻿{
     "caption": "Гурӯҳи кормандон",
+    "captionSingular": "Гурӯҳи кормандон",
     "description": "Маълумотномаи гурӯҳи шахсон",
     "attributes": [
         {

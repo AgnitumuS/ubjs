@@ -1,5 +1,6 @@
 {
   "caption": "Pengguna",
+  "captionSingular": "Pengguna",
   "description": "Pengguna",
   "attributes": [
     {

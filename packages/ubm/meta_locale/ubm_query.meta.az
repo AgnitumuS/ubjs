@@ -1,5 +1,6 @@
 {
   "caption": "Məlumatlar üçün sorğular",
+  "captionSingular": "Data Sorğu",
   "attributes": [
     {"name": "code", "caption": "Kod"},
     {"name": "name", "caption": "Ad"},

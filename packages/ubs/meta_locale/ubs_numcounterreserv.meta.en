@@ -1,5 +1,6 @@
 {
   "caption": "Numerators (Reserve)",
+  "captionSingular": "Numerator (Reserved)",
   "attributes": [
     {
       "name": "regKey",

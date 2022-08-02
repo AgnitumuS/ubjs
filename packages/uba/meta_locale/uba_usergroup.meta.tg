@@ -1,5 +1,6 @@
 ﻿{
     "caption": "Узвияти истифодабаранда дар гурӯҳҳо",
+    "captionSingular": "Воридшавии корбар ба гурӯҳ",
     "attributes": [
         {
             "name": "groupID",

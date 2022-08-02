@@ -1,5 +1,6 @@
 {
   "caption": "Opdrachten van de interne organisatie",
+  "captionSingular": "Opdrachten van de interne organisatie",
   "description": "Lijst van interne organisatieopdrachten",
   "documentation": "De ontknopingsessentie, die aangeeft welke medewerker op welke stafeenheid werkt (toewijzing). Er is ook een type opdracht (tijdelijk, vast, deeltijd, enz.)",
   "attributes": [

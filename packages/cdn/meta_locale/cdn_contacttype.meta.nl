@@ -1,5 +1,6 @@
 {
   "caption": "Contact Types",
+  "captionSingular": "Contact type",
   "description": "Kaart van contacttypes",
   "attributes": [
     {

@@ -1,5 +1,6 @@
 {
   "caption": "Gebruikerscertificaten",
+  "captionSingular": "Gebruikerscertificaat",
   "description": "Gebruikerscertificaten",
   "attributes": [
     {

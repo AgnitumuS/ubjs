@@ -1,5 +1,6 @@
 {
   "caption": "Satu password waktu",
+  "captionSingular": "Kata sandi satu kali",
   "description": "Satu password waktu",
   "attributes": [
     {

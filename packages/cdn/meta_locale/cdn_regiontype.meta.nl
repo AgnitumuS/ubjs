@@ -1,5 +1,6 @@
 {
   "caption": "Regiotypen",
+  "captionSingular": "Type regio",
   "description": "Woordenboek van regiotypen",
   "attributes": [
     {

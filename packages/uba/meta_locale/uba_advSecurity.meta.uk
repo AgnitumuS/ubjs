@@ -1,5 +1,6 @@
 ﻿{
     "caption": "Розширена безпека",
+    "captionSingular": "Розширена безпека",
     "description": "Розширені налаштування безпеки",
     "attributes": [
         {

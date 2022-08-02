@@ -1,5 +1,6 @@
 {
   "caption": "Dillər",
+  "captionSingular": "Dil",
   "attributes": [
     {
       "name": "code",

@@ -1,5 +1,6 @@
 ﻿{
     "caption": "Шаблоны отчетов",
+    "captionSingular": "Шаблон отчета",
     "description": "Шаблоны отчетов",
     "attributes": [
         {

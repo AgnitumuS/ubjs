@@ -1,5 +1,6 @@
 {
   "caption": "Abteilungstypen",
+  "captionSingular": "Abteilungstyp",
   "description": "Wörterbuch der Abteilungstypen",
   "attributes": [
     {

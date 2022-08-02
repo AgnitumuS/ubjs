@@ -1,5 +1,6 @@
 {
   "caption": "Toegangsrechten",
+  "captionSingular": "Recht van toegang",
   "description": "Toegangsrechten",
   "attributes": [
     {

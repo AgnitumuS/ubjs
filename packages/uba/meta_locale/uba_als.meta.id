@@ -1,5 +1,6 @@
 {
   "caption": "tingkat keamanan atribut (ALS)",
+  "captionSingular": "aturan ALS",
   "description": "Atribut tingkat keamanan",
   "attributes": [
     {

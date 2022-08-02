@@ -1,5 +1,6 @@
 ﻿{
     "caption": "დავალების შესრულების თარიღი",
+    "captionSingular": "დავალების შესრულების თარიღი",
     "description": "",
     "attributes": [
         {

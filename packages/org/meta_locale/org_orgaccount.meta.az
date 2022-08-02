@@ -1,5 +1,6 @@
 {
   "caption": "Hesablaşma hesabları",
+  "captionSingular": "Təşkilatın cari hesabı",
   "description": "Təşkilatların hesablaşma hesabları üzrə sorğu kitabçaları",
   "attributes": [
     {

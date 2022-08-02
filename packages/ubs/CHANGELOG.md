@@ -6,7 +6,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
-
+- Added captionSingular for all *.meta and *.meta.lang
 ### Changed
 
 ### Deprecated

@@ -1,5 +1,6 @@
 {
   "caption": "Сообщения",
+  "captionSingular": "Сообщения",
   "description": "Системные сообщения",
   "documentation": "Системные сообщения",
   "attributes": [

@@ -1,5 +1,6 @@
 {
   "caption": "Attribute Level Security",
+  "captionSingular": "ALS rule",
   "description": "Attribute level security",
   "connectionName": "",
   "sqlAlias": "als",

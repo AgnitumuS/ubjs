@@ -1,5 +1,6 @@
 {
   "caption": "Countries",
+  "captionSingular": "Country",
   "description": "Countries directory",
   "attributes": [
     {

@@ -1,5 +1,6 @@
 {
   "caption": "Tasniflovchi",
+  "captionSingular": "Klassifikator",
   "attributes": [
     {
       "name": "code",

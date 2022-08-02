@@ -1,5 +1,6 @@
 ﻿{
     "caption": "დაგეგმილი სტატისტიკა",
+    "captionSingular": "გრაფიკის გაშვების სტატისტიკა",
     "description": "",
     "attributes": [
         {

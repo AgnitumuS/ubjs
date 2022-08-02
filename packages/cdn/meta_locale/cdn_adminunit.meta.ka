@@ -1,5 +1,6 @@
 ﻿{
     "caption": "ადმინისტრაციული დანაყოფი",
+    "captionSingular": "ადმინისტრაციული ერთეული",
     "description": "",
     "attributes": [
         {

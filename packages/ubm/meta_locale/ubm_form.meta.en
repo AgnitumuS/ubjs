@@ -1,5 +1,6 @@
 {
   "caption": "System Forms",
+  "captionSingular": "System Form",
   "description": "UnityBase platform Forms Definition",
   "attributes": [
     {

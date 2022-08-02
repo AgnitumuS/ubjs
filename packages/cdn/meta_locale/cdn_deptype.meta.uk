@@ -1,5 +1,6 @@
 {
   "caption": "Типи департаментів",
+  "captionSingular": "Тип департамента",
   "description": "Довідник типів департаментів",
   "attributes": [
     {
