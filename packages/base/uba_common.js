@@ -81,19 +81,22 @@ const ROLES = {
   }
 }
 
-const serverConfig = argv.getServerConfiguration()
-const multitenancyConfig = serverConfig.security.multitenancy
-const multitenancyEnabled = multitenancyConfig && multitenancyConfig.enabled
-if (multitenancyEnabled) {
-  ROLES.TENANT_USER = {
-    ID: 100,
-    NAME: 'TenantUser',
-    ENDPOINTS: '',
-    DESCR: 'TenantUser built-in role',
-    TIMEOUT: 30
+try {
+  const serverConfig = argv.getServerConfiguration()
+  const multitenancyConfig = serverConfig.security.multitenancy
+  const multitenancyEnabled = multitenancyConfig && multitenancyConfig.enabled
+  if (multitenancyEnabled) {
+    ROLES.TENANT_USER = {
+      ID: 100,
+      NAME: 'TenantUser',
+      ENDPOINTS: '',
+      DESCR: 'TenantUser built-in role',
+      TIMEOUT: 30
+    }
   }
+} catch (e) {
+  // for command-line usage server config is not necessary
 }
-
 
 /**
  * Check logged in user is a superuser (either `admin` or `root`)
