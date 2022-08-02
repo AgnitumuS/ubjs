@@ -75,7 +75,7 @@ module.exports.default = {
   name: 'UbaGroup',
 
   components: {
-    UsersSelectDialog: require('@unitybase/uba/public/forms/uba_group/users-select-dialog.vue').default
+    UsersSelectDialog: require('./uba_group/users-select-dialog.vue').default
   },
 
   computed: {
