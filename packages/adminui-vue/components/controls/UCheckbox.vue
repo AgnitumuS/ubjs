@@ -5,6 +5,7 @@
       v-model="currentValue"
       class="u-checkbox--input"
       type="checkbox"
+      v-bind="$attrs"
       :name="checkboxName"
     >
     <label
