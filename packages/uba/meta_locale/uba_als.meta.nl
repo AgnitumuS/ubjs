@@ -1,5 +1,6 @@
 {
   "caption": "Beveiliging op attribuutniveau (ALS)",
+  "captionSingular": "ALS regel",
   "description": "Beveiliging op attribuutniveau",
   "documentation": "",
   "attributes": [

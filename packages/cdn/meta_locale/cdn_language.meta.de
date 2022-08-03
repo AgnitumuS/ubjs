@@ -1,5 +1,6 @@
 {
   "caption": "Sprachenliste",
+  "captionSingular": "Sprache",
   "attributes": [
     {
       "name": "code",

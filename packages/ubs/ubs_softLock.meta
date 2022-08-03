@@ -1,5 +1,6 @@
 {
   "caption": "Active Locks",
+  "captionSingular": "Active Lock",
   "description": "Active pessimistic locks",
   "connectionName": "",
   "sqlAlias": "slock",

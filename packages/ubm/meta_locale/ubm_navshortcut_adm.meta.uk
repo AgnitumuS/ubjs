@@ -1,5 +1,7 @@
 {
   "caption": "Адміністрування панелі навігації",
+  "captionSingular": "Адміністрування панелі навігації",
+  "captionSingular": "Data Query",
   "description": "Опис",
   "attributes": [
     {

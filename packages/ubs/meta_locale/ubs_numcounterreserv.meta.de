@@ -1,5 +1,6 @@
 {
   "caption": "Zähler (Reserve)",
+  "captionSingular": "Zähler (Reserve)",
   "attributes": [
     {
       "name": "regKey",

@@ -1,5 +1,6 @@
 {
   "caption": "Mail Attachment",
+  "captionSingular": "Mail Attachment",
   "description": "Mail attachment",
   "connectionName": "",
   "sqlAlias": "mqma",

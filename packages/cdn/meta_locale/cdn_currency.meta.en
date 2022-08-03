@@ -1,5 +1,6 @@
 {
   "caption": "Currencies",
+  "captionSingular": "Currency",
   "description": "Currencies dictionary",
   "attributes": [
     {

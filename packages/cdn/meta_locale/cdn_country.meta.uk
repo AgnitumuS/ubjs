@@ -1,5 +1,6 @@
 {
   "caption": "Країни",
+  "captionSingular": "Країна",
   "description": "Довідник країн",
   "attributes": [
     {

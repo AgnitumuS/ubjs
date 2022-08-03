@@ -6,6 +6,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+- Added captionSingular for all *.meta and *.meta.lang
 - `uba_user` form is rewritten to Vue with new features:
   - connection between `uba_user` and `org_employee` forms, which includes:
     - auto add new users into organizational structure (`org_employee`) if ORG model enabled 

@@ -1,5 +1,6 @@
 {
   "caption": "Sociale status",
+  "captionSingular": "Sociale status",
   "description": "Woordenboek van sociale status",
   "documentation": "De kaart slaat een lijst op met sociale status voor individuen",
   "attributes": [

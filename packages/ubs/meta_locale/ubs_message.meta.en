@@ -1,5 +1,6 @@
 {
   "caption": "Messages",
+  "captionSingular": "Message",
   "description": "System messages",
   "documentation": "System messages",
   "attributes": [

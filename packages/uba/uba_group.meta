@@ -3,6 +3,7 @@
   "sqlAlias": "gr",
   "cacheType": "None",
   "caption": "User Groups",
+  "captionSingular": "User Group",
   "description": "User groups",
   "descriptionAttribute": "name",
   "mixins": {

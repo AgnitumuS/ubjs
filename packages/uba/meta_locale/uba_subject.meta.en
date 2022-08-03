@@ -1,5 +1,6 @@
 {
   "caption": "Administration Subjects",
+  "captionSingular": "Administration Subject",
   "description": "Administration subjects",
   "attributes": [
     {

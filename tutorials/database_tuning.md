@@ -139,8 +139,22 @@ Download a zip version [Basic Light Package (ZIP)](https://www.oracle.com/databa
 At last with 21.3 while retrieve some BLOB content OCI returns `ORA-01013: user requested cancel of current operation`.
 Please, **use Oracle client 19.x** on production!
 
-Execute under `sudo`:
+#### Setup from repo
 
+ From [Oracle Instant Client downloads](https://www.oracle.com/cis/database/technologies/instant-client.html) page
+ download version of instant client and install it using dnf
+
+ Recommended version is Instant Client Basic Light 19.10
+```shell
+wget https://yum.oracle.com/repo/OracleLinux/OL8/oracle/instantclient/x86_64/getPackage/oracle-instantclient19.10-basiclite-19.10.0.0.0-1.x86_64.rpm
+sudo dnf install ./oracle-instantclient19.10-basiclite-19.10.0.0.0-1.x86_64.rpm
+```
+In case serverName in ubConfig is specified as TNS alias, actual TNS should be defined in
+`/usr/lib/oracle/19.10/client64/lib/network/admin/tnsnames.ora` file
+
+
+#### Manual setup
+Execute under `sudo`:
 For instantClient 19
 ```bash
 unzip instantclient-basiclite-linux.x64-19.6.0.0.0dbru.zip

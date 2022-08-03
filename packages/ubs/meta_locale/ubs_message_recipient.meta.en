@@ -1,5 +1,6 @@
 {
   "caption": "Message Recipients",
+  "captionSingular": "Message Recipient",
   "description": "System messages recipients",
   "documentation": "System messages recipient",
   "attributes": [

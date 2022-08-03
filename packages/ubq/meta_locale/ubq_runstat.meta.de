@@ -1,5 +1,6 @@
 {
   "caption": "Ausführungsstatistik des Schedulers",
+  "captionSingular": "Scheduler-Startstatistiken",
   "description": "Ausführungsstatistik des Schedulers",
   "attributes": [
     {

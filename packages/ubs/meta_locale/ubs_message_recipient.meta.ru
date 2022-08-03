@@ -1,5 +1,6 @@
 {
   "caption": "Получатели сообщений",
+  "captionSingular": "Получатель сообщений",
   "description": "Получатели сообщений",
   "documentation": "Получатели сообщений",
   "attributes": [

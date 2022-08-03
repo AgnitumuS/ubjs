@@ -1,5 +1,6 @@
 {
   "caption": "Messages Queue",
+  "captionSingular": "Queue Item",
   "description": "Messages queue",
   "attributes": [
     {

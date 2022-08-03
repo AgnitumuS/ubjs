@@ -1,5 +1,6 @@
 {
   "caption": "Medewerkers van interne organisaties",
+  "captionSingular": "Medewerker van een interne organisatie",
   "description": "Lijst met medewerkers van interne organisaties",
   "documentation": "Dit woordenboek bevat een lijst met afdelingen. Werknemer is toegewezen aan stafeenheden in de entiteit org_employeeonstaff",
   "attributes": [

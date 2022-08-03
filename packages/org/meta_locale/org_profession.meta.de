@@ -1,5 +1,6 @@
 {
   "caption": "Positionen",
+  "captionSingular": "Position",
   "description": "Positionsliste",
   "attributes": [
     {

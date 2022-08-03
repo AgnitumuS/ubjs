@@ -1,5 +1,6 @@
 {
   "caption": "Ярлики",
+  "captionSingular": "Ярлик",
   "description": "Ярлики на запуск ф-и",
   "attributes": [
     {

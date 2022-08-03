@@ -1,5 +1,6 @@
 {
   "caption": "Postleitzahlen",
+  "captionSingular": "Postleitzahl",
   "description": "Postleitzahlen",
   "attributes": [
     {

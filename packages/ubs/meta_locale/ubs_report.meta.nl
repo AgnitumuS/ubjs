@@ -1,5 +1,6 @@
 {
   "caption": "Rapportsjablonen",
+  "captionSingular": "მოხსენების შაბლონი",
   "description": "Rapportsjablonen",
   "attributes": [
     {

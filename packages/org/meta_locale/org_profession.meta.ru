@@ -1,5 +1,6 @@
 {
   "caption": "Должности",
+  "captionSingular": "Должность",
   "description": "Справочник должностей",
   "attributes": [
     {

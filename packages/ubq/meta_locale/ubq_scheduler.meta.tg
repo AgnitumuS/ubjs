@@ -1,5 +1,6 @@
 ﻿{
     "caption": "Нақшакашҳои вазифаҳо",
+    "captionSingular": "Нақшаи вазифа",
     "description": "Вазифаҳои банақшагирифташуда",
     "attributes": [
         {

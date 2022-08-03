@@ -1,5 +1,6 @@
 {
   "caption": "Physical Persons",
+  "captionSingular": "Physical Person",
   "description": "Physical persons dictionary",
   "documentation": "The directory stores a list of persons (physical persons)",
   "connectionName": "",

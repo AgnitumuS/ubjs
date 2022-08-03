@@ -1,5 +1,6 @@
 {
   "caption": "User Role Membership",
+  "captionSingular": "The role is assigned to the user",
   "description": "Roles assigned to Users",
   "connectionName": "",
   "sqlAlias": "usrole",

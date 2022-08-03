@@ -1,5 +1,6 @@
 ﻿{
     "caption": "Серверний кеш",
+    "captionSingular": "Серверний кеш",
     "description": "Глобальний кеш серверу",
     "attributes": [
         {

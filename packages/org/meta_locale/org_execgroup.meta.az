@@ -1,5 +1,6 @@
 ﻿{
   "caption": "İcraçı qrupları",
+  "captionSingular": "İfaçılar qrupu",
   "description": "Tapşırıqlar üçün icraçı qruplarının sorğu kitabçası",
   "attributes": [
     {

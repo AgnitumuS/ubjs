@@ -1,5 +1,6 @@
 {
   "caption": "antrian pesan",
+  "captionSingular": "Item antrian",
   "description": "antrian pesan",
   "attributes": [
     {

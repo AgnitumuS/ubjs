@@ -1,5 +1,6 @@
 {
   "caption": "Vəzifələr",
+  "captionSingular": "Vəzifə",
   "description": "Vəzifələr üzrə sorğu kitabçası",
   "attributes": [
     {

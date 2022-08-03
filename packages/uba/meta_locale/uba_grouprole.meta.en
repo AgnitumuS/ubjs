@@ -1,5 +1,6 @@
 {
   "caption": "Group Roles",
+  "captionSingular": "The role of the group",
   "description": "Roles assigned to groups",
   "attributes": [
     {

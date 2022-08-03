@@ -1,5 +1,6 @@
 {
   "caption": "Daten-Audit",
+  "captionSingular": "Daten-Audit",
   "description": "Datenänderungen Audit Trail",
   "documentation": "Alle DML-Anweisungen für Entität mit Mixin 'audit' werden hier protokolliert",
   "attributes": [

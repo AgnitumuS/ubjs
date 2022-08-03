@@ -1,5 +1,6 @@
 {
   "caption": "Registration Key Counter",
+  "captionSingular": "Registration key counter",
   "description": "Registration key counter",
   "attributes": [
     {

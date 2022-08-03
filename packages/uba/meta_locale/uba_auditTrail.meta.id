@@ -1,5 +1,6 @@
 {
   "caption": "Audit",
+  "captionSingular": "Audit",
   "description": "Audit",
   "attributes": [
     {

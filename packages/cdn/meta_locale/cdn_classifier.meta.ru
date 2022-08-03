@@ -1,5 +1,6 @@
 {
   "caption": "Классификаторы",
+  "captionSingular": "Классификатор",
   "attributes": [
     {
       "name": "code",

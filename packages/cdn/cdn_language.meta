@@ -1,5 +1,6 @@
 {
   "caption": "Language",
+  "captionSingular": "Language",
   "description": "Languages directory according to ISO-639-1",
   "connectionName": "",
   "sqlAlias": "cdnLng",

@@ -1,9 +1,9 @@
 {
- "isDefault": false,
- "entity": "org_employee",
+ "description": null,
+ "caption": null,
  "formType": "auto",
- "caption": "orgEmployee",
- "description": "orgEmployee",
- "formDef": "{\"fName\":\"org_employee-fm.def\",\"origName\":\"org_employee-fm.def\",\"ct\":\"text/javascript; charset=UTF-8\",\"size\":6425,\"md5\":\"bce33eacf21a419be3d5ce5b722be6ef\"}",
- "formCode": "{\"fName\":\"org_employee-fm.js\",\"origName\":\"org_employee-fm.js\",\"ct\":\"text/javascript; charset=UTF-8\",\"size\":1719,\"md5\":\"e65629018161800593081ee449aed21f\"}"
+ "formDef": "org_employee-fm.def",
+ "formCode": "org_employee-fm.js",
+ "entity": "org_employee",
+ "isDefault": false
 }

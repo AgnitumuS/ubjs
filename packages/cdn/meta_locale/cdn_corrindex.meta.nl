@@ -1,5 +1,6 @@
 {
   "caption": "Correspondentenindexen",
+  "captionSingular": "Correspondentenindex",
   "description": "Kaart van correspondentenindexen",
   "attributes": [
     {

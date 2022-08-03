@@ -1,5 +1,6 @@
 {
   "caption": "peran pengguna",
+  "captionSingular": "Peran diberikan kepada pengguna",
   "description": "Peran ditugaskan untuk pengguna",
   "attributes": [
     {

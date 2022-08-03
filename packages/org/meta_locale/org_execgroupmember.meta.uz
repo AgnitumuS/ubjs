@@ -1,5 +1,6 @@
 {
   "caption": "Ijrochilar guruhlari uchun ijrochilar",
+  "captionSingular": "Rassom guruhi uchun rassom",
   "description": "Guruhga bog'langan va guruh qo'shganda rezolyutsiyalarda ijrochilar uchun ishlatiladigan ijrochilar",
   "attributes": [
     {

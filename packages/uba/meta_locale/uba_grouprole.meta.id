@@ -1,5 +1,6 @@
 {
   "caption": "peran kelompok",
+  "captionSingular": "Grup Aturan",
   "description": "Peran ditugaskan untuk kelompok",
   "attributes": [
     {

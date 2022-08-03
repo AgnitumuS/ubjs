@@ -1,5 +1,6 @@
 {
   "caption": "Personaleinheiten",
+  "captionSingular": "Stabseinheit",
   "description": "Verzeichnis der Personaleinheiten",
   "documentation": "Wörterbuch enthält Liste der Personaleinheiten. Jede Personaleinheit verlinkt mit org_unit durch Unity Mixin",
   "attributes": [

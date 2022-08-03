@@ -1,5 +1,6 @@
 {
   "caption": "Vereffeningsrekeningen",
+  "captionSingular": "Zichtrekening van de tegenpartij",
   "description": "Vereffeningsrekeningen van de organisatie",
   "attributes": [
     {

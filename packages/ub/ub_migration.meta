@@ -1,5 +1,6 @@
 {
   "caption": "Applied Migrations",
+  "captionSingular": "Applied Migration",
   "description": "Migration scripts what applied to the current application",
   "connectionName": "",
   "descriptionAttribute": "filePath",

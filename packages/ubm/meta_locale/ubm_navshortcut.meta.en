@@ -1,5 +1,6 @@
 {
   "caption": "Shortcuts",
+  "captionSingular": "Shortcut",
   "description": "Metadata for build navbars",
   "attributes": [
     {

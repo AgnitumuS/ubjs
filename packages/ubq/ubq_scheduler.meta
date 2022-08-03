@@ -1,5 +1,6 @@
 {
   "caption": "Schedulers",
+  "captionSingular": "Scheduler",
   "description": "Scheduled jobs",
   "cacheType": "None",
   "dsType": "Virtual",

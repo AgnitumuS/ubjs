@@ -1,5 +1,6 @@
 {
   "caption": "Settlement Accounts",
+  "captionSingular": "Current account of the counterparty",
   "description": "Organization's settlement accounts dictionary",
   "connectionName": "",
   "sqlAlias": "orgacc",

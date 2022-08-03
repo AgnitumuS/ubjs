@@ -1,5 +1,6 @@
 {
   "caption": "Регіони",
+  "captionSingular": "Регіон",
   "description": "Довідник регіонів",
   "attributes": [
     {

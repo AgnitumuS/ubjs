@@ -1,5 +1,6 @@
 {
   "caption": "Qruplarda istifadəçi üzvlük",
+  "captionSingular": "İstifadəçinin qrupa daxil olması",
   "attributes": [
     {
       "name": "userID",

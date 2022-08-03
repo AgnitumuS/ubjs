@@ -1,5 +1,6 @@
 {
   "caption": "postcode's",
+  "captionSingular": "Postcode",
   "description": "Postcode's",
   "attributes": [
     {
