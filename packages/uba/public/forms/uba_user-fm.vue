@@ -43,23 +43,13 @@
           :label="$ut('mainSettings')"
         >
           <u-grid
-            class="main-settings"
             :max-width="400"
-            style="max-width: 1200px;"
-            template-columns="3fr 3fr 2fr"
-            template-rows="1fr 1fr 1fr"
+            style="max-width: 800px;"
+            :columns="2"
           >
             <u-auto-field attribute-name="firstName" :required="addToOrgStructure"/>
 
             <u-auto-field attribute-name="lastName" :required="addToOrgStructure"/>
-            <u-auto-field
-              attribute-name="avatar"
-              force-cmp="u-file"
-              :preview-mode="{ height: 200, width: 200}"
-              :remove-default-buttons="['webcam', 'scan', 'scanSettings']"
-              :before-set-document="validateFile"
-              class="avatar"
-            />
             <u-auto-field attribute-name="fullName" v-model="fullName" :required="addToOrgStructure"/>
             <u-auto-field attribute-name="name" required/>
             <u-auto-field attribute-name="email"/>
@@ -81,30 +71,6 @@
               />
             </u-form-row>
 
-            <u-form-row
-              :label="$ut('roles')"
-              class="roles"
-            >
-              <u-select-collection
-                associated-attr="roleID"
-                entity-name="uba_userrole"
-                collection-name="userRoles"
-                clearable
-              />
-            </u-form-row>
-
-            <u-form-row
-              :label="$ut('groups')"
-              class="groups"
-              style="{width: '800px'}"
-            >
-              <u-select-collection
-                associated-attr="groupID"
-                entity-name="uba_usergroup"
-                collection-name="userGroups"
-                clearable
-              />
-            </u-form-row>
 
             <u-auto-field
               attribute-name="disabled"
@@ -112,7 +78,7 @@
               force-cmp="el-switch"
               :max-width="400"
               :readonly="!isSupervisor"
-              class="slider"
+              :label-width="200"
             />
             <u-auto-field
               attribute-name="isPending"
@@ -120,12 +86,12 @@
               force-cmp="el-switch"
               :max-width="400"
               :readonly="!isSupervisor"
-              class="slider"
+              :label-width="200"
             />
             <u-form-row
               :label="$ut('addToOrgStructure')"
               label-position="right"
-              class="slider"
+              :label-width="200"
               v-if="isOrgEnabled"
             >
               <el-switch
@@ -135,6 +101,36 @@
               </el-switch>
             </u-form-row>
           </u-grid>
+
+          <u-form-row
+            :label="$ut('roles')"
+          >
+            <u-select-collection
+              associated-attr="roleID"
+              entity-name="uba_userrole"
+              collection-name="userRoles"
+              clearable
+            />
+          </u-form-row>
+
+          <u-form-row
+            :label="$ut('groups')"
+          >
+            <u-select-collection
+              associated-attr="groupID"
+              entity-name="uba_usergroup"
+              collection-name="userGroups"
+              clearable
+            />
+          </u-form-row>
+
+          <u-auto-field
+            attribute-name="avatar"
+            force-cmp="u-file"
+            preview-mode
+            :remove-default-buttons="['webcam', 'scan', 'scanSettings']"
+            :before-set-document="validateFile"
+          />
         </el-tab-pane>
 
         <el-tab-pane
@@ -528,35 +524,3 @@ module.exports.default = {
 
 }
 </script>
-
-<style>
-.slider .u-form-row__label {
-  width: auto !important;
-  min-width: auto !important;
-}
-
-.main-settings {
-  grid-template-areas:
-    ". . avatar"
-    ". . avatar"
-    ". . avatar"
-    ". . avatar"
-    "roles roles avatar"
-    "groups groups avatar"
-    ". . .";
-}
-
-.avatar {
-  grid-area: avatar;
-}
-
-.roles {
-  grid-area: roles;
-  max-width: calc(1200px * 0.75 - 40px) !important;
-}
-
-.groups {
-  grid-area: groups;
-  max-width: calc(1200px * 0.75 - 40px) !important;
-}
-</style>
