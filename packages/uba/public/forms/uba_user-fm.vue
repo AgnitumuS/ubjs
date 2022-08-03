@@ -17,7 +17,6 @@
       </template>
 
       <template v-slot:right>
-        <indicator-pane/>
         <el-tag
           v-if="pending"
           type="warning"
@@ -323,10 +322,6 @@ module.exports.mount = (cfg) => {
 
 module.exports.default = {
   name: 'UbaUser',
-
-  components: {
-    IndicatorPane: require('./controls/indicator-pane.vue').default
-  },
 
   data () {
     return {
