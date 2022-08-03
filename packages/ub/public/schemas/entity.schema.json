@@ -89,7 +89,7 @@
                     "allowNull": {
                         "type": "boolean",
                         "default": true,
-                        "description": "Server generates `not null` check constraint in the database. Client(UI) checks this field is mandatory"
+                        "description": "Server generates `not null` check constraint in the database. Client(UI) checks this field is mandatory. For attributes of type `Boolean` not null constraint ALWAYS added"
                     },
                     "isUnique": {
                         "type": "boolean",
@@ -112,7 +112,7 @@
                     },
                     "defaultValue": {
                         "type": "string",
-                        "description": "Value of attribute by default. Server generates DDL: `DEFAULT defaultValue` in database. For a DateTime attributes macros 'currentDate' & 'maxDate' can be used"
+                        "description": "Value of attribute by default. Server generates DDL: `DEFAULT defaultValue` in database. For a DateTime attributes macros 'currentDate' & 'maxDate' can be used, for `Boolean` attributes server force defaultValue to '0'"
                     },
                     "customSettings": {
                         "type": "object",

@@ -88,9 +88,7 @@
     {
       "name": "booleanColumn",
       "dataType": "Boolean",
-      "caption": "Test boolean column",
-      "allowNull": true,
-      "defaultValue": "0"
+      "caption": "Test boolean column"
     },
     {
       "name": "jsonColumn",

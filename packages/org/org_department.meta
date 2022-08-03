@@ -100,8 +100,7 @@
       "name": "isClerical",
       "dataType": "Boolean",
       "caption": "Clerical?",
-      "description": "Clerical unit mark",
-      "defaultValue": "0"
+      "description": "Clerical unit mark"
     },
     {
       "name": "caption",

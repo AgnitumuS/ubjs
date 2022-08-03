@@ -36,9 +36,7 @@
     {
       "name": "isFolder",
       "dataType": "Boolean",
-      "caption": "Is this folder?",
-      "allowNull": false,
-      "defaultValue": "0"
+      "caption": "Is this folder?"
     },
     {
       "name": "caption",
@@ -57,18 +55,14 @@
       "name": "inWindow",
       "dataType": "Boolean",
       "caption": "In new window",
-      "description": "Display command result in new window or inside panel",
-      "allowNull": false,
-      "defaultValue": "0"
+      "description": "Display command result in new window or inside panel"
     },
     {
       "name": "isCollapsed",
       "dataType": "Boolean",
       "caption": "Collapsed",
       "description": "Show collapsed at the first start",
-      "documentation": "It make sense if isFolder = true",
-      "allowNull": false,
-      "defaultValue": "0"
+      "documentation": "It make sense if isFolder = true"
     },
     {
       "name": "displayOrder",

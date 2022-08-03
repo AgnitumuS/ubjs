@@ -84,9 +84,7 @@
       "dataType": "Boolean",
       "caption": "Is default",
       "description": "Is this is default entity form",
-      "documentation": "On AdminUI execution of `doCommand.showForm` without passing a form code as a parameter client seek for form for entity, and if exist > 1 form - form with isDefault=true is selected",
-      "allowNull": false,
-      "defaultValue": "0"
+      "documentation": "On AdminUI execution of `doCommand.showForm` without passing a form code as a parameter client seek for form for entity, and if exist > 1 form - form with isDefault=true is selected"
     }
   ],
   "mixins": {

@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Deprecated
 
 ### Removed
+- for attributes of type `Boolean` removed `allowNull: false` and `defaultValue` - not needed anymore
 
 ### Fixed
 
