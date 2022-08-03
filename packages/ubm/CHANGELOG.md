@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Added captionSingular for all *.meta and *.meta.lang
 
 ### Changed
+- use `u-checkbox` instead of el-switch on `ubm_navshortcut` form
 
 ### Deprecated
 
