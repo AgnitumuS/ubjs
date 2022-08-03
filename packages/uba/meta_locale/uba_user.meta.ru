@@ -71,10 +71,6 @@
             "name": "lastPasswordChangeDate",
             "caption": "Дата последнего изменения пароля",
             "description": "Дата последнего изменения пароля"
-        },
-        {
-            "name": "trustedIP",
-            "caption": "Доверяемые IP"
         }
     ]
 }
