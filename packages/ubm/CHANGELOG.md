@@ -6,17 +6,24 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+## [5.23.10] - 2022-08-04
+### Added
 - Added captionSingular for all *.meta and *.meta.lang
 
 ### Changed
 - use `u-checkbox` instead of el-switch on `ubm_navshortcut` form
 
-### Deprecated
-
 ### Removed
 - for attributes of type `Boolean` removed `allowNull: false` and `defaultValue` - not needed anymore
-
-### Fixed
 
 ## [5.23.9] - 2022-07-28
 ## [5.23.8] - 2022-07-26

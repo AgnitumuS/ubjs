@@ -6,13 +6,18 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
-- Added captionSingular for all *.meta and *.meta.lang
+
 ### Changed
 
 ### Deprecated
 
 ### Removed
 
+### Fixed
+
+## [5.23.10] - 2022-08-04
+### Added
+- Added captionSingular for all *.meta and *.meta.lang
 ### Fixed
 - uk locale for ubq_scheduler
 

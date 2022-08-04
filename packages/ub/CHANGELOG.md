@@ -6,6 +6,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+## [5.23.9] - 2022-08-04
+### Added
 - added `captionSingular` for all *.meta and *.meta.lang
 - added new ubConfig parameter `security.dstu.doNotRequireOCSPForCert2`
 
@@ -19,12 +30,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
   "defaultValue": "0"
 ```
   from all meta files.
-
-### Deprecated
-
-### Removed
-
-### Fixed
 
 ## [5.23.8] - 2022-07-28
 ## [5.23.7] - 2022-07-26
