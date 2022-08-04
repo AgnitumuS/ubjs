@@ -35,6 +35,9 @@
     "UnityBase",
     "UB5"
   ],
+  "engines": {
+    "ub": ">=5.22.15"
+  },
   "author": "UnityBase team (https://unitybase.info)",
   "license": "(GPL-3.0 OR LGPL-3.0 OR MPL-2.0)"
 }
