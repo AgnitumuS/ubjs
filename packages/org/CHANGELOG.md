@@ -17,6 +17,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - for attributes of type `Boolean` removed `allowNull: false` and `defaultValue` - not needed anymore
 
 ### Fixed
+- `org_staffunit` form: proper validation for 'position' field
 
 ## [5.23.10] - 2022-07-28
 ### Fixed
