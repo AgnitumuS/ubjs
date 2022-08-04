@@ -33,7 +33,6 @@
 		{
 			"name": "permanent",
 			"dataType": "Boolean",
-			"defaultValue": "0",
 			"caption": "isPermanent",
 			"documentation": "1 on case we do not delete this revision during history rotation"
 		},

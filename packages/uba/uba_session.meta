@@ -50,14 +50,12 @@
       "name": "isPasswordExpired",
       "caption": "Password expired",
       "dataType": "Boolean",
-      "allowNull": false,
       "description": "True in case user need to change password because of expiration"
     },
     {
       "name": "isLocked",
       "caption": "Is locked",
       "dataType": "Boolean",
-      "allowNull": false,
       "description": "Blocked because the maximum number of incorrect password entries has exceeded 'UBA.passwordPolicy.maxInvalidAttempts' parameter value"
     },
     {

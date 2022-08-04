@@ -17,9 +17,7 @@
     {
       "name": "complete",
       "dataType": "Boolean",
-      "caption": "complete",
-      "defaultValue": "0",
-      "allowNull": false
+      "caption": "complete"
     },
     {
       "name": "messageType",
