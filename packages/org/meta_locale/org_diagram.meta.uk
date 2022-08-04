@@ -1,5 +1,6 @@
 {
   "caption": "Органограми",
+  "captionSingular": "Органограма",
   "description": "Діаграми організаційної структури",
   "attributes": [
     {

@@ -83,14 +83,27 @@ Recommended way is to set this parameter per-connection (instead of globally in 
  ```
   
 ### MS SQL server (Linux)
-  Under Linux ODBC is used for SQL Server connection. Connection parameters can be defined either in 
+#### Setup Microsoft ODBC
+  See [Installing the Microsoft ODBC driver for sql server](https://docs.microsoft.com/en-us/sql/connect/odbc/linux-mac/installing-the-microsoft-odbc-driver-for-sql-server?view=sql-server-ver15)
+
+> ODBC Driver setup steps `optional: for bcp and sqlcmd` and `optional: for unixODBC development headers`
+> ARE NOT REQUIRED
+
+> in case `whereis libodbc.so.1` do nor show library path - made a symlink `libodbc.so.2 -> libodbc.so.1`
+
+  After installing Microsoft ODBC connection parameters can be defined in one of the sources: 
     - `/etc/odbcinst.ini` driver settings applied to all databases
     - `/etc/odbc.ini` per database for all users 
     - `~/.odbc.ini` per database for current user
   
   > home catalogue for `unitybase` unit is /opt/unitybase/apps
  
-  For production, we recommend disabling of `Trace` and sets `KeepAlive` to 10 (second) in the `/etc/odbc.ini`. Example:
+  For production, we recommend disabling `Trace` and sets `KeepAlive` to 10 (second) in the `.ini`.
+  
+  In `mssqlODBC 18` *TLS is ON* by default, so eiter valid certificate should be installed on MS SQL server side,
+  or `Encrypt=no` added into connection properties.
+
+Example:
 ```
 [my_production_database]
 Driver=ODBC Driver 17 for SQL Server
@@ -99,6 +112,7 @@ Server=tcp:ms16.unitybase.info,1405
 Database=master
 Trace=No
 KeepAlive=10
+Encrypt=no
 ```
 
 ubConfig section example:
@@ -125,8 +139,22 @@ Download a zip version [Basic Light Package (ZIP)](https://www.oracle.com/databa
 At last with 21.3 while retrieve some BLOB content OCI returns `ORA-01013: user requested cancel of current operation`.
 Please, **use Oracle client 19.x** on production!
 
-Execute under `sudo`:
+#### Setup from repo
 
+ From [Oracle Instant Client downloads](https://www.oracle.com/cis/database/technologies/instant-client.html) page
+ download version of instant client and install it using dnf
+
+ Recommended version is Instant Client Basic Light 19.10
+```shell
+wget https://yum.oracle.com/repo/OracleLinux/OL8/oracle/instantclient/x86_64/getPackage/oracle-instantclient19.10-basiclite-19.10.0.0.0-1.x86_64.rpm
+sudo dnf install ./oracle-instantclient19.10-basiclite-19.10.0.0.0-1.x86_64.rpm
+```
+In case serverName in ubConfig is specified as TNS alias, actual TNS should be defined in
+`/usr/lib/oracle/19.10/client64/lib/network/admin/tnsnames.ora` file
+
+
+#### Manual setup
+Execute under `sudo`:
 For instantClient 19
 ```bash
 unzip instantclient-basiclite-linux.x64-19.6.0.0.0dbru.zip

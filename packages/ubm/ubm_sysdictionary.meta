@@ -3,6 +3,7 @@
   "sqlAlias": "ubmSD",
   "cacheType": "None",
   "caption": "System Dictionaries",
+  "captionSingular": "System Dictionary",
   "descriptionAttribute": "name",
 
   "mixins": {

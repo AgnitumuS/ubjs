@@ -1,5 +1,6 @@
 {
   "caption": "Scheduler",
+  "captionSingular": "Aufgabenplaner",
   "description": "Geplante Aufträge",
   "documentation": "Virtuelle Entität für die Anzeige konfigurierter Scheduler. Scheduler werden in Dateien des Typs MODEL_FOLDER/_schedulers.json abgelegt. Um einen bestehenden Scheduler zu überschreiben, ändern Sie ihn nicht direkt, sondern erstellen Sie einen Scheduler mit demselben Namen in Ihrem Modell",
   "attributes": [

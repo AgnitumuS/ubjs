@@ -603,8 +603,10 @@ inst.run('select', repo.ubql())
   ubql () {
     const req = {
       entity: this.entityName,
-      method: this.method,
-      fieldList: this.fieldList
+      method: this.method
+    }
+    if (this.fieldList.length) {
+      req.fieldList = this.fieldList
     }
     if (this.groupList.length > 0) {
       req.groupList = this.groupList

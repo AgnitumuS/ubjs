@@ -1,5 +1,6 @@
 {
   "caption": "Адміністрування робочих столів",
+  "captionSingular": "Адміністрування робочого столу",
   "attributes": [
     {
       "name": "instanceID",

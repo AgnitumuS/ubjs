@@ -4,6 +4,7 @@
 	"cacheType": "None",
 
 	"caption": "Users",
+	"captionSingular": "User",
 	"descriptionAttribute": "name",
 
 
@@ -93,7 +94,6 @@
 		{
 			"name": "disabled",
 			"dataType": "Boolean",
-			"allowNull": false, "defaultValue": "0",
 			"caption": "Disabled",
 			"restrictions": {
 				"I": "Supervisor",
@@ -105,7 +105,6 @@
 		{
 			"name": "isPending",
 			"dataType": "Boolean",
-			"allowNull": false,"defaultValue": "0",
 			"caption": "Registration pending",
 			"description": "The user is waiting for confirmation of registration",
 			"restrictions": {

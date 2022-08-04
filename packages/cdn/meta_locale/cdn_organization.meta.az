@@ -1,5 +1,6 @@
 {
   "caption": "Kənar təşkilatlar",
+  "captionSingular": "Xarici təşkilat",
   "description": "Kənar təşkilatlar üzrə sorğu kitabçaları",
   "attributes": [
     {

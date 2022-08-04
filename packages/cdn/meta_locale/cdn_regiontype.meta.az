@@ -1,5 +1,6 @@
 {
   "caption": "Region tipləri",
+  "captionSingular": "Bölgənin növü",
   "description": "Region tipləri üzrə sorğu kitabçaları",
   "attributes": [
     {

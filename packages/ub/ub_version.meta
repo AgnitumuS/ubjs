@@ -1,5 +1,6 @@
 {
   "caption": "Models Versions",
+  "captionSingular": "Model Version",
   "description": "Current application models versions. Used by migration hooks to perform custom actions. Updated by the migration scenario after a successful migration",
   "connectionName": "",
   "descriptionAttribute": "modelName",

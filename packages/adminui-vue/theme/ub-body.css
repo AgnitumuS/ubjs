@@ -53,6 +53,8 @@
     --u-gap: 4px;
     --u-gap-double: calc(var(--u-gap) * 2);
     --padding: var(--u-gap-double);
+
+    --u-checkbox-dim: 20px;
 }
 
 ::-webkit-scrollbar {

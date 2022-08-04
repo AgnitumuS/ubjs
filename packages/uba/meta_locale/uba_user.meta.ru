@@ -1,5 +1,6 @@
 ﻿{
     "caption": "Пользователи",
+    "captionSingular": "Пользователь",
     "description": "Пользователи",
     "attributes": [
         {

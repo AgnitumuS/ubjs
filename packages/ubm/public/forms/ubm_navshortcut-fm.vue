@@ -8,10 +8,10 @@
     <u-form-container label-position="top">
       <u-grid :columns="3">
         <u-auto-field attribute-name="code" />
-        <span>
-          <u-auto-field attribute-name="isFolder" style="display: inline-block" force-cmp="el-switch" />
-          <u-auto-field attribute-name="inWindow" style="display: inline-block" force-cmp="el-switch" />
-        </span>
+        <div>
+          <u-auto-field attribute-name="isFolder" style="display: inline-block;" />
+          <u-auto-field attribute-name="inWindow" style="display: inline-block;" />
+        </div>
         <u-form-row label="ID"> {{ ID }} </u-form-row>
         <u-auto-field style="grid-column-start: 1; grid-column-end: 4" attribute-name="caption" />
         <shortcut-tree />

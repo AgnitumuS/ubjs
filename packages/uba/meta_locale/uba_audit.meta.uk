@@ -1,5 +1,6 @@
 {
   "caption": "Аудит безпеки",
+  "captionSingular": "Аудит безпеки",
   "description": "Журнал подій безпеки",
   "attributes": [
     {

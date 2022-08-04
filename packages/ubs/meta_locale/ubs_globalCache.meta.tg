@@ -1,5 +1,6 @@
 ﻿{
     "caption": "Кеши сервер",
+    "captionSingular": "Кеши сервер",
     "description": "Кэши глобалии сервер",
     "attributes": [
         {

@@ -1,5 +1,6 @@
 {
   "caption": "Administratieve eenheid",
+  "captionSingular": "Administratieve eenheid",
   "description": "Administrative eenheid (land, regio, stad)",
   "documentation": "Main parent for countries, regions and cities",
   "attributes": [

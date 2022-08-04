@@ -1,5 +1,6 @@
 ﻿{
     "caption": "Planners",
+    "captionSingular": "Taakplanner",
     "description": "Geplande opdrachten",
     "attributes": [
         {

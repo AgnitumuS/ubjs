@@ -1,5 +1,6 @@
 {
   "caption": "Gebruikerssessies",
+  "captionSingular": "Gebruikerssessie",
   "description": "Logged-in user sessions list",
   "documentation": "Read-only access to server-side sessions list of logged-in users",
   "attributes": [

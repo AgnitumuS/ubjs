@@ -1,5 +1,6 @@
 {
-  "caption": "Access Rights",
+  "caption": "Zugangsrechte",
+  "captionSingular": "Zugangsrecht",
   "description": "Access rights",
   "attributes": [
     {

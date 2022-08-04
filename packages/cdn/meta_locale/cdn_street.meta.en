@@ -1,5 +1,6 @@
 {
   "caption": "List of Streets",
+  "captionSingular": "Street",
   "description": "List of streets",
   "attributes": [
     {

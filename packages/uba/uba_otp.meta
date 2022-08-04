@@ -1,5 +1,6 @@
 {
   "caption": "One-Time Passwords",
+  "captionSingular": "One-Time Password",
   "description": "One-time passwords",
   "connectionName": "",
   "sqlAlias": "otp",

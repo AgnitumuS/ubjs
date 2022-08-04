@@ -1,5 +1,6 @@
 {
   "caption": "Benutzersitzungen",
+  "captionSingular": "Benutzersitzung",
   "description": "Liste der aktiven Benutzersitzungen",
   "documentation": "Schreibgeschützter Zugriff auf die serverseitige Sitzungsliste der angemeldeten Benutzer",
   "attributes": [

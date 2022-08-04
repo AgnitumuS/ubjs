@@ -1,5 +1,6 @@
 {
   "caption": "İş masalarının inzibatlaşdırılması",
+  "captionSingular": "Masa üstü idarəetmə",
   "attributes": [
     {
       "name": "instanceID",

@@ -1,5 +1,6 @@
 {
   "caption": "Abrechnungskonten",
+  "captionSingular": "Girokonto der Organisation",
   "description": "Verrechnungskonten für interne Organisationen",
   "attributes": [
     {

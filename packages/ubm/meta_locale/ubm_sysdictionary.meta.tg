@@ -1,5 +1,6 @@
 {
   "caption": "Луғатҳои системавӣ",
+  "captionSingular": "Луғати системавӣ",
   "attributes": [
     {"name": "code", "caption": "Code"},
     {"name": "name", "caption": "Name"},

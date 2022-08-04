@@ -1,5 +1,6 @@
 {
   "caption": "İstifadəçi qrup",
+  "captionSingular": "Qrupun rolu",
   "description": "İstifadəçiyə təyin edilmiş qrup",
   "attributes": [
     {

@@ -8,6 +8,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
+ - `CustomRepository.ubql()` will not add an empty field list into result - starts from UB@5.22.14 server allow such
+  `QUBLs` for sub-queries, insertion and update. In case of exception `parmeter 'fieldList' not found` please,
+  update server to 5.22.14
 
 ### Deprecated
 

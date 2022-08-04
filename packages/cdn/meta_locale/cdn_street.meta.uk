@@ -1,5 +1,6 @@
 {
   "caption": "Список вулиць",
+  "captionSingular": "Вулиця",
   "description": "Список вулиць",
   "attributes": [
     {

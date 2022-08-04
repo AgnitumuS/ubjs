@@ -1,5 +1,6 @@
 {
   "caption": "Interne afdelingen",
+  "captionSingular": "Interne verdeeldheid",
   "description": "Interne afdelingen",
   "documentation": "Dit woordenboek bevat een lijst met afdelingen. Elke afdeling linkt naar org_unit bij Unity mixin",
   "attributes": [

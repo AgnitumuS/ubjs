@@ -1,5 +1,6 @@
 {
   "caption": "Stadttypen",
+  "captionSingular": "Art der Siedlung",
   "description": "Stadttypenverzeichnis",
   "attributes": [
     {

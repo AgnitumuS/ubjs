@@ -1,5 +1,6 @@
 {
   "caption": "Банковские отделения",
+  "captionSingular": "Банк",
   "description": "Справочник банковских отделений",
   "attributes": [
     {

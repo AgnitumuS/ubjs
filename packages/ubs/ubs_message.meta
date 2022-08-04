@@ -1,5 +1,6 @@
 {
   "caption": "Messages",
+  "captionSingular": "Message",
   "description": "System Messages",
   "connectionName": "",
   "sqlAlias": "msg",
@@ -16,9 +17,7 @@
     {
       "name": "complete",
       "dataType": "Boolean",
-      "caption": "complete",
-      "defaultValue": "0",
-      "allowNull": false
+      "caption": "complete"
     },
     {
       "name": "messageType",

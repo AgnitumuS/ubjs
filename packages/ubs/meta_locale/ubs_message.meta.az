@@ -1,5 +1,6 @@
 {
   "caption": "İsmarışlar",
+  "captionSingular": "İsmarışlar",
   "description": "Sistem ismarışları",
   "documentation": "Системные сообщения",
   "attributes": [

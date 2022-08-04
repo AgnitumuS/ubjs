@@ -1,5 +1,6 @@
 ﻿{
     "caption": "Аудит",
+    "captionSingular": "Аудит",
     "description": "Аудити тағйиротҳо",
     "attributes": [
         {

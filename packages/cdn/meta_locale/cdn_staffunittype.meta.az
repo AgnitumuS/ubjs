@@ -1,5 +1,6 @@
 {
   "caption": "Ştat vahidlərinin tipləri",
+  "captionSingular": "Kadr vahidinin növü",
   "description": "Ştat vahidlərinin tipləri üzrə sorğu kitabçaları",
   "attributes": [
     {

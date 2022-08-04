@@ -1,5 +1,6 @@
 {
   "caption": "Functies",
+  "captionSingular": "Position",
   "description": "Lijst van functies",
   "attributes": [
     {

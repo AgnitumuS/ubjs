@@ -1,5 +1,6 @@
 {
   "caption": "Ролі призначені користувачам",
+  "captionSingular": "Роль призначена користувачу",
   "attributes": [
     {
       "name": "userID",

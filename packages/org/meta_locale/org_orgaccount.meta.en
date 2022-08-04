@@ -1,5 +1,6 @@
 {
   "caption": "Settlement Accounts",
+  "captionSingular": "Settlement Account",
   "description": "Settlement accounts for internal organizations",
   "attributes": [
     {

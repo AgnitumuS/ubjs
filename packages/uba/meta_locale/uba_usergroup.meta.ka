@@ -1,5 +1,6 @@
 ﻿{
     "caption": "მომხმარებლის ჯგუფი",
+    "captionSingular": "მომხმარებლის შესვლა ჯგუფში",
     "attributes": [
         {
             "name": "userID",

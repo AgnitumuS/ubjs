@@ -1,5 +1,6 @@
 {
   "caption": "Kateqoriya",
+  "captionSingular": "Kateqoriya",
   "description": "Kateqoriya",
   "documentation": "Kataloq şəxslər üçün kateqoriyalar siyahısını saklar",
   "attributes": [

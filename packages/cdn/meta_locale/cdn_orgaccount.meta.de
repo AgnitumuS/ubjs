@@ -1,5 +1,6 @@
 {
   "caption": "Abrechnungskonten",
+  "captionSingular": "Girokonto der Gegenpartei",
   "description": "Abrechnungskonten der Organisation",
   "attributes": [
     {

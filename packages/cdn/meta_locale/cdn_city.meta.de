@@ -1,5 +1,6 @@
 {
   "caption": "Städte",
+  "captionSingular": "Siedlung",
   "description": "Städteverzeichnis",
   "attributes": [
     {

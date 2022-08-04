@@ -1,5 +1,6 @@
 {
   "caption": "Beheer van navigatiepaneel",
+  "captionSingular": "Beheer van navigatiepaneel",
   "description": "Beschrijving",
   "attributes": [
     {

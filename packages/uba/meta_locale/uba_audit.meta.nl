@@ -1,5 +1,6 @@
 {
   "caption": "Beveiligingsaudit",
+  "captionSingular": "Beveiligingsaudit",
   "attributes": [
     {
       "name": "entity",

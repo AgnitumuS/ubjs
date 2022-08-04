@@ -1,5 +1,6 @@
 {
   "caption": "Standard Professions",
+  "captionSingular": "Standard Profession",
   "description": "Dictionary of standard professions",
   "attributes": [
     {

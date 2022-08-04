@@ -6,12 +6,15 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+- Added captionSingular for all *.meta and *.meta.lang
 
 ### Changed
+- `org_staffunit` form uses <u-grid> layout with 2 column
 
 ### Deprecated
 
 ### Removed
+- for attributes of type `Boolean` removed `allowNull: false` and `defaultValue` - not needed anymore
 
 ### Fixed
 - `org_staffunit` form: proper validation for 'position' field

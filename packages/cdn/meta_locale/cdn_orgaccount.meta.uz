@@ -1,5 +1,6 @@
 {
   "caption": "Hisob-raqamlar",
+  "captionSingular": "Kontragentning joriy hisobvarag'i",
   "description": "Tashkilotlarning hisob-kitob hisobvaraqlari ma'lumotnomasi",
   "attributes": [
     {

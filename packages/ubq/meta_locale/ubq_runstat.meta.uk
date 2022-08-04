@@ -1,5 +1,6 @@
 ﻿{
     "caption": "Статистика запуску планувальників",
+    "captionSingular": "Статистика запуску планувальника",
     "description": "",
     "attributes": [
         {

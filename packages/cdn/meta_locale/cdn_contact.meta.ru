@@ -1,5 +1,6 @@
 ﻿{
     "caption": "Контакты",
+    "captionSingular": "Контакт",
     "description": "Справочник контактов",
     "attributes": [
         {

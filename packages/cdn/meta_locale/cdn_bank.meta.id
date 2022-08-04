@@ -1,5 +1,6 @@
 {
   "caption": "cabang bank",
+  "captionSingular": "Bank",
   "description": "direktori cabang bank",
   "attributes": [
     {

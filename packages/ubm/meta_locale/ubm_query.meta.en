@@ -1,5 +1,6 @@
 {
   "caption": "Data Queries",
+  "captionSingular": "Data Query",
   "attributes": [
     {"name": "code", "caption": "Code"},
     {"name": "name", "caption": "Name"},

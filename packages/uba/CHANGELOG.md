@@ -6,12 +6,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+- Added captionSingular for all *.meta and *.meta.lang
 
 ### Changed
 
 ### Deprecated
 
 ### Removed
+ - for attributes of type `Boolean` removed `allowNull: false` and `defaultValue` - not needed anymore
 
 ### Fixed
 

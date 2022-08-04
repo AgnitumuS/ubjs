@@ -1,5 +1,6 @@
 {
   "caption": "Regions",
+  "captionSingular": "Region",
   "description": "Regions dictionary",
   "attributes": [
     {

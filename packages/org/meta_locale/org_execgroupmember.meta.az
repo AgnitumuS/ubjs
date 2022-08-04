@@ -1,5 +1,6 @@
 {
   "caption": "İcraçı qrupları üçün icraçılar",
+  "captionSingular": "Rəssamlar qrupunun rəssamı",
   "description": "Qrupa bənd edilən və qrupa əlavə edilərkən dərkənarlarda icraçıların avtomatik doldurulması üçün istifadə edilən icraçılar",
   "attributes": [
     {

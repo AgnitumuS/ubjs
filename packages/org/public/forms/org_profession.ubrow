@@ -1,8 +1,9 @@
 {
- "isDefault": false,
- "entity": "org_profession",
- "formType": "vue",
- "caption": "orgProfession",
  "description": "orgProfession",
- "formCode": "{\"fName\":\"org_profession-fm.vue\",\"origName\":\"org_profession-fm.vue\",\"ct\":\"script/x-vue\",\"size\":1827,\"md5\":\"d30de35058b7b2514def15e853e25d3c\"}"
+ "caption": null,
+ "formType": "vue",
+ "formDef": null,
+ "formCode": "org_profession-fm.vue",
+ "entity": "org_profession",
+ "isDefault": false
 }
