@@ -1,5 +1,6 @@
 {
   "caption": "Kontaktlar turlari",
+  "captionSingular": "Kontakt turi",
   "description": "Aloqa turlari bo'yicha ma'lumot",
   "attributes": [
     {

@@ -1,5 +1,6 @@
 {
   "caption": "Ma'lumotlar bo'yicha so'rovlar",
+  "captionSingular": "Ma'lumotlar so'rovi",
   "attributes": [
     {
       "name": "code",

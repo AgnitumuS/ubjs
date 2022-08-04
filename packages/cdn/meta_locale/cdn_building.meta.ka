@@ -1,5 +1,6 @@
 ﻿{
     "caption": "შენობების ჩამონათვალი",
+    "captionSingular": "შენობა",
     "description": "",
     "attributes": [
         {

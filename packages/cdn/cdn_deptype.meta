@@ -1,5 +1,6 @@
 {
   "caption": "Department Types",
+  "captionSingular": "Department type",
   "description": "Department types dictionary",
   "connectionName": "",
   "sqlAlias": "dept",

@@ -136,11 +136,10 @@ export default {
 }
 
 .u-radio__label::before {
-  --sizeRadio: 16px;
   content: '';
   display: inline-block;
-  width: var(--sizeRadio);
-  height: var(--sizeRadio);
+  width: var(--u-checkbox-dim);
+  height: var(--u-checkbox-dim);
   flex-shrink: 0;
   flex-grow: 0;
   border: 1px solid #adb5bd;

@@ -1,5 +1,6 @@
 {
   "caption": "Валюти",
+  "captionSingular": "Валюта",
   "description": "Довідник валют",
   "attributes": [
     {

@@ -1,5 +1,6 @@
 {
   "caption": "Employees of External Organizations",
+  "captionSingular": "Employee of an external organization",
   "description": "List of employees of external organizations",
   "connectionName": "",
   "sqlAlias": "emp",

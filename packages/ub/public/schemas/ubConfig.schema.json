@@ -613,6 +613,11 @@
               "type": "number",
               "default": 0,
               "description": "timeout in seconds after witch client must change encryption key. 0 - unlimited"
+            },
+            "doNotRequireOCSPForCert2": {
+              "type": "boolean",
+              "default": false,
+              "description": "Skip validation what CERT2 auth signature is in CAdES-X-Long (with OCSP result) format. Insecure but can be used in authonomus systems where client do not have access to TSP/OCSP server"
             }
           }
         },

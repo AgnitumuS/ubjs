@@ -1,5 +1,6 @@
 {
   "caption": "departemen internal",
+  "captionSingular": "Divisi internal",
   "description": "departemen internal",
   "attributes": [
     {

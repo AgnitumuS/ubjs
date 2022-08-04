@@ -1,5 +1,6 @@
 {
   "caption": "Alamat",
+  "captionSingular": "Alamat",
   "description": "direktori alamat",
   "attributes": [
     {

@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.23.10] - 2022-07-28
 ## [5.23.9] - 2022-07-26
 ### Fixed
  - fixed 5.23.8 regression in EntityGridPanel what cause error `me.domainEntity.mixins is undefined`

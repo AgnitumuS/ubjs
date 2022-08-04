@@ -1,5 +1,6 @@
 {
   "caption": "Opdracht met hangende datum",
+  "captionSingular": "Opdracht met hangende datum",
   "description": "Opdracht met hangende datum",
   "attributes": [
     {

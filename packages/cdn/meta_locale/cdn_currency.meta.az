@@ -1,5 +1,6 @@
 {
   "caption": "Valyutalar",
+  "captionSingular": "Valyuta",
   "description": "Valyutalar üzrə sorğu kitabçası",
   "attributes": [
     {

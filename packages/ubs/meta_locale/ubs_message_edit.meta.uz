@@ -1,5 +1,6 @@
 {
   "caption": "Xabarlar",
+  "captionSingular": "Xabarlar",
   "description": "Tizim xabarlari",
   "attributes": [
     {

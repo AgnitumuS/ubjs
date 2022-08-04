@@ -1,5 +1,6 @@
 {
   "caption": "Vazifalarni rejalashtiruvchi",
+  "captionSingular": "Vazifa rejalashtiruvchisi",
   "description": "Rejalashtirilgan vazifalar",
   "attributes": [
     {

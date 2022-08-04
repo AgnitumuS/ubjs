@@ -1,5 +1,6 @@
 {
   "caption": "Системні форми",
+  "captionSingular": "Системна форма",
   "description": "Визначення інтерфейсних форм платформи UnityBase",
   "attributes": [
     {

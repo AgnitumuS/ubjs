@@ -1,5 +1,6 @@
 {
   "caption": "Список домов",
+  "captionSingular": "Дом",
   "description": "Список домов",
   "attributes": [
     {

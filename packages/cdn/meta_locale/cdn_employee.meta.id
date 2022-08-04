@@ -1,5 +1,6 @@
 {
   "caption": "Karyawan organisasi eksternal",
+  "captionSingular": "Karyawan organisasi eksternal",
   "description": "Daftar karyawan organisasi eksternal",
   "attributes": [
     {

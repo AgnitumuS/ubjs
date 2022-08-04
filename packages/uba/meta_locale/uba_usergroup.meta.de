@@ -1,5 +1,6 @@
 {
   "caption": "Mitgliedschaft in der Benutzergruppe",
+  "captionSingular": "Benutzereintrag in die Gruppe",
   "attributes": [
     {
       "name": "userID",

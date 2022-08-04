@@ -1,5 +1,6 @@
 {
   "caption": "Zuweisungen von interner Organisation",
+  "captionSingular": "Angestellter Mitarbeiter",
   "description": "Liste interner Zuweisungen der Organisation",
   "documentation": "Hilfsentität, die angibt, welcher Mitarbeiter in welcher Personaleinheit arbeitet (Funktion). Es gibt auch einen Zuweisungstyp (befristet, unbefristet, Teilzeit usw.)",
   "attributes": [

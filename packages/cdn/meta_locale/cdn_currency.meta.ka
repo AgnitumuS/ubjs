@@ -1,5 +1,6 @@
 ﻿{
     "caption": "ვალუტა",
+    "captionSingular": "ვალუტა",
     "description": "",
     "attributes": [
         {

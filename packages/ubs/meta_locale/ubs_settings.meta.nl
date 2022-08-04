@@ -1,5 +1,6 @@
 {
   "caption": "Systeem instellingen",
+  "captionSingular": "Systeem instellingen",
   "attributes": [
     {
       "name": "settingKey",

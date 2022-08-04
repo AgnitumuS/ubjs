@@ -1,5 +1,6 @@
 {
   "caption": "Aholi punktlarining turlari",
+  "captionSingular": "Turar joy turi",
   "description": "Aholi punkti turlarining ma'lumotnomasi",
   "attributes": [
     {

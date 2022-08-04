@@ -5,6 +5,7 @@
       v-model="currentValue"
       class="u-checkbox--input"
       type="checkbox"
+      v-bind="$attrs"
       :name="checkboxName"
     >
     <label
@@ -103,11 +104,10 @@ export default {
 }
 
 .u-checkbox--input + .u-checkbox__label::before {
-  --sizeCheckbox: 16px;
   content: '';
   display: inline-block;
-  width: var(--sizeCheckbox);
-  height: var(--sizeCheckbox);
+  width: var(--u-checkbox-dim);
+  height: var(--u-checkbox-dim);
   flex-shrink: 0;
   flex-grow: 0;
   border: 1px solid #adb5bd;

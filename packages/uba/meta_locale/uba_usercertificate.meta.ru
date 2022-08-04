@@ -1,5 +1,6 @@
 ﻿{
     "caption": "Сертификаты",
+    "captionSingular": "Сертификат",
     "description": "Сертификаты пользователя",
     "attributes": [
         {

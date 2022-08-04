@@ -1,5 +1,6 @@
 {
   "caption": "Staffunit Types",
+  "captionSingular": "Type of Staffunit",
   "description": "Staffunit types dictionary",
   "connectionName": "",
   "sqlAlias": "stunt",

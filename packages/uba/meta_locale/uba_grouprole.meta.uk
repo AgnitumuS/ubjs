@@ -1,5 +1,6 @@
 {
   "caption": "Ролі груп",
+  "captionSingular": "Роль гурпи",
   "description": "Ролі, призначені групам користувачів",
   "attributes": [
     {

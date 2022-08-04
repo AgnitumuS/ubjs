@@ -1,5 +1,6 @@
 {
   "caption": "Verwaltungssubjekte",
+  "captionSingular": "Gegenstand der Verwaltung",
   "description": "Verwaltungssubjekte",
   "attributes": [
     {

@@ -1,5 +1,6 @@
 {
   "caption": "Administration Subjects",
+  "captionSingular": "Administration Subject",
   "description": "Administration subjects- unity for users and roles",
   "connectionName": "",
   "sqlAlias": "subj",

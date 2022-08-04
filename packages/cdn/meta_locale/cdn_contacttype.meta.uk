@@ -1,5 +1,6 @@
 {
   "caption": "Типи контактів",
+  "captionSingular": "Тип контакту",
   "description": "Довідник типів контактів",
   "attributes": [
     {

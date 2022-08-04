@@ -1,5 +1,6 @@
 {
   "caption": "Мови",
+  "captionSingular": "Мова",
   "attributes": [
     {
       "name": "code",

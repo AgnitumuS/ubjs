@@ -1,5 +1,6 @@
 {
   "caption": "Advanced Security",
+  "captionSingular": "Advanced Security",
   "description": "Advanced security settings",
   "documentation": "For any authentication type add binding of user to IP address. For CERT additionally adds a binding to device fingerprint",
   "attributes": [

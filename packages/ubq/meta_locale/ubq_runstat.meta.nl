@@ -1,5 +1,6 @@
 {
   "caption": "Statistiek voor het draaien van de planner",
+  "captionSingular": "Statistieken lancering planner",
   "description": "Statistiek voor het draaien van de planner",
   "attributes": [
     {

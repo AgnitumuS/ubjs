@@ -1,5 +1,6 @@
 {
   "caption": "Ausführenden-Gruppen",
+  "captionSingular": "Ausführend-Grupp",
   "description": "Liste der typischen Ausführenden-Gruppen für die Ausführenden von Aufgaben",
   "attributes": [
     {

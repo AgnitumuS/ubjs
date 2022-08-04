@@ -1,5 +1,6 @@
 {
   "caption": "Persoonsclassificatie",
+  "captionSingular": "Persoonsclassificatie",
   "description": "Persoonsclassificatie",
   "documentation": "Interne persoonsclassificatie",
   "attributes": [

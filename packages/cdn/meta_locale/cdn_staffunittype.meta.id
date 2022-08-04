@@ -1,5 +1,6 @@
 {
   "caption": "jenis Staffunit",
+  "captionSingular": "Jenis unit staf",
   "description": "jenis Staffunit kamus",
   "attributes": [
     {

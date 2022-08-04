@@ -1,5 +1,6 @@
 {
   "caption": "ER diagramları",
+  "captionSingular": "ER diaqramı",
   "description": "Maddələrin diaqramları",
   "attributes": [
     {

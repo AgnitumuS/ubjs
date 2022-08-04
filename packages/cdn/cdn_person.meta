@@ -1,5 +1,6 @@
 {
   "caption": "Physical Persons",
+  "captionSingular": "Physical Person",
   "description": "Physical persons dictionary",
   "documentation": "The directory stores a list of persons (physical persons)",
   "connectionName": "",
@@ -265,8 +266,7 @@
       "name": "resident",
       "dataType": "Boolean",
       "caption": "Resident?",
-      "description": "Is person a resident of our country",
-      "defaultValue": "0"
+      "description": "Is person a resident of our country"
     },
     {
       "name": "classID",

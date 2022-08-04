@@ -1,5 +1,6 @@
 {
   "caption": "ER Diagrams",
+  "captionSingular": "ER Diagram",
   "description": "Entity relation diagrams",
   "dsType": "Virtual",
   "cacheType": "SessionEntity",

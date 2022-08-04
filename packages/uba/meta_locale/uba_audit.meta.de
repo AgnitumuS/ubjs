@@ -1,5 +1,6 @@
 {
   "caption": "Sicherheitsüberprüfung",
+  "captionSingular": "Sicherheitsüberprüfung",
   "description": "Überprüfung von Sicherheitsänderungen",
   "documentation": "Alle Änderungen an UBA-Modell-Entitäten (mit Ausnahme von uba_als & uba_subject) + Ereignisse im Zusammenhang mit der Benutzeranmeldung werden hier protokolliert",
   "attributes": [

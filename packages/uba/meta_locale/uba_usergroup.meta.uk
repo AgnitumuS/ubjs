@@ -1,5 +1,6 @@
 {
   "caption": "Входження користувачів в групи",
+  "captionSingular": "Входження користувача в групу",
   "attributes": [
     {
       "name": "userID",

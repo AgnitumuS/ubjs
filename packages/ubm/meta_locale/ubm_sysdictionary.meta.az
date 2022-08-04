@@ -1,5 +1,6 @@
 {
   "caption": "Sistem soraqçaları",
+  "captionSingular": "Sistem lüğəti",
   "attributes": [
     {"name": "code", "caption": "Kod"},
     {"name": "name", "caption": "Ad"},

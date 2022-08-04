@@ -1,5 +1,6 @@
 {
   "caption": "Запити даних",
+  "captionSingular": "Запит даних",
   "attributes": [
     {"name": "code", "caption": "Код"},
     {"name": "name", "caption": "Найменування"},

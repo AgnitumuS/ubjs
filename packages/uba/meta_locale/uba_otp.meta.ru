@@ -1,5 +1,6 @@
 {
   "caption": "Одноразовые пароли",
+  "captionSingular": "Одноразовый пароль",
   "description": "Одноразовые пароли",
   "attributes": [
     {

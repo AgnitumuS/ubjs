@@ -6,8 +6,19 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+- added `captionSingular` for all *.meta and *.meta.lang
+- added new ubConfig parameter `security.dstu.doNotRequireOCSPForCert2`
 
 ### Changed
+- logic for setting attribute defaults is moved from native into `_hookMetadataTransformation.js`:
+    - for 'Text', 'Document', 'Many' attributes force `allowSort = false`
+- for `Boolean` attributes force `defaultValue = '0'`.
+  After upgrade to this version it's recommended to remove  
+```
+  "allowNull": true/false,
+  "defaultValue": "0"
+```
+  from all meta files.
 
 ### Deprecated
 
@@ -15,6 +26,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.23.8] - 2022-07-28
 ## [5.23.7] - 2022-07-26
 ### Fixed
  - fixed regression for `aclRlsStorage` mixin when entity used from server side as `store.run('insert', {..})`

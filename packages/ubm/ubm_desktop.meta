@@ -1,5 +1,6 @@
 ﻿{
   "caption": "Desktops",
+  "captionSingular": "Desktop",
   "description": "Application desktops",
   "connectionName": "",
   "sqlAlias": "desk",
@@ -53,9 +54,7 @@
     {
       "name": "isDefault",
       "dataType": "Boolean",
-      "caption": "Dy default?",
-      "allowNull": false,
-      "defaultValue": "0"
+      "caption": "Dy default?"
     },
     {
       "name": "displayOrder",

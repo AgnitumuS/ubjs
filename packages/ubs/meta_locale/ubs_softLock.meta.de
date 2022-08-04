@@ -1,5 +1,6 @@
 {
   "caption": "Aktive Sperren",
+  "captionSingular": "Aktives Blockieren",
   "description": "Aktive pessimistische Sperren",
   "attributes": [
     {

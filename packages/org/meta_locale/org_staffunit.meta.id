@@ -1,5 +1,6 @@
 {
   "caption": "unit staf",
+  "captionSingular": "unit staf",
   "description": "Daftar unit staf",
   "attributes": [
     {

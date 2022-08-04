@@ -1,5 +1,6 @@
 {
   "caption": "Regio's",
+  "captionSingular": "Regio",
   "description": "Woordenboek van regio's",
   "attributes": [
     {

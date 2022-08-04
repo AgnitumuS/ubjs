@@ -1,5 +1,6 @@
 {
   "caption": "Erweiterte Sicherheit",
+  "captionSingular": "Erweiterte Sicherheit",
   "description": "Erweiterte Sicherheitseinstellungen",
   "documentation": "Für jeden Authentifizierungstyp eine Bindung des Benutzers an die IP-Adresse hinzufügen. Denn CERT fügt zusätzlich eine Bindung an den Geräte-Fingerabdruck hinzu",
   "attributes": [

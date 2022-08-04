@@ -1,5 +1,6 @@
 {
   "caption": "Message",
+  "captionSingular": "Message",
   "description": "System messages",
   "connectionName": "",
   "sqlAlias": "msgEdit",
@@ -16,9 +17,7 @@
     {
       "name": "complete",
       "dataType": "Boolean",
-      "caption": "Ready to send",
-      "defaultValue": "0",
-      "allowNull": false
+      "caption": "Ready to send"
     },
     {
       "name": "messageType",

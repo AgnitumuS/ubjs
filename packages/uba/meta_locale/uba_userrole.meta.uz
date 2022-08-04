@@ -1,5 +1,6 @@
 {
   "caption": "Foydalanuvchi rollari",
+  "captionSingular": "Rol foydalanuvchiga tayinlangan",
   "description": "Foydalanuvchiga tayinlangan rollar",
   "attributes": [
     {

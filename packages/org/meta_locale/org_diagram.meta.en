@@ -1,5 +1,6 @@
 {
   "caption": "Organizational Chart",
+  "captionSingular": "Organizational Chart",
   "description": "Organizational Chart Diagrams",
   "attributes": [
     {

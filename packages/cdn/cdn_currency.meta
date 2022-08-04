@@ -1,5 +1,6 @@
 {
     "caption": "Currencies",
+    "captionSingular": "Currency",
     "description": "Currencies dictionary according to ISO 4217",
     "connectionName": "",
     "sqlAlias": "curr",

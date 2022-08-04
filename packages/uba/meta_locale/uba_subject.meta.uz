@@ -1,5 +1,6 @@
 {
   "caption": "Ma'muriyat boshqaruv subyektlari",
+  "captionSingular": "Boshqaruv predmeti",
   "description": "Ma'muriyat subyektlari - rollar va foydalanuvchilarni birlashtiradi",
   "attributes": [
     {

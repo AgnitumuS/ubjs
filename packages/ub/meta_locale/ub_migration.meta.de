@@ -1,5 +1,6 @@
 {
   "caption": "Angewandte Migrationen",
+  "captionSingular": "Angewandte Migration",
   "description": "Migrationsskripte, die auf die aktuelle Anwendung angewandt wurden",
   "attributes": [
     {

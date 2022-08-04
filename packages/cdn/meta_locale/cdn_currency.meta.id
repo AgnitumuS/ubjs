@@ -1,5 +1,6 @@
 ﻿{
     "caption": "mata uang",
+    "captionSingular": "Mata uang",
     "description": "mata uang kamus",
     "attributes": {
         "intCode": {

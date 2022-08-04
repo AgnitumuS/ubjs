@@ -1,5 +1,6 @@
 {
   "caption": "Berichtenwachtrij",
+  "captionSingular": "Wachtrij-item",
   "description": "Berichtenwachtrij",
   "attributes": [
     {

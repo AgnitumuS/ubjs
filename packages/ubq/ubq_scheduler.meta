@@ -1,5 +1,6 @@
 {
   "caption": "Schedulers",
+  "captionSingular": "Scheduler",
   "description": "Scheduled jobs",
   "cacheType": "None",
   "dsType": "Virtual",
@@ -66,8 +67,7 @@
       "dataType": "Boolean",
       "caption": "Singleton",
       "description": "If `1` - only single instance of a running job is allowed",
-      "defaultValue": "1",
-      "allowNull": false
+      "defaultValue": "1"
     },
     {
       "name": "runAs",
@@ -88,9 +88,7 @@
       "name": "overridden",
       "dataType": "Boolean",
       "caption": "Overridden",
-      "description": "Indicate original job is overridden by other models",
-      "defaultValue": "0",
-      "allowNull": false
+      "description": "Indicate original job is overridden by other models"
     },
     {
       "name": "originalModel",
