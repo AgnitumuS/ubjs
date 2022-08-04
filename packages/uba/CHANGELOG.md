@@ -8,11 +8,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 - Added captionSingular for all *.meta and *.meta.lang
 - `uba_group` form - multiselect for users in group
+
 ### Changed
 
 ### Deprecated
 
 ### Removed
+ - for attributes of type `Boolean` removed `allowNull: false` and `defaultValue` - not needed anymore
 
 ### Fixed
 - `uba_group` form - fix unnecessary table refreshes

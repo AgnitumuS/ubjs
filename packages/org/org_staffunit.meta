@@ -133,9 +133,7 @@
       "name": "isBoss",
       "dataType": "Boolean",
       "caption": "Boss",
-      "description": "Boss",
-      "allowNull": true,
-      "defaultValue": "0"
+      "description": "Boss"
     }
   ],
   "mixins": {

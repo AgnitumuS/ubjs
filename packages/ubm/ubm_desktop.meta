@@ -54,9 +54,7 @@
     {
       "name": "isDefault",
       "dataType": "Boolean",
-      "caption": "Dy default?",
-      "allowNull": false,
-      "defaultValue": "0"
+      "caption": "Dy default?"
     },
     {
       "name": "displayOrder",

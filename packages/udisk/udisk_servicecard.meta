@@ -43,9 +43,7 @@
       "name": "isFolder",
       "dataType": "Boolean",
       "caption": "Is folder",
-      "description": "Is folder",
-      "allowNull": false,
-      "defaultValue": "0"
+      "description": "Is folder"
     },
     {
       "name": "ownerID",
@@ -74,9 +72,7 @@
       "name": "isTemporary",
       "dataType": "Boolean",
       "caption": "Temporary",
-      "description": "Temporary",
-      "allowNull": true,
-      "defaultValue": "0"
+      "description": "Temporary"
     },
     {
       "name": "fileData",

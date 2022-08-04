@@ -48,9 +48,7 @@
       "name": "isGovAuthority",
       "dataType": "Boolean",
       "caption": "Gov. authority",
-      "description": "Sign, that the organization of this type is a government authority",
-      "allowNull": false,
-      "defaultValue": "0"
+      "description": "Sign, that the organization of this type is a government authority"
     }
   ],
   "mixins": {

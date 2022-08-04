@@ -56,7 +56,7 @@ Table below shows a default color variables values:
   --l-background-inverse: 100%;
 }
 ```
-> **Important** css variables don\'n affect the colors of the element-ui components
+> **Important** css variables don\'t affect the colors of the element-ui components
 
 ## Icons
 AdminUI provides a three different sets of icons as an iconic font + css classes:
