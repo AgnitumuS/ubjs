@@ -13,7 +13,6 @@ let GROUP_IDS_LIMIT
 const GROUP_CODES_EXCLUDE = App.serverConfig.security.excludeGroups
 /** ID of groups from GROUP_CODES_EXCLUDE if any */
 let GROUP_IDS_EXCLUDE
-const FEATURE_NEW_SESSION_MANAGER = (base.ubVersionNum >= 5017000)
 
 // cache for lazy session props
 let _userID = UBA_COMMON.USERS.ANONYMOUS.ID
@@ -58,18 +57,14 @@ Object.assign(Session, EventEmitter.prototype)
 Object.defineProperty(Session, 'id', {
   enumerable: true,
   get: function () {
-    if (!FEATURE_NEW_SESSION_MANAGER) {
-      return _id
-    } else {
-      if (_sessionCached.sessionID === undefined) {
-        if (sessionBinding.sessionID) {
-          _sessionCached.sessionID = sessionBinding.sessionID()
-        } else {
-          _sessionCached.sessionID = '12345678' // compatibility with UB w/o redis
-        }
+    if (_sessionCached.sessionID === undefined) {
+      if (sessionBinding.sessionID) {
+        _sessionCached.sessionID = sessionBinding.sessionID()
+      } else {
+        _sessionCached.sessionID = '12345678' // compatibility with UB w/o redis
       }
-      return _sessionCached.sessionID
     }
+    return _sessionCached.sessionID
   }
 })
 /**
@@ -268,11 +263,7 @@ Session.runAsAdmin = function (func) {
 Session.runAsUser = function (userID, func) {
   let result
   try {
-    if (FEATURE_NEW_SESSION_MANAGER) {
-      sessionBinding.switchUser(userID, '', false) // do not persist this session into sessionManager
-    } else {
-      sessionBinding.switchUser(userID)
-    }
+    sessionBinding.switchUser(userID, '', false) // do not persist this session into sessionManager
     result = func()
   } finally {
     sessionBinding.switchToOriginal()
@@ -489,9 +480,6 @@ Session.on('securityViolation', function(reason){
  * @param userID
  */
 Session.reset = function (sessionID, userID) {
-  if (!FEATURE_NEW_SESSION_MANAGER) {
-    _id = sessionID
-  }
   _userID = userID
   _sessionCached.uData = undefined
   _sessionCached.callerIP = undefined
