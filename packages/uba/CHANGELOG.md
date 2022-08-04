@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 ### Added
 - Added captionSingular for all *.meta and *.meta.lang
+
 - `uba_user` form is rewritten to Vue with new features:
   - connection between `uba_user` and `org_employee` forms, which includes:
     - auto add new users into organizational structure (`org_employee`) if ORG model enabled 
@@ -21,6 +22,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Deprecated
 
 ### Removed
+ - for attributes of type `Boolean` removed `allowNull: false` and `defaultValue` - not needed anymore
 
 ### Fixed
 - fixed an error when trying to change password for user that is not saved yet - now 'Change password' button 

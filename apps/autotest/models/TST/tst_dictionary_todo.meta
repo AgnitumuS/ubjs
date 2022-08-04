@@ -25,8 +25,7 @@
     {
       "name": "status",
       "dataType": "Boolean",
-      "caption": "Done status",
-      "defaultValue": "0"
+      "caption": "Done status"
     },
     {
       "name": "link",
