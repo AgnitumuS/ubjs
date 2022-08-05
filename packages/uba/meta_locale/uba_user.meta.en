@@ -21,6 +21,10 @@
       "caption": "Last Name"
     },
     {
+      "name": "middleName",
+      "caption": "Middle name"
+    },
+    {
       "name": "fullName",
       "caption": "Full Name"
     },
