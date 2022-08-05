@@ -678,7 +678,7 @@ class DBAbstract {
         if (asIsC.defaultValue) {
           this.genCodeDropDefault(asIs, asIsC)
         }
-        this.addWarning(`Will drop field ${asIs.name}.${asIsC.name} ${this.createTypeDefine(asIsC.dataType)}. Check may be there is useful data!!!`)
+        this.addWarning(`Will drop column ${asIs.name}.${asIsC.name} ${this.createTypeDefine(asIsC.dataType)}. Please check if there is useful data in the column!!!`)
         this.genCodeDropColumn(asIs, asIsC)
         asIsC.isDeleted = true
       }

@@ -41,12 +41,12 @@ module.exports = function generateDDL (cfg) {
       'Check database structure for application domain. Generate DDL (both create and alter) if need and optionally run it\nShould be executed from application folder',
       'ubcli'
     )
-      .add({ short: 'host', long: 'host', param: 'fullServerURL', defaultValue: 'auto', searchInEnv: true, help: 'Full server URL. If not passed - will try to read host from ubConfig' })
+      .add({ short: 'host', long: 'host', param: 'fullServerURL', defaultValue: 'auto', searchInEnv: true, help: 'Full server URL. If not passed, use value from ubConfig' })
       .add({ short: 'cfg', long: 'cfg', param: 'localServerConfig', defaultValue: 'ubConfig.json', searchInEnv: true, help: 'Path to UB server config' })
-      .add({ short: 'm', long: 'models', param: 'modelsList', defaultValue: '*', help: 'Comma separated model names for DDL generation. If -e specified this options is ignored' })
+      .add({ short: 'm', long: 'models', param: 'modelsList', defaultValue: '*', help: 'Comma separated model names for DDL generation. If -e specified, this options is ignored' })
       .add({ short: 'e', long: 'entities', param: 'entitiesList', defaultValue: '*', help: 'Comma separated entity names list for DDL generation' })
       .add({ short: 'c', long: 'connection', param: 'connection', defaultValue: '', help: 'Optional connection name for DDL generation' })
-      .add({ short: 'out', long: 'out', param: 'outputPath', defaultValue: process.cwd(), help: 'Folder to output generated DDLs (one file per connection)' })
+      .add({ short: 'out', long: 'out', param: 'outputPath', defaultValue: process.cwd(), help: 'Directory to output generated DDLs (one file per connection)' })
       .add({ short: 'autorun', long: 'autorun', defaultValue: false, help: 'execute DDL statement after generation. BE CAREFUL! DO NOT USE ON PRODUCTION' })
       .add({ short: 'optimistic', long: 'optimistic', defaultValue: false, help: 'skip errors on execute DDL statement. BE CAREFUL! DO NOT USE ON PRODUCTION' })
     cfg = opts.parseVerbose({}, true)
@@ -59,7 +59,7 @@ module.exports = function generateDDL (cfg) {
   // increase receive timeout to 120s - in case DB server is slow we can easy reach 30s timeout
   let conn
   if (!cfg.syncConnection) {
-    http.setGlobalConnectionDefaults({receiveTimeout: 120000})
+    http.setGlobalConnectionDefaults({ receiveTimeout: 120000 })
     const session = argv.establishConnectionFromCmdLineAttributes(cfg)
     conn = session.connection
   } else {
@@ -113,8 +113,8 @@ function runDDLGenerator (conn, autorun, inEntities, inModelsCSV, outputPath, op
   console.log(`Checking congruence of domain metadata and database structure for ${entityNames.length} entities...`)
 
   const serverConfig = argv.getServerConfiguration(false)
-  const multitenancyEnabled = serverConfig.security.multitenancy
-    && serverConfig.security.multitenancy.enabled
+  const multitenancyEnabled = serverConfig.security.multitenancy &&
+    serverConfig.security.multitenancy.enabled
 
   const Generator = require('./ddlGenerators/DDLGenerator')
   const ddlResult = new Generator(multitenancyEnabled).generateDDL(entityNames, conn, true)
@@ -196,7 +196,7 @@ function formatAsText (connectionName, connDDLs, warnings, domain) {
 
   if (warnings) {
     txtRes.push(
-      `/*${CRLF} $$$$$$$$$$$ Attantion! Achtung! Vnimanie!`,
+      `/*${CRLF} $$$$$$$$$$$ Attention! Achtung! Vnimanie!`,
       `${CRLF}`, warnings,
       `${CRLF} $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ ${CRLF}*/${CRLF}`
     )
