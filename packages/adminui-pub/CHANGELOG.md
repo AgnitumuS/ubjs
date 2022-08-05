@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Deprecated
 
 ### Removed
+ - removed code what intercept BackSpace key to prevent `Back` action in browser - all modern browsers uses Alt+Left Arrow for `Back`
 
 ### Fixed
 
