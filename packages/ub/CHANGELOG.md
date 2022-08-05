@@ -14,6 +14,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+
+## [5.23.10] - 2022-08-05
+### Fixed
  - fixed syntax error in `ub_version.meta.ru` 
 
 ## [5.23.9] - 2022-08-04
