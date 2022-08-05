@@ -35,6 +35,10 @@
             "caption": "Насаб"
         },
         {
+            "name": "middleName",
+            "caption": "Номи падар"
+        },
+        {
             "name": "trustedIP",
             "caption": "IP боэътимод"
         },

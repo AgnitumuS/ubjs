@@ -23,6 +23,18 @@
       "description": "Cacat"
     },
     {
+      "name": "lastName",
+      "caption": "nama keluarga"
+    },
+    {
+      "name": "firstName",
+      "caption": "Nama depan"
+    },
+    {
+      "name": "middleName",
+      "caption": "Nama tengah"
+    },
+    {
       "name": "isPending",
       "caption": "tertunda Pendaftaran",
       "description": "pengguna menunggu konfirmasi pendaftaran"

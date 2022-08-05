@@ -21,6 +21,10 @@
       "caption": "Achternaam"
     },
     {
+      "name": "middleName",
+      "caption": "Middelste naam"
+    },
+    {
       "name": "fullName",
       "caption": "Volledige naam"
     },
