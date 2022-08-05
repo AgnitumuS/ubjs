@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
+ - `org_employee` form - mark employee code as mandatory [LDOC-2336]
 
 ### Deprecated
 
