@@ -31,8 +31,6 @@
     }, {
       "name": "refreshIP",
       "dataType": "Boolean",
-      "allowNull": false,
-      "defaultValue": "0",
       "caption": "Refresh allowed IP",
       "documentation": "If turned on will refresh allowed IP on firs user logon"
     }, {
@@ -44,8 +42,6 @@
     }, {
       "name": "refreshFp",
       "dataType": "Boolean",
-      "allowNull": false,
-      "defaultValue": "0",
       "caption": "Refresh fingerprint",
       "documentation": "If turned on will refresh Fingerprint of user device on firs user logon"
     }, {
@@ -57,8 +53,6 @@
     }, {
       "name": "refreshKeyMedia",
       "dataType": "Boolean",
-      "allowNull": false,
-      "defaultValue": "0",
       "caption": "Refresh key media name",
       "documentation": "If turned on will refresh key media name of user private key device"
     }, {

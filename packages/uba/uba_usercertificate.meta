@@ -58,10 +58,9 @@
     },
     {
       "name": "isForSigning",
-      "caption": "For signing",
-      "description": "Is this certificate applicable for signing operations",
       "dataType": "Boolean",
-      "defaultValue": "0"
+      "caption": "For signing",
+      "description": "Is this certificate applicable for signing operations"
     },
     {
       "name": "description",
@@ -73,17 +72,13 @@
       "name": "disabled",
       "dataType": "Boolean",
       "caption": "Disabled",
-      "description": "disabled",
-      "allowNull": false,
-      "defaultValue": "0"
+      "description": "disabled"
     },
     {
       "name": "revoked",
       "dataType": "Boolean",
       "caption": "Revoked",
-      "description": "Revoked",
-      "allowNull": false,
-      "defaultValue": "0"
+      "description": "Revoked"
     },
     {
       "name": "revocationDate",

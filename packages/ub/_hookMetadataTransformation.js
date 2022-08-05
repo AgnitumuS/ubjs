@@ -21,7 +21,7 @@ function ubMixinTransformation (domainJson, serverConfig) {
     removeMultitenancyMixin(domainJson)
   }
   replaceEnvInMapping(domainJson, serverConfig)
-  validateAttributesBlobStore(domainJson, serverConfig)
+  validateAttributes(domainJson, serverConfig)
 }
 
 /**
@@ -170,11 +170,13 @@ function removeMultitenancyMixin (domainJson) {
 }
 
 /**
- * check blobStore exists in server config for each Document type attribute
+ * Check blobStore exists in server config for each Document type attribute
+ * Add defaultValue='0' for `Boolean` attributes
+ *
  * @param {object<string, {modelName: string, meta: object, lang: object<string, object>}>} domainJson
  * @param {object} serverConfig
  */
-function validateAttributesBlobStore (domainJson, serverConfig) {
+function validateAttributes (domainJson, serverConfig) {
   const bsConfig = serverConfig.application.blobStores || []
   const bsSet = new Set(bsConfig.map(c => c.name))
   for (const entityName in domainJson) {
@@ -182,6 +184,17 @@ function validateAttributesBlobStore (domainJson, serverConfig) {
     entityMeta.attributes.forEach(attr => {
       if ((attr.dataType === 'Document') && attr.storeName && !bsSet.has(attr.storeName)) {
         throw new Error(`Entity '${entityName}'. Blob store '${attr.storeName}' used by attribute '${attr.name}' ('storeName' property), but such store is not defined in ubConfig`)
+      }
+      // code below is moved from native on 2022-08-03
+      if (attr.dataType === 'Boolean') {
+        // original implementation - force allowNull
+        // if (!attr.allowNull) attr.allowNull = false
+        // new implementation - sets attr.defaultValue to '0' - DDL generator adds notNull constraint for Boolean in any case
+        if (!attr.defaultValue) attr.defaultValue = '0'
+      }
+      // MIII-363: Disable sorting for adtText adtDocument, adtMany
+      if (['Text', 'Document', 'Many'].includes(attr.dataType)) {
+        attr.allowSort = false
       }
     })
   }

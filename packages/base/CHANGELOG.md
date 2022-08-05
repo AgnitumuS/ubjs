@@ -14,6 +14,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+
+## [5.23.6] - 2022-08-04
+### Fixed
  - fix usage of `uba_common` from command-line scripts executed in location where ubConfig is not present  
 
 ## [5.23.5] - 2022-07-28

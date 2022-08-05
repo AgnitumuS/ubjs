@@ -38,15 +38,12 @@
         <u-auto-field
           attribute-name="isForSigning"
           readonly
-          force-cmp="el-switch"
         />
         <u-auto-field
           attribute-name="disabled"
-          force-cmp="el-switch"
         />
         <u-auto-field
           attribute-name="revoked"
-          force-cmp="el-switch"
         />
         <u-auto-field attribute-name="revocationDate" />
       </u-grid>

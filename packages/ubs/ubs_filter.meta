@@ -36,8 +36,7 @@
       "dataType": "Boolean",
       "caption": "Is global?",
       "description": "Is global?",
-      "documentation": "Is this filter accessible for all users",
-      "allowNull": false
+      "documentation": "Is this filter accessible for all users"
     },
     {
       "name": "owner",

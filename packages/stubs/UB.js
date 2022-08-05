@@ -50,6 +50,24 @@ if (process.isServer) {
 }
 
 const path = require('path')
+
+const ubVersionNum = process.version.slice(1).split('.').map(v => parseInt(v, 10)).reduce((acum, v) => acum * 1000 + v)
+__UB_int.checkEngine = function (pkg) {
+  const wantedUb = pkg.engines && (pkg.engines.ub || pkg.engines.UnityBase)
+  if (wantedUb) {
+    if (!wantedUb.startsWith('>=')) {
+      console.error(`engines.ub in package.json should starts with >=, but in ${pkg.name} '${wantedUb}' is used. Requirement is ignored`)
+      return true
+    }
+    const spl = wantedUb.slice(2).split('.')
+    while (spl.length < 3) spl.push('0')
+    const wantedUbNum = spl.map(v => parseInt(v, 10)).reduce((acum, v) => acum * 1000 + v)
+    if (ubVersionNum < wantedUbNum) {
+      throw new Error(`${pkg.name} require ub server version to be ${wantedUb} but current is ${process.version}`)
+    }
+  }
+}
+
 /**
  * Call a script passed to UB from command line `ub test.js`)
  * @param {string} fn Name of file to evaluate. If not absolute then will be relative to process.cwd()
@@ -62,7 +80,16 @@ __UB_int._runAsShell = function(fn) {
 
 __UB_int._runAsApp = function () {
   const startupModule = process.configPath
-  require(startupModule)
+  try {
+    const pkg = require(path.join(startupModule, 'package.json'))
+    __UB_int.checkEngine(pkg)
+    require(startupModule)
+  } catch (e) {
+    if (process.isDebug) {
+      console.error(`Evaluation of '${startupModule}' fails: ${e.message}. Stack: ${e.stack}`)
+    }
+    throw e
+  }
 }
 
 // config merging and env file dotenv`ing
@@ -492,6 +519,7 @@ Either use a absolute path ("/clientRequire/models/${model.name}/PathToYourDevSc
       if (fs.existsSync(packFN)) {
         const packageData = require(packFN)
         if (!packageData.name) console.error(`"name" section is required in package.json for "${packFN}`)
+        __UB_int.checkEngine(packageData)
         model.moduleName = packageData.name
         if (packageData.config && packageData.config.ubmodel) {
           const ubModelConfig = packageData.config.ubmodel

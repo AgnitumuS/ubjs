@@ -41,7 +41,7 @@ export default {
     /**
      * specify a component what should be used instead of default, based on attribute type.
      * For example `<u-auto-field attribute-name="bool_attr" force-cmp="el-switch" />` will create
-     * `el-switch` instead of `el-checkbox` (default cmp for Boolean)
+     * `el-switch` instead of `u-checkbox` (default cmp for Boolean)
      */
     forceCmp: {
       type: String,
@@ -162,7 +162,7 @@ export default {
           // and `required` prop for UAutoField is not specified explicitly
           defIsRequired = false
         }
-        cmp = h(this.forceCmp || 'el-checkbox', {
+        cmp = h(this.forceCmp || 'u-checkbox', {
           attrs: baseAttrs,
           on: this.buildListenersOnChange
         })
