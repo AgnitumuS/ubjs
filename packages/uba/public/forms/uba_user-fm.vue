@@ -39,20 +39,24 @@
       <el-tabs v-model="userTabs">
         <el-tab-pane
           name="main"
-          :label="$ut('mainSettings')"
+          :label="$ut('uba_user_form.mainSettings')"
         >
           <u-grid
             :max-width="400"
             style="max-width: 800px;"
             :columns="2"
           >
-            <u-auto-field attribute-name="firstName" :required="addToOrgStructure"/>
-
-            <u-auto-field attribute-name="lastName" :required="addToOrgStructure"/>
-            <u-auto-field attribute-name="fullName" v-model="fullName" :required="addToOrgStructure"/>
+            <u-auto-field attribute-name="firstName" :required="isEmployee"/>
+            <u-auto-field attribute-name="lastName" :required="isEmployee"/>
+            <u-auto-field attribute-name="middleName"/>
+            <u-auto-field attribute-name="fullName" v-model="fullName" :required="isEmployee"/>
+          </u-grid>
+          <u-grid
+            :max-width="400"
+            style="max-width: 800px;"
+            :columns="2"
+          >
             <u-auto-field attribute-name="name" required/>
-            <u-auto-field attribute-name="email"/>
-            <u-auto-field attribute-name="phone"/>
             <u-form-row attribute-name="gender">
               <u-select-enum
                 e-group="UBA_USER_GENDER"
@@ -60,8 +64,16 @@
                 value-attribute="code"
               />
             </u-form-row>
+            <u-auto-field attribute-name="email"/>
+            <u-auto-field attribute-name="phone"/>
+          </u-grid>
+          <u-grid
+            :max-width="400"
+            style="max-width: 800px;"
+            :columns="2"
+          >
             <u-form-row
-              :required="addToOrgStructure"
+              :required="isEmployee"
               :label="$ut('org_employee.code')"
             >
               <u-base-input
@@ -69,37 +81,44 @@
                 :disabled="employee"
               />
             </u-form-row>
+          </u-grid>
+          <u-grid
+            :max-width="400"
+            style="max-width: 800px;"
+            :columns="1"
+          >
+            <u-form-row
+              :label="$ut('uba_user_form.isEmployee')"
+              :label-width="200"
+              label-position="right"
+              v-if="isOrgEnabled"
+            >
+              <el-switch
+                v-model="isEmployee"
+                @change="changeEmployeeStatus"
+                :label-width="200"
+                :disabled="!isDirty"
+              >
+              </el-switch>
+            </u-form-row>
 
             <u-auto-field
               attribute-name="disabled"
-              label-position="right"
               force-cmp="el-switch"
               :max-width="400"
               :readonly="!isSupervisor"
+              label-position="right"
               :label-width="200"
             />
             <u-auto-field
               attribute-name="isPending"
-              label-position="right"
               force-cmp="el-switch"
               :max-width="400"
+              label-position="right"
               :readonly="!isSupervisor"
               :label-width="200"
             />
-            <u-form-row
-              :label="$ut('addToOrgStructure')"
-              label-position="right"
-              :label-width="200"
-              v-if="isOrgEnabled"
-            >
-              <el-switch
-                v-model="addToOrgStructure"
-                :disabled="employee"
-              >
-              </el-switch>
-            </u-form-row>
           </u-grid>
-
           <u-form-row
             :label="$ut('roles')"
           >
@@ -112,7 +131,7 @@
           </u-form-row>
 
           <u-form-row
-            :label="$ut('groups')"
+            :label="$ut('uba_user_form.groups')"
           >
             <u-select-collection
               associated-attr="groupID"
@@ -133,7 +152,7 @@
 
         <el-tab-pane
           name="settings"
-          :label="$ut('otherSettings')"
+          :label="$ut('uba_user_form.otherSettings')"
         >
           <u-auto-field attribute-name="trustedIP" :readonly="!isSupervisor"/>
           <u-auto-field
@@ -157,23 +176,13 @@
 
         <el-tab-pane
           name="orgStructure"
-          :label="$ut('orgStructure')"
+          :label="$ut('uba_user_form.orgStructure')"
           v-if="isOrgEnabled"
         >
           <div>
             <u-form-row
-              :label="$ut('isEmployee')"
-              label-position="right"
-            >
-              <el-checkbox
-                v-model="employee"
-                disabled
-              >
-              </el-checkbox>
-            </u-form-row>
-            <u-form-row
               v-if="employee"
-              :label="$ut('userEmployee')"
+              :label="$ut('org_employeeonstaff')"
               :max-width="800"
             >
               <u-table-entity
@@ -195,13 +204,16 @@
 </template>
 <script>
 /* global $App */
-const { Form, mapInstanceFields } = require('@unitybase/adminui-vue')
-const { Repository, connection, UBAbortError } = require('@unitybase/ub-pub')
+const { Form, dialogYesNo, mapInstanceFields } = require('@unitybase/adminui-vue')
+const { Repository, connection, UBAbortError, i18n } = require('@unitybase/ub-pub')
 const { mapState, mapGetters, mapActions } = require('vuex')
 const { email, required, requiredIf } = require('vuelidate/lib/validators/index')
 
 module.exports.mount = (cfg) => {
-  Form(cfg)
+  Form({
+    ...cfg,
+    title: '{name} {fullName}'
+  })
     .store(
       {
         modules: {
@@ -219,11 +231,17 @@ module.exports.mount = (cfg) => {
           }
         },
         actions: {
-          async addUserToOrgStructure ({ state }) {
-            if (state.org.employee?.ID || !state.addToOrgStructure) {
-              return
+          async setUserOrgStructureStatus ({ state, dispatch }) {
+            if (state.isEmployee && !state.org.employee?.ID) {
+              await dispatch('addUserToOrgStructure')
             }
 
+            if (!state.isEmployee && state.org.employee?.ID) {
+              await dispatch('removeUserFromOrgStructure')
+            }
+          },
+
+          async addUserToOrgStructure ({ state }) {
             const userParams = state.data
             const orgUserProps = {
               userID: userParams.ID,
@@ -241,6 +259,34 @@ module.exports.mount = (cfg) => {
               execParams: orgUserProps,
               __skipOptimisticLock: true
             })
+          },
+
+          async removeUserFromOrgStructure ({ state }) {
+            await connection.query({
+              entity: 'org_employee',
+              method: 'delete',
+              execParams: {
+                ID: state.org.employee.ID
+              }
+            })
+
+            const staff = await Repository('org_employeeonstaff')
+              .attrs('ID', 'employeeID.userID')
+              .where('employeeID.userID', '=', state.data.ID)
+              .misc({ __mip_disablecache: true })
+              .select()
+
+            if (staff?.length) {
+              for (const s of staff) {
+                await connection.query({
+                  entity: 'org_employeeonstaff',
+                  method: 'delete',
+                  execParams: {
+                    ID: s.ID
+                  }
+                })
+              }
+            }
           },
 
           async getEmployeeData ({ state, commit }) {
@@ -261,6 +307,7 @@ module.exports.mount = (cfg) => {
         'firstName',
         'name',
         'lastName',
+        'middleName',
         'fullName',
         'gender',
         'email',
@@ -285,12 +332,12 @@ module.exports.mount = (cfg) => {
       },
 
       async inited ({ state, dispatch }) {
-        Vue.set(state, 'addToOrgStructure', !!connection.domain.models.ORG)
         await dispatch('getEmployeeData')
+        Vue.set(state, 'isEmployee', state.isNew ? !!connection.domain.models.ORG : !!state.org.employee)
       },
 
       async saved ({ dispatch, state }) {
-        await dispatch('addUserToOrgStructure')
+        await dispatch('setUserOrgStructureStatus')
         await dispatch('getEmployeeData')
       }
     })
@@ -300,17 +347,17 @@ module.exports.mount = (cfg) => {
           name: { required },
           firstName: {
             required: requiredIf(() => {
-              return this.$store.state.addToOrgStructure
+              return this.$store.state.isEmployee
             })
           },
           lastName: {
             required: requiredIf(() => {
-              return this.$store.state.addToOrgStructure
+              return this.$store.state.isEmployee
             })
           },
           fullName: {
             required: requiredIf(() => {
-              return this.$store.state.addToOrgStructure
+              return this.$store.state.isEmployee
             })
           },
           email: { email }
@@ -346,7 +393,10 @@ module.exports.default = {
       'isNew'
     ]),
 
-    ...mapGetters(['loading']),
+    ...mapGetters([
+      'loading',
+      'isDirty'
+    ]),
 
     orgCode: {
       get () {
@@ -357,12 +407,12 @@ module.exports.default = {
       }
     },
 
-    addToOrgStructure: {
+    isEmployee: {
       get () {
-        return this.$store.state.addToOrgStructure
+        return this.$store.state.isEmployee
       },
       set (value) {
-        this.$store.commit('SET', { key: 'addToOrgStructure', value })
+        this.$store.commit('SET', { key: 'isEmployee', value })
       }
     },
 
@@ -389,7 +439,7 @@ module.exports.default = {
 
     fullName: {
       get () {
-        return (this.$store.state.data.lastName || '') + ' ' + (this.$store.state.data.firstName || '')
+        return `${(this.$store.state.data.lastName || '')} ${this.$store.state.data.firstName || ''} ${this.$store.state.data.middleName || ''}`
       },
       set (value) {
         this.$store.commit('SET_DATA', { key: 'fullName', value })
@@ -460,6 +510,19 @@ module.exports.default = {
       }
     },
 
+    async changeEmployeeStatus (status) {
+      if (status === false && !this.isNew) {
+        const confirm = await dialogYesNo(
+          'org_dialogs.removeFromOrgStructure.title',
+          i18n('org_dialogs.removeFromOrgStructure.message', this.fullName || this.userLogin)
+        )
+
+        if (!confirm) {
+          this.isEmployee = true
+        }
+      }
+    },
+
     async getEmployeeConfig (cfg) {
       let employeeID = this.$store.state.org.employee?.ID
       if (!employeeID) {
@@ -475,7 +538,8 @@ module.exports.default = {
         modalWidth: '800px',
         props: {
           parentContext: {
-            employeeID
+            employeeID,
+            mi_dateFrom: new Date()
           }
         }
       }

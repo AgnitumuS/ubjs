@@ -35,20 +35,10 @@
   "needChangePassword": "Користувач повинен змінити пароль при наступному вході",
   "checkAll": "Обрати усі",
   "roles": "Ролі",
-  "groups": "Групи",
   "users": "Користувачі",
   "field": "поле",
   "addАField": "додати поле",
   "addRole": "додати роль",
-  "mainSettings": "Основні налаштування",
-  "otherSettings": "Додаткова інформація",
-  "groupsAndRoles": "Ролі та групи",
-  "orgStructure": "Організаційна структура",
-  "isEmployee": "Є співробітником",
-  "userEmployee": "Призначення на посади",
-  "isPending": "Очікує підтвердження",
-  "disabled": "Відключений",
-  "addToOrgStructure": "Додати в оргструктуру",
   "uba": {
     "changePassword": {
       "newPassword": {
@@ -59,6 +49,13 @@
         "errorText": "Невідповідність паролів"
       }
     }
+  },
+  "uba_user_form": {
+    "groups": "Групи",
+    "mainSettings": "Основні налаштування",
+    "otherSettings": "Додаткова інформація",
+    "orgStructure": "Організаційна структура",
+    "isEmployee": "Є співробітником"
   },
   "uba_user_errors": {
     "duplicateUserName": "Користувача з таким логіном (без врахування регістру) вже зареєстровано. Спробуйте інший логін",

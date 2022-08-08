@@ -35,20 +35,10 @@
   "needChangePassword": "Der Benutzer muss bei der nächsten Anmeldung sein Kennwort ändern",
   "checkAll": "Alle prüfen",
   "roles": "Rollen",
-  "groups": "Gruppen",
   "users": "Benutzer",
   "field": "Feld",
   "addАField": "Feld hinzufügen",
   "addRole": "Rolle hinzufügen",
-  "mainSettings": "Haupteinstellungen",
-  "otherSettings": "Zusätzliche Information",
-  "groupsAndRoles": "Rollen und Gruppen",
-  "orgStructure": "Organisatorische Struktur",
-  "isEmployee": "Ist ein Angestellter",
-  "userEmployee": "Zuordnung zum Personal",
-  "isPending": "Ausstehend",
-  "disabled": "Deaktiviert",
-  "addToOrgStructure": "Zur Organisationsstruktur hinzufügen",
   "uba": {
     "changePassword": {
       "newPassword": {
@@ -59,6 +49,13 @@
         "errorText": "Kennwörter stimmen nicht überein"
       }
     }
+  },
+  "uba_user_form": {
+    "groups": "Gruppen",
+    "mainSettings": "Haupteinstellungen",
+    "otherSettings": "Zusätzliche Information",
+    "orgStructure": "Organisatorische Struktur",
+    "isEmployee": "Ist ein Angestellter"
   },
   "uba_user_errors": {
     "duplicateUserName": "Doppelter Benutzername (möglicherweise andere Groß- und Kleinschreibung). Versuchen Sie einen anderen Benutzernamen",

@@ -35,20 +35,10 @@
   "needChangePassword": "İstifadəçi növbəti girişdə şifrəni yeniləməlidir",
   "checkAll": "Hamısını seç",
   "roles": "Rollar",
-  "groups": "Qruplar",
   "users": "İstifadəçilər",
   "field": "sahə",
   "addАField": "sahə əlavə edin",
   "addRole": "rol əlavə edin",
-  "mainSettings": "Əsas Parametrlər",
-  "otherSettings": "Əlavə Informasiya",
-  "groupsAndRoles": "Rollar və Qruplar",
-  "orgStructure": "Təşkilati strukturu",
-  "isEmployee": "İşçidir",
-  "userEmployee": "Randevular",
-  "isPending": "Gözləyən",
-  "disabled": "Əlil",
-  "addToOrgStructure": "Təşkilat strukturuna əlavə edin",
   "uba": {
     "changePassword": {
       "newPassword": {
@@ -59,6 +49,13 @@
         "errorText": "Passwords mismatch"
       }
     }
+  },
+  "uba_user_form": {
+    "mainSettings": "Əsas Parametrlər",
+    "otherSettings": "Əlavə Informasiya",
+    "orgStructure": "Təşkilati strukturu",
+    "isEmployee": "İşçidir",
+    "groups": "Qruplar"
   },
   "uba_user_errors": {
     "duplicateUserName": "Bu istifadəçi adı olan (hərflərə həssas olmayan) istifadəçi artıq qeydiyyatdan keçib. Başqa bir giriş cəhd edin",

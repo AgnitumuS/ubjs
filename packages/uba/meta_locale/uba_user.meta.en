@@ -22,7 +22,7 @@
     },
     {
       "name": "middleName",
-      "caption": "Middle name"
+      "caption": "Middle Name"
     },
     {
       "name": "fullName",
@@ -30,7 +30,7 @@
     },
     {
       "name": "gender",
-      "caption": "User gender"
+      "caption": "User Gender"
     },
     {
       "name": "email",
@@ -64,12 +64,13 @@
     },
     {
       "name": "uData",
-      "caption": "uData",
-      "description": "Additional  data"
+      "caption": "Additional data",
+      "description": "Additional user data"
     },
     {
       "name": "trustedIP",
-      "caption": "trusted IPs"
+      "caption": "Trusted IPs",
+      "description": "Trusted user IP addresses"
     },
     {
       "name": "lastPasswordChangeDate",

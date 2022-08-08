@@ -35,19 +35,10 @@
   "needChangePassword": "User need to change password on next logon",
   "checkAll": "Check all",
   "roles": "Roles",
-  "groups": "Groups",
   "users": "Users",
   "field": "field",
   "addАField": "add field",
   "addRole": "add role",
-  "mainSettings": "Main Settings",
-  "otherSettings": "Additional Information",
-  "groupsAndRoles": "Roles and Groups",
-  "orgStructure": "Organizational Structure",
-  "isEmployee": "Is an Employee",
-  "userEmployee": "Assignment on Staff",
-  "isPending": "Pending",
-  "disabled": "Disabled",
   "addToOrgStructure": "Add to Organizational Structure",
   "uba": {
     "changePassword": {
@@ -59,6 +50,13 @@
         "errorText": "Passwords mismatch"
       }
     }
+  },
+  "uba_user_form": {
+    "mainSettings": "Main Settings",
+    "otherSettings": "Additional Information",
+    "orgStructure": "Organizational Structure",
+    "isEmployee": "Is an Employee",
+    "groups": "Groups"
   },
   "uba_user_errors": {
     "duplicateUserName": "Duplicate user name (may be in different case). Try another login",
