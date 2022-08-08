@@ -62,7 +62,7 @@
     {
       "name": "apply",
       "caption": "Title",
-      "description": "Describes how to address to this person"
+      "description": "Describes how to address this person"
     },
     {
       "name": "lastNameGen",
@@ -117,12 +117,12 @@
     {
       "name": "applyGen",
       "caption": "Title in genitive",
-      "description": "Describes how to address to this person in genitive case"
+      "description": "Describes how to address this person in genitive case"
     },
     {
       "name": "applyDat",
       "caption": "Title in dative",
-      "description": "Describes how to address to this person in dative case"
+      "description": "Describes how to address this person in dative case"
     },
     {
       "name": "facsimile",
@@ -157,7 +157,7 @@
     {
       "name": "applyObj",
       "caption": "Title in objective",
-      "description": "Describes how to address to this person in objective case"
+      "description": "Describes how to address this person in objective case"
     }
   ]
 }
