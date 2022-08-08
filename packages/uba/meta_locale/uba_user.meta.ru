@@ -22,6 +22,10 @@
             "caption": "Фамилия"
         },
         {
+          "name": "middleName",
+          "caption": "Отчество"
+        },
+        {
             "name": "fullName",
             "caption": "ФИО"
         },

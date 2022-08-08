@@ -20,6 +20,10 @@
       "caption": "Прізвище"
     },
     {
+      "name": "middleName",
+      "caption": "По батькові"
+    },
+    {
       "name": "fullName",
       "caption": "ПІБ"
     },

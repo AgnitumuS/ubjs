@@ -6,16 +6,23 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+## [5.23.9] - 2022-08-04
+### Added
 - new icon: `u-icon-download-all-with-signatures`
 
 ### Changed
 - `u-auto-filed` for attributes of type `Boolean` internally use `u-checkbox` instead of `el-checkbox`.
   It's recommended do not force internal component for Booleans using `force-cmp="el-switch"` - `u-checkbox` is good enough
 - `u-checkbox` and `u-radio` size increased to 20px (to be the same height as el-switch); Size is defined in `--u-checkbox-dim` css variable
-
-### Deprecated
-
-### Removed
 
 ### Fixed
  - `u-checkbox`: added `v-bind="$attrs"` to allow binds native input properties, `disabled` for example
