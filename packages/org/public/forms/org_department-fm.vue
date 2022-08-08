@@ -3,7 +3,7 @@
     v-loading="loading"
     class="u-form-layout"
   >
-    <u-toolbar/>
+    <u-toolbar />
     <u-form-container
       class="u-form-max-width"
       label-position="top"
