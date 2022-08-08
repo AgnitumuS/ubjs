@@ -6,6 +6,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+- added localization for `ubm_desktop.meta.*` and `ubm_desktop-fm.vue` for not localized fields
 
 ### Changed
 

@@ -54,5 +54,6 @@
   "desktopService.BottomRight": "Rechtsonder",
   "monkeyRequestsDetected": "Uw verzoek is verwerkt, maar we hebben geconstateerd dat het meerdere keren is herhaald. Misschien uw sleutel zekering?",
   "Shortcut editor": "Snelkoppelingseditor",
-  "chooseShortcutFolder": "Snelkoppelingsmap kiezen"
+  "chooseShortcutFolder": "Snelkoppelingsmap kiezen",
+  "Desktop rights": "Onderwerp van administratie"
 }

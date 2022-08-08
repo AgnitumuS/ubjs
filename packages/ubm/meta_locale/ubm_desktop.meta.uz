@@ -12,6 +12,14 @@
       "caption": "Kod"
     },
     {
+      "name": "description",
+      "caption": "Ish stolining tavsifi"
+    },
+    {
+      "name": "iconCls",
+      "caption": "Belgisi (CSS-CLASS)"
+    },
+    {
       "name": "url",
       "caption": "Url"
     },

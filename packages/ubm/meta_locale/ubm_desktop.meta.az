@@ -12,6 +12,14 @@
       "caption": "Коd"
     },
     {
+      "name": "description",
+      "caption": "İş masasının təsviri"
+    },
+    {
+      "name": "iconCls",
+      "caption": "İkon (CSS sinfi)"
+    },
+    {
       "name": "url",
       "caption": "URL",
       "description": "İş masasının seçimi zamanı ekranın mərkəzində əks olunan server səhifəsinin statik URL-si"

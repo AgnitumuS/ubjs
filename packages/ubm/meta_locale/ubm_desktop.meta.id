@@ -24,6 +24,14 @@
       "name": "displayOrder",
       "caption": "№ rangka",
       "description": "Agar tampilan"
+    },
+    {
+        "name": "iconCls",
+        "caption": "Ikon (kelas CSS)"
+    },
+    {
+        "name": "description",
+        "caption": "Deskripsi"
     }
   ]
 }
