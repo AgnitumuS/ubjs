@@ -14,13 +14,13 @@
           name="general"
         >
           <u-grid>
-            <u-auto-field attribute-name="parentID"/>
-            <u-auto-field attribute-name="depTypeID"/>
-            <u-auto-field attribute-name="code"/>
-            <u-auto-field attribute-name="name"/>
-            <u-auto-field attribute-name="fullName"/>
-            <u-auto-field attribute-name="description"/>
-            <u-auto-field attribute-name="isClerical"/>
+            <u-auto-field attribute-name="parentID" />
+            <u-auto-field attribute-name="depTypeID" />
+            <u-auto-field attribute-name="code" />
+            <u-auto-field attribute-name="name" />
+            <u-auto-field attribute-name="fullName" />
+            <u-auto-field attribute-name="description" />
+            <u-auto-field attribute-name="isClerical" />
           </u-grid>
 
           <u-table-entity
@@ -35,10 +35,10 @@
 
         <el-tab-pane :label="$ut('cases')">
           <u-grid>
-            <u-auto-field attribute-name="nameGen"/>
-            <u-auto-field attribute-name="fullNameGen"/>
-            <u-auto-field attribute-name="nameDat"/>
-            <u-auto-field attribute-name="fullNameDat"/>
+            <u-auto-field attribute-name="nameGen" />
+            <u-auto-field attribute-name="fullNameGen" />
+            <u-auto-field attribute-name="nameDat" />
+            <u-auto-field attribute-name="fullNameDat" />
           </u-grid>
         </el-tab-pane>
       </el-tabs>
