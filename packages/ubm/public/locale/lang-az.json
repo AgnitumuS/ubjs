@@ -54,5 +54,6 @@
   "desktopService.BottomRight": "Sağda aşağıda",
   "monkeyRequestsDetected": "Sorğunuz emal edildi, lakin  onun bir neçə dəfə təkrarlandığı aşkar olundu?",
   "Shortcut editor": "Qısa yol redaktoru",
-  "chooseShortcutFolder": "Choose shortcut folder"
+  "chooseShortcutFolder": "Choose shortcut folder",
+  "Desktop rights": "İnzibatlaşdırma subyekti"
 }

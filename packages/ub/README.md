@@ -73,6 +73,19 @@ Model is loaded in server thread memory(in order they defined in `application.do
  - `require` is called for all `*.js` files paired with `*.meta`
  - `require` is called for model entry point defined in `package.json` placed in the model folder
 
+Model `package.json` can contain `engines.ub` section - a minimal version of UB server for this model.
+Starting from UB@5.22.15 server throws if it's version is less than specified in `engine.ub`.
+The only supported semantic is `>=`. Example:
+
+```json
+{
+  "name": "@unitybase/uba",
+  "engines": {
+    "ub": ">=5.22.15"
+  }
+}
+```
+
 To simplify a ubConfig model `package.json` can contain `config.ubmodel` section what describe the
 model name and (optionally) ``"isPublic": true` for "browser-only" model
 

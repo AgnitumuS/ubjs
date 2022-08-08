@@ -13,7 +13,6 @@ let GROUP_IDS_LIMIT
 const GROUP_CODES_EXCLUDE = App.serverConfig.security.excludeGroups
 /** ID of groups from GROUP_CODES_EXCLUDE if any */
 let GROUP_IDS_EXCLUDE
-const FEATURE_NEW_SESSION_MANAGER = (base.ubVersionNum >= 5017000)
 
 // cache for lazy session props
 let _userID = UBA_COMMON.USERS.ANONYMOUS.ID
@@ -58,18 +57,14 @@ Object.assign(Session, EventEmitter.prototype)
 Object.defineProperty(Session, 'id', {
   enumerable: true,
   get: function () {
-    if (!FEATURE_NEW_SESSION_MANAGER) {
-      return _id
-    } else {
-      if (_sessionCached.sessionID === undefined) {
-        if (sessionBinding.sessionID) {
-          _sessionCached.sessionID = sessionBinding.sessionID()
-        } else {
-          _sessionCached.sessionID = '12345678' // compatibility with UB w/o redis
-        }
+    if (_sessionCached.sessionID === undefined) {
+      if (sessionBinding.sessionID) {
+        _sessionCached.sessionID = sessionBinding.sessionID()
+      } else {
+        _sessionCached.sessionID = '12345678' // compatibility with UB w/o redis
       }
-      return _sessionCached.sessionID
     }
+    return _sessionCached.sessionID
   }
 })
 /**
@@ -268,11 +263,7 @@ Session.runAsAdmin = function (func) {
 Session.runAsUser = function (userID, func) {
   let result
   try {
-    if (FEATURE_NEW_SESSION_MANAGER) {
-      sessionBinding.switchUser(userID, '', false) // do not persist this session into sessionManager
-    } else {
-      sessionBinding.switchUser(userID)
-    }
+    sessionBinding.switchUser(userID, '', false) // do not persist this session into sessionManager
     result = func()
   } finally {
     sessionBinding.switchToOriginal()
@@ -299,7 +290,10 @@ Session.switchLangForContext = function (newLang) {
 }
 
 /**
- * O(1) checks if the current user is a member of the specified role
+ * O(1) checks if the current user is a member of the specified role(s)
+ *
+ * If roles is array - at last one of passed roles.
+ *
  * @example
 
 const UB = require('@unitybae/ub')
@@ -307,15 +301,22 @@ const Session = UB.Session
 if (Session.hasRole('accountAdmin')) {
   console.debug('current user has accountAdmin role')
 }
+if (Session.hasRole(['Admin', 'Supervisor'])) { // equal to Session.hasRole('Admin') || Session.hasRole('Supervisor')
+  console.debug('current user is a member of `Admin` or/and `Supervisor` group')
+}
 
- * @param {string} roleName
+ * @param {string|array<string>} roleName
  * @return {boolean}
  */
 Session.hasRole = function (roleName) {
   if (!_sessionCached.roleNamesSet) {
     _sessionCached.roleNamesSet = new Set(this.uData.roles.split(','))
   }
-  return _sessionCached.roleNamesSet.has(roleName)
+  if (Array.isArray(roleName)) {
+    return roleName.some(r => _sessionCached.roleNamesSet.has(r))
+  } else {
+    return _sessionCached.roleNamesSet.has(roleName)
+  }
 }
 
 /**
@@ -489,9 +490,6 @@ Session.on('securityViolation', function(reason){
  * @param userID
  */
 Session.reset = function (sessionID, userID) {
-  if (!FEATURE_NEW_SESSION_MANAGER) {
-    _id = sessionID
-  }
   _userID = userID
   _sessionCached.uData = undefined
   _sessionCached.callerIP = undefined

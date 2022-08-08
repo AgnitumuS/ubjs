@@ -6,17 +6,31 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+## [5.23.12] - 2022-08-05
+### Changed
+ - `org_employee` form - mark employee code as mandatory [LDOC-2336]
+
+## [5.23.11] - 2022-08-04
+### Added
 - Added captionSingular for all *.meta and *.meta.lang
 
 ### Changed
 - `org_staffunit` form uses <u-grid> layout with 2 column
 
-### Deprecated
-
 ### Removed
 - for attributes of type `Boolean` removed `allowNull: false` and `defaultValue` - not needed anymore
 
 ### Fixed
+- `org_staffunit` form: proper validation for 'position' field
 
 ## [5.23.10] - 2022-07-28
 ### Fixed

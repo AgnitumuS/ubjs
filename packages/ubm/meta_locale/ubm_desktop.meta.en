@@ -12,6 +12,14 @@
       "caption": "Code"
     },
     {
+      "name": "description",
+      "caption": "Desktop description"
+    },
+    {
+      "name": "iconCls",
+      "caption": "Desktop icon"
+    },
+    {
       "name": "url",
       "caption": "URL",
       "description": "Static server page URL which is displayed in screen centre of selected desktop"

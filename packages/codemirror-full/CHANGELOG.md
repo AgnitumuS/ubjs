@@ -6,7 +6,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
- - `sql` mode added (SQL syntax highlight)
 
 ### Changed
 
@@ -15,6 +14,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+
+## [1.4.2] - 2022-08-04
+### Added
+ - `sql` mode added (SQL syntax highlight)
 
 ## [1.4.1] - 2022-06-19
 ## [1.4.0] - 2022-06-15

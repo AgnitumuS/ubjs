@@ -20,6 +20,10 @@
       "caption": "Familiya"
     },
     {
+      "name": "middleName",
+      "caption": "Otasini ismi"
+    },
+    {
       "name": "fullName",
       "caption": "F.I.O"
     },

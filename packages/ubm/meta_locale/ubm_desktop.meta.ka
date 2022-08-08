@@ -22,6 +22,14 @@
         {
             "name": "displayOrder",
             "caption": "№ ბრძანება"
+        },
+        {
+            "name": "iconCls",
+            "caption": "გამოსახულების css კლასის სახელი"
+        },
+        {
+            "name": "description",
+            "caption": "დესკტოპის აღწერა"
         }
     ]
 }

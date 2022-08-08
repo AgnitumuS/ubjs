@@ -12,7 +12,9 @@
         >
           <u-grid>
             <u-auto-field attribute-name="parentID" />
-            <u-form-row :label="'org_staffunit.professionID'">
+            <u-form-row
+              attribute-name="professionID"
+            >
               <u-select-entity
                 v-model="professionID"
                 entity-name="org_profession"

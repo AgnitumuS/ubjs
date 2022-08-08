@@ -141,22 +141,28 @@ function testORG () {
   checkCaption('org_staffunit', staffUnitID)
 
   empID = conn.lookup('org_employee', 'ID', { expression: 'code', condition: 'equal', values: { code: '888888' } })
+  const ep = {
+    code: '888888',
+    userID: null,
+    'lastName_uk^': 'Лопухов',
+    'lastName_en^': 'Lopukhov',
+    firstName: 'Семен',
+    middleName: 'Семенович',
+    shortFIO: 'Лопухов C.C.',
+    fullFIO: 'Лопухов Семен Семенович',
+    sexType: 'M',
+    birthDate: new Date('1952-11-26')
+  }
+  appInfo.supportedLanguages.forEach(l => {
+    if (l === appInfo.defaultLang) return
+    const n = `lastName_${l}^`
+    if (!ep[n]) ep[n] = 'Lopukhov'
+  })
   if (!empID) {
     empID = conn.insert({
       entity: 'org_employee',
       fieldList: ['ID'],
-      execParams: {
-        code: '888888',
-        userID: null,
-        'lastName_uk^': 'Лопухов',
-        'lastName_en^': 'Lopukhov',
-        firstName: 'Семен',
-        middleName: 'Семенович',
-        shortFIO: 'Лопухов C.C.',
-        fullFIO: 'Лопухов Семен Семенович',
-        sexType: 'M',
-        birthDate: new Date('1952-11-26')
-      }
+      execParams: ep
     })
   }
   ok(empID, 'can`t insert employee Лопухов')

@@ -24,6 +24,14 @@
       "name": "displayOrder",
       "caption": "Volgorde #",
       "description": "Weergavevolgorde"
+    },
+    {
+        "name": "description",
+        "caption": "Omschrijving"
+    },
+    {
+        "name": "iconCls",
+        "caption": "Bureaublad icoon"
     }
   ]
 }
