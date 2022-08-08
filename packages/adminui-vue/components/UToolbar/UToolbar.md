@@ -47,6 +47,7 @@
             name: 'customButton2',
             label: 'button2',
             icon: 'u-icon-letter',
+            dropdownOnly: true, // Do not add button to the toolbar, but show in the toolbar dropdown only
             handler () {
               // logic
             }

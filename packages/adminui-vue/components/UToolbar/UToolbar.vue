@@ -5,6 +5,7 @@
 
     <u-button
       v-for="button in mainPanelButtons"
+      v-if="!button.dropdownOnly"
       :key="button.label + button.icon"
       :title="$ut(button.label)"
       :appearance="button.type === 'text' ? 'default' : 'inverse'"
@@ -114,8 +115,8 @@ export default {
      */
     hideDefaultButtons: Boolean,
     /**
-     * Buttons definition array. Can contains additional toolbar/dropdown buttons or override default button
-     * in case `name` property match some of the default button name.
+     * Buttons definition array. May contain additional toolbar/dropdown buttons or override default button
+     * in case `name` property match one of the default button name.
      *
      * Can be used together with `hideDefaultButtons` property and slots.
      * See example in `docs` below.
