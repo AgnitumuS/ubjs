@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+- `uba_group` form - fix multi-select for users
 
 ## [5.23.11] - 2022-08-05
 ### Added
