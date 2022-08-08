@@ -6,6 +6,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+- `org_employee`: attribute `apply` now two-way synced with `title` attribute  of `uba_user`
 
 ### Changed
 

@@ -13,7 +13,7 @@ me.on('update:after', updateCaptionAndLogToAudit)
 me.on('insert:after', ubaAuditLinkUser)
 me.on('delete:after', ubaAuditLinkUserDelete)
 
-global.uba_user.on('update:after', updateEmployeeFullName)
+global.uba_user.on('update:after', updateEmployeeFullNameAndTitle)
 
 /**
  * @private
@@ -22,28 +22,28 @@ global.uba_user.on('update:after', updateEmployeeFullName)
 function updateCaptionAndLogToAudit (ctx) {
   updateStaffUnitCaption(ctx)
   ubaAuditLinkUserModify(ctx)
-  updateUserFullName(ctx, true)
+  updateUserFullNameAndTitle(ctx, true)
 }
 
 /**
- * Update name of employee
+ * Update name and title of employee
  * @private
  * @param {ubMethodParams} ctx
  * @param {boolean} [ctx.mParams.__syncEmployee]
  */
-function updateEmployeeFullName (ctx) {
+function updateEmployeeFullNameAndTitle (ctx) {
   if (ctx.mParams.__syncEmployee === false) {
     // Ability to explicitly skip the synchronization of employee
     return
   }
 
-  let { fullName, firstName, lastName } = ctx.mParams.execParams
-  if (fullName === undefined && firstName === undefined && lastName === undefined && !ctx.mParams.__syncEmployee) {
+  let { fullName, firstName, lastName, title } = ctx.mParams.execParams
+  if (fullName === undefined && firstName === undefined && lastName === undefined && title === undefined && !ctx.mParams.__syncEmployee) {
     // No name-related attributes updated, do not touch employee in such a case
     return
   }
 
-  // If any of "fullName", "firstName" or "lastName" attributes not provided in execParams, get previous values from
+  // If any of "fullName", "firstName", "lastName" or "title" attributes not provided in execParams, get previous values from
   // "selectBeforeUpdate" dataset
   const oldCurrentDataName = ctx.dataStore.currentDataName
   ctx.dataStore.currentDataName = 'selectBeforeUpdate'
@@ -51,22 +51,27 @@ function updateEmployeeFullName (ctx) {
     if (fullName === undefined) fullName = ctx.dataStore.get('fullName')
     if (firstName === undefined) firstName = ctx.dataStore.get('firstName')
     if (lastName === undefined) lastName = ctx.dataStore.get('lastName')
+    if (title === undefined) title = ctx.dataStore.get('title')
   } finally {
     ctx.dataStore.currentDataName = oldCurrentDataName
   }
 
   const employee = Repository('org_employee')
-    .attrs('ID', 'firstName', 'lastName', 'fullFIO')
+    .attrs('ID', 'firstName', 'lastName', 'fullFIO', 'apply')
     .where('userID', '=', ctx.mParams.execParams.ID)
     .selectSingle({
-      fullFIO: 'fullName'
+      fullFIO: 'fullName',
+      apply: 'title'
     })
   if (!employee) {
     // No employee to sync
     return
   }
 
-  if (firstName === employee.firstName && lastName === employee.lastName && fullName === employee.fullName) {
+  if (firstName === employee.firstName &&
+    lastName === employee.lastName &&
+    fullName === employee.fullName &&
+    title === employee.title) {
     // No changes to employee name, do not touch it
     return
   }
@@ -77,6 +82,7 @@ function updateEmployeeFullName (ctx) {
       ID: employee.ID,
       firstName,
       lastName,
+      apply: title,
       fullFIO: fullName
     },
     __skipOptimisticLock: true,
@@ -93,21 +99,21 @@ function updateEmployeeFullName (ctx) {
  *   Allow get properties missing in execParams from 'selectBeforeUpdate'
  *   data store.  Pass "true" for update method and "false" for insert method.
  */
-function updateUserFullName (ctx, allowSelectBeforeUpdate) {
+function updateUserFullNameAndTitle (ctx, allowSelectBeforeUpdate) {
   if (ctx.mParams.__syncUser === false) {
     // Ability to explicitly skip the synchronization of user
     return
   }
 
-  let { fullFIO, firstName, lastName, userID } = ctx.mParams.execParams
-  if (fullFIO === undefined && firstName === undefined && lastName === undefined && !ctx.mParams.__syncUser) {
+  let { fullFIO, firstName, lastName, userID, apply } = ctx.mParams.execParams
+  if (fullFIO === undefined && firstName === undefined && lastName === undefined && apply === undefined && !ctx.mParams.__syncUser) {
     // No name-related attributes updated, do not touch user in such a case
     return
   }
 
   if (allowSelectBeforeUpdate) {
-    // If any of "userID", "fullFIO", "firstName" or "lastName" attributes not provided in execParams, get previous values from
-    // "selectBeforeUpdate" dataset
+    // If any of "userID", "apply", "fullFIO", "firstName" or "lastName" attributes not provided in execParams,
+    // get previous values from "selectBeforeUpdate" dataset
     const oldCurrentDataName = ctx.dataStore.currentDataName
     ctx.dataStore.currentDataName = 'selectBeforeUpdate'
     try {
@@ -115,6 +121,7 @@ function updateUserFullName (ctx, allowSelectBeforeUpdate) {
       if (fullFIO === undefined) fullFIO = ctx.dataStore.get('fullFIO')
       if (firstName === undefined) firstName = ctx.dataStore.get('firstName')
       if (lastName === undefined) lastName = ctx.dataStore.get('lastName')
+      if (apply === undefined) apply = ctx.dataStore.get('apply')
     } finally {
       ctx.dataStore.currentDataName = oldCurrentDataName
     }
@@ -131,6 +138,7 @@ function updateUserFullName (ctx, allowSelectBeforeUpdate) {
     execParams: {
       ID: userID,
       fullName: fullFIO,
+      title: apply,
       firstName,
       lastName
     },

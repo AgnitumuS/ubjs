@@ -30,8 +30,9 @@
       "caption": "Vollständiger Name"
     },
     {
-      "name": "gender",
-      "caption": "Geschlecht des Benutzers"
+      "name": "title",
+      "caption": "Anrede",
+      "description": "Beschreibt, wie man die Person anspricht"
     },
     {
       "name": "email",

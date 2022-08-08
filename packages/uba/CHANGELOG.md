@@ -6,12 +6,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+- added new attribute `uba_user.title`
 
 ### Changed
 
 ### Deprecated
 
 ### Removed
+- removed attribute `uba_user.gender`
 
 ### Fixed
 

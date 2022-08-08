@@ -29,8 +29,9 @@
       "caption": "Full Name"
     },
     {
-      "name": "gender",
-      "caption": "User gender"
+      "name": "title",
+      "caption": "Title",
+      "description": "Describes how to address this person"
     },
     {
       "name": "email",

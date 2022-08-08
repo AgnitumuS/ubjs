@@ -59,11 +59,11 @@
       "caption": "Full Name"
     },
     {
-      "name": "gender",
-      "dataType": "Enum",
-      "enumGroup": "UBA_USER_GENDER",
-      "caption": "User gender",
-      "defaultView": false
+      "name": "title",
+      "dataType": "String",
+      "size": 100,
+      "caption": "Title",
+      "description": "Describes how to address this person"
     },
     {
       "name": "email",
