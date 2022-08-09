@@ -6,6 +6,32 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+- ability for `USelectCollection` control to pass additional properties to underneath `USelectMultiple` control,
+  for example, to specify repository to select from:
+
+```vue
+<template>
+  <u-select-collection
+    associated-attr="roleID"
+    entity-name="uba_userrole"
+    :repository="getRolesRepo"
+    collection-name="userRoles"
+    clearable
+  />
+</template>
+
+<script>
+  export default {
+    methods: {
+      getRolesRepo() {
+        return this.$UB.Repository('uba_role')
+          .attrs('ID', 'name')
+          .where('name', 'notIn', ['Anonymous', 'Everyone', 'User'])
+      }
+    }
+  }
+</script>
+```
 
 ### Changed
 
