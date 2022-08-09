@@ -45,7 +45,7 @@
       />
 
       <template #dropdown>
-        <!-- @slot if need to prepend items to the dropdown -->
+        <!-- @slot custom content added to the top of dropdown -->
         <slot name="dropdown-prepend" />
 
         <template
@@ -65,7 +65,7 @@
           />
         </template>
 
-        <!-- @slot if need to append items to the dropdown -->
+        <!-- @slot custom content added to the bottom of dropdown. Better to use `dropdownOnly` property -->
         <slot name="dropdown" />
       </template>
     </u-dropdown>

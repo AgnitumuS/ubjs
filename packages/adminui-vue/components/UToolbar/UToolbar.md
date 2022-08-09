@@ -15,6 +15,11 @@
 ```
 
 ### Custom buttons only
+All default buttons are hidden by `hide-default-buttons="true"`.
+
+Two new buttons are added
+  - first appears on both toolbar and dropdown menu
+  - second - on dropdown only `dropdownOnly: true` 
 ```vue
 <template>
   <div class="u-form-layout">
@@ -36,8 +41,8 @@
           {
             name: 'customButton1',
             label: 'Custom button',
-            icon: 'fa fa-user',
-            type: 'text', // Classic u-button (not icon only) will be shown. Can includes icon from prop above
+            icon: 'u-icon-person-group',
+            type: 'text', // Classic u-button (not icon only) will be shown. Can include icon from prop above
             divider: true, // Will be used for `dropdownButtons`
             handler () {
               // logic
@@ -45,7 +50,7 @@
           },
           {
             name: 'customButton2',
-            label: 'button2',
+            label: 'Custom dropdown only',
             icon: 'u-icon-letter',
             dropdownOnly: true, // Do not add button to the toolbar, but show in the toolbar dropdown only
             handler () {
@@ -60,6 +65,8 @@
 ```
 
 ### Slots
+Buttons placement can be customized using available `slots`
+
 ```vue
 <template>
   <div class="u-form-layout">
@@ -73,8 +80,7 @@
         />
         <u-dropdown-item divider />
       </template>
-      <!-- Or any component you need, button for example -->
-      <button slot="dropdown">dropdown btn</button>
+      <!-- Or any component you need, text for example -->
       <div slot="toolbarInfoRow">some content</div>
     </u-toolbar>
     <u-form-container>
@@ -90,7 +96,10 @@
 </script>
 ```
 
-### Add new button `customButton1` and override build-in `delete` and `save` buttons behavior
+### Default buttons customization
+Default buttons can be hidden, default actions - overrides. Below `delete` button is hidden,
+behavior of `save` button is override and new button added
+
 ```vue
 <template>
   <div class="u-form-layout">
@@ -125,7 +134,7 @@
           {
             name: 'customButton1',
             label: 'Custom button',
-            icon: 'fa fa-user',
+            icon: 'u-icon-person-group',
             disabled: this.$store.state.isNew,
             type: 'text', // Classic u-button (not icon only) will be shown. Can includes icon from prop above
             divider: true, // Will be used for `dropdownButtons`
