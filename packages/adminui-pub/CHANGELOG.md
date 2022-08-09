@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+ - `BasePanel.onAccessRight`: creates a **fieldList** for the `aclRLS.showList` command just like a Vue form
 
 ## [5.23.13] - 2022-08-09
 ### Removed
