@@ -74,7 +74,10 @@ const { Form, mapInstanceFields } = require('@unitybase/adminui-vue')
 const { mapState, mapGetters } = require('vuex')
 
 module.exports.mount = cfg => {
-  Form(cfg)
+  Form({
+    ...cfg,
+    title: '{firstName} {lastName}'
+  })
     .processing()
     .validation()
     .mount()
@@ -101,7 +104,6 @@ module.exports.default = {
       const dictionary = this.$UB.core.UBEnumManager.getGroupData('CDN_SEXTYPE')
       return dictionary.map(([key, caption]) => ({ key, caption }))
     }
-
   },
 
   watch: {
@@ -127,7 +129,7 @@ module.exports.default = {
       const fullFIOPrediction = this.buildFullFIO({ [prop]: prevValue })
       const fullFIO = this.fullFIO === null ? '' : this.fullFIO
       if (fullFIOPrediction === fullFIO) {
-        this.$store.commit(`SET_DATA`, {
+        this.$store.commit('SET_DATA', {
           key: 'fullFIO',
           value: this.buildFullFIO({ [prop]: value })
         })
@@ -136,7 +138,7 @@ module.exports.default = {
       const shortFIOPrediction = this.buildShortFIO({ [prop]: prevValue })
       const shortFIO = this.shortFIO === null ? '' : this.shortFIO
       if (shortFIOPrediction === shortFIO) {
-        this.$store.commit(`SET_DATA`, {
+        this.$store.commit('SET_DATA', {
           key: 'shortFIO',
           value: this.buildShortFIO({ [prop]: value })
         })

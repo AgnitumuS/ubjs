@@ -39,13 +39,26 @@
 
 <script>
 const { Form, mapInstanceFields } = require('@unitybase/adminui-vue')
-const fieldList = ['ID', 'employeeID', 'staffUnitID', 'tabNo', 'employeeOnStaffType', 'description', 'mi_dateFrom',
-  'mi_dateTo']
+const fieldList = [
+  'ID',
+  'employeeID',
+  'staffUnitID',
+  'staffUnitID.name',
+  'employeeID.fullFIO',
+  'tabNo',
+  'employeeOnStaffType',
+  'description',
+  'mi_dateFrom',
+  'mi_dateTo'
+]
 const { required } = require('vuelidate/lib/validators/index')
 const { mapGetters } = require('vuex')
 
 module.exports.mount = cfg => {
-  Form(cfg)
+  Form({
+    ...cfg,
+    title: '{employeeID.fullFIO} {staffUnitID.name}'
+  })
     .processing({
       masterFieldList: fieldList,
       inited (store) {

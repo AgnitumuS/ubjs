@@ -55,7 +55,10 @@ const { Repository } = require('@unitybase/ub-pub')
 const { mapGetters, mapActions, mapState } = require('vuex')
 
 module.exports.mount = (cfg) => {
-  Form(cfg)
+  Form({
+    ...cfg,
+    title: '{code} {name}'
+  })
     .store()
     .processing({
       collections: {

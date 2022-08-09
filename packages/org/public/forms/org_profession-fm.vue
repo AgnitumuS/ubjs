@@ -36,7 +36,10 @@ const { Form, mapInstanceFields } = require('@unitybase/adminui-vue')
 const { mapGetters } = require('vuex')
 
 module.exports.mount = cfg => {
-  Form(cfg)
+  Form({
+    ...cfg,
+    title: '{code} {name}'
+  })
     .processing({
       masterFieldList: ['name', 'fullName', 'code', 'nameGen', 'fullNameGen', 'nameDat', 'fullNameDat']
     })
