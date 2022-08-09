@@ -212,7 +212,7 @@ function ubaAuditLinkUser (ctx) {
       toValue: JSON.stringify(execParams)
     }
   })
-  updateUserFullName(ctx, false)
+  updateUserFullNameAndTitle(ctx, false)
 }
 
 /**
