@@ -55,7 +55,7 @@
     "webpack": "^5.64.4"
   },
   "engines": {
-    "ub": "^5.0"
+    "ub": ">=5.22"
   },
   "keywords": [],
   "author": "dmytro.rudnyk <dmytro.rudnyk@inbase.com.ua> (https://unitybase.info)",
