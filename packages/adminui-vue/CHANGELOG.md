@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+- Elements of the `UToolbar.toolbarButtons` array now may have `dropdownOnly` property,
+  which allows buttons to be not shown in the main toolbar area, but in the dropdown menu only.
 - ability for `USelectCollection` control to pass additional properties to underneath `USelectMultiple` control,
   for example, to specify repository to select from:
 
