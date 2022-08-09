@@ -6,6 +6,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+## [5.23.10] - 2022-08-09
+### Added
  - `Form` title property can contain macros `{attrName}`, such macros will be replaced by attributes values.
   Example - `({code}) {name}`
 - Elements of the `UToolbar.toolbarButtons` array now may have `dropdownOnly` property,
@@ -36,14 +47,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
   }
 </script>
 ```
-
-### Changed
-
-### Deprecated
-
-### Removed
-
-### Fixed
 
 ## [5.23.9] - 2022-08-04
 ### Added
