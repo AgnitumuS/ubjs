@@ -463,7 +463,7 @@ function getEntityName (cfg) {
  * @param {object} cfg.props Props data
  * @param {object} cfg.tabId Tab id
  * @param {string} [cfg.uiTag] Optional UI Tag for tracking subsystem
- * @param {object} [cfg.title] Tab title
+ * @param {string} [cfg.title] Tab title. Can contain macros `{attrName}`, such macros will be replaced by attributes values
  * @param {object} cfg.props UMasterDetailView props
  * @param {function} [cfg.props.repository] Function which returns ClientRepository.
  *   Can be empty in case `props.entityName` is defined - it this case repository constructed automatically
@@ -509,7 +509,7 @@ function mountTableEntity (cfg) {
  * Run UMasterDetailView as modal
  *
  * @param {object} cfg
- * @param {string} cfg.title Modal title
+ * @param {string} cfg.title Modal title. Can contain macros `{attrName}`, such macros will be replaced by attributes values
  * @param {function} cfg.tableRender UMasterDetailView render function
  * @param {string} [cfg.modalClass] Modal class
  * @param {string} [cfg.modalWidth] Modal width
@@ -574,7 +574,7 @@ function mountTableEntityAsModal ({
  * Run UMasterDetailView as tab
  *
  * @param {object} cfg
- * @param {string} cfg.title Tab title
+ * @param {string} cfg.title Tab title. Can contain macros `{attrName}`, such macros will be replaced by attributes values
  * @param {string} cfg.tabId Navbar tab ID
  * @param {string} [cfg.uiTag] UI Tag for tracking subsystem
  * @param {function} cfg.tableRender UMasterDetailView render function

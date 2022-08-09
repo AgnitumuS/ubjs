@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+ - `Form` title property can contain macros `{attrName}`, such macros will be replaced by attributes values.
+  Example - `({code}) {name}`
 
 ### Changed
 
