@@ -7,38 +7,38 @@
     append-to-body
   >
     <div
-      class="u-form-layout"
       v-loading="loading"
+      class="u-form-layout"
     >
       <u-form-row
         :label="$ut('users')"
         label-position="top"
       >
-        <u-select-collection
-          associated-attr="userID"
-          entity-name="uba_usergroup"
-          collection-name="groupUsers"
-          clearable
+        <u-select-multiple
+          v-model="usersInGroup"
+          value-attribute="ID"
+          :repository="getUserGroupRepo"
+          display-attribute="name"
         />
       </u-form-row>
       <span
         slot="footer"
         class="user-select-dialog__footer"
       >
-      <el-button
-        type="primary"
-        @click="apply"
-        :disabled="!isDirty"
-      >
-        {{ $ut('save') }}
-      </el-button>
-    </span>
+        <el-button
+          type="primary"
+          @click="apply"
+        >
+          {{ $ut('save') }}
+        </el-button>
+      </span>
     </div>
   </el-dialog>
 </template>
 
 <script>
 const { mapActions, mapGetters } = require('vuex')
+const { Repository, connection } = require('@unitybase/ub-pub')
 
 module.exports.default = {
   name: 'UsersSelectDialog',
@@ -47,12 +47,17 @@ module.exports.default = {
     title: {
       type: String,
       required: true
+    },
+    instanceID: {
+      type: Number,
+      required: true
     }
   },
 
   data () {
     return {
-      isOpen: false
+      isOpen: false,
+      usersInGroup: []
     }
   },
 
@@ -72,10 +77,34 @@ module.exports.default = {
     },
 
     async apply () {
+      if (this.usersInGroup.length) {
+        for (const userID of this.usersInGroup) {
+          const newUser = await connection.addNewAsObject({
+            entity: 'uba_usergroup',
+            fieldList: ['ID', 'groupID', 'userID'],
+            execParams: {
+              groupID: this.instanceID,
+              userID
+            }
+          })
+
+          this.$store.commit('ADD_COLLECTION_ITEM', { collection: 'groupUsers', item: newUser })
+        }
+      }
       if (this.isDirty) {
         await this.save()
       }
+      this.usersInGroup = []
       this.isOpen = false
+    },
+
+    getUserGroupRepo () {
+      return Repository('uba_user').attrs(['ID', 'name'])
+        .notExists(
+          Repository('uba_usergroup')
+            .correlation('userID', 'ID')
+            .where('groupID', '=', this.instanceID)
+        )
     }
   }
 }
