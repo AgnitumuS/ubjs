@@ -106,8 +106,8 @@
       "name": "apply",
       "dataType": "String",
       "size": 100,
-      "caption": "Treatment",
-      "description": "Describes how to treat to this person",
+      "caption": "Title",
+      "description": "Describes how to address this person",
       "allowNull": true,
       "isMultiLang": true
     },
@@ -250,8 +250,8 @@
       "name": "applyGen",
       "dataType": "String",
       "size": 100,
-      "caption": "Treatment in genitive",
-      "description": "Describes how to treat to this person in genitive case",
+      "caption": "Title in genitive",
+      "description": "Describes how to address this person in genitive case",
       "allowNull": true,
       "isMultiLang": true
     },
@@ -259,8 +259,8 @@
       "name": "applyDat",
       "dataType": "String",
       "size": 100,
-      "caption": "Treatment in dative",
-      "description": "Describes how to treat to this person in dative case",
+      "caption": "Title in dative",
+      "description": "Describes how to address this person in dative case",
       "allowNull": true,
       "isMultiLang": true
     },
@@ -268,8 +268,8 @@
       "name": "applyObj",
       "dataType": "String",
       "size": 100,
-      "caption": "Treatment in objective",
-      "description": "Describes how to treat to this person in objective case",
+      "caption": "Title in objective",
+      "description": "Describes how to address this person in objective case",
       "allowNull": true,
       "isMultiLang": true
     },

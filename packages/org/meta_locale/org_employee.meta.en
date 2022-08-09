@@ -61,8 +61,8 @@
     },
     {
       "name": "apply",
-      "caption": "Treatment",
-      "description": "Describes how to treat to this person"
+      "caption": "Title",
+      "description": "Describes how to address this person"
     },
     {
       "name": "lastNameGen",
@@ -116,13 +116,13 @@
     },
     {
       "name": "applyGen",
-      "caption": "Treatment in genitive",
-      "description": "Describes how to treat to this person in genitive case"
+      "caption": "Title in genitive",
+      "description": "Describes how to address this person in genitive case"
     },
     {
       "name": "applyDat",
-      "caption": "Treatment in dative",
-      "description": "Describes how to treat to this person in dative case"
+      "caption": "Title in dative",
+      "description": "Describes how to address this person in dative case"
     },
     {
       "name": "facsimile",
@@ -156,8 +156,8 @@
     },
     {
       "name": "applyObj",
-      "caption": "Treatment in objective",
-      "description": "Describes how to treat to this person in objective case"
+      "caption": "Title in objective",
+      "description": "Describes how to address this person in objective case"
     }
   ]
 }

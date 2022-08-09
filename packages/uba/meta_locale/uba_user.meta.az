@@ -17,6 +17,11 @@
       "description": "ŞifrəHeşi"
     },
     {
+      "name": "title",
+      "caption": "Müraciət",
+      "description": "Müraciət forması"
+    },
+    {
       "name": "disabled",
       "caption": "De-aktiv edilmişdir"
     },
