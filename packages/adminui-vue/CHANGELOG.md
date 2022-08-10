@@ -18,6 +18,39 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.23.10] - 2022-08-09
+### Added
+ - `Form` title property can contain macros `{attrName}`, such macros will be replaced by attributes values.
+  Example - `({code}) {name}`
+- Elements of the `UToolbar.toolbarButtons` array now may have `dropdownOnly` property,
+  which allows buttons to be not shown in the main toolbar area, but in the dropdown menu only.
+- ability for `USelectCollection` control to pass additional properties to underneath `USelectMultiple` control,
+  for example, to specify repository to select from:
+
+```vue
+<template>
+  <u-select-collection
+    associated-attr="roleID"
+    entity-name="uba_userrole"
+    :repository="getRolesRepo"
+    collection-name="userRoles"
+    clearable
+  />
+</template>
+
+<script>
+  export default {
+    methods: {
+      getRolesRepo() {
+        return this.$UB.Repository('uba_role')
+          .attrs('ID', 'name')
+          .where('name', 'notIn', ['Anonymous', 'Everyone', 'User'])
+      }
+    }
+  }
+</script>
+```
+
 ## [5.23.9] - 2022-08-04
 ### Added
 - new icon: `u-icon-download-all-with-signatures`

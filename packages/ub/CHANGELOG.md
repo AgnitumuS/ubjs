@@ -15,6 +15,20 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.23.11] - 2022-08-09
+### Added
+ - `Session.hasRole` can accept roles as array and returns true in case user has at last one of passed roles
+```javascript
+const UB = require('@unitybae/ub')
+const Session = UB.Session
+if (Session.hasRole(['Admin', 'Supervisor'])) { // equal to Session.hasRole('Admin') || Session.hasRole('Supervisor')
+  console.debug('current user is a member of `Admin` or/and `Supervisor` group')
+}
+```
+## [5.23.10] - 2022-08-05
+### Fixed
+ - fixed syntax error in `ub_version.meta.ru` 
+
 ## [5.23.9] - 2022-08-04
 ### Added
 - added `captionSingular` for all *.meta and *.meta.lang

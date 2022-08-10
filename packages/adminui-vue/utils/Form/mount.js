@@ -1,5 +1,6 @@
 /**
  * Mount helpers for Vue components
+ *
  * @module mountUtils
  * @memberOf module:@unitybase/adminui-vue
  */
@@ -22,6 +23,7 @@ const uDialogs = require('../uDialogs')
  * @param {object} cfg
  * @param {Vue.Component} cfg.component Form component
  * @param {object} cfg.props Form component props
+ * @param {object[]} [cfg.mixins] Form component mixins
  * @param {Vuex.Store} cfg.store Store
  * @param {string} cfg.title Title
  * @param {Validator} [cfg.validator] Validator
@@ -33,6 +35,7 @@ const uDialogs = require('../uDialogs')
  */
 function mountModal ({
   component,
+  mixins,
   props,
   store,
   title: titleText,
@@ -49,27 +52,46 @@ function mountModal ({
   }
   const instance = new Vue({
     store,
+
+    mixins,
+
+    provide () {
+      return {
+        $v: validator ? validator.getValidationState() : undefined,
+        validator,
+        $formServices: {
+          setTitle: this.setTitle,
+          close: () => {
+            beforeClose({
+              close: () => {
+                this.dialogVisible = false
+              },
+              store
+            })
+          },
+          forceClose: () => {
+            this.dialogVisible = false
+          }
+        },
+        isModal: true,
+        ...provide
+      }
+    },
+
     data () {
       return {
         dialogVisible: false,
         titleText
       }
     },
+
     computed: {
       isDirty () {
-        if (this.$store) {
-          return this.$store.getters.isDirty
-        } else {
-          return false
-        }
+        return this.$store ? this.$store.getters.isDirty : false
       },
 
       isNew () {
-        if (this.$store) {
-          return this.$store.state.isNew
-        } else {
-          return false
-        }
+        return this.$store ? this.$store.state.isNew : false
       },
 
       title () {
@@ -96,28 +118,7 @@ function mountModal ({
         this.titleText = value
       }
     },
-    provide () {
-      return {
-        $v: validator ? validator.getValidationState() : undefined,
-        validator,
-        $formServices: {
-          setTitle: this.setTitle,
-          close: () => {
-            beforeClose({
-              close: () => {
-                this.dialogVisible = false
-              },
-              store
-            })
-          },
-          forceClose: () => {
-            this.dialogVisible = false
-          }
-        },
-        isModal: true,
-        ...provide
-      }
-    },
+
     render (h) {
       return h(Dialog, {
         ref: 'dialog',
@@ -153,6 +154,7 @@ function mountModal ({
       ])
     }
   })
+
   instance.$mount()
   document.body.appendChild(instance.$el)
   instance.dialogVisible = true
@@ -163,6 +165,7 @@ function mountModal ({
  * @param {object} cfg
  * @param {Vue.Component} cfg.component Form component
  * @param {object} cfg.props Form component props
+ * @param {object[]} [cfg.mixins] Form component mixins
  * @param {Vuex.Store} cfg.store Store
  * @param {string} cfg.title Title
  * @param {string} cfg.tabId navbar tab ID
@@ -176,6 +179,7 @@ function mountModal ({
 function mountTab ({
   component,
   props,
+  mixins,
   store,
   validator,
   title: titleText,
@@ -195,12 +199,15 @@ function mountTab ({
   })
 
   const instance = new Vue({
+    mixins,
+
     data () {
       return {
         titleText,
         titleTooltipText
       }
     },
+
     computed: {
       isDirty () {
         if (this.$store) {
@@ -228,6 +235,7 @@ function mountTab ({
         return this.$ut(this.titleTooltipText) || this.title
       }
     },
+
     watch: {
       title: {
         immediate: true,
@@ -254,6 +262,7 @@ function mountTab ({
       }
     },
     render: (h) => h(component, { props }),
+
     provide () {
       return {
         $v: validator ? validator.getValidationState() : undefined,
@@ -338,6 +347,7 @@ function beforeClose ({ store, close }) {
  * @param {object} cfg
  * @param {Vue.Component} cfg.component Form component
  * @param {object} cfg.props Form component props
+ * @param {object[]} [cfg.mixins] Form component mixins
  * @param {Vuex.Store} cfg.store Store
  * @param {object} cfg.provide Regular object which provide all props what passed in it
  * @param {Ext.component|String} cfg.target Either id of html element or Ext component
@@ -348,6 +358,7 @@ function beforeClose ({ store, close }) {
 function mountContainer ({
   component,
   props,
+  mixins,
   store,
   provide,
   target,
@@ -356,6 +367,7 @@ function mountContainer ({
 }) {
   const instance = new Vue({
     store,
+    mixins,
     data () {
       return {}
     },
@@ -429,6 +441,21 @@ function mountContainer ({
 
 const UMasterDetailView = require('../../components/UMasterDetailView/UMasterDetailView.vue').default
 
+function getEntityName (cfg) {
+  if (!cfg.props.entityName && !cfg.props.repository) {
+    throw new Error('One of "props.entityName" or "props.repository" is required')
+  }
+
+  switch (typeof cfg.props.repository) {
+    case 'function':
+      return cfg.props.repository().entityName
+    case 'object':
+      return cfg.props.repository.entity
+    default:
+      return cfg.props.entityName
+  }
+}
+
 /**
  * Mount UMasterDetailView
  *
@@ -436,7 +463,7 @@ const UMasterDetailView = require('../../components/UMasterDetailView/UMasterDet
  * @param {object} cfg.props Props data
  * @param {object} cfg.tabId Tab id
  * @param {string} [cfg.uiTag] Optional UI Tag for tracking subsystem
- * @param {object} [cfg.title] Tab title
+ * @param {string} [cfg.title] Tab title. Can contain macros `{attrName}`, such macros will be replaced by attributes values
  * @param {object} cfg.props UMasterDetailView props
  * @param {function} [cfg.props.repository] Function which returns ClientRepository.
  *   Can be empty in case `props.entityName` is defined - it this case repository constructed automatically
@@ -449,22 +476,7 @@ const UMasterDetailView = require('../../components/UMasterDetailView/UMasterDet
  * @param {string} [cfg.shortcutCode] Shortcut code
  */
 function mountTableEntity (cfg) {
-  if (!cfg.props.entityName && !cfg.props.repository) {
-    throw new Error('One of "props.entityName" or "props.repository" is required')
-  }
-
-  function getEntityName () {
-    switch (typeof cfg.props.repository) {
-      case 'function':
-        return cfg.props.repository().entityName
-      case 'object':
-        return cfg.props.repository.entity
-      default:
-        return cfg.props.entityName
-    }
-  }
-
-  const title = cfg.title || getEntityName()
+  const title = cfg.title || getEntityName(cfg)
   const tableRender = h => {
     const scopedSlots = cfg.scopedSlots && cfg.scopedSlots(h)
     return h(UMasterDetailView, {
@@ -497,7 +509,7 @@ function mountTableEntity (cfg) {
  * Run UMasterDetailView as modal
  *
  * @param {object} cfg
- * @param {string} cfg.title Modal title
+ * @param {string} cfg.title Modal title. Can contain macros `{attrName}`, such macros will be replaced by attributes values
  * @param {function} cfg.tableRender UMasterDetailView render function
  * @param {string} [cfg.modalClass] Modal class
  * @param {string} [cfg.modalWidth] Modal width
@@ -562,7 +574,7 @@ function mountTableEntityAsModal ({
  * Run UMasterDetailView as tab
  *
  * @param {object} cfg
- * @param {string} cfg.title Tab title
+ * @param {string} cfg.title Tab title. Can contain macros `{attrName}`, such macros will be replaced by attributes values
  * @param {string} cfg.tabId Navbar tab ID
  * @param {string} [cfg.uiTag] UI Tag for tracking subsystem
  * @param {function} cfg.tableRender UMasterDetailView render function

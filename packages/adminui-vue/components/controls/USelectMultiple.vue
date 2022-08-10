@@ -173,7 +173,7 @@ const { debounce } = require('throttle-debounce')
 const clickOutsideDropdown = require('./mixins/clickOutsideDropdown')
 
 /**
- * Multy-select component mapped to Entity
+ * Multi-select component mapped to Entity
  */
 export default {
   name: 'USelectMultiple',
@@ -218,7 +218,7 @@ export default {
      */
     clearable: Boolean,
     /**
-     * Input placeholder.
+     * Input placeholder
      */
     placeholder: {
       type: String,
@@ -237,7 +237,7 @@ export default {
     },
 
     /**
-     * Search by include (may be slow) or by first letters (faster)
+     * Search by include (can be slow) or by first letters (faster)
      */
     searchStrategy: {
       type: String,
@@ -245,7 +245,7 @@ export default {
       validator: value => ['like', 'startsWith'].includes(value)
     },
     /**
-     * Dropdown buttons definition array. Can contains additional dropdown buttons,
+     * Dropdown buttons definition array. May contain additional dropdown buttons
      */
     additionalButtons: {
       type: Array,
@@ -285,20 +285,12 @@ export default {
     },
 
     inputIconCls () {
-      let icon
-      const arrowPrefix = 'u-icon-arrow-'
-
-      if (this.dropdownVisible) {
-        icon = arrowPrefix + 'up'
-      } else {
-        icon = arrowPrefix + 'down'
-      }
-
       if (this.loading) {
-        icon = 'el-icon-loading'
+        return 'el-icon-loading'
       }
-
-      return icon
+      return this.dropdownVisible
+        ? 'u-icon-arrow-up'
+        : 'u-icon-arrow-down'
     },
 
     /**
@@ -357,7 +349,7 @@ export default {
 
   methods: {
     /**
-     * @return {ClientRepository}
+     * @returns {ClientRepository}
      */
     getRepository () {
       if (this.repository) {

@@ -34,6 +34,7 @@
           :repository="getUsersRepository"
           :style="{maxWidth: '800px'}"
           :before-add-new="showPopUpToAddUsers"
+          enable-multi-select
         >
         </u-table-entity>
       </u-form-row>
@@ -43,8 +44,8 @@
     <users-select-dialog
       ref="usersSelectDialog"
       :title="dialogTitle"
+      :instanceID="instanceID"
     />
-
   </div>
 </template>
 
@@ -54,7 +55,10 @@ const { Repository } = require('@unitybase/ub-pub')
 const { mapGetters, mapActions, mapState } = require('vuex')
 
 module.exports.mount = (cfg) => {
-  Form(cfg)
+  Form({
+    ...cfg,
+    title: '{code} {name}'
+  })
     .store()
     .processing({
       collections: {

@@ -54,5 +54,6 @@
   "desktopService.BottomRight": "Kanan bawah",
   "monkeyRequestsDetected": "Your request has been processed, but we found that it is repeated several times. Maybe you key fuse?",
   "Shortcut editor": "Editor pintasan",
-  "chooseShortcutFolder": "Choose shortcut folder"
+  "chooseShortcutFolder": "Choose shortcut folder",
+  "Desktop rights": "Subjek administrasi"
 }

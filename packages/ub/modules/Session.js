@@ -290,7 +290,10 @@ Session.switchLangForContext = function (newLang) {
 }
 
 /**
- * O(1) checks if the current user is a member of the specified role
+ * O(1) checks if the current user is a member of the specified role(s)
+ *
+ * If roles is array - at last one of passed roles.
+ *
  * @example
 
 const UB = require('@unitybae/ub')
@@ -298,15 +301,22 @@ const Session = UB.Session
 if (Session.hasRole('accountAdmin')) {
   console.debug('current user has accountAdmin role')
 }
+if (Session.hasRole(['Admin', 'Supervisor'])) { // equal to Session.hasRole('Admin') || Session.hasRole('Supervisor')
+  console.debug('current user is a member of `Admin` or/and `Supervisor` group')
+}
 
- * @param {string} roleName
+ * @param {string|array<string>} roleName
  * @return {boolean}
  */
 Session.hasRole = function (roleName) {
   if (!_sessionCached.roleNamesSet) {
     _sessionCached.roleNamesSet = new Set(this.uData.roles.split(','))
   }
-  return _sessionCached.roleNamesSet.has(roleName)
+  if (Array.isArray(roleName)) {
+    return roleName.some(r => _sessionCached.roleNamesSet.has(r))
+  } else {
+    return _sessionCached.roleNamesSet.has(roleName)
+  }
 }
 
 /**

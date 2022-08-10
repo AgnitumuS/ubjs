@@ -20,12 +20,17 @@
       "caption": "Прізвище"
     },
     {
+      "name": "middleName",
+      "caption": "По батькові"
+    },
+    {
       "name": "fullName",
       "caption": "ПІБ"
     },
     {
-      "name": "gender",
-      "caption": "Стать"
+      "name": "title",
+      "caption": "Звернення",
+      "description": "Як звертатись до даного користувача"
     },
     {
       "name": "email",

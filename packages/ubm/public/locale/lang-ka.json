@@ -54,5 +54,6 @@
   "desktopService.BottomRight": "ქვედა მარჯვენა",
   "monkeyRequestsDetected": "Your request has been processed, but we found that it is repeated several times. Maybe you key fuse?",
   "Shortcut editor": "მალსახმობების რედაქტორი",
-  "chooseShortcutFolder": "Choose shortcut folder"
+  "chooseShortcutFolder": "Choose shortcut folder",
+  "Desktop rights": "ადმინისტრირების თემა"
 }

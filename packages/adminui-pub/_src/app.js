@@ -539,15 +539,6 @@ function launchApp () {
       }]
     })
 
-    // Stop the backspace key from going to the previous page in your extjs app
-    Ext.EventManager.addListener(Ext.getBody(), 'keydown', function (e) {
-      const type = (e.getTarget().tagName || '').toLocaleLowerCase()
-      const eKey = e.getKey()
-      if (eKey === Ext.EventObject.BACKSPACE && 'textarea|input'.indexOf(type) < 0) {
-        e.preventDefault()
-      }
-    })
-
     // init dropzone
     UB.view.UBDropZone.init()
 

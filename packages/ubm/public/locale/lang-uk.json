@@ -54,5 +54,6 @@
   "desktopService.BottomRight": "Знизу праворуч",
   "monkeyRequestsDetected": "Ваш запит оброблено, але ми виявили що його повторено кілька разів. Можливо, у Вас запала клавіша?",
   "Shortcut editor": "Редактор ярлика",
-  "chooseShortcutFolder": "Оберiть папку ярлика"
+  "chooseShortcutFolder": "Оберiть папку ярлика",
+  "Desktop rights": "Суб'єкт адміністрування"
 }

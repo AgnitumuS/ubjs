@@ -15,6 +15,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.23.12] - 2022-08-09
+### Added
+- added localization for `ubm_desktop.meta.*` and `ubm_desktop-fm.vue` for not localized fields
+
+## [5.23.11] - 2022-08-05
 ## [5.23.10] - 2022-08-04
 ### Added
 - Added captionSingular for all *.meta and *.meta.lang

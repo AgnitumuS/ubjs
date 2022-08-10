@@ -22,12 +22,17 @@
             "caption": "Фамилия"
         },
         {
+          "name": "middleName",
+          "caption": "Отчество"
+        },
+        {
             "name": "fullName",
             "caption": "ФИО"
         },
         {
-            "name": "gender",
-            "caption": "Пол"
+            "name": "title",
+            "caption": "Обращение",
+            "description": "Как обращаться к данному пользователю"
         },
         {
             "name": "email",

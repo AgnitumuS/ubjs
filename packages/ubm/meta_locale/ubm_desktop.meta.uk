@@ -12,6 +12,14 @@
       "caption": "Код"
     },
     {
+      "name": "description",
+      "caption": "Опис"
+    },
+    {
+      "name": "iconCls",
+      "caption": "Піктограма (CSS-клас)"
+    },
+    {
       "name": "url",
       "caption": "URL",
       "description": "URL статичної сторінки сервера, яка відображається в центрі екрану при виборі робочого столу"

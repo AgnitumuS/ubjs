@@ -15,6 +15,20 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.23.12] - 2022-08-09
+### Added
+- added new attribute `uba_user.title`
+
+### Removed
+- removed attribute `uba_user.gender`
+
+### Fixed
+- `uba_group` form - fix multi-select for users
+
+## [5.23.11] - 2022-08-05
+### Added
+ - added new attribute `uba_user.middleName`
+
 ## [5.23.10] - 2022-08-04
 ### Added
 - Added captionSingular for all *.meta and *.meta.lang

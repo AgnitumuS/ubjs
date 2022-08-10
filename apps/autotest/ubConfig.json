@@ -281,7 +281,7 @@
 				"dialect": "SQLite3",
 				"databaseName": "%UB_APPDATA%localdb/DB.sqlite3",
 //				"replicatedAs": "main_repl",
-				"supportLang": %UB_SUPPORT_LANG||["en", "uk"]%, // env replacer test
+				"supportLang": %UB_SUPPORT_LANG||["en", "de", "uk", "ru", "az"]%, // env replacer test
 				"advSettings": "Synchronous=Off",
 				"statementMaxMemoryMb": 1
 			},

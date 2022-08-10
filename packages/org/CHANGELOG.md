@@ -15,6 +15,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.23.13] - 2022-08-09
+### Added
+- `org_employee`: attribute `apply` now two-way synced with `title` attribute  of `uba_user`
+
+## [5.23.12] - 2022-08-05
+### Changed
+ - `org_employee` form - mark employee code as mandatory [LDOC-2336]
+
 ## [5.23.11] - 2022-08-04
 ### Added
 - Added captionSingular for all *.meta and *.meta.lang

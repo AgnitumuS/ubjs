@@ -51,7 +51,10 @@ const { Form, mapInstanceFields } = require('@unitybase/adminui-vue')
 const { mapState, mapGetters } = require('vuex')
 
 module.exports.mount = cfg => {
-  Form(cfg)
+  Form({
+    ...cfg,
+    title: '{name}'
+  })
     .processing()
     .validation()
     .mount()
@@ -70,7 +73,7 @@ module.exports.default = {
   watch: {
     name (value, prevValue) {
       if (prevValue === this.fullName) {
-        this.$store.commit(`SET_DATA`, { key: 'fullName', value })
+        this.$store.commit('SET_DATA', { key: 'fullName', value })
       }
     }
   },
