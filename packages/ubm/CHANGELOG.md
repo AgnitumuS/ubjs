@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+- The `ubm_desktop` form: remove validation for `isDefault` attribute. Make the form more UAutoForm-like
 
 ## [5.23.12] - 2022-08-09
 ### Added
