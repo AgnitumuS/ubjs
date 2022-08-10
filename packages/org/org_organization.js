@@ -7,7 +7,7 @@ me.on('update:before', checkOKPOCode)
 me.on('insert:before', checkOKPOCode)
 
 /**
- * @param {object} ctx
+ * @param {ubMethodParams} ctx
  * @param {object} ctx.mParams
  * @param {string} ctx.mParams.method
  * @param {object} ctx.mParams.execParams

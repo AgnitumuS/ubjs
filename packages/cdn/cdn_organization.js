@@ -86,6 +86,10 @@ function checkCode (ctx) {
   const execParams = mParams.execParams
 
   if (!execParams.OKPOCode) {
+    const isOKPORequired = ubs_settings.loadKey('org.organization.requiredOKPO', false)
+    if (isOKPORequired === false) {
+      return true
+    }
     if (allowAutoGenerateOKPO === null) allowAutoGenerateOKPO = ubs_settings.loadKey('cdn.organization.allowAutoGenerateOKPO', false)
     if (allowAutoGenerateOKPO) {
       execParams.OKPOCode = 'A' + ubs_numcounter.getRegnum(mParams.entity, 1000000)
