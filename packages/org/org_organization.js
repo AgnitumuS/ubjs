@@ -1,24 +1,37 @@
+/* global org_organization, ubs_settings */
 const UB = require('@unitybase/ub')
-const Session = UB.Session
-/* global org_organization */
 // eslint-disable-next-line camelcase
 const me = org_organization
 
-me.on('update:before', checkOKPOCodeForUkraine)
-me.on('insert:before', checkOKPOCodeForUkraine)
+me.on('update:before', checkOKPOCode)
+me.on('insert:before', checkOKPOCode)
 
-function checkOKPOCodeForUkraine (ctxt) {
-  if (Session.userLang !== 'uk') return true
-  const mParams = ctxt.mParams
-  const execParams = mParams.execParams
-  if ((mParams.method === 'update') && !execParams.OKPOCode) return true
+/**
+ * @param {object} ctx
+ * @param {object} ctx.mParams
+ * @param {string} ctx.mParams.method
+ * @param {object} ctx.mParams.execParams
+ * @param {string} ctx.mParams.execParams.OKPOCode
+ * @returns {boolean}
+ */
+function checkOKPOCode (ctx) {
+  const isOKPORequired = ubs_settings.loadKey('org.organization.requiredOKPO', false)
+  if (isOKPORequired === false) {
+    return true
+  }
+  const { mParams } = ctx
+  const { execParams } = mParams
+  if ((mParams.method === 'update') && !execParams.OKPOCode) {
+    return true
+  }
+  const { OKPOCode } = execParams
+  if (!OKPOCode) {
+    throw new UB.UBAbort('<<<Не вказаний код ЄДРПОУ>>>')
+  }
 
-  const OKPOCode = execParams.OKPOCode
-  if (!OKPOCode) throw new UB.UBAbort('<<<Не вказаний код ЄДРПОУ>>>')
-
-  if (ctxt.mParams.execParams._noValid) {
+  if (execParams._noValid) {
     // Allow add record without OKPO during import operation
-    delete ctxt.mParams.execParams._noValid
+    delete ctx.mParams.execParams._noValid
     return true
   }
   if (!/^[0-9]+$/.test(OKPOCode) || (OKPOCode.length !== 8 && OKPOCode.length !== 10)) {

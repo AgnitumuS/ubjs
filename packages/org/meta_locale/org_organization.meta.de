@@ -1,6 +1,6 @@
 {
   "caption": "Interne Organisationen",
-  "captionSingular": "Externe Organisation",
+  "captionSingular": "Interne Organisation",
   "description": " Liste der internen Organisationen",
   "documentation": "Dieses Wörterbuch enthält eine Liste der internen Organisationen. Jede Organisation verlinkt mit org_unit durch Unity Mixin",
   "attributes": [

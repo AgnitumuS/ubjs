@@ -1,6 +1,6 @@
 {
   "caption": "Internal Organizations",
-  "captionSingular": "External organization",
+  "captionSingular": "Internal organization",
   "description": " List of internal organizations",
   "documentation": "This dictionary contains list of internal organizations. Each organization links to org_unit by Unity mixin",
   "attributes": [
