@@ -82,7 +82,7 @@ Recommended way is to set this parameter per-connection (instead of globally in 
  },...]
  ```
   
-### MS SQL server (Linux)
+### MS SQL server-Linux
 #### Setup Microsoft ODBC
   See [Installing the Microsoft ODBC driver for sql server](https://docs.microsoft.com/en-us/sql/connect/odbc/linux-mac/installing-the-microsoft-odbc-driver-for-sql-server?view=sql-server-ver15)
 
@@ -106,7 +106,7 @@ Recommended way is to set this parameter per-connection (instead of globally in 
 Example:
 ```
 [my_production_database]
-Driver=ODBC Driver 17 for SQL Server
+Driver=ODBC Driver 18 for SQL Server
 Description=My production database for Awesome app
 Server=tcp:ms16.unitybase.info,1405
 Database=master
