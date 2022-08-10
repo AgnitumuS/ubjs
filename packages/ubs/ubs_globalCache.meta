@@ -1,5 +1,6 @@
 ﻿{
 	"caption": "Server-Side Cache",
+	"captionSingular": "Server-Side Cache",
 	"description": "Server-side global cache",
 	"dsType": "Virtual",
 	"documentation": "Read-only access to server-side global cache (for developers)",

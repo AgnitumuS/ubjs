@@ -1,5 +1,6 @@
 {
   "caption": "Attribute Level Security (ALS)",
+  "captionSingular": "ALS rule",
   "description": "Attribute level security",
   "documentation": "",
   "attributes": [

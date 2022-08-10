@@ -1,5 +1,6 @@
 ﻿{
     "caption": "Истифодабарандагон",
+    "captionSingular": "Истифодабаранда",
     "description": "",
     "attributes": [
         {
@@ -32,6 +33,10 @@
         {
             "name": "lastName",
             "caption": "Насаб"
+        },
+        {
+            "name": "middleName",
+            "caption": "Номи падар"
         },
         {
             "name": "trustedIP",

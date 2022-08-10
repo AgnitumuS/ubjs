@@ -1,5 +1,6 @@
 {
   "caption": "Saved UI Filters",
+  "captionSingular": "Saved UI Filter",
   "description": "Stored UI filters",
   "connectionName": "",
   "sqlAlias": "sfilter",
@@ -35,8 +36,7 @@
       "dataType": "Boolean",
       "caption": "Is global?",
       "description": "Is global?",
-      "documentation": "Is this filter accessible for all users",
-      "allowNull": false
+      "documentation": "Is this filter accessible for all users"
     },
     {
       "name": "owner",

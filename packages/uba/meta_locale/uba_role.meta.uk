@@ -1,5 +1,6 @@
 {
   "caption": "Системні ролі",
+  "captionSingular": "Системна роль",
   "description": "Ролі підсистеми адміністрування",
   "attributes": [
     {

@@ -1,5 +1,6 @@
 {
   "caption": "Gebruikers",
+  "captionSingular": "Gebruiker",
   "description": "Gebruikers",
   "attributes": [
     {
@@ -18,6 +19,10 @@
     {
       "name": "lastName",
       "caption": "Achternaam"
+    },
+    {
+      "name": "middleName",
+      "caption": "Middelste naam"
     },
     {
       "name": "fullName",

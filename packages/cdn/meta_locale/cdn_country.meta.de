@@ -1,5 +1,6 @@
 {
   "caption": "Länder",
+  "captionSingular": "Land",
   "description": "Länderverzeichnis",
   "attributes": [
     {

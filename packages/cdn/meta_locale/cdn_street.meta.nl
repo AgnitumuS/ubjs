@@ -1,5 +1,6 @@
 {
   "caption": "Lijst van straten",
+  "captionSingular": "Straat",
   "description": "Lijst van straten",
   "attributes": [
     {

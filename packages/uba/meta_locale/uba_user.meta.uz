@@ -1,5 +1,6 @@
 {
   "caption": "Foydalanuvchilar",
+  "captionSingular": "Foydalanuvchi",
   "description": "Foydalanuvchilar",
   "attributes": [
     {
@@ -17,6 +18,10 @@
     {
       "name": "lastName",
       "caption": "Familiya"
+    },
+    {
+      "name": "middleName",
+      "caption": "Otasini ismi"
     },
     {
       "name": "fullName",

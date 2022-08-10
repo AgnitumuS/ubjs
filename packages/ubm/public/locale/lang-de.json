@@ -50,5 +50,6 @@
   "desktopService.BottomRight": "Unten rechts",
   "monkeyRequestsDetected": "Ihre Anfrage wurde verarbeitet, aber wir haben festgestellt, dass sie mehrmals wiederholt wurde. Klemmt möglicherweise eine Taste?",
   "Shortcut editor": "Verknüpfungs-Editor",
-  "chooseShortcutFolder": "Verknüpfungsordner wählen"
+  "chooseShortcutFolder": "Verknüpfungsordner wählen",
+  "Desktop rights": "Verwaltungssubjekt"
 }

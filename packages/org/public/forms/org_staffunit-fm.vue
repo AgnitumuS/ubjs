@@ -10,25 +10,28 @@
           :label="$ut('General')"
           name="general"
         >
-          <u-auto-field attribute-name="parentID" />
-          <u-form-row :label="'org_staffunit.professionID'">
-            <u-select-entity
-              v-model="professionID"
-              entity-name="org_profession"
-              @input="setNameByProfession"
+          <u-grid>
+            <u-auto-field attribute-name="parentID" />
+            <u-form-row
+              attribute-name="professionID"
+            >
+              <u-select-entity
+                v-model="professionID"
+                entity-name="org_profession"
+                @input="setNameByProfession"
+              />
+            </u-form-row>
+            <u-auto-field attribute-name="staffUnitTypeID" />
+            <u-auto-field attribute-name="professionExtID" />
+            <u-auto-field attribute-name="code" />
+            <u-auto-field attribute-name="name" />
+            <u-auto-field attribute-name="fullName" />
+            <u-auto-field attribute-name="description" />
+            <u-auto-field attribute-name="subordinationLevel" />
+            <u-auto-field
+              attribute-name="isBoss"
             />
-          </u-form-row>
-          <u-auto-field attribute-name="staffUnitTypeID" />
-          <u-auto-field attribute-name="professionExtID" />
-          <u-auto-field attribute-name="code" />
-          <u-auto-field attribute-name="name" />
-          <u-auto-field attribute-name="fullName" />
-          <u-auto-field attribute-name="description" />
-          <u-auto-field attribute-name="subordinationLevel" />
-          <u-auto-field
-            attribute-name="isBoss"
-            force-cmp="el-switch"
-          />
+          </u-grid>
 
           <u-table-entity
             v-if="ID"
@@ -60,7 +63,10 @@
 const { Form, mapInstanceFields } = require('@unitybase/adminui-vue')
 const { mapState, mapGetters } = require('vuex')
 module.exports.mount = cfg => {
-  Form(cfg)
+  Form({
+    ...cfg,
+    title: '{code} {name}'
+  })
     .processing({
       masterFieldList: ['parentID', 'professionID', 'staffUnitTypeID', 'professionExtID', 'code', 'name', 'fullName',
         'description', 'subordinationLevel', 'isBoss', 'nameGen', 'nameDat', 'fullNameGen', 'fullNameDat']

@@ -1,5 +1,6 @@
 ﻿{
     "caption": "მომხმარებლები",
+    "captionSingular": "მომხმარებელი",
     "description": "",
     "attributes": [
         {
@@ -13,6 +14,10 @@
         {
             "name": "lastName",
             "caption": "გვარი"
+        },
+        {
+            "name": "middleName",
+            "caption": "მოკლე სახელი"
         },
         {
             "name": "fullName",

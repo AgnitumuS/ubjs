@@ -1,5 +1,6 @@
 {
   "caption": "Liste der Straßen",
+  "captionSingular": "Straße",
   "description": "Liste der Straßen",
   "attributes": [
     {

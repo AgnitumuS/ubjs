@@ -1,5 +1,6 @@
 {
   "caption": "Desktops",
+  "captionSingular": "Bureaublad",
   "description": "Desktops van applicaties",
   "attributes": [
     {
@@ -23,6 +24,14 @@
       "name": "displayOrder",
       "caption": "Volgorde #",
       "description": "Weergavevolgorde"
+    },
+    {
+        "name": "description",
+        "caption": "Omschrijving"
+    },
+    {
+        "name": "iconCls",
+        "caption": "Bureaublad icoon"
     }
   ]
 }

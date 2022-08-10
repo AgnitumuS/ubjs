@@ -1,5 +1,6 @@
 {
   "caption": "Valyutalar",
+  "captionSingular": "Valyuta",
   "description": "Valyuta ma'lumotnomasi",
   "attributes": [
     {

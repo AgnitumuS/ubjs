@@ -1,5 +1,6 @@
 {
   "caption": "Medewerkers van externe organisaties",
+  "captionSingular": "Medewerker van een externe organisatie",
   "description": "Lijst met medewerkers van externe organisaties",
   "attributes": [
     {

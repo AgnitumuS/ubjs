@@ -1,5 +1,6 @@
 {
   "caption": "jenis kota",
+  "captionSingular": "Jenis pemukiman",
   "description": "direktori jenis kota",
   "attributes": [
     {

@@ -1,5 +1,6 @@
 {
   "caption": "Enumerated Values",
+  "captionSingular": "Enumerated Value",
   "description": "Enumerated values",
   "connectionName": "",
   "sqlAlias": "enu",

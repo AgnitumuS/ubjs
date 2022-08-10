@@ -1,5 +1,6 @@
 {
   "caption": "Diagrams",
+  "captionSingular": "Diagram",
   "description": "Diagrams",
   "connectionName": "",
   "sqlAlias": "odiagram",
@@ -26,8 +27,7 @@
       "name": "isdefault",
       "dataType": "Boolean",
       "caption": "Default",
-      "description": "Default",
-      "defaultValue": "0"
+      "description": "Default"
     },
     {
       "name": "document",

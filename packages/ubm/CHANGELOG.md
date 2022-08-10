@@ -8,13 +8,33 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
- - VueJS form template (used when new form is created using UI) - `v-loading="loading"` is moved above the toolbar 
 
 ### Deprecated
 
 ### Removed
 
 ### Fixed
+
+## [5.23.12] - 2022-08-09
+### Added
+- added localization for `ubm_desktop.meta.*` and `ubm_desktop-fm.vue` for not localized fields
+
+## [5.23.11] - 2022-08-05
+## [5.23.10] - 2022-08-04
+### Added
+- Added captionSingular for all *.meta and *.meta.lang
+
+### Changed
+- use `u-checkbox` instead of el-switch on `ubm_navshortcut` form
+
+### Removed
+- for attributes of type `Boolean` removed `allowNull: false` and `defaultValue` - not needed anymore
+
+## [5.23.9] - 2022-07-28
+## [5.23.8] - 2022-07-26
+## [5.23.7] - 2022-07-26
+### Changed
+ - VueJS form template (used when new form is created using UI) - `v-loading="loading"` is moved above the toolbar 
 
 ## [5.23.6] - 2022-07-21
 ### Fixed

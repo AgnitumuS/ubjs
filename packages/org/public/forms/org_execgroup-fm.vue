@@ -34,7 +34,10 @@ const { Form, mapInstanceFields } = require('@unitybase/adminui-vue')
 const { mapGetters } = require('vuex')
 
 module.exports.mount = cfg => {
-  Form(cfg)
+  Form({
+    ...cfg,
+    title: '{code} {name}'
+  })
     .processing({
       collections: {
         groupmembers: ({ state }) => UB.Repository('org_execgroupmember')

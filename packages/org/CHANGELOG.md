@@ -14,6 +14,41 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+
+## [5.23.13] - 2022-08-09
+### Added
+- `org_employee`: attribute `apply` now two-way synced with `title` attribute  of `uba_user`
+
+## [5.23.12] - 2022-08-05
+### Changed
+ - `org_employee` form - mark employee code as mandatory [LDOC-2336]
+
+## [5.23.11] - 2022-08-04
+### Added
+- Added captionSingular for all *.meta and *.meta.lang
+
+### Changed
+- `org_staffunit` form uses <u-grid> layout with 2 column
+
+### Removed
+- for attributes of type `Boolean` removed `allowNull: false` and `defaultValue` - not needed anymore
+
+### Fixed
+- `org_staffunit` form: proper validation for 'position' field
+
+## [5.23.10] - 2022-07-28
+### Fixed
+- Critical regression typo on `org_emloyeeonstaff` localization
+
+## [5.23.9] - 2022-07-28
+### Fixed
+- `org_employeeonstaff` form:
+  - do not show date_to if year equal 9999
+  - fixes in 'en' translations
+
+## [5.23.8] - 2022-07-26
+## [5.23.7] - 2022-07-26
+### Fixed
 - Synchronization between `uba_user` and `org_employee` now work in 2 ways:
   - attributes:
     - `uba_user.firstName <=> org_employee.firstName'

@@ -23,7 +23,7 @@ exports.formDef = {
     height: '100%',
     flex: 1,
     items: [{
-      title: UB.i18n('formBaseProperty'),
+      title: UB.i18n('General'),
       tabID: 'formBaseProperty',
       layout: 'vbox',
       defaults: {
@@ -54,7 +54,17 @@ exports.formDef = {
       }, {
         attributeName: 'description'
       }, {
-        attributeName: 'caption'
+        layout: 'hbox',
+        items: [
+          {
+            labelWidth: 130,
+            attributeName: 'caption'
+          }, {
+            xtype: 'ublabel',
+            text: 'Used as form or tab title. Keep empty to use entity.captionSingular (preferred)',
+            margins: '10px 0 0 0'
+          }
+        ]
       }, {
         attributeName: 'formType'
       }, {

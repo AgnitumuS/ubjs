@@ -1,5 +1,6 @@
 {
   "caption": "System Dictionaries",
+  "captionSingular": "System Dictionary",
   "attributes": [
     {"name": "code", "caption": "Code"},
     {"name": "name", "caption": "Name"},

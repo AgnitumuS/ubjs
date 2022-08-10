@@ -1,5 +1,6 @@
 {
   "caption": "Cities",
+  "captionSingular": "City",
   "description": "Cities directory",
   "attributes": [
     {

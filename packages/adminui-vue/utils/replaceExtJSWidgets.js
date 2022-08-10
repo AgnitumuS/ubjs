@@ -1,3 +1,5 @@
+const { UBDomain } = require('@unitybase/cs-shared')
+
 module.exports = {
   replaceExtJSDialogs,
   replaceExtJSNavbar,
@@ -82,12 +84,36 @@ function replaceExtJSNavbar () {
 function replaceAutoForms () {
   const { entity, instanceID, parentContext, isModal, target, onClose } = this
 
+  function getTitle () {
+    const entityInfo = UB.connection.domain.get(entity)
+    const captionMixin = entityInfo.mixins.caption
+    if (captionMixin) {
+      return captionMixin.template
+    }
+
+    const {
+      code: codeAttribute,
+      name: nameAttribute
+    } = entityInfo.attributes
+
+    if (codeAttribute?.dataType === UBDomain.ubDataTypes.String && nameAttribute?.dataType === UBDomain.ubDataTypes.String) {
+      return '{code} {name}'
+    }
+
+    const descriptionAttribute = entityInfo.attributes[entityInfo.descriptionAttribute]
+    if (descriptionAttribute?.dataType === UBDomain.ubDataTypes.String) {
+      return `{${entityInfo.descriptionAttribute}}`
+    }
+
+    return UB.i18n(`${entity}#captionSingular`)
+  }
+
   Form({
     component: UAutoForm,
     props: { parentContext },
     entity,
     instanceID,
-    title: UB.connection.domain.get(entity).caption,
+    title: getTitle(),
     isModal,
     target,
     uiTag: `afm-${entity}`,

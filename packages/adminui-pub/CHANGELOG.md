@@ -14,6 +14,24 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+ - `BasePanel.onAccessRight`: creates a **fieldList** for the `aclRLS.showList` command just like a Vue form
+
+## [5.23.13] - 2022-08-09
+### Removed
+ - removed code what intercept BackSpace key to prevent `Back` action in browser - all modern browsers uses Alt+Left Arrow for `Back`
+
+## [5.23.12] - 2022-08-05
+## [5.23.11] - 2022-08-04
+## [5.23.10] - 2022-07-28
+## [5.23.9] - 2022-07-26
+### Fixed
+ - fixed 5.23.8 regression in EntityGridPanel what cause error `me.domainEntity.mixins is undefined`
+
+## [5.23.8] - 2022-07-26
+### Changed
+ - extJS based form title \ tab title will use `entity.captionSingular` in case form caption is empty.
+   We strongly recommend to add captionSingular for all `*.meta` and `*.meta.lang` files and
+   keep `caption` in `ubm_form` empty (simply remove "caption": "..." in `publis/forms/*.ubrow`) 
 
 ## [5.23.7] - 2022-07-21
 ### Removed

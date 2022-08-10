@@ -15,6 +15,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.23.7] - 2022-08-04
+## [5.23.6] - 2022-07-28
+## [5.23.5] - 2022-07-26
 ## [5.23.4] - 2022-07-12
 ### Fixed
  - allow chunked file upload for ub 5.22.11 (not 5.22.0011 because of typo in 5.23.3 ) 

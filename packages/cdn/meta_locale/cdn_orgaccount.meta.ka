@@ -1,5 +1,6 @@
 ﻿{
     "caption": "მიმდინარე ანგარიშები",
+    "captionSingular": "კონტრაგენტის მიმდინარე ანგარიში",
     "description": "",
     "attributes": [
         {

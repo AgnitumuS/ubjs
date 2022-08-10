@@ -1,5 +1,6 @@
 {
   "caption": "Numerators",
+  "captionSingular": "Numerator",
   "description": "Registration key counter",
   "connectionName": "",
   "sqlAlias": "nuco",

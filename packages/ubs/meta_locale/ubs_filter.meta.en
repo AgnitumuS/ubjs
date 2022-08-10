@@ -1,5 +1,6 @@
 {
   "caption": "Saved UI Filters",
+  "captionSingular": "Saved UI Filter",
   "description": "Stored UI filters",
   "documentation": "doCmd.showList.autofilter use this entity to store user filters definition",
   "attributes": [

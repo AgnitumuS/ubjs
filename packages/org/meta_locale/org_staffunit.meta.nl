@@ -1,5 +1,6 @@
 {
   "caption": "Stafeenheden",
+  "captionSingular": "Stafeenheid",
   "description": "Lijst van de stafeenheden",
   "documentation": "This dictionary contains list of staff units. Each staff unit links to org_unit by Unity mixin",
   "attributes": [

@@ -872,7 +872,7 @@ UBConnection.prototype.checkChannelEncryption = function (session, cfg) {
  */
 UBConnection.prototype.xhr = function (config) {
   const me = this
-  const cfg = Object.assign({ headers: this.defHeaders }, config)
+  const cfg = Object.assign({ headers: Object.assign({}, this.defHeaders) }, config)
   const url = cfg.url
   let promise
 

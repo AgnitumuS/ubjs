@@ -1,5 +1,6 @@
 {
   "caption": "Benutzer",
+  "captionSingular": "Benutzer",
   "description": "Benutzer",
   "attributes": [
     {
@@ -21,12 +22,17 @@
       "caption": "Nachname"
     },
     {
+      "name": "middleName",
+      "caption": "Zweiter Vorname"
+    },
+    {
       "name": "fullName",
       "caption": "Vollständiger Name"
     },
     {
-      "name": "gender",
-      "caption": "Geschlecht des Benutzers"
+      "name": "title",
+      "caption": "Anrede",
+      "description": "Beschreibt, wie man die Person anspricht"
     },
     {
       "name": "email",

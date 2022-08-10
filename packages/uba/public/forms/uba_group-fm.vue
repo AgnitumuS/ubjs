@@ -27,18 +27,25 @@
 
       <u-form-row
         :label="$ut('users')"
+        preventLabelEvents
       >
         <u-table-entity
           :bordered="true"
           :repository="getUsersRepository"
           :style="{maxWidth: '800px'}"
-          :build-add-new-config="userGroupConfig"
-          :build-copy-config="userGroupConfig"
-          :build-edit-config="userGroupConfig"
-        />
+          :before-add-new="showPopUpToAddUsers"
+          enable-multi-select
+        >
+        </u-table-entity>
       </u-form-row>
 
     </u-form-container>
+
+    <users-select-dialog
+      ref="usersSelectDialog"
+      :title="dialogTitle"
+      :instanceID="instanceID"
+    />
   </div>
 </template>
 
@@ -48,12 +55,19 @@ const { Repository } = require('@unitybase/ub-pub')
 const { mapGetters, mapActions, mapState } = require('vuex')
 
 module.exports.mount = (cfg) => {
-  Form(cfg)
+  Form({
+    ...cfg,
+    title: '{code} {name}'
+  })
     .store()
     .processing({
       collections: {
         groupRoles: ({ state }) => Repository('uba_grouprole')
           .attrs('ID', 'groupID', 'roleID')
+          .where('groupID', '=', state.data.ID),
+
+        groupUsers: ({ state }) => Repository('uba_usergroup')
+          .attrs('ID', 'groupID', 'userID')
           .where('groupID', '=', state.data.ID)
       }
     })
@@ -64,6 +78,10 @@ module.exports.mount = (cfg) => {
 module.exports.default = {
   name: 'UbaGroup',
 
+  components: {
+    UsersSelectDialog: require('./uba_group/users-select-dialog.vue').default
+  },
+
   computed: {
     ...mapState(['isNew']),
 
@@ -71,6 +89,10 @@ module.exports.default = {
 
     instanceID () {
       return this.$store.state.data.ID
+    },
+
+    dialogTitle () {
+      return `${this.$ut('uba_usergroup')} (${this.$ut('dobavlenie')})`
     }
   },
 
@@ -83,21 +105,9 @@ module.exports.default = {
         .where('groupID', '=', this.instanceID)
     },
 
-    userGroupConfig (cfg) {
-      if (this.isNew) {
-        this.save()
-      }
-
-      return {
-        ...cfg,
-        isModal: true,
-        modalWidth: '800px',
-        props: {
-          parentContext: {
-            groupID: this.instanceID
-          }
-        }
-      }
+    async showPopUpToAddUsers () {
+      this.$refs.usersSelectDialog.open()
+      return false
     }
   }
 

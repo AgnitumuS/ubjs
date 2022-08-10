@@ -1,5 +1,6 @@
 {
   "caption": "Organisatie-eenheden",
+  "captionSingular": "Organisatorisk enhed",
   "description": "Lijst van organisatie-eenheden",
   "documentation": "Woordenboek dat is samengesteld uit organisaties (org_organization), afdelingen (org_department) en stafeenheden (org_staffunit) door Unity mixin. Woordenboek is zelfreferentieel, wat het mogelijk maakt om een hiërarchie van alle organisatie-eenheden in één boom op te bouwen",
   "attributes": [

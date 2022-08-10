@@ -9,8 +9,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - `UTableEntity` - added loader when opening the form for editing
  - `Form.js` - Vue-form generates a new event `{{entity_name}}:loaded` after downloading data.
 ### Changed
-- Default rendering of boolean columns in `UTableEntity`: use icon `u-icon-check` instead of `u-icon-add`, to
-  make it look different from the "Add" action on toolbar.  Remove displaying icon `u-icon-minus` for negative values
 
 ### Deprecated
 
@@ -18,6 +16,92 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.23.10] - 2022-08-09
+### Added
+ - `Form` title property can contain macros `{attrName}`, such macros will be replaced by attributes values.
+  Example - `({code}) {name}`
+- Elements of the `UToolbar.toolbarButtons` array now may have `dropdownOnly` property,
+  which allows buttons to be not shown in the main toolbar area, but in the dropdown menu only.
+- ability for `USelectCollection` control to pass additional properties to underneath `USelectMultiple` control,
+  for example, to specify repository to select from:
+
+```vue
+<template>
+  <u-select-collection
+    associated-attr="roleID"
+    entity-name="uba_userrole"
+    :repository="getRolesRepo"
+    collection-name="userRoles"
+    clearable
+  />
+</template>
+
+<script>
+  export default {
+    methods: {
+      getRolesRepo() {
+        return this.$UB.Repository('uba_role')
+          .attrs('ID', 'name')
+          .where('name', 'notIn', ['Anonymous', 'Everyone', 'User'])
+      }
+    }
+  }
+</script>
+```
+
+## [5.23.9] - 2022-08-04
+### Added
+- new icon: `u-icon-download-all-with-signatures`
+
+### Changed
+- `u-auto-filed` for attributes of type `Boolean` internally use `u-checkbox` instead of `el-checkbox`.
+  It's recommended do not force internal component for Booleans using `force-cmp="el-switch"` - `u-checkbox` is good enough
+- `u-checkbox` and `u-radio` size increased to 20px (to be the same height as el-switch); Size is defined in `--u-checkbox-dim` css variable
+
+### Fixed
+ - `u-checkbox`: added `v-bind="$attrs"` to allow binds native input properties, `disabled` for example
+
+## [5.23.8] - 2022-07-28
+### Added
+ - added visualisation for new signature validation attributes (signAlgo, signType, mediaSerial, certificate.certKind)
+
+### Fixed
+ - `UMasterDetailView` - clean `_unwatchList` correctly
+ - `Form`: use `entitySchema.captionSingular` if available as default title for form
+
+## [5.23.7] - 2022-07-26
+### Fixed
+- `mountModal`, `mountTableEntityAsModal`: remove dialog element from DOM after destroying of Vue instance
+
+## [5.23.6] - 2022-07-26
+### Added
+- `uiSettingsStorage`: module for storing UI settings. It is recommended
+  to use this module instead of the `localStorage`.
+  Module is injected into `Vue.prototype` as `$uiSettings` and exported as `@unitybase/adminui-vue`.uiSettings.
+```javascript
+// inside vue can be used as this.$uiSettings
+// restore some setting
+this.videoRatio = this.$uiSettings.get('UFileWebcamButton', 'videoRatio') ?? this.videoRatios[0]
+// save setting
+this.$uiSettings.put(this.videoRatios[0], 'UFileWebcamButton', 'videoRatio')
+
+// or from adminui-vue exports
+const App = require('@unitybase/adminui-vue')
+const isCollapsed = App.uiSettings.get('sidebar', 'isCollapsed')
+```
+
+User can clear all settings using `User menu` -> `Reset GUI Settings`
+
+### Changed
+- Migrate from using the `localStorage` to `uiSettingsStorage` in appropriate places
+- Default rendering of boolean columns in `UTableEntity`: use icon `u-icon-check` instead of `u-icon-add`, to
+  make it look different from the "Add" action on toolbar.  Remove displaying icon `u-icon-minus` for negative values
+ - vueJS based form title \ tab title will use `entity.captionSingular` in case form caption is empty.
+  We strongly recommend to add captionSingular for all `*.meta` and `*.meta.lang` files and
+  keep `caption` in `ubm_form` empty (simply remove "caption": "..." in `publis/forms/*.ubrow`)
+
+### Fixed
+- `UToolbar`: added horizontal autoscroll for small screens
 ## [5.23.5] - 2022-07-21
 ### Fixed
 - `UChart` rewired:

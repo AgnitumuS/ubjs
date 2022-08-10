@@ -43,7 +43,7 @@ exports.formDef = {
                                 {attributeName: "lastName"},
                                 {attributeName: "firstName"},
                                 {attributeName: "middleName"},
-                                {attributeName: "code", fieldLabel: UB.i18n('identificationCodeShort'), allowBlank: true, emptyText: UB.i18n('identificationCode')},
+                                {attributeName: "code", fieldLabel: UB.i18n('identificationCodeShort'), emptyText: UB.i18n('identificationCode')},
                                 {attributeName: "userID", emptyText: UB.i18n('userOfSystem')}
                             ]
                         },{

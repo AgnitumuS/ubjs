@@ -5,6 +5,7 @@
 
     <u-button
       v-for="button in mainPanelButtons"
+      v-if="!button.dropdownOnly"
       :key="button.label + button.icon"
       :title="$ut(button.label)"
       :appearance="button.type === 'text' ? 'default' : 'inverse'"
@@ -44,7 +45,7 @@
       />
 
       <template #dropdown>
-        <!-- @slot if need to prepend items to the dropdown -->
+        <!-- @slot custom content added to the top of dropdown -->
         <slot name="dropdown-prepend" />
 
         <template
@@ -64,7 +65,7 @@
           />
         </template>
 
-        <!-- @slot if need to append items to the dropdown -->
+        <!-- @slot custom content added to the bottom of dropdown. Better to use `dropdownOnly` property -->
         <slot name="dropdown" />
       </template>
     </u-dropdown>
@@ -114,8 +115,8 @@ export default {
      */
     hideDefaultButtons: Boolean,
     /**
-     * Buttons definition array. Can contains additional toolbar/dropdown buttons or override default button
-     * in case `name` property match some of the default button name.
+     * Buttons definition array. May contain additional toolbar/dropdown buttons or override default button
+     * in case `name` property match one of the default button name.
      *
      * Can be used together with `hideDefaultButtons` property and slots.
      * See example in `docs` below.
@@ -540,6 +541,7 @@ export default {
   display: flex;
   flex-shrink: 0;
   align-items: center;
+  overflow-y: auto;
 }
 
 .u-toolbar > .u-button:not(:first-child) {

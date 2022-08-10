@@ -3593,7 +3593,7 @@ Ext.define('UB.view.BasePanel', {
     const me = this
     if (!me.hasHardSecurityMixin || !me.instanceID) return
 
-    var aclFields = [], promise, lockCreated = false
+    var promise, lockCreated = false
 
     if (me.isEntityLockable && !me.entityLocked) {
       promise = me.setEntityLocked()
@@ -3603,14 +3603,21 @@ Ext.define('UB.view.BasePanel', {
     }
 
     const entityM = me.domainEntity
-    const aclEntityName = entityM.mixins.aclRls.aclStorageEntityName
-
-    _.forEach(entityM.mixins.aclRls.onEntities, function (attrEntity) {
-      var e = $App.domainInfo.get(attrEntity)
-      if (e.descriptionAttribute) {
-        aclFields.push(e.sqlAlias + 'ID.' + e.descriptionAttribute)
+    const aclMixin = entityM.mixins.aclRls
+    const aclEntityName = aclMixin.aclStorageEntityName
+    const aclAttributes = $App.domainInfo.get(aclEntityName).filterAttribute(attrDef => {
+      return attrDef.associatedEntity && aclMixin.onEntities.includes(attrDef.associatedEntity)
+    })
+    const aclFieldList = aclAttributes.map(attrDef => {
+      const associatedEntityInfo = $App.domainInfo.get(attrDef.associatedEntity)
+      const descriptionAttribute = associatedEntityInfo.getDescriptionAttribute()
+      if (descriptionAttribute) {
+        return {
+          name: `${attrDef.code}.${descriptionAttribute}`,
+          description: associatedEntityInfo.caption
+        }
       } else {
-        aclFields.push(e.sqlAlias + 'ID')
+        return attrDef.code
       }
     })
 
@@ -3621,7 +3628,7 @@ Ext.define('UB.view.BasePanel', {
           params: [{
             entity: aclEntityName,
             method: 'select',
-            fieldList: aclFields, // '*',
+            fieldList: aclFieldList,
             whereList: {
               parentExpr: {
                 expression: '[instanceID]',

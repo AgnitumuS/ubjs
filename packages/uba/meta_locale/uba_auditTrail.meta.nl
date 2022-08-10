@@ -1,5 +1,6 @@
 {
   "caption": "Auditspoor",
+  "captionSingular": "Auditspoor",
   "attributes": [
     {
       "name": "entity",

@@ -1,5 +1,6 @@
 ﻿{
     "caption": "Черга повідомлень",
+    "captionSingular": "Елемент черги",
     "description": "",
     "attributes": [
         {

@@ -99,6 +99,9 @@
   "selectSigningCertificate": "Выберите файл с сертификатом для подписи",
   "certificate": "Сертификат",
   "certificates": "Сертификаты",
+  "Qualified": "Квалифицированный",
+  "Advanced": "Усовершенствованный",
+  "DSTU-4145": "ДСТУ-4145",
   "SignatureVerificationResultObj": {
     "_": "Результат проверки подписи(ей)",
     "valid": {
@@ -124,8 +127,12 @@
     "signingTime": "Время нанесения подписи",
     "signatureStatus": "Статус подписи",
     "signatureAuthor": "Подписант",
+    "signAlgo": "Алгоритм подписи",
+    "signType": "Тип подписи",
+    "mediaSerial": "СН носителя",
     "certificate": {
       "_": "Сертификат",
+      "certKind": "Тип сертификата",
       "keyUsage": "Назначение ключей",
       "serial": "Регистрационный номер",
       "validFrom": "Начало срока действия",

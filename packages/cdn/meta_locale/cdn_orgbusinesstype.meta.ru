@@ -1,5 +1,6 @@
 {
   "caption": "Типы организаций",
+  "captionSingular": "Тип организации",
   "description": "Справочник типов организаций",
   "attributes": [
     {

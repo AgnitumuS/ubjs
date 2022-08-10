@@ -3,6 +3,7 @@
   "sqlAlias": "ubmQr",
   "cacheType": "None",
   "caption": "Data Queries",
+  "captionSingular": "Data Query",
   "descriptionAttribute": "name",
 
   "mixins": {

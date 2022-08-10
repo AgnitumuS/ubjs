@@ -1,5 +1,6 @@
 {
   "caption": "Metod hüquqları (ELS)",
+  "captionSingular": "ELS qayda",
   "description": "Metabaza üsullarına çıxış hüququna malik rollar",
   "documentation": "Maddə səviyyəsinin inzibatlaşdırılması. Sistem çıxışı \"İcazə verilib və Qadağan EDİLMƏYİB\" qaydasına uyğun olaraq yoxlayır",
   "attributes": [

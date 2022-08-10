@@ -1,5 +1,6 @@
 {
   "caption": "Vormen",
+  "captionSingular": "Systeemformulier",
   "description": "Definitie van de interface vormen",
   "attributes": [
     {

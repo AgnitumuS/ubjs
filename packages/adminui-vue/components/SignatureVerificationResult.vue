@@ -48,6 +48,13 @@
                 :style="statusStyle(vIdx)"
                 v-html="statusTip(vIdx, true)"
               />
+              <p>
+                <span class="signature-verify-result_info">{{ VRi18n.signAlgo }}:</span> {{ $ut(vr.signAlgo) }};
+                <span class="signature-verify-result_info">{{ VRi18n.signType }}:</span> {{ $ut(vr.signType) }};
+                <span v-if="vr.hardwareKeyUsed">
+                  <span class="signature-verify-result_info">{{ VRi18n.mediaSerial }}:</span> {{ vr.mediaSerial }}
+                </span>
+              </p>
               <h4>{{ VRi18n.signatureAuthor }}</h4>
               <p>
                 {{ VRi18n.certificate.subject._ }}
@@ -78,6 +85,7 @@
                 <ul>
                   <li
                     v-for="(prop, idx) in Object.keys(vr.certificate)"
+                    v-if="vr.certificate[prop]"
                     :key="idx"
                   >
                     <template v-if="prop === 'issuedBy'">
@@ -85,11 +93,15 @@
                       <ul>
                         <li
                           v-for="(prop, idx) in Object.keys(vr.certificate.issuedBy)"
+                          v-if="vr.certificate.issuedBy[prop]"
                           :key="idx"
                         >
                           <span class="signature-verify-result_info">{{ VRi18n.certificate.issuedBy[prop] }}:</span> {{ vr.certificate.issuedBy[prop] }}
                         </li>
                       </ul>
+                    </template>
+                    <template v-else-if="prop === 'certKind'">
+                      <span class="signature-verify-result_info">{{ VRi18n.certificate[prop] }}:</span> {{ $ut(vr.certificate[prop]) }}
                     </template>
                     <template v-else>
                       <span class="signature-verify-result_info">{{ VRi18n.certificate[prop] }}:</span>
@@ -169,10 +181,10 @@ export default {
         }
         return m
       }
-      let s = this.VRi18n.valid.yes; s += isHTML ? '<br>' : '; '
-      s += this.VRi18n.tspValid[r.tspValid ? 'yes' : 'no']; s += isHTML ? '<br>' : '; '
-      s += this.VRi18n.ocspVerified[r.ocspVerified ? 'yes' : 'no']; s += isHTML ? '<br>' : '; '
-      s += this.VRi18n.hardwareKeyUsed[r.hardwareKeyUsed ? 'yes' : 'no']; s += isHTML ? '<br>' : '; '
+      let s = (isHTML ? '<ul><li>' : '') + this.VRi18n.valid.yes + (isHTML ? '</li>' : '; ')
+      s += (isHTML ? '<li>' : '') + this.VRi18n.tspValid[r.tspValid ? 'yes' : 'no'] + (isHTML ? '</li>' : '; ')
+      s += (isHTML ? '<li>' : '') + this.VRi18n.ocspVerified[r.ocspVerified ? 'yes' : 'no'] + (isHTML ? '</li></ul>' : '; ')
+      // s += this.VRi18n.hardwareKeyUsed[r.hardwareKeyUsed ? 'yes' : 'no']; s += isHTML ? '<br>' : '; '
       if (r.warnings) s += r.warnings
       return s
     },

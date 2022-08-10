@@ -1,5 +1,6 @@
 {
   "caption": "Nachrichten-Warteschlange",
+  "captionSingular": "Warteschlangenelement",
   "description": "Nachrichten-Warteschlange",
   "attributes": [
     {

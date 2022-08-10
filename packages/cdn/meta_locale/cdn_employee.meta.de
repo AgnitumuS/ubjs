@@ -1,5 +1,6 @@
 {
   "caption": "Mitarbeiter von externen Organisationen",
+  "captionSingular": "Mitarbeiter einer externen Organisation",
   "description": "Liste der Mitarbeiter von externen Organisationen",
   "attributes": [
     {

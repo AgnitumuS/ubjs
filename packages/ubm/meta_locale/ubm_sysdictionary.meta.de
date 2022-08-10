@@ -1,5 +1,6 @@
 {
   "caption": "Systemwörterbücher",
+  "captionSingular": "Systemwörterbuch",
   "attributes": [
     {
       "name": "code",

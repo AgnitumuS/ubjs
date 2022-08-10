@@ -1,5 +1,6 @@
 {
   "caption": "Berichten",
+  "captionSingular": "Nachricht",
   "description": "Systeemberichten",
   "documentation": "Systeemberichten",
   "attributes": [

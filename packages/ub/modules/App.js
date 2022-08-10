@@ -11,9 +11,7 @@ const THTTPRequest = require('./HTTPRequest')
 const createDBConnectionPool = require('@unitybase/base').createDBConnectionPool
 const blobStores = require('@unitybase/blob-stores')
 const base = require('@unitybase/base')
-if (base.ubVersionNum < 5018000) {
-  throw new Error('This version of @unitybase/ub package requires UB server to be at least 5.18.0')
-}
+
 /**
  * @classdesc
  * Singleton instance of UnityBase application. Allow direct access to the database connections, blob stores,
@@ -273,20 +271,12 @@ const appBinding = process.binding('ub_app')
 ServerApp.registerEndpoint = function (endpointName, handler, authorizationRequired, isDefault, bypassHTTPLogging) {
   if (!appBinding.endpoints[endpointName]) {
     appBinding.endpoints[endpointName] = handler
-    if (base.ubVersionNum < 5020008) {
-      return appBinding.registerEndpoint(
-        endpointName,
-        authorizationRequired === undefined ? true : authorizationRequired,
-        isDefault === true
-      )
-    } else {
-      return appBinding.registerEndpoint(
-        endpointName,
-        authorizationRequired === undefined ? true : authorizationRequired,
-        isDefault === true,
-        bypassHTTPLogging === true
-      )
-    }
+    return appBinding.registerEndpoint(
+      endpointName,
+      authorizationRequired === undefined ? true : authorizationRequired,
+      isDefault === true,
+      bypassHTTPLogging === true
+    )
   }
 }
 

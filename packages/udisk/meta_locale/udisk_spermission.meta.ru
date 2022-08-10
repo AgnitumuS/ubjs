@@ -1,5 +1,6 @@
 {
   "caption": "Права на доступ",
+  "captionSingular": "Право на доступ",
   "description": "Права на доступ",
   "attributes": [
     {

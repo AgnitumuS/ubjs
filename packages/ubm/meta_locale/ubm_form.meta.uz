@@ -1,5 +1,6 @@
 {
   "caption": "Shakllar",
+  "captionSingular": "Tizim shakli",
   "description": "Interfeys shakllarini aniqlash",
   "attributes": [
     {

@@ -1,5 +1,6 @@
 {
   "caption": "Data Audit",
+  "captionSingular": "Data Audit",
   "description": "Data Changes Audit Trail",
   "documentation": "All DML statement for entity with mixin 'audit' logged here",
   "connectionName": "",

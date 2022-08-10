@@ -6,6 +6,22 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+## [5.23.13] - 2022-08-09
+## [5.23.12] - 2022-08-05
+## [5.23.11] - 2022-08-04
+## [5.23.10] - 2022-07-28
+## [5.23.9] - 2022-07-26
+## [5.23.8] - 2022-07-26
+### Added
  - added `uiSettings.cspAllow.frameAncestors` rules what controls for what sites our client app can be embedded indo iframe.
    **WARING** - @unitybase/ubcli should also be updated and `ubcli generateNginxCfg` executed to remove `add_header X-Frame-Options sameorigin;`
    directives in nginx config
@@ -14,12 +30,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - accessing to `localhost:8083` and `localhost:8081` in content security policies
    `default-src`, `script-src` `connect-src` and `object-src` now allowed only in case some of `iit` Ukraine specific
    crypto-libraries is used in `uiSettings.adminUI.encryptionImplementation`. For instances without IIT these CSP are not added 
-
-### Deprecated
-
-### Removed
-
-### Fixed
 
 ## [5.23.7] - 2022-07-21
 ## [5.23.6] - 2022-07-14

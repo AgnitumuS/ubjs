@@ -1,5 +1,6 @@
 {
   "caption": "Internal Departments",
+  "captionSingular": "Internal Department",
   "description": "Internal departments",
   "documentation": "",
   "connectionName": "",
@@ -99,8 +100,7 @@
       "name": "isClerical",
       "dataType": "Boolean",
       "caption": "Clerical?",
-      "description": "Clerical unit mark",
-      "defaultValue": "0"
+      "description": "Clerical unit mark"
     },
     {
       "name": "caption",

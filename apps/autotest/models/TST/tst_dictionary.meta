@@ -1,5 +1,6 @@
 ﻿{
-  "caption": "tst_dictionary",
+  "caption": "Test organizations",
+  "captionSingular": "Test organization",
   "description": "ub test dictionary",
   "connectionName": "",
   "sqlAlias": "tdict",
@@ -87,9 +88,7 @@
     {
       "name": "booleanColumn",
       "dataType": "Boolean",
-      "caption": "Test boolean column",
-      "allowNull": true,
-      "defaultValue": "0"
+      "caption": "Test boolean column"
     },
     {
       "name": "jsonColumn",

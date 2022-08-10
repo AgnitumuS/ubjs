@@ -1,5 +1,6 @@
 {
   "caption": "Tashkiliy birliklar",
+  "captionSingular": "Tashkiliy birlik",
   "description": "Tashkiliy bo'linmalar ma'lumotnomasi",
   "attributes": [
     {

@@ -2,7 +2,7 @@
  "isDefault": false,
  "entity": "uba_group",
  "formType": "vue",
- "caption": "uba_group",
+ "caption": null,
  "description": "uba_group",
  "formCode": "uba_group-fm.vue"
 }

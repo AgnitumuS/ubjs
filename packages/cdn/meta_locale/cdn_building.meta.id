@@ -1,5 +1,6 @@
 {
   "caption": "Daftar bangunan",
+  "captionSingular": "bangunan",
   "description": "Daftar bangunan",
   "attributes": [
     {

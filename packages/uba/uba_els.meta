@@ -1,5 +1,6 @@
 {
   "caption": "Entity Level Security (ELS)",
+  "captionSingular": "ELS Rule",
   "description": "Describe, which role have access permissions to Entities methods",
   "connectionName": "",
   "cacheType": "None",
@@ -28,9 +29,7 @@
       "name": "disabled",
       "dataType": "Boolean",
       "caption": "Disabled",
-      "description": "Rule is disabled",
-      "allowNull": false,
-      "defaultValue": "0"
+      "description": "Rule is disabled"
     },
     {
       "name": "entityMask",

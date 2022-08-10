@@ -1,5 +1,6 @@
 {
   "caption": "Рабочие столы",
+  "captionSingular": "Рабочий стол",
   "description": "Рабочие столы приложения",
   "attributes": [
     {
@@ -23,6 +24,14 @@
       "name": "displayOrder",
       "caption": "№ п/п",
       "description": "Порядок отображения"
+    },
+    {
+      "name": "description",
+      "caption": "Описание"
+    },
+    {
+      "name": "iconCls",
+      "caption": "Значок (CSS-класс)"
     }
   ]
 }

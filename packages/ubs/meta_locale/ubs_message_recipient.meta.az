@@ -1,5 +1,6 @@
 {
   "caption": "İsmarışı alanlar",
+  "captionSingular": "Mesaj alıcısı",
   "description": "İsmarışı alanlar",
   "documentation": "Получатели сообщений",
   "attributes": [

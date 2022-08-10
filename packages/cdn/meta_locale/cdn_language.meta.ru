@@ -1,5 +1,6 @@
 {
   "caption": "Список языков",
+  "captionSingular": "Язык",
   "attributes": [
     {
       "name": "code",

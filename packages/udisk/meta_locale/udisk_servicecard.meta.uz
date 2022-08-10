@@ -1,5 +1,6 @@
 {
   "caption": "Fayllar",
+  "captionSingular": "Fayl",
   "description": "Fayllar",
   "attributes": [
     {

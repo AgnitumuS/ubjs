@@ -1,5 +1,6 @@
 {
   "caption": "Sistem rolları",
+  "captionSingular": "Sistem rolu",
   "description": "İnzibatçılıq altsisteminin rolları",
   "attributes": [
     {

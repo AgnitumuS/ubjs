@@ -20,11 +20,11 @@ const UB = require('@unitybase/ub-pub')
  * Creates a new instance of UI module what can be visualized in the application shell using `mount*()` call
  * @param {object} cfg
  * @param {Vue.Component} [cfg.component] Form component
- * @param {Vue.Component} [cfg.rootComponent] Alias for cfg.component
+ * @param {Vue.Component} [cfg.rootComponent] Alias for `cfg.component`
  * @param {object} [cfg.props] Form component props
  * @param {object} [cfg.props.parentContext] Attributes values what will be passed to addNew method
  *   in case instanceID is empty. Think of it as default values for attributes of a new record
- * @param {string} [cfg.title] Form title
+ * @param {string} [cfg.title] Form title. Can contain macros `{attrName}`, such macros will be replaced by attributes values. Example - `({code}) {name}`
  * @param {string} cfg.entity Entity name for master record
  * @param {number} [cfg.instanceID] Instance ID
  * @param {boolean} [cfg.isModal=false] If true form will be displayed inside modal dialog. Otherwise - in tab (default)
@@ -41,6 +41,51 @@ const UB = require('@unitybase/ub-pub')
 module.exports.Form = function Form (cfg) {
   return new UForm(cfg)
 }
+
+const formCaptionMixin = (entity, titleTemplate) => ({
+  watch: {
+    formTitle: 'updateFormTitle'
+  },
+
+  computed: {
+    formTitle () {
+      const entityName = this.$ut(entity + '#captionSingular')
+      if (this.$store.state.isNew) {
+        return entityName
+      }
+
+      const entityInfo = this.$UB.connection.domain.get(entity)
+      const captionMixin = entityInfo.mixins.caption
+      const template = titleTemplate || captionMixin?.template
+
+      // Parse arguments out of template
+      const re = /{(\w+(\.\w+)*)}/g
+      let reMatch
+      let value = template
+      while ((reMatch = re.exec(template)) !== null) {
+        const attr = reMatch[1]
+        const attrValue = this.$store.state.data[attr] || ''
+        value = value.replace('{' + attr + '}', attrValue)
+      }
+
+      // If trimmedValue is empty, return entityName without parentheses
+      const trimmedValue = value.trim()
+      return trimmedValue ? `${trimmedValue} (${entityName})` : entityName
+    }
+  },
+
+  mounted () {
+    this.updateFormTitle()
+  },
+
+  methods: {
+    updateFormTitle () {
+      if (typeof this.setTitle === 'function') {
+        this.setTitle(this.formTitle)
+      }
+    }
+  }
+})
 
 /**
  * @.classdesc
@@ -93,13 +138,14 @@ class UForm {
   }) {
     this.component = component || rootComponent
     this.props = props
+    this.mixins = undefined
     this.storeConfig = {}
     this.$store = undefined
     this.entity = entity
     this.uiTag = uiTag
     if (this.entity && UB.connection.domain.has(this.entity)) {
       this.entitySchema = UB.connection.domain.get(this.entity)
-      this.title = title || this.entitySchema.getEntityCaption()
+      this.title = title || this.entitySchema.captionSingular || this.entitySchema.getEntityCaption()
       this.fieldList = this.entitySchema.getAttributeNames()
     } else {
       this.entitySchema = null
@@ -296,23 +342,35 @@ class UForm {
       }
     }
 
+    if (this.title && this.title.indexOf('{') !== -1) {
+      if (!this.mixins) {
+        this.mixins = []
+      }
+      this.mixins.push(formCaptionMixin(this.entity, this.title))
+    }
+
+    const mountOptions = {
+      component: this.component,
+      props: this.props,
+      mixins: this.mixins,
+      store: this.$store,
+      validator: this.validator,
+      title: this.title,
+      titleTooltip: this.titleTooltip,
+      onClose: this.onClose,
+      provide: {
+        formCode: this.formCode,
+        entity: this.entity,
+        entitySchema: this.entitySchema,
+        fieldList: this.fieldList
+      }
+    }
+
     if (this.isModal) {
       mountModal({
-        component: this.component,
-        props: this.props,
-        store: this.$store,
-        validator: this.validator,
-        title: this.title,
-        titleTooltip: this.titleTooltip,
+        ...mountOptions,
         modalClass: this.modalClass,
-        modalWidth: this.modalWidth,
-        onClose: this.onClose,
-        provide: {
-          formCode: this.formCode,
-          entity: this.entity,
-          entitySchema: this.entitySchema,
-          fieldList: this.fieldList
-        }
+        modalWidth: this.modalWidth
       })
     } else if (this.target === undefined || (this.target.getId && this.target.getId() === 'ubCenterViewport')) {
       if (!this.tabId) {
@@ -325,41 +383,17 @@ class UForm {
           : undefined
       }
       const existsTab = document.getElementById(this.tabId)
-      if( existsTab ) return // for slow network
+      if (existsTab) return // for slow network
       mountTab({
-        component: this.component,
-        props: this.props,
-        store: this.$store,
-        validator: this.validator,
-        title: this.title,
-        titleTooltip: this.titleTooltip,
+        ...mountOptions,
         tabId: this.tabId,
         uiTag: this.uiTag,
-        openInBackgroundTab: this.openInBackgroundTab,
-        onClose: this.onClose,
-        provide: {
-          formCode: this.formCode,
-          entity: this.entity,
-          entitySchema: this.entitySchema,
-          fieldList: this.fieldList
-        }
+        openInBackgroundTab: this.openInBackgroundTab
       })
     } else {
       mountContainer({
-        component: this.component,
-        props: this.props,
-        store: this.$store,
-        validator: this.validator,
-        title: this.title,
-        titleTooltip: this.titleTooltip,
-        target: this.target,
-        onClose: this.onClose,
-        provide: {
-          formCode: this.formCode,
-          entity: this.entity,
-          entitySchema: this.entitySchema,
-          fieldList: this.fieldList
-        }
+        ...mountOptions,
+        target: this.target
       })
     }
   }

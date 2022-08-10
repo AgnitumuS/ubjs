@@ -6,7 +6,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
- - `Administration`->`Maintenance Tools` -> `Messages` shortcut: added form for viewing message (on double click)  
 
 ### Changed
 
@@ -15,6 +14,20 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+
+## [5.23.12] - 2022-08-09
+## [5.23.11] - 2022-08-05
+## [5.23.10] - 2022-08-04
+### Added
+- Added captionSingular for all *.meta and *.meta.lang
+### Removed
+- for attributes of type `Boolean` removed `allowNull: false` and `defaultValue` - not needed anymore
+
+## [5.23.9] - 2022-07-28
+## [5.23.8] - 2022-07-26
+## [5.23.7] - 2022-07-26
+### Added
+ - `Administration`->`Maintenance Tools` -> `Messages` shortcut: added form for viewing message (on double click)  
 
 ## [5.23.6] - 2022-07-21
 ## [5.23.5] - 2022-07-12

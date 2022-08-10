@@ -7,6 +7,7 @@
     :placeholder="placeholder"
     :readonly="readonly"
     :fixed-items="fixedItems"
+    v-bind="$attrs"
     @input="changeCollection"
     @focus="onFocus"
     @blur="onBlur"
@@ -19,6 +20,8 @@ const { mapMutations, mapActions } = require('vuex')
 /**
  * Display a collection of a details from master-detail relation inside a multiselect.
  * Acts like a control for "Many" data type, but can be bound to any detailed entity.
+ *
+ * Additional properties are passed to underneath `USelectMultiple` control (repository to select from, etc.)
  */
 export default {
   name: 'USelectCollection',

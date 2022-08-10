@@ -1,5 +1,6 @@
 {
   "caption": "Робочі столи",
+  "captionSingular": "Робочий стіл",
   "description": "Робочі столи програми",
   "attributes": [
     {
@@ -9,6 +10,14 @@
     {
       "name": "code",
       "caption": "Код"
+    },
+    {
+      "name": "description",
+      "caption": "Опис"
+    },
+    {
+      "name": "iconCls",
+      "caption": "Піктограма (CSS-клас)"
     },
     {
       "name": "url",

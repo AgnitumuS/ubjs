@@ -1,5 +1,6 @@
 {
   "caption": "Предыдущие пароли",
+  "captionSingular": "Предыдущий пароль",
   "description": "Хеши предыдущих паролей",
   "attributes": [
     {

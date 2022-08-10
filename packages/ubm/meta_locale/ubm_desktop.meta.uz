@@ -1,5 +1,6 @@
 {
   "caption": "Ish stollari",
+  "captionSingular": "Ish stoli",
   "description": "Ish stollaridagi ilovalar",
   "attributes": [
     {
@@ -9,6 +10,14 @@
     {
       "name": "code",
       "caption": "Kod"
+    },
+    {
+      "name": "description",
+      "caption": "Ish stolining tavsifi"
+    },
+    {
+      "name": "iconCls",
+      "caption": "Belgisi (CSS-CLASS)"
     },
     {
       "name": "url",

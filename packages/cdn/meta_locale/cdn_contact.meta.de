@@ -1,5 +1,6 @@
 {
   "caption": "Kontakte",
+  "captionSingular": "Kontakt",
   "description": "Kontaktverzeichnis",
   "attributes": [
     {

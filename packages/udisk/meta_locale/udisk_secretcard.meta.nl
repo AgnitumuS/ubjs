@@ -1,5 +1,6 @@
 {
   "caption": "Bestanden",
+  "captionSingular": "Bestand",
   "description": "Bestanden",
   "attributes": [
     {

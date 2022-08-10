@@ -1,5 +1,6 @@
 {
   "caption": "Organisationstypen",
+  "captionSingular": "Art der Organisation",
   "description": "Wörterbuch der Organisationstypen (LTD usw.)",
   "attributes": [
     {

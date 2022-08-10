@@ -1,5 +1,6 @@
 {
   "caption": "Contacts",
+  "captionSingular": "Contact",
   "description": "Contacts directory",
   "connectionName": "",
   "sqlAlias": "cont",

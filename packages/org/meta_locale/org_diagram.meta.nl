@@ -1,5 +1,6 @@
 {
   "caption": "Organogrammen",
+  "captionSingular": "Organogramm",
   "description": "Diagrammen",
   "attributes": [
     {

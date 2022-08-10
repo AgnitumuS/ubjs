@@ -1,5 +1,6 @@
 {
   "caption": "Gebruikersrollen",
+  "captionSingular": "De rol is toegewezen aan de gebruiker",
   "description": "Rollen toegewezen aan de gebruiker",
   "attributes": [
     {

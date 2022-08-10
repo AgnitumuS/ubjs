@@ -15,6 +15,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.23.5] - 2022-08-04
+### Changed
+ - `CustomRepository.ubql()` will not add an empty field list into result - starts from UB@5.22.14 server allow such
+  `QUBLs` for sub-queries, insertion and update. In case of exception `parmeter 'fieldList' not found` please,
+  update server to 5.22.14
+
+## [5.23.4] - 2022-07-26
+### Added
+ - defined new `UBEntity.captionSingular` property; for compatibility in case in i18n `captionSingular` is empty 
+   then `caption` from i18n will be used instead
+
 ## [5.23.3] - 2022-07-11
 ### Fixed
  - patterns registered by `formatByPattern.registerDatePattern` are now listed in `formatByPattern.datePatterns`.

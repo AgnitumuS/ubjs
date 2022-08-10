@@ -1,5 +1,6 @@
 {
   "caption": "Unit Admin",
+  "captionSingular": "Unit administrasi",
   "description": "Unit Admin (negara, wilayah, kota)",
   "attributes": [
     {

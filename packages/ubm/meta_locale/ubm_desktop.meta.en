@@ -1,5 +1,6 @@
 {
   "caption": "Desktops",
+  "captionSingular": "Desktop",
   "description": "Application desktops",
   "attributes": [
     {
@@ -9,6 +10,14 @@
     {
       "name": "code",
       "caption": "Code"
+    },
+    {
+      "name": "description",
+      "caption": "Desktop description"
+    },
+    {
+      "name": "iconCls",
+      "caption": "Desktop icon"
     },
     {
       "name": "url",

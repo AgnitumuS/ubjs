@@ -1,5 +1,6 @@
 {
   "caption": "Regionlar",
+  "captionSingular": "Region",
   "description": "Regionlar üzrə sorğu kitabçası",
   "attributes": [
     {

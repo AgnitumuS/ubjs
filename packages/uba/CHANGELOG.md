@@ -6,16 +6,48 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
-- localization for server errors in `uba_user` and `uba_role`
 
 ### Changed
-- use key `uba_user_errors.duplicateUserName` instead of 'Duplicate user name (may be in different case)'
 
 ### Deprecated
 
 ### Removed
 
 ### Fixed
+
+## [5.23.12] - 2022-08-09
+### Added
+- added new attribute `uba_user.title`
+
+### Removed
+- removed attribute `uba_user.gender`
+
+### Fixed
+- `uba_group` form - fix multi-select for users
+
+## [5.23.11] - 2022-08-05
+### Added
+ - added new attribute `uba_user.middleName`
+
+## [5.23.10] - 2022-08-04
+### Added
+- Added captionSingular for all *.meta and *.meta.lang
+- `uba_group` form - multiselect for users in group
+
+### Removed
+ - for attributes of type `Boolean` removed `allowNull: false` and `defaultValue` - not needed anymore
+
+### Fixed
+- `uba_group` form - fix unnecessary table refreshes
+
+## [5.23.9] - 2022-07-28
+## [5.23.8] - 2022-07-26
+## [5.23.7] - 2022-07-26
+### Added
+- localization for server errors in `uba_user` and `uba_role`
+
+### Changed
+- use key `uba_user_errors.duplicateUserName` instead of 'Duplicate user name (may be in different case)'
 
 ## [5.23.6] - 2022-07-21
 ### Added

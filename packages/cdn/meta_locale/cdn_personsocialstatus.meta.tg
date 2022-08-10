@@ -1,5 +1,6 @@
 ﻿{
     "caption": "Вазъи иҷтимоӣ",
+    "captionSingular": "Вазъи иҷтимоӣ",
     "description": "Маълумотномаи вазъҳои иҷтимоӣ",
     "attributes": [
         {

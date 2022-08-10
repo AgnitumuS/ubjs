@@ -1,5 +1,6 @@
 {
   "caption": "Landen",
+  "captionSingular": "Negara",
   "description": "Kaart van landen",
   "attributes": [
     {

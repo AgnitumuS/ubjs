@@ -1,5 +1,6 @@
 {
   "caption": "Pengguna",
+  "captionSingular": "Pengguna",
   "description": "Pengguna",
   "attributes": [
     {
@@ -20,6 +21,18 @@
       "name": "disabled",
       "caption": "Cacat",
       "description": "Cacat"
+    },
+    {
+      "name": "lastName",
+      "caption": "nama keluarga"
+    },
+    {
+      "name": "firstName",
+      "caption": "Nama depan"
+    },
+    {
+      "name": "middleName",
+      "caption": "Nama tengah"
     },
     {
       "name": "isPending",

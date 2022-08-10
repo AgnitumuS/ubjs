@@ -1,5 +1,6 @@
 {
   "caption": "İş masaları",
+  "captionSingular": "İş masası",
   "description": "Tətbiqin iş masaları",
   "attributes": [
     {
@@ -9,6 +10,14 @@
     {
       "name": "code",
       "caption": "Коd"
+    },
+    {
+      "name": "description",
+      "caption": "İş masasının təsviri"
+    },
+    {
+      "name": "iconCls",
+      "caption": "İkon (CSS sinfi)"
     },
     {
       "name": "url",
