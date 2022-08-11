@@ -1,5 +1,5 @@
 {
-  "caption": "Admin Unit",
+  "caption": "Admin Units",
   "captionSingular": "Admin Unit",
   "description": "Admin unit (country, region, city)",
   "documentation": "Main parent for countries, regions and cities",

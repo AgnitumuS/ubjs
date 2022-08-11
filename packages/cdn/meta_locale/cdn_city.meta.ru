@@ -5,7 +5,7 @@
   "attributes": [
     {
       "name": "parentAdminUnitID",
-      "caption": "Предок"
+      "caption": "Родительский элемент"
     },
     {
       "name": "code",

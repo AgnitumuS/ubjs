@@ -1,5 +1,5 @@
 {
-  "caption": "Список физических лиц",
+  "caption": "Физические лица",
   "captionSingular": "Физическое лицо",
   "description": "Справочник физических лиц",
   "documentation": "В этом справочнике хранится перечень персон (физических лиц)",
@@ -7,17 +7,17 @@
     {
       "name": "lastName",
       "caption": "Фамилия",
-      "description": "Фамилия персоны"
+      "description": "Фамилия лица"
     },
     {
       "name": "firstName",
       "caption": "Имя",
-      "description": "Имя персоны"
+      "description": "Имя лица"
     },
     {
       "name": "middleName",
       "caption": "Отчество",
-      "description": "Отчество персоны"
+      "description": "Отчество лица"
     },
     {
       "name": "birthDate",
@@ -27,12 +27,12 @@
     {
       "name": "description",
       "caption": "Описание",
-      "description": "Описание персоны"
+      "description": "Описание лица"
     },
     {
       "name": "sexType",
       "caption": "Пол",
-      "description": "Пол персоны"
+      "description": "Пол лица"
     },
     {
       "name": "suffix",
@@ -57,57 +57,57 @@
     {
       "name": "photo",
       "caption": "Фото",
-      "description": "Фотография персоны"
+      "description": "Фотография лица"
     },
     {
       "name": "lastNameGen",
       "caption": "Фамилия в род. падеже",
-      "description": "Фамилия персоны в родительном падеже"
+      "description": "Фамилия лица в родительном падеже"
     },
     {
       "name": "lastNameDat",
       "caption": "Фамилия в дат. падеже",
-      "description": "Фамилия персоны в дательном падеже"
+      "description": "Фамилия лица в дательном падеже"
     },
     {
       "name": "firstNameGen",
       "caption": "Имя в род. падеже",
-      "description": "Имя персоны в родительном падеже"
+      "description": "Имя лица в родительном падеже"
     },
     {
       "name": "firstNameDat",
       "caption": "Имя в дат. падеже",
-      "description": "Имя персоны в дательном падеже"
+      "description": "Имя лица в дательном падеже"
     },
     {
       "name": "middleNameGen",
       "caption": "Отчество в род. падеже",
-      "description": "Отчество персоны в родительном падеже"
+      "description": "Отчество лица в родительном падеже"
     },
     {
       "name": "middleNameDat",
       "caption": "Отчество в дат. падеже",
-      "description": "Отчество персоны в дательном падеже"
+      "description": "Отчество лица в дательном падеже"
     },
     {
       "name": "shortFIOGen",
       "caption": "Краткое ФИО в род. падеже",
-      "description": "Краткое ФИО персоны в родительном падеже"
+      "description": "Краткое ФИО лица в родительном падеже"
     },
     {
       "name": "shortFIODat",
       "caption": "Краткое ФИО в дат. падеже",
-      "description": "Краткое ФИО персоны в дательном падеже"
+      "description": "Краткое ФИО лица в дательном падеже"
     },
     {
       "name": "fullFIOGen",
       "caption": "Полное ФИО в род. падеже",
-      "description": "Полное ФИО персоны в родительном падеже"
+      "description": "Полное ФИО лица в родительном падеже"
     },
     {
       "name": "fullFIODat",
       "caption": "Полное ФИО в дат. падеже",
-      "description": "Полное ФИО персоны в дательном падеже"
+      "description": "Полное ФИО лица в дательном падеже"
     },
     {
       "name": "applyGen",
@@ -122,12 +122,12 @@
     {
       "name": "regionID",
       "caption": "Регион",
-      "description": "Регион проживания персоны"
+      "description": "Регион проживания лица"
     },
     {
       "name": "identCard",
       "caption": "Удостоверение личности",
-      "description": "Удостоверение личности персоны"
+      "description": "Удостоверение личности лица"
     },
     {
       "name": "workPlacePos",

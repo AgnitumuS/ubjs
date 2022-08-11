@@ -1,0 +1,234 @@
+$context:
+  type: ubm_sysdictionary
+
+cdn_region:
+  name: {$i18n: cdn_region}
+  ubql:
+    entity: cdn_region
+    method: select
+    fieldList: [ID, code, name]
+    orderList: {0: {expression: name, order: asc}}
+
+cdn_regiontype:
+  name: {$i18n: cdn_regiontype}
+  ubql:
+    entity: cdn_regiontype
+    method: select
+    fieldList: [ID, code, name]
+    orderList: {0: {expression: name, order: asc}}
+
+cdn_country:
+  name: {$i18n: cdn_country}
+  ubql:
+    entity: cdn_country
+    method: select
+    fieldList: [ID, code, name]
+    orderList: {0: {expression: name, order: asc}}
+
+cdn_city:
+  name: {$i18n: cdn_city}
+  ubql:
+    entity: cdn_city
+    method: select
+    fieldList: [ID, code, name]
+    orderList: {0: {expression: name, order: asc}}
+
+cdn_citytype:
+  name: {$i18n: cdn_citytype}
+  ubql:
+    entity: cdn_citytype
+    method: select
+    fieldList: [ID, code, name]
+    orderList: {0: {expression: name, order: asc}}
+
+cdn_adminunit:
+  name: {$i18n: cdn_adminunit}
+  ubql:
+    entity: cdn_adminunit
+    method: select
+    fieldList: [ID, code, name]
+    orderList: {0: {expression: name, order: asc}}
+
+cdn_street:
+  name: {$i18n: cdn_street}
+  ubql:
+    entity: cdn_street
+    method: select
+    fieldList: [ID, code, fullName]
+    orderList: {0: {expression: fullName, order: asc}}
+
+cdn_bank:
+  name: {$i18n: cdn_bank}
+  ubql:
+    entity: cdn_bank
+    method: select
+    fieldList: [ID, code, name]
+    orderList: {0: {expression: name, order: asc}}
+
+cdn_currency:
+  name: {$i18n: cdn_currency}
+  ubql:
+    entity: cdn_currency
+    method: select
+    fieldList: [ID, code3, name]
+    orderList: {0: {expression: code3, order: asc}}
+
+cdn_organization:
+  name: {$i18n: cdn_organization}
+  ubql:
+    entity: cdn_organization
+    method: select
+    fieldList: [ID, code, name]
+    orderList: {0: {expression: name, order: asc}}
+
+cdn_employee:
+  name: {$i18n: cdn_employee}
+  ubql:
+    entity: cdn_employee
+    method: select
+    fieldList: [ID, fullFIO]
+    orderList: {0: {expression: fullFIO, order: asc}}
+
+cdn_address:
+  name: {$i18n: cdn_address}
+  ubql:
+    entity: cdn_address
+    method: select
+    fieldList: [ID, value]
+    orderList: {0: {expression: value, order: asc}}
+
+cdn_department:
+  name: {$i18n: cdn_department}
+  ubql:
+    entity: cdn_department
+    method: select
+    fieldList: [ID, code, name]
+    orderList: {0: {expression: name, order: asc}}
+
+cdn_deptype:
+  name: {$i18n: cdn_deptype}
+  ubql:
+    entity: cdn_deptype
+    method: select
+    fieldList: [ID, code, name]
+    orderList: {0: {expression: name, order: asc}}
+
+cdn_person:
+  name: {$i18n: cdn_person}
+  ubql:
+    entity: cdn_person
+    method: select
+    fieldList: [ID, fullFIO]
+    orderList: {0: {expression: fullFIO, order: asc}}
+
+cdn_personcategory:
+  name: {$i18n: cdn_personcategory}
+  ubql:
+    entity: cdn_personcategory
+    method: select
+    fieldList: [ID, code, name]
+    orderList: {0: {expression: name, order: asc}}
+
+cdn_personclass:
+  name: {$i18n: cdn_personclass}
+  ubql:
+    entity: cdn_personclass
+    method: select
+    fieldList: [ID, code, name]
+    orderList: {0: {expression: name, order: asc}}
+
+cdn_personsocialstatus:
+  name: {$i18n: cdn_personsocialstatus}
+  ubql:
+    entity: cdn_personsocialstatus
+    method: select
+    fieldList: [ID, code, name]
+    orderList: {0: {expression: name, order: asc}}
+
+cdn_language:
+  name: {$i18n: cdn_language}
+  ubql:
+    entity: cdn_language
+    method: select
+    fieldList: [ID, code, languageName]
+    orderList: {0: {expression: code, order: asc}}
+
+cdn_classifier:
+  name: {$i18n: cdn_classifier}
+  ubql:
+    entity: cdn_classifier
+    method: select
+    fieldList: [ID, code, name]
+    orderList: {0: {expression: code, order: asc}}
+
+cdn_classifieritem:
+  name: {$i18n: cdn_classifieritem}
+  ubql:
+    entity: cdn_classifieritem
+    method: select
+    fieldList: [ID, code, name]
+    orderList: {0: {expression: name, order: asc}}
+
+cdn_profession:
+  name: {$i18n: cdn_profession}
+  ubql:
+    entity: cdn_profession
+    method: select
+    fieldList: [ID, name]
+    orderList: {0: {expression: name, order: asc}}
+
+cdn_contact:
+  name: {$i18n: cdn_contact}
+  ubql:
+    entity: cdn_contact
+    method: select
+    fieldList: [ID, value]
+    orderList: {0: {expression: value, order: asc}}
+
+cdn_contacttype:
+  name: {$i18n: cdn_contacttype}
+  ubql:
+    entity: cdn_contacttype
+    method: select
+    fieldList: [ID, code, name]
+    orderList: {0: {expression: name, order: asc}}
+
+cdn_nationality:
+  name: {$i18n: cdn_nationality}
+  ubql:
+    entity: cdn_nationality
+    method: select
+    fieldList: [ID, code, name]
+    orderList: {0: {expression: name, order: asc}}
+
+cdn_orgbusinesstype:
+  name: {$i18n: cdn_orgbusinesstype}
+  ubql:
+    entity: cdn_orgbusinesstype
+    method: select
+    fieldList: [ID, code, name]
+    orderList: {0: {expression: name, order: asc}}
+
+cdn_orgownershiptype:
+  name: {$i18n: cdn_orgownershiptype}
+  ubql:
+    entity: cdn_orgownershiptype
+    method: select
+    fieldList: [ID, code, name]
+    orderList: {0: {expression: name, order: asc}}
+
+cdn_postindex:
+  name: {$i18n: cdn_postindex}
+  ubql:
+    entity: cdn_postindex
+    method: select
+    fieldList: [ID, code]
+    orderList: {0: {expression: code, order: asc}}
+
+cdn_staffunittype:
+  name: {$i18n: cdn_staffunittype}
+  ubql:
+    entity: cdn_staffunittype
+    method: select
+    fieldList: [ID, code, name]
+    orderList: {0: {expression: name, order: asc}}

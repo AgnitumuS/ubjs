@@ -1,6 +1,6 @@
 {
   "caption": "External Departments",
-  "captionSingular": "External division",
+  "captionSingular": "External Department",
   "description": "External departments dictionary",
   "connectionName": "",
   "sqlAlias": "dep",

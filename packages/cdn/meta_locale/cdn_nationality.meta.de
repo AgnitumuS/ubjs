@@ -21,7 +21,7 @@
     {
       "name": "nameF",
       "caption": "Name (weiblich)",
-      "description": "Name der Staatsangehörigkeit für Männer"
+      "description": "Name der Staatsangehörigkeit für Frauen"
     }
   ]
 }

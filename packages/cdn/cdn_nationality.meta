@@ -1,5 +1,5 @@
 {
-  "caption": "Nationality",
+  "caption": "Nationalities",
   "captionSingular": "Nationality",
   "description": "Nationality",
   "connectionName": "",
@@ -38,7 +38,7 @@
       "dataType": "String",
       "size": 128,
       "caption": "Name(female)",
-      "description": "Nationality name for male",
+      "description": "Nationality name for female",
       "allowNull": true,
       "isMultiLang": true
     }

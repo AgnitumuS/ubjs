@@ -1,17 +1,17 @@
 {
-  "caption": "Типи департаментів",
-  "captionSingular": "Тип департамента",
-  "description": "Довідник типів департаментів",
+  "caption": "Типи підрозділів",
+  "captionSingular": "Тип підрозділу",
+  "description": "Довідник типів підрозділів",
   "attributes": [
     {
       "name": "code",
       "caption": "Код",
-      "description": "Внутрішній код департамента"
+      "description": "Внутрішній код типу підрозділу"
     },
     {
       "name": "name",
       "caption": "Назва",
-      "description": "Назва типу департамента"
+      "description": "Назва типу підрозділу"
     }
   ]
 }
