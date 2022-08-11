@@ -3,44 +3,24 @@
     v-loading="loading"
     class="u-form-layout"
   >
-    <u-toolbar>
-      <template slot="left">
-        <u-button
-          color="primary"
-          appearance="inverse"
-          icon="u-icon-refresh"
-          tooltip="refresh"
-          @click="refresh"
-        />
-      </template>
-    </u-toolbar>
+    <u-toolbar />
 
     <u-form-container
       label-position="top"
       :max-width="800"
     >
-      <u-auto-field attribute-name="caption" />
-
       <u-auto-field attribute-name="code" />
-
-      <u-form-row
-        :label="`${entity}.isDefault`"
-        required
-        :error="$v.isDefault.$error"
-      >
-        <el-switch v-model="isDefault" />
-      </u-form-row>
-
+      <u-auto-field attribute-name="caption" />
       <u-auto-field attribute-name="description" />
+      <u-auto-field attribute-name="isDefault" />
 
       <u-form-row
-        :label="`${entity}.iconCls`"
+        label="ubm_desktop.iconCls"
         required
-        :error="$v.iconCls.$error"
       >
         <u-icon-picker
           :value="iconCls"
-          :label="`${entity}.iconCls`"
+          label="ubm_desktop.iconCls"
           @change="iconCls = $event"
         />
       </u-form-row>
@@ -50,7 +30,6 @@
       <u-form-row label="Desktop rights">
         <u-select-collection
           associated-attr="admSubjID"
-          entity-name="ubm_desktop_adm"
           collection-name="rightsSubjects"
           clearable
         />
@@ -61,10 +40,10 @@
 
 <script>
 const { Form, mapInstanceFields } = require('@unitybase/adminui-vue')
-const { mapGetters, mapActions } = require('vuex')
+const { mapGetters } = require('vuex')
 const UB = require('@unitybase/ub-pub')
 
-module.exports.mount = function (cfg) {
+module.exports.mount = cfg => {
   Form(cfg)
     .processing({
       collections: {
@@ -78,32 +57,16 @@ module.exports.mount = function (cfg) {
     .mount()
 }
 
-module.exports.default = {
-  name: 'UbmDesktop',
-  inject: ['entitySchema', '$v', 'entity'],
+export default {
+  name: 'UbmDesktopForm',
 
   computed: {
     ...mapInstanceFields([
-      'ID',
-      'name',
-      'caption',
-      'code:',
-      'description',
-      'iconCls',
-      'isDefault',
-      'displayOrder'
+      'iconCls'
     ]),
 
-    ...mapGetters(['loading']),
-
-    iconClsCaption () {
-      return this.entitySchema.attributes.iconCls.caption
-    }
-  },
-
-  methods: {
-    ...mapActions([
-      'refresh'
+    ...mapGetters([
+      'loading'
     ])
   }
 }
