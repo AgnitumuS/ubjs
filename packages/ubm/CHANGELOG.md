@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
+- `ubm_sysdictionary` - creation of system dictionaries for ORG and CDN models moved to ubjs
 
 ### Deprecated
 
