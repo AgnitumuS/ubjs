@@ -23,7 +23,7 @@ For documentation of the VueJS based UI components see [UI library for Vue](/api
 
 # Usage
 ## adminUI based app
- An `adminUI` based application should adds a `@unitybase/adminui-vue` model into `domain.models`
+ An `adminUI` based application should add a `@unitybase/adminui-vue` model into `domain.models`
  section of ubConfig after `adminui-pub`
 
 ```json
@@ -33,6 +33,22 @@ For documentation of the VueJS based UI components see [UI library for Vue](/api
       ...
       { "path": "./node_modules/@unitybase/adminui-vue" }
       ..
+```
+
+## Webpack && SystemJS
+Module is registered in SystemJS registry as `@unitybase/adminui-vue`, so any file what loaded using SystemJS
+(all UnityBase forms and their dependencies) will use `adminui-vue` what already loaded into browser.
+
+For packages, what need to be compiled using `webpack` starts from `@unitybase/adminui-vue@5.23.11` module also exposed
+as a global `$AdminUiVue` variable. To prevent load `adminui-vue` twice webpack config must contain external `@unitybase/adminui-vue': '$AdminUiVue`:
+```javascript
+  externals: {
+    'lodash': '_',
+    '@unitybase/ub-pub': 'UB',
+    '@unitybase/adminui-vue': '$AdminUiVue',
+    'vue': 'Vue',
+    'element-ui': 'ElementUI'
+  }
 ```
 
 ## Stand-alone app

@@ -6,6 +6,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+ - expose `@unitybase/adminui-vue` as `window.$AdminUiVue`. This allows to compile (using webpack) modules with
+  `require('@unitybase/adminui-vue')` by adding it into externals section of `webpack.config` (as we did with ub-pub):
+```javascript
+  externals: {
+    'lodash': '_',
+    '@unitybase/ub-pub': 'UB',
+    '@unitybase/adminui-vue': '$AdminUiVue',
+    'vue': 'Vue',
+    'element-ui': 'ElementUI'
+  }
+```
 
 ### Changed
 

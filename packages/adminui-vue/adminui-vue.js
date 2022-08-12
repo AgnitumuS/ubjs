@@ -372,5 +372,6 @@ if ((typeof SystemJS !== 'undefined') && !SystemJS.has('@unitybase/adminui-vue')
 // the only way to give pki() function access to capiSelectionDialog is global window object
 const capiSelectionDialog = require('./views/capiSelectionDialog')
 if (window) {
+  window.$AdminUiVue = module.exports
   window.capiSelectionDialog = capiSelectionDialog
 }
