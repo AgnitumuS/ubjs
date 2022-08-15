@@ -113,7 +113,7 @@
 			"loginWindowTopLogoURL": "/models/ub-pub/img/login-logo.svg",
 			//#ifdef(%UB_USE_DSTU%)
 			//"encryptionImplementation": "/clientRequire/@ub-d/iit-sign-web/dist/iit-sign-web.min.js",
-			"encryptionImplementation": ["@ub-d/iit-sign-web", "@ub-d/iit-sign-js"],
+			"encryptionImplementation": ["@ub-d/iit-sign-web", "@ub-d/iit-sign-js", "@ub-d/cloud-crypto"],
 			//#endif
 			"registrationURL": "/models/adminui-vue/views/registration-stub.html",
 			"endpoint": "ubadminui",

@@ -21,6 +21,10 @@ if [ ! -d "./node_modules/@ub-d/crypto-api" ]; then
   ln -s "$(pwd)/../../../ub-d/packages/crypto-api" "./node_modules/@ub-d/"
 fi
 
+if [ ! -d "./node_modules/@ub-d/cloud-crypto" ]; then
+  ln -s "$(pwd)/../../../ub-d/packages/cloud-crypto" "./node_modules/@ub-d/"
+fi
+
 mkdir -p './node_modules/@ub-e'
 
 if [ ! -d "./node_modules/@ub-e/pdfsign" ]; then
