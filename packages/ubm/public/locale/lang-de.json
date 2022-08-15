@@ -51,5 +51,23 @@
   "monkeyRequestsDetected": "Ihre Anfrage wurde verarbeitet, aber wir haben festgestellt, dass sie mehrmals wiederholt wurde. Klemmt möglicherweise eine Taste?",
   "Shortcut editor": "Verknüpfungs-Editor",
   "chooseShortcutFolder": "Verknüpfungsordner wählen",
-  "Desktop rights": "Verwaltungssubjekt"
+  "Desktop rights": "Verwaltungssubjekt",
+  "ubm_desktop-uiSettings": {
+    "defaultTheme": "Standardthema",
+    "loginPageLogo": "Login-Seite-Logo",
+    "expandedSidebarTopLogo": "Erweitertes oberes Seitenleisten-Logo",
+    "collapsedSidebarTopLogo": "Eingeblendetes oberes Logo in der Seitenleiste",
+    "UIColorsTheme": "UI-Farbthema",
+    "previewIsNotAvailable": "Vorschau ist nicht verfügbar. Die Seite sollte nach dem Speichern dieser Einstellung neu geladen werden, um den Effekt zu sehen",
+    "applicationTitle": "Bewerbungstitel",
+    "HTMLPageTitle": "Titel der HTML-Seite (Text im Browser-Tab)",
+    "applicationName": "Anwendungsname",
+    "applicationNameDescription": "Name der Anwendung für die Show auf dem Anmeldeformular. Falls explizit als leerer String definiert - wird im Login-Formular nicht angezeigt. Im einfachen Fall - String, z. B. My App, zur Lokalisierung kann als Objekt mit keys=locale angegeben werden: {\"en\": \"My App\", \"de\": \"Meine App\"}",
+    "supportEMailAddress": "Support-E-Mail-Adresse",
+    "supportEMailAddressDescription": "Dieses Feld aktiviert die Schaltfläche bei der Fehlermeldung, was es ermöglicht, einen Fehlertext an die angegebene Adresse zu senden. Der Wert muss den Regeln zum Generieren eines HTML-Links entsprechen",
+    "configurationChanged": "Konfiguration wird geändert. Seite neu laden, um neue Einstellungen in Aktion zu sehen. Einige Einstellungen können vom Browser zwischengespeichert werden, daher ist es besser, die Browseraktion \"Cache leeren und erneut laden\" zu verwenden, um sie sofort zu sehen",
+    "logoWindowData": "(max. 200x48 Pixel, Größe size < 5 MB)",
+    "sidebarLogoExpandedData": "SVG oder Bild (max. 210x40 Pixel, Größe 5 MB), sichtbar in der oberen linken Ecke des Bildschirms, wenn die Seitenleiste erweitert ist",
+    "sidebarLogoCollapsedData": "SVG oder Bild (max. 42x40 Pixel, Größe 5 MB), sichtbar in der oberen linken Ecke des Bildschirms, wenn die Seitenleiste eingeklappt ist"
+  }
 }

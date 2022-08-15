@@ -11,7 +11,7 @@
         icon="u-icon-undo"
         @click="doReset"
       >
-        {{ $ut('reset') }}
+        {{ this.$ut('el.table.resetFilter') }}
       </u-button>
     </div>
 
@@ -19,91 +19,90 @@
       label-position="top"
     >
       <div>
-        <u-grid>
-          <section>
-            <section>
-              <u-form-row label="Login page logo">
-                <u-file-input
-                  v-model="loginWindowTopLogoFile"
-                  accept=".svg,.png,.gif"
-                />
-              </u-form-row>
-              <div class="auth-page__logo-container">
-                <img
-                  :src="loginWindowTopLogoDataURL"
-                  class="auth-page__logo"
-                >
-              </div>
-            </section>
-
-            <u-form-row label="Expanded sidebar top logo">
-              <u-file-input
-                v-model="sidebarLogoBigFile"
-                accept=".svg,.png,.gif"
-              />
-              <div class="u-form-row__description">
-                SVG or image, visible in the top-left corner of the screen when sidebar is expanded
-              </div>
-            </u-form-row>
-
-            <u-form-row label="Collapsed sidebar top logo">
-              <u-file-input
-                v-model="sidebarLogoFile"
-                accept=".svg,.png,.gif"
-              />
-              <div class="u-form-row__description">
-                SVG or image, visible in the top-left corner of the screen when sidebar is collapsed
-              </div>
-            </u-form-row>
-          </section>
-          <section>
-            <u-form-row label="UI colors theme">
-              <u-radio
-                v-model="selectedTheme"
-                id-prop="name"
-                label-prop="description"
-                :items="availableThemes"
-              />
-              <div class="u-form-row__description">
-                Preview is not available. Page should be reloaded after save this setting to see effect
-              </div>
-            </u-form-row>
-
-            <u-form-row label="Application title">
+        <u-grid row-gap="10px">
+          <u-grid :columns="1" row-gap="10px">
+            <u-form-row label="ubm_desktop-uiSettings.applicationTitle">
               <u-base-input
                 v-model="applicationTitle"
               />
               <div class="u-form-row__description">
-                Title of HTML page (text on the browser tab)
+                {{ $ut('ubm_desktop-uiSettings.HTMLPageTitle') }}
               </div>
             </u-form-row>
-            <u-form-row label="Application name">
+            <u-form-row label="ubm_desktop-uiSettings.applicationName">
               <u-base-input
                 v-model="applicationName"
               />
               <div class="u-form-row__description">
-                Name of application for show on the login form. In case explicitly defined as empty string - not shown
-                in
-                login form.
-                In simple case - string, for example <code>My App</code>,
-                for localization can be specified as object with keys=locale: <code>{"en": "My App", "uk": "Мій
-                додаток"}</code>
+                {{ $ut('ubm_desktop-uiSettings.applicationNameDescription') }}
               </div>
             </u-form-row>
-
-            <u-form-row label="Support E-Mail address">
+            <u-form-row label="ubm_desktop-uiSettings.supportEMailAddress">
               <u-base-input
                 v-model="supportMailTo"
               />
               <div class="u-form-row__description">
-                This field activate button on error message what allows to send an error text to specified address.
-                The value must comply with the rules for generating an html-link with
+                {{ $ut('ubm_desktop-uiSettings.supportEMailAddressDescription') }}
                 <a
                   href="https://developer.mozilla.org/en-US/docs/Learn/HTML/Introduction_to_HTML/Creating_hyperlinks#e-mail_links"
                   target="_blank"
                 >a mailto: modifier </a>
               </div>
             </u-form-row>
+          </u-grid>
+
+          <u-form-row label="ubm_desktop-uiSettings.UIColorsTheme">
+            <u-radio
+              v-model="selectedTheme"
+              id-prop="name"
+              label-prop="description"
+              :items="availableThemes"
+            />
+            <div class="u-form-row__description">
+              {{ $ut('ubm_desktop-uiSettings.previewIsNotAvailable') }}
+            </div>
+          </u-form-row>
+
+          <section>
+            <u-form-row label="ubm_desktop-uiSettings.loginPageLogo">
+              <u-file-input
+                v-model="loginWindowTopLogoFile"
+                accept=".svg,.png,.gif"
+              />
+            </u-form-row>
+            <div class="u-form-row__description">
+              {{ $ut('ubm_desktop-uiSettings.logoWindowData') }}
+            </div>
+            <div class="auth-page__logo-container">
+              <img
+                :src="loginWindowTopLogoDataURL"
+                class="auth-page__logo"
+              >
+            </div>
+          </section>
+
+          <section>
+            <u-form-row label="ubm_desktop-uiSettings.expandedSidebarTopLogo">
+              <u-file-input
+                v-model="sidebarLogoBigFile"
+                accept=".svg,.png,.gif"
+              />
+            </u-form-row>
+            <div class="u-form-row__description">
+              {{ $ut('ubm_desktop-uiSettings.sidebarLogoExpandedData') }}
+            </div>
+          </section>
+
+          <section>
+            <u-form-row label="ubm_desktop-uiSettings.collapsedSidebarTopLogo">
+              <u-file-input
+                v-model="sidebarLogoFile"
+                accept=".svg,.png,.gif"
+              />
+            </u-form-row>
+            <div class="u-form-row__description">
+              {{ $ut('ubm_desktop-uiSettings.sidebarLogoCollapsedData') }}
+            </div>
           </section>
         </u-grid>
       </div>
@@ -114,7 +113,7 @@
 <script>
 const { Form, SidebarInstance } = require('@unitybase/adminui-vue')
 let originalLogo, originalLogoBig
-const changedMsg = 'Configuration is changed. Reload page to see new settings in action. Some settings can be cached by browser, so better to use "Empty cache and hard reload" browser action to see it immediately'
+const changedMsg = 'ubm_desktop-uiSettings.configurationChanged'
 
 module.exports.mount = function (cfg) {
   originalLogo = SidebarInstance.logo
@@ -145,6 +144,7 @@ module.exports.default = {
   },
 
   async mounted () {
+    const { $ut } = this
     const resp = await this.$UB.connection.query({
       entity: 'ubm_desktop',
       method: 'getUIThemes'
@@ -153,7 +153,7 @@ module.exports.default = {
     this.availableThemes = [
       {
         name: DEFAULT_THEME,
-        description: 'Default theme'
+        description: $ut('ubm_desktop-uiSettings.defaultTheme')
       },
       ...JSON.parse(resp.themes)
     ]

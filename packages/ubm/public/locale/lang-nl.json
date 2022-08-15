@@ -55,5 +55,23 @@
   "monkeyRequestsDetected": "Uw verzoek is verwerkt, maar we hebben geconstateerd dat het meerdere keren is herhaald. Misschien uw sleutel zekering?",
   "Shortcut editor": "Snelkoppelingseditor",
   "chooseShortcutFolder": "Snelkoppelingsmap kiezen",
-  "Desktop rights": "Onderwerp van administratie"
+  "Desktop rights": "Onderwerp van administratie",
+  "ubm_desktop-uiSettings": {
+    "defaultTheme": "Standaard thema",
+    "loginPageLogo": "Logo van de inlogpagina",
+    "expandedSidebarTopLogo": "Uitgebreid logo in zijbalk bovenaan",
+    "collapsedSidebarTopLogo": "Samengevouwen zijbalk logo bovenaan",
+    "UIColorsTheme": "UI-kleurenthema",
+    "previewIsNotAvailable": "Voorbeeld is niet beschikbaar. De pagina moet opnieuw worden geladen na het opslaan van deze instelling om het effect te zien",
+    "applicationTitle": "Aanmeldings titel",
+    "HTMLPageTitle": "Titel van HTML-pagina (tekst op het browsertabblad)",
+    "applicationName": "Naam van de toepassing",
+    "applicationNameDescription": "Naam aanvraag voor show op het inlogformulier. Indien expliciet gedefinieerd als lege string - niet getoond in login-formulier. In eenvoudig geval - tekenreeks, bijvoorbeeld Mijn app, voor lokalisatie kan worden opgegeven als object met sleutels=locale: {\"en\": \"My App\", \"nl\": \"Mijn app\"}",
+    "supportEMailAddress": "Ondersteuning E-mailadres",
+    "supportEMailAddressDescription": "Dit veld activeert de knop bij foutmelding waarmee een fouttekst naar het opgegeven adres kan worden verzonden. De waarde moet voldoen aan de regels voor het genereren van een html-link met",
+    "configurationChanged": "Configuratie wordt gewijzigd. Herlaad pagina om nieuwe instellingen in actie te zien. Sommige instellingen kunnen door de browser in de cache worden opgeslagen, dus het is beter om de browseractie \"Leeg cache en hard opnieuw laden\" te gebruiken om deze onmiddellijk te zien",
+    "logoWindowData": "(max 200x48 px, 5 MB)",
+    "sidebarLogoExpandedData": "SVG of afbeelding (max. 210x40 px, grootte 5 MB), zichtbaar in de linkerbovenhoek van het scherm wanneer zijbalk is uitgevouwen",
+    "sidebarLogoCollapsedData": "SVG of afbeelding (max. 42x40 px, grootte 5 MB), zichtbaar in de linkerbovenhoek van het scherm wanneer zijbalk is samengevouwen"
+  }
 }
