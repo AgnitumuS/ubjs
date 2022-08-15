@@ -51,5 +51,23 @@
   "desktopService.BottomRight": "Pastdan o'nga",
   "Shortcut editor": "Yarlik muharriri",
   "chooseShortcutFolder": "Yarlik papkasini tanlang",
-  "Desktop rights": "Boshqaruv subyekti"
+  "Desktop rights": "Boshqaruv subyekti",
+  "ubm_desktop-uiSettings": {
+    "defaultTheme": "Birlamchi mavzu",
+    "loginPageLogo": "Kirish sahifasi logotipi",
+    "expandedSidebarTopLogo": "Kengaytirilgan yon paneldagi logotip",
+    "collapsedSidebarTopLogo": "Yon panelning yuqoridagi logotipi yopilgan",
+    "UIColorsTheme": "UI ranglari mavzusi",
+    "previewIsNotAvailable": "Oldindan ko‘rish imkoniyati mavjud emas. Effektni ko'rish uchun ushbu sozlama saqlanganidan keyin sahifa qayta yuklanishi kerak",
+    "applicationTitle": "Ilova nomi",
+    "HTMLPageTitle": "HTML sahifaning sarlavhasi (brauzer yorlig'idagi matn)",
+    "applicationName": "Ilova nomi",
+    "applicationNameDescription": "Kirish formasida ko'rsatish uchun ariza nomi. Agar bo'sh qator sifatida aniq belgilangan bo'lsa - kirish shaklida ko'rsatilmaydi. Oddiy holatda - string, masalan, My App, mahalliylashtirish uchun kalitlar bilan ob'ekt sifatida ko'rsatilishi mumkin=locale: {\"en\": \"My App\", \"uk\": \"Мій додаток\"}",
+    "supportEMailAddress": "Elektron pochta manzilini qo'llab-quvvatlash",
+    "supportEMailAddressDescription": "Bu maydon xato xabaridagi tugmani faollashtiradi, bu esa xato matnini belgilangan manzilga yuborish imkonini beradi. Qiymat html havolasini yaratish qoidalariga mos kelishi kerak",
+    "configurationChanged": "Konfiguratsiya o'zgartirildi. Yangi sozlamalarni amalda ko‘rish uchun sahifani qayta yuklang. Ba'zi sozlamalar brauzer tomonidan keshlanishi mumkin, shuning uchun uni darhol ko'rish uchun \"Keshni bo'shatish va qattiq qayta yuklash\" amalini ishlatgan ma'qul.",
+    "logoWindowData": "(max 200x48 px, size 5 MB)",
+    "sidebarLogoExpandedData": "SVG yoki rasm (maksimal 210x40 piksel, oʻlchami 5 MB), yon panel kengaytirilganda ekranning yuqori chap burchagida koʻrinadi",
+    "sidebarLogoCollapsedData": "SVG yoki rasm (maksimal 42x40 piksel, oʻlchami 5 MB), yon panel yopilganda ekranning yuqori chap burchagida koʻrinadi"
+  }
 }

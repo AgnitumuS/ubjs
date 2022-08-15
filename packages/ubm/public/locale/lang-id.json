@@ -55,5 +55,23 @@
   "monkeyRequestsDetected": "Your request has been processed, but we found that it is repeated several times. Maybe you key fuse?",
   "Shortcut editor": "Editor pintasan",
   "chooseShortcutFolder": "Choose shortcut folder",
-  "Desktop rights": "Subjek administrasi"
+  "Desktop rights": "Subjek administrasi",
+  "ubm_desktop-uiSettings": {
+    "defaultTheme": "Tema bawaan",
+    "loginPageLogo": "Logo halaman masuk",
+    "expandedSidebarTopLogo": "Logo atas bilah sisi yang diperluas",
+    "collapsedSidebarTopLogo": "Logo atas bilah sisi diciutkan",
+    "UIColorsTheme": "Tema warna UI",
+    "previewIsNotAvailable": "Pratinjau tidak tersedia. Halaman harus dimuat ulang setelah menyimpan pengaturan ini untuk melihat efeknya",
+    "applicationTitle": "Judul Permohonan",
+    "HTMLPageTitle": "Judul halaman HTML (teks pada tab browser)",
+    "applicationName": "Nama aplikasi",
+    "applicationNameDescription": "Nama aplikasi untuk ditampilkan pada form login. Jika secara eksplisit didefinisikan sebagai string kosong - tidak ditampilkan dalam formulir login. Dalam kasus sederhana - string, misalnya Aplikasi Saya, untuk pelokalan dapat ditetapkan sebagai objek dengan keys=locale: {\"en\": \"My app\", \"id\": \"Aplikasi saya\"}",
+    "supportEMailAddress": "Dukungan alamat E-Mail",
+    "supportEMailAddressDescription": "Bidang ini mengaktifkan tombol pada pesan kesalahan yang memungkinkan untuk mengirim teks kesalahan ke alamat yang ditentukan. Nilai harus mematuhi aturan untuk membuat tautan html dengan",
+    "configurationChanged": "Konfigurasi diubah. Muat ulang halaman untuk melihat pengaturan baru beraksi. Beberapa pengaturan dapat di-cache oleh browser, jadi lebih baik menggunakan tindakan browser \"Cache kosong dan hard reload\" untuk segera melihatnya",
+    "logoWindowData": "(max 200x48 px, size 5 MB)",
+    "sidebarLogoExpandedData": "SVG atau gambar (maks 210x40 px, ukuran 5 MB), terlihat di pojok kiri atas layar saat bilah sisi diperluas",
+    "sidebarLogoCollapsedData": "SVG atau gambar (maks 42x40 px, ukuran 5 MB), terlihat di pojok kiri atas layar saat bilah sisi diciutkan"
+  }
 }

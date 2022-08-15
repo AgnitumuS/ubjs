@@ -55,5 +55,23 @@
   "monkeyRequestsDetected": "Your request has been processed, but we found that it is repeated several times. Maybe you key fuse?",
   "Shortcut editor": "Shortcut editor",
   "chooseShortcutFolder": "Choose shortcut folder",
-  "Desktop rights": "Subject of administration"
+  "Desktop rights": "Subject of administration",
+  "ubm_desktop-uiSettings": {
+    "defaultTheme": "Default theme",
+    "loginPageLogo": "Login page logo",
+    "expandedSidebarTopLogo": "Expanded sidebar top logo",
+    "collapsedSidebarTopLogo": "Collapsed sidebar top logo",
+    "UIColorsTheme": "UI colors theme",
+    "previewIsNotAvailable": "Preview is not available. Page should be reloaded after save this setting to see effect",
+    "applicationTitle": "Application title",
+    "HTMLPageTitle": "Title of HTML page (text on the browser tab)",
+    "applicationName": "Application name",
+    "applicationNameDescription": "Name of application for show on the login form. In case explicitly defined as empty string - not shown in login form. In simple case - string, for example My App, for localization can be specified as object with keys=locale: {\"en\": \"My App\", \"uk\": \"Мій додаток\"}",
+    "supportEMailAddress": "Support E-Mail address",
+    "supportEMailAddressDescription": "This field activate button on error message what allows to send an error text to specified address. The value must comply with the rules for generating an html-link with",
+    "configurationChanged": "Configuration is changed. Reload page to see new settings in action. Some settings can be cached by browser, so better to use \"Empty cache and hard reload\" browser action to see it immediately",
+    "logoWindowData": "(max 200x48 px, size up to 5 MB)",
+    "sidebarLogoExpandedData": "SVG or image (max 210x40 px, size 5 MB), visible in the top-left corner of the screen when sidebar is expanded",
+    "sidebarLogoCollapsedData": "SVG or image (max 42x40 px, size 5 MB), visible in the top-left corner of the screen when sidebar is collapsed"
+  }
 }

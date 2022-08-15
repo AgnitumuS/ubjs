@@ -55,5 +55,23 @@
   "monkeyRequestsDetected": "Sorğunuz emal edildi, lakin  onun bir neçə dəfə təkrarlandığı aşkar olundu?",
   "Shortcut editor": "Qısa yol redaktoru",
   "chooseShortcutFolder": "Choose shortcut folder",
-  "Desktop rights": "İnzibatlaşdırma subyekti"
+  "Desktop rights": "İnzibatlaşdırma subyekti",
+  "ubm_desktop-uiSettings": {
+    "defaultTheme": "Defolt mövzu",
+    "loginPageLogo": "Giriş səhifəsinin loqosu",
+    "expandedSidebarTopLogo": "Genişlənmiş yan panelin yuxarı loqosu",
+    "collapsedSidebarTopLogo": "Yığılmış yan panelin yuxarı loqosu",
+    "UIColorsTheme": "UI rəng mövzusu",
+    "previewIsNotAvailable": "Önizləmə mövcud deyil. Effekti görmək üçün bu ayarı saxladıqdan sonra səhifə yenidən yüklənməlidir",
+    "applicationTitle": "Tətbiq başlığı",
+    "HTMLPageTitle": "HTML səhifəsinin başlığı (brauzer nişanındakı mətn)",
+    "applicationName": "Tətbiq adı",
+    "applicationNameDescription": "Giriş formasında nümayiş üçün müraciətin adı. Açıqca boş sətir kimi müəyyən edildiyi halda - giriş formasında göstərilmir. Sadə halda - sətir, məsələn Mənim Proqramım, lokalizasiya üçün düymələri ilə obyekt kimi göstərilə bilər=locale: {\"en\": \"My App\", \"az\": \"Mənim ərizəm\"}",
+    "supportEMailAddress": "E-poçt ünvanını dəstəkləyin",
+    "supportEMailAddressDescription": "Bu sahə xəta mesajındakı düyməni aktivləşdirir, bu da səhv mətnini müəyyən edilmiş ünvana göndərməyə imkan verir. Dəyər html-link yaratmaq qaydalarına uyğun olmalıdır",
+    "configurationChanged": "Konfiqurasiya dəyişdirilir. Fəaliyyətdə olan yeni parametrləri görmək üçün səhifəni yenidən yükləyin. Bəzi parametrlər brauzer tərəfindən keşlənə bilər, ona görə də onu dərhal görmək üçün \"Keşi boşalt və yenidən yükləmə\" brauzer əməliyyatından istifadə etmək daha yaxşıdır.",
+    "logoWindowData": "(maksimum 200x48 px, 5 MB)",
+    "sidebarLogoExpandedData": "Yan panel genişləndirildikdə ekranın yuxarı sol küncündə görünən SVG və ya şəkil (maksimum 210x40 px, 5 MB)",
+    "sidebarLogoCollapsedData": "Yan panel yığışdırıldıqda ekranın yuxarı sol küncündə görünən SVG və ya şəkil (maksimum 42x40 px, 5 MB)"
+  }
 }
