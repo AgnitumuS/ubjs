@@ -128,6 +128,7 @@
   "successfullySaved": "Erfolgreich gespeichert",
   "formWasRefreshed": "Das Formular wurde aktualisiert",
   "recordDeletedSuccessfully": "Eintrag erfolgreich gelöscht",
+  "recordsDeletedSuccessfully": "Datensätze erfolgreich gelöscht: {0}",
   "selectedValueWasDeleted": "Ausgewählter Wert wurde gelöscht",
   "value is out of date": "Wert ist veraltet",
   "recordWasDeleted": "Eintrag wurde gelöscht",

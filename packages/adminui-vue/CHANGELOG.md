@@ -19,6 +19,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ```
 
 ### Changed
+ - `UtableEntity`: if entity hasn't description attribute, 'successfully 'deleted' notification shows only 
+   number of deleted items, not their list
 
 ### Deprecated
 
