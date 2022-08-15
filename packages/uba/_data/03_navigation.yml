@@ -43,7 +43,7 @@ adm_desktop:
               cmdType: 'showList',
               cmdData: {
                 entityName: 'uba_group',
-                columns: ['name', 'description', 'code']
+                columns: ['code', 'name', 'description']
               }
             }
       - uba_userrole:

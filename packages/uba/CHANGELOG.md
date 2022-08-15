@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
+- change columns order in `uba_group` grid to `['code', 'name', 'description']`
 
 ### Deprecated
 
