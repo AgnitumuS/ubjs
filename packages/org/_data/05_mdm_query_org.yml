@@ -7,7 +7,7 @@ org_organization:
     entity: org_organization
     method: select
     fieldList: [ID, code, name]
-    orderList: {0: {expression: name, order: asc}}
+    orderList: [{expression: name, order: asc}]
 
 org_department:
   name: {$i18n: org_department}
@@ -15,7 +15,7 @@ org_department:
     entity: org_department
     method: select
     fieldList: [ID, code, caption]
-    orderList: {0: {expression: caption, order: asc}}
+    orderList: [{expression: name, order: asc}]
 
 org_staffunit:
   name: {$i18n: org_staffunit}
@@ -23,7 +23,7 @@ org_staffunit:
     entity: org_staffunit
     method: select
     fieldList: [ID, code, caption]
-    orderList: {0: {expression: caption, order: asc}}
+    orderList: [{expression: name, order: asc}]
 
 org_employee:
   name: {$i18n: org_employee}
@@ -31,7 +31,7 @@ org_employee:
     entity: org_employee
     method: select
     fieldList: [ID, code, fullFIO]
-    orderList: {0: {expression: fullFIO, order: asc}}
+    orderList: [{expression: name, order: asc}]
 
 org_execgroup:
   name: {$i18n: org_execgroup}
@@ -39,7 +39,7 @@ org_execgroup:
     entity: org_execgroup
     method: select
     fieldList: [ID, code, name]
-    orderList: {0: {expression: name, order: asc}}
+    orderList: [{expression: name, order: asc}]
 
 org_profession:
   name: {$i18n: org_profession}
@@ -47,7 +47,7 @@ org_profession:
     entity: org_profession
     method: select
     fieldList: [ID, code, name]
-    orderList: {0: {expression: code, order: asc}}
+    orderList: [{expression: name, order: asc}]
 
 org_unit:
   name: {$i18n: org_unit}
@@ -55,4 +55,4 @@ org_unit:
     entity: org_unit
     method: select
     fieldList: [ID, code, caption]
-    orderList: {0: {expression: code, order: asc}}
+    orderList: [{expression: name, order: asc}]
