@@ -1,18 +1,18 @@
 {
-  "caption": "Список фізичних осіб",
+  "caption": "Фізичні особи",
   "captionSingular": "Фізична особа",
   "description": "Довідник фізичних осіб",
-  "documentation": "У цьому довіднику зберігається перелік персон (фізичних осіб)",
+  "documentation": "У цьому довіднику зберігається перелік фізичних осіб",
   "attributes": [
     {
       "name": "lastName",
       "caption": "Прізвище",
-      "description": "Прізвище персони"
+      "description": "Прізвище особи"
     },
     {
       "name": "firstName",
       "caption": "Ім'я",
-      "description": "Ім'я персони"
+      "description": "Ім'я особи"
     },
     {
       "name": "middleName",
@@ -27,12 +27,12 @@
     {
       "name": "description",
       "caption": "Опис",
-      "description": "Опис персони"
+      "description": "Опис особи"
     },
     {
       "name": "sexType",
       "caption": "Стать",
-      "description": "Стать персони"
+      "description": "Стать особи"
     },
     {
       "name": "suffix",
@@ -57,27 +57,27 @@
     {
       "name": "photo",
       "caption": "Фото",
-      "description": "Фотографія персони"
+      "description": "Фотографія особи"
     },
     {
       "name": "lastNameGen",
       "caption": "Прізвище в род. відмінку",
-      "description": "Прізвище персони в родовому відмінку"
+      "description": "Прізвище особи в родовому відмінку"
     },
     {
       "name": "lastNameDat",
       "caption": "Прізвище в дав. відмінку",
-      "description": "Прізвище персони в давальному відмінку"
+      "description": "Прізвище особи в давальному відмінку"
     },
     {
       "name": "firstNameGen",
       "caption": "Ім'я в род. відмінку",
-      "description": "Ім'я персони в родовому відмінку"
+      "description": "Ім'я особи в родовому відмінку"
     },
     {
       "name": "firstNameDat",
       "caption": "Ім'я в дав. відмінку",
-      "description": "Ім'я персони в давальному відмінку"
+      "description": "Ім'я особи в давальному відмінку"
     },
     {
       "name": "middleNameGen",
@@ -92,22 +92,22 @@
     {
       "name": "shortFIOGen",
       "caption": "Скорочений ПІБ в род. відмінку",
-      "description": "Скорочений ПІБ персони в родовому відмінку"
+      "description": "Скорочений ПІБ особи в родовому відмінку"
     },
     {
       "name": "shortFIODat",
       "caption": "Скорочений ПІБ в дав. відмінку",
-      "description": "Скорочений ПІБ персони в давальному відмінку"
+      "description": "Скорочений ПІБ особи в давальному відмінку"
     },
     {
       "name": "fullFIOGen",
       "caption": "Повний ПІБ в род. відмінку",
-      "description": "Повний ПІБ персони в родовому відмінку"
+      "description": "Повний ПІБ особи в родовому відмінку"
     },
     {
       "name": "fullFIODat",
       "caption": "Повний ПІБ в дав. відмінку",
-      "description": "Повний ПІБ персони в давальному відмінку"
+      "description": "Повний ПІБ особи в давальному відмінку"
     },
     {
       "name": "applyGen",
@@ -122,7 +122,7 @@
     {
       "name": "regionID",
       "caption": "Регіон",
-      "description": "Регіон мешкання персони"
+      "description": "Регіон мешкання особи"
     },
     {
       "name": "identCard",
@@ -152,7 +152,7 @@
     {
       "name": "resident",
       "caption": "Резидент?",
-      "description": "Персона є резидентом нашої країни"
+      "description": "Чи є особа резидентом нашої країни"
     },
     {
       "name": "classID",

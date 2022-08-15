@@ -1,6 +1,7 @@
 {
-  "caption": "Список языков",
+  "caption": "Языки",
   "captionSingular": "Язык",
+  "description": "Список языков",
   "attributes": [
     {
       "name": "code",

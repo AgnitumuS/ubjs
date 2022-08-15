@@ -1,6 +1,7 @@
 {
   "caption": "Мови",
   "captionSingular": "Мова",
+  "description": "Список мов",
   "attributes": [
     {
       "name": "code",

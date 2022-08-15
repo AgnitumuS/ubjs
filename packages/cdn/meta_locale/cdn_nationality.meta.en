@@ -1,7 +1,7 @@
 {
-  "caption": "Nationality",
+  "caption": "Nationalities",
   "captionSingular": "Nationality",
-  "description": "Nationality",
+  "description": "List of nationalities",
   "attributes": [
     {
       "name": "code",
@@ -20,7 +20,7 @@
     },{
       "name": "nameF",
       "caption": "Name(female)",
-      "description": "Nationality name for male"
+      "description": "Nationality name for female"
     }
   ]
 }

@@ -1,5 +1,5 @@
 {
-  "caption": "Список улиц",
+  "caption": "Улицы",
   "captionSingular": "Улица",
   "description": "Список улиц",
   "attributes": [

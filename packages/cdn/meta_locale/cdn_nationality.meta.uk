@@ -1,7 +1,7 @@
 {
-  "caption": "Національність",
+  "caption": "Національності",
   "captionSingular": "Національність",
-  "description": "Національність",
+  "description": "Список національностей",
   "attributes": [
     {
       "name": "code",

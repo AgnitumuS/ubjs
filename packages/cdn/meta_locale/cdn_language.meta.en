@@ -1,6 +1,7 @@
 {
-  "caption": "Language List",
+  "caption": "Languages",
   "captionSingular": "Language",
+  "description": "List of languages",
   "attributes": [
     {
       "name": "code",

@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - added localization for all not translated fields for `ubm_desktop-uiSettings-fm.vue`
 
 ### Changed
+- `ubm_sysdictionary` - creation of system dictionaries for ORG and CDN models moved to ubjs
 
 ### Deprecated
 

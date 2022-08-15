@@ -13,7 +13,7 @@
     },
     {
       "name": "subjectID",
-      "caption": "Субект"
+      "caption": "Субъект"
     }
   ]
 }
