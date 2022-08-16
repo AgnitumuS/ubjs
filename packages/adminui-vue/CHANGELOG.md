@@ -27,6 +27,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
  - `UtableEntity`: `successfully deleted` notification for entities without description attribute shows only 
    number of deleted items instead of empty list
+- `UDialogs` - when `uiSettings.adminUI.supportMailTo` is defined in `ubConfig.json`,
+   mail message text will be truncated to 2038 characters on Windows (Outlook limitation for mailto: href)
 
 ## [5.23.10] - 2022-08-09
 ### Added
