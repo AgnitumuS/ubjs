@@ -12,6 +12,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Deprecated
 
 ### Removed
+
+### Fixed
+
+## [5.24.0] - 2022-08-16
+### Removed
  - **BREAKING** EntityGidPanel store is NOT passed as `store` into doCommand, so not accessible from BasePanel.
   Refreshing of one row in Ext grid after edition now implemented in connection.on('entity:changed')
   handler (as it done for Vue grids). Can be turned off by set `ubConfig.uiSettings.adminUI.smartExtGridRefresh = false`

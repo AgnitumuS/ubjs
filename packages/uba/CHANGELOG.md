@@ -8,11 +8,16 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
-- change columns order in `uba_group` grid to `['code', 'name', 'description']`
 
 ### Deprecated
 
 ### Removed
+
+### Fixed
+
+## [5.23.13] - 2022-08-16
+### Changed
+- change columns order in `uba_group` grid to `['code', 'name', 'description']`
 
 ### Fixed
 - `uba_group` form: sort users by name in 'Add users' dialog

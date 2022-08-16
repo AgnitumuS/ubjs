@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.23.12] - 2022-08-16
 ## [5.23.11] - 2022-08-09
 ### Added
  - `Session.hasRole` can accept roles as array and returns true in case user has at last one of passed roles

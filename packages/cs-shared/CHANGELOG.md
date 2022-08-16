@@ -6,6 +6,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+## [5.23.6] - 2022-08-16
+### Added
 - Support of two new types of conditions in `Repository.where` for boolean attributes:
 
     ```
@@ -21,12 +32,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Changed
 - `Repository.where` transforms `notIn` into `notEqual` for values consisting of one item, just like
   it does for `in`=>`equal` transformation
-
-### Deprecated
-
-### Removed
-
-### Fixed
 
 ## [5.23.5] - 2022-08-04
 ### Changed

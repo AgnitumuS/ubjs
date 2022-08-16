@@ -6,6 +6,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+## [5.23.11] - 2022-08-16
+### Added
  - expose `@unitybase/adminui-vue` as `window.$AdminUiVue`. This allows to compile (using webpack) modules with
   `require('@unitybase/adminui-vue')` by adding it into externals section of `webpack.config` (as we did with ub-pub):
 ```javascript
@@ -17,12 +28,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
     'element-ui': 'ElementUI'
   }
 ```
-
-### Changed
-
-### Deprecated
-
-### Removed
 
 ### Fixed
  - `UtableEntity`: `successfully deleted` notification for entities without description attribute shows only 
