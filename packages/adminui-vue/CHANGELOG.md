@@ -25,6 +25,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+- `uDialogs` - when the parameter is activated `uiSettings.adminUI.supportMailTo` in `ubConfig.json`, a limit is set on the length of the error (2038 characters), which is transmitted from the browser to the user's mail client in the Win platform.
 
 ## [5.23.10] - 2022-08-09
 ### Added

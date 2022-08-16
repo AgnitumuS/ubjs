@@ -2,7 +2,7 @@
 	"httpServer": {
 		"externalURL": "http://localhost",
 		//"externalURL": "http://pavelmash-u18",
-		//"serverType": "Socket", // for testing purpose socket based server can be enabled on Windows
+		// "serverType": "Socket", // for testing purpose socket based server can be enabled on Windows
 		//#ifdef(%UB_USE_NGINX%)
 		"reverseProxy": {
 			"kind": "nginx",
@@ -106,7 +106,7 @@
 			"supportMailTo": " support@mail.server.com?subject=error report for test environment",
 			"applicationName": {"en": "Autotest UB SQLITE", "uk": "Автотест UB SQLITE"},
 			"applicationTitle": "AdminUI",
-			"defaultPasswordForDebugOnly": "admin",
+			"defaultPasswordForDebugOnly": "rsm2",
 			"themeName": "UBGrayTheme",
 			"sidebarLogoURL": "/models/ub-pub/img/sidebar-logo.svg",
 			"sidebarLogoBigURL": "/models/ub-pub/img/sidebar-logo-big.svg",
