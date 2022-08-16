@@ -105,6 +105,7 @@ module.exports.default = {
             .correlation('userID', 'ID')
             .where('groupID', '=', this.instanceID)
         )
+        .orderBy('name', 'asc')
     }
   }
 }

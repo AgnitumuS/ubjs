@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+- `uba_group` form: sort users by name in 'Add users' dialog
 
 ## [5.23.12] - 2022-08-09
 ### Added
