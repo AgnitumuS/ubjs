@@ -6,8 +6,21 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+- Support of two new types of conditions in `Repository.where` for boolean attributes:
+
+    ```
+    Repository('my_entity').where('myBoolAttr', 'isTrue')
+    ```
+
+    or  
+
+    ```
+    Repository('my_entity').where('myBoolAttr', 'isFalse')
+    ```
 
 ### Changed
+- `Repository.where` transforms `notIn` into `notEqual` for values consisting of one item, just like
+  it does for `in`=>`equal` transformation
 
 ### Deprecated
 

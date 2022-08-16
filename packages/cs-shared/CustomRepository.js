@@ -275,10 +275,19 @@ UB.Repository('my_entity').attrs('ID')
       } else {
         throw new Error(`Condition ${wrongCondition} is passed to Repository.where but value is null`)
       }
+    } else if (condition === WhereCondition.isTrue || condition === WhereCondition.isFalse) {
+      if (value !== undefined) {
+        throw new Error(`Condition ${condition} does not support values`)
+      }
+      value = condition === WhereCondition.isTrue ? 1 : 0
+      condition = WhereCondition.equal
     }
     if ((condition === 'in') && value && (value.length === 1)) {
-      // console.warn('Condition "in" is passed to CustomRepository.where but value is an array on ONE item -> condition transformed to "equal". Check your logic')
       condition = WhereCondition.equal
+      value = value[0]
+    }
+    if ((condition === WhereCondition.notIn) && value && (value.length === 1)) {
+      condition = WhereCondition.notEqual
       value = value[0]
     }
     if (!UBQL2 && (value !== undefined && (typeof (value) !== 'object' || Array.isArray(value) || _.isDate(value)))) {
@@ -1036,6 +1045,11 @@ CustomRepository.prototype.WhereCondition = {
   notIsNull: 'notIsNull',
   /** @description Alias for `notIsNull` */
   isNotNull: 'notIsNull',
+
+  /** @description Is false, for attributes of type 'Boolean' only */
+  isFalse: 'isFalse',
+  /** @description Is true, for attributes of type 'Boolean' only */
+  isTrue: 'isTrue',
 
   /** @description Alias for `startWith` */
   beginWith: 'startWith',
