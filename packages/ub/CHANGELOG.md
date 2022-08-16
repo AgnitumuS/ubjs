@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+ - `allLocalesEp`: added assignment of the `#captionSingular` hashtag
 
 ## [5.23.12] - 2022-08-16
 ## [5.23.11] - 2022-08-09
