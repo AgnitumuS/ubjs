@@ -5,6 +5,7 @@ require('../../../core/UBService')
 require('../reader/UBArray')
 require('../../../core/UBUtil')
 require('../../../core/UBAppConfig')
+const UB = require('@unitybase/ub-pub')
 /**
  * Proxy
  *
@@ -143,6 +144,39 @@ Ext.define('UB.ux.data.proxy.UBProxy', {
         }
       }
       return ubWLItem
+    },
+
+    /**
+     * Transform operation filters to ubRequest whereList
+     *
+     * @private
+     * @param {Ext.data.Operation} operation
+     * @param {String} entityName
+     * @param {Array} [fnFilters] For filters that use a function
+     * @return {Object}
+     */
+    operationFilter2WhereList: function (operation, entityName, fnFilters) {
+      let start = 100
+      if (!operation.filters) return
+      const L = operation.filters.length
+      if (!L) return
+      const result = {}
+      for (let i = 0; i < L; ++i) {
+        const filterItem = operation.filters[i]
+        if (filterItem.disabled) continue
+        if (fnFilters && filterItem.initialConfig.filterFn && !filterItem.initialConfig.property) {
+          fnFilters.push(filterItem.initialConfig.filterFn)
+          continue
+        }
+        if (!filterItem.property) throw new Error('invalid filter: "filterItem.property" must have a value')
+
+        const filter = UB.ux.data.proxy.UBProxy.ubFiltersItemToUBWhereListItem(
+          filterItem,
+          $App.domainInfo.get(entityName).attr(filterItem.property).dataType
+        )
+        result['x' + (start++)] = filter
+      }
+      return result
     }
   },
   /**
@@ -186,7 +220,7 @@ Ext.define('UB.ux.data.proxy.UBProxy', {
       throw new Error('unsupported operation for UBProxy: ' + operation.action)
     }
     // merge operation filters to whereList
-    operationFilterWhereList = me.operationFilter2WhereList(operation, serverRequest.entity, fnFilters) || {}
+    operationFilterWhereList = UB.ux.data.proxy.UBProxy.operationFilter2WhereList(operation, serverRequest.entity, fnFilters) || {}
     UB.apply(operationFilterWhereList, serverRequest.whereList)
     if (Object.keys(operationFilterWhereList).length) {
       serverRequest.whereList = operationFilterWhereList
@@ -274,38 +308,6 @@ Ext.define('UB.ux.data.proxy.UBProxy', {
     data.records = result
     data.count = result.length
     console.warn('Attention! Filter using the function works without paging')
-  },
-
-  /**
-   * Transform operation filters to ubRequest whereList
-   * @private
-   * @param {Ext.data.Operation} operation
-   * @param {String} entityName
-   * @param {Array} [fnFilters] For filters that use a function
-   * @return {Object}
-   */
-  operationFilter2WhereList: function (operation, entityName, fnFilters) {
-    let start = 100
-    if (!operation.filters) return
-    let L = operation.filters.length
-    if (!L) return
-    let result = {}
-    for (let i = 0; i < L; ++i) {
-      let filterItem = operation.filters[i]
-      if (filterItem.disabled) continue
-      if (fnFilters && filterItem.initialConfig.filterFn && !filterItem.initialConfig.property) {
-        fnFilters.push(filterItem.initialConfig.filterFn)
-        continue
-      }
-      if (!filterItem.property) throw new Error('invalid filter: "filterItem.property" must have a value')
-
-      let filter = UB.ux.data.proxy.UBProxy.ubFiltersItemToUBWhereListItem(
-        filterItem,
-        $App.domainInfo.get(entityName).attr(filterItem.property).dataType
-      )
-      result['x' + (start++)] = filter
-    }
-    return result
   },
 
   /**

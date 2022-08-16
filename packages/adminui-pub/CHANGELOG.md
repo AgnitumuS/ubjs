@@ -12,6 +12,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Deprecated
 
 ### Removed
+ - **BREAKING** EntityGidPanel store is NOT passed as `store` into doCommand, so not accessible from BasePanel.
+  Refreshing of one row in Ext grid after edition now implemented in connection.on('entity:changed')
+  handler (as it done for Vue grids). Can be turned off by set `ubConfig.uiSettings.adminUI.smartExtGridRefresh = false`
+ - **BREAKING** if `smartExtGridRefresh` is enabled (default) `childwasmodified` ExtJS store event **IS NOT FIRED** 
 
 ### Fixed
  - `BasePanel.onAccessRight`: creates a **fieldList** for the `aclRLS.showList` command just like a Vue form

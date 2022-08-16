@@ -1005,12 +1005,76 @@ Ext.define('UB.view.EntityGridPanel', {
       }
     }
     me.entity = $App.domainInfo.get(me.entityName)
-    me.onEntityChangedListener = function () {
-      this.onRefresh()
-    }.bind(me)
-    UB.connection.on(`${me.entityName}:changed`, me.onEntityChangedListener)
     if (!me.entity) {
-      throw new Error('You must specify entity')
+      throw new Error(`Unknown entity "${me.entityName}"`)
+    }
+
+    // subscribe to entity changes and update one row in grid without refreshing all data
+    me.onEntityChangedListener = async function (response) {
+      function transformResponseToTubCachedData (response, whereList = {}) {
+        const fieldsSet = new Set(Object.keys(response.resultData))
+        for (const whereItem of Object.values(whereList)) {
+          if (whereItem.expression) {
+            fieldsSet.add(whereItem.expression.replace(/\[|\]/g, ''))
+          }
+        }
+        return {
+          data: [Object.values(response.resultData)],
+          fields: Array.from(fieldsSet),
+          rowCount: 1
+        }
+      }
+
+      // method below is mostly copy-paste of UTableEntity/store.updateData
+      if (
+        response === undefined ||
+        typeof response.resultData !== 'object' ||
+        Array.isArray(response.resultData)
+      ) {
+        return
+      }
+      const store = me.getStore()
+      const affectedRecord = store.getById(response.resultData.ID)
+      const ubq = Ext.clone(store.ubRequest)
+      if (store.filters) { // add store filters to ubq
+        const filtersWhere = UB.ux.data.proxy.UBProxy.operationFilter2WhereList({ filters: store.filters.items }, ubq.entity)
+        UB.apply(filtersWhere, ubq.whereList)
+        if (Object.keys(filtersWhere).length) {
+          ubq.whereList = filtersWhere
+        } else {
+          delete ubq.whereList
+        }
+      }
+      if (response.method === 'delete') {
+        if (affectedRecord) {
+          store.remove(affectedRecord)
+        }
+      } else if (ubq) { // insertion or modify and grid based on ubRequest
+        const currentRepo = UB.Repository(ubq)
+        // verify inserted row is applicable to current grid conditions
+        const matched = UB.LocalDataStore.doFiltration(
+          transformResponseToTubCachedData(response, ubq.whereList),
+          ubq,
+          true
+        )
+        const currentFiltersMatched = matched.length > 0
+        if (currentFiltersMatched) {
+          if (response.method === 'insert') {
+            const insertedRowData = await currentRepo.selectById(response.resultData.ID)
+            if (insertedRowData) store.add(insertedRowData)
+          } else if (affectedRecord) {
+            const updatedRowData = await currentRepo.selectById(response.resultData.ID)
+            affectedRecord.set(updatedRowData)
+            affectedRecord.commit()
+          }
+        } else if (affectedRecord) { // record in grid, but new data do not match filter conditions - remove
+          store.remove(affectedRecord)
+        }
+      }
+      //this.onRefresh()
+    }
+    if (UB.connection.appConfig.uiSettings.adminUI.smartExtGridRefresh !== false) {
+      UB.connection.on(`${me.entityName}:changed`, me.onEntityChangedListener)
     }
 
     me.isHistory = me.store && me.store.ubRequest && me.store.ubRequest.__mip_recordhistory
@@ -2043,7 +2107,6 @@ Ext.define('UB.view.EntityGridPanel', {
       if (me.detailAttribute && me.parentID) {
         context[me.detailAttribute] = me.parentID
       }
-      let store = me.getStore()
       let wnd = me.up('window')
       let modal = wnd ? wnd.modal : false
       let formParam = me.getFormParam()
@@ -2054,7 +2117,9 @@ Ext.define('UB.view.EntityGridPanel', {
         entity: formParam && formParam.entityName ? formParam.entityName : me.entityName,
         instanceID: formParam && formParam.instanceID ? formParam.instanceID : (eOpts && eOpts.instanceID),
         isModal: !!(parentForm || me.isModal),
-        store: store,
+        // MPV 2022-08-15: do not pass grid store into doCommand for form - this prevents refreshing grid
+        // twice - once by BasePanel.updateStoreRecord and second - by connection.on('entity:changed')
+        store: UB.connection.appConfig.uiSettings.adminUI.smartExtGridRefresh !== false ? undefined : me.getStore(),
         isModalDialog: modal,
         addByCurrent: eOpts && eOpts.addByCurrent,
         __mip_ondate: eOpts && eOpts.__mip_ondate,
@@ -3192,7 +3257,9 @@ Ext.define('UB.view.EntityGridPanel', {
     }
     if (me.pagingBar) me.pagingBar.destroy()
     if (me.menu) me.menu.destroy()
-    UB.connection.removeListener(`${me.entityName}:changed`, me.onEntityChangedListener)
+    if (UB.connection.appConfig.uiSettings.adminUI.smartExtGridRefresh !== false) {
+      UB.connection.removeListener(`${me.entityName}:changed`, me.onEntityChangedListener)
+    }
     me.callParent(arguments)
   },
 

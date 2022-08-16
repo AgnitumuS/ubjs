@@ -3288,14 +3288,15 @@ Ext.define('UB.view.BasePanel', {
   },
 
   updateStoreRecord: function () {
-    var me = this, systemEntityStore
+    var me = this
     if (!this.store || this.store.isDestroyed) {
+      // starting from 2022-08-15 if uiSettings.adminUI.smartExtGridRefresh !== false EntityGridPanel do not pass store into doCommand, so we exit here
       return
     }
     me.updateOrInsertStoreRecord(me.store, me.record)
 
     if (UB.core.UBAppConfig.systemEntities.hasOwnProperty(me.entityName)) {
-      systemEntityStore = UB.core.UBStoreManager.getSystemEntityStore(UB.core.UBAppConfig.systemEntities[me.entityName].name)
+      const systemEntityStore = UB.core.UBStoreManager.getSystemEntityStore(UB.core.UBAppConfig.systemEntities[me.entityName].name)
       if (me.store !== systemEntityStore) {
         me.updateOrInsertStoreRecord(systemEntityStore, me.record)
       }
@@ -3303,7 +3304,7 @@ Ext.define('UB.view.BasePanel', {
   },
 
   /**
-   *
+   * Update one record in EntityGridPanel, from there this form is opened (store here is injected from EntityGridPanel)
    * @param {UB.ux.data.UBStore} store
    * @param {Ext.data.Model} record
    */
