@@ -387,7 +387,7 @@ export default {
       }, '')
 
       if (itemDescriptions) {
-        message = `<ul class="multiple-delete--alert">${message}</ul>`
+        message = `<ul class="multiple-delete--alert">${itemDescriptions}</ul>`
       } else {
         message = this.$ut('recordsDeletedSuccessfully', arr.length)
       }
