@@ -128,6 +128,7 @@
   "successfullySaved": "Successfully saved",
   "formWasRefreshed": "Form was refreshed",
   "recordDeletedSuccessfully": "Record deleted successfully",
+  "recordsDeletedSuccessfully": "Successfully deleted records: {0}",
   "selectedValueWasDeleted": "Selected value was deleted",
   "value is out of date": "value is out of date",
   "recordWasDeleted": "Record was deleted",

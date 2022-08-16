@@ -128,6 +128,7 @@
   "successfullySaved": "Збережено",
   "formWasRefreshed": "Форма була оновлена",
   "recordDeletedSuccessfully": "Запис успішно видалено",
+  "recordsDeletedSuccessfully": "Успішно видалено записів: {0}",
   "selectedValueWasDeleted": "Обраний запис видалено",
   "value is out of date": "Запис не актуальный",
   "recordWasDeleted": "Запис було видалено",

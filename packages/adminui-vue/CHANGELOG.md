@@ -25,6 +25,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+ - `UtableEntity`: `successfully deleted` notification for entities without description attribute shows only 
+   number of deleted items instead of empty list
 
 ## [5.23.10] - 2022-08-09
 ### Added

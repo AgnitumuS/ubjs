@@ -377,14 +377,25 @@ export default {
     },
     deleteMultipleShowSuccessAlert (arr = []) {
       const { getDescription } = this
-      const message = arr.reduce((acum, id) => {
-        acum += `<li>${getDescription(id)}</li>`
+      let message
+      const itemDescriptions = arr.reduce((acum, id) => {
+        const description = getDescription(id)
+        if (description) {
+          acum += `<li>${description}</li>`
+        }
         return acum
       }, '')
+
+      if (itemDescriptions) {
+        message = `<ul class="multiple-delete--alert">${itemDescriptions}</ul>`
+      } else {
+        message = this.$ut('recordsDeletedSuccessfully', arr.length)
+      }
+
       const duration = arr.length > 7 ? arr.length * 1000 : 7 * 1000
       this.$notify.success({
         title: this.$ut('recordDeletedSuccessfully'),
-        message: `<ul class="multiple-delete--alert">${message}</ul>`,
+        message,
         duration,
         dangerouslyUseHTMLString: true
       })
