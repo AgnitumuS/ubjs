@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+- new system setting `org.organization.OKPORequired` to set mandatory of CCEO/OKPO codes (`false` by default). 
+  If `org.organization.OKPORequired` set to false, `OKPOCode` attribute not required in `org_organization` 
+  and `cdn_organization` forms
+- `org_organization` form is rewritten to Vue
 
 ### Changed
 

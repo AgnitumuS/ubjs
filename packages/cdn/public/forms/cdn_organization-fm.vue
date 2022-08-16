@@ -10,7 +10,10 @@
         <el-tab-pane :label="$ut('General')">
           <div class="u-form-max-width">
             <u-grid>
-              <u-auto-field attribute-name="OKPOCode" />
+              <u-auto-field
+                attribute-name="OKPOCode"
+                :required="isOKPORequired"
+              />
               <u-auto-field attribute-name="name" />
               <u-auto-field attribute-name="taxCode" />
               <u-auto-field attribute-name="fullName" />
@@ -47,16 +50,37 @@
 </template>
 
 <script>
+const { Repository } = require('@unitybase/ub-pub')
 const { Form, mapInstanceFields } = require('@unitybase/adminui-vue')
 const { mapState, mapGetters } = require('vuex')
+const { requiredIf } = require('vuelidate/lib/validators/index')
 
 module.exports.mount = cfg => {
   Form({
     ...cfg,
     title: '{name}'
   })
-    .processing()
-    .validation()
+    .processing({
+      async inited ({ commit }) {
+        const OKPOSettings = await Repository('ubs_settings')
+          .attrs('settingValue', 'defaultValue')
+          .where('settingKey', '=', 'org.organization.OKPORequired')
+          .selectSingle()
+
+        commit('SET', { key: 'OKPORequired', value: OKPOSettings ? OKPOSettings.settingValue === 'true' : false })
+      }
+    })
+    .validation({
+      validations () {
+        return {
+          OKPOCode: {
+            required: requiredIf(() => {
+              return this.$store.state.OKPORequired
+            })
+          }
+        }
+      }
+    })
     .mount()
 }
 
@@ -67,7 +91,11 @@ module.exports.default = {
   computed: {
     ...mapInstanceFields(['ID', 'name', 'fullName']),
     ...mapState(['isNew']),
-    ...mapGetters(['loading', 'canSave'])
+    ...mapGetters(['loading', 'canSave']),
+
+    isOKPORequired () {
+      return this.$store.state.OKPORequired
+    }
   },
 
   watch: {

@@ -1,6 +1,6 @@
 {
   "caption": "Daxili təşkilatlar",
-  "captionSingular": "Xarici təşkilat",
+  "captionSingular": "Daxili təşkilat",
   "description": "Daxili təşkialtlar üzrə sorğu kitabçası",
   "documentation": "Bu sorğu kitabçasında təşkilatların siyahısı göstərilmişdir. UNİTY üzrə hər təşkilat org_unit-də toplanır",
   "attributes": [

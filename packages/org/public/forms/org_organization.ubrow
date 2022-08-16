@@ -1,9 +1,8 @@
 {
  "description": "orgOrganization",
  "caption": null,
- "formType": "auto",
- "formDef": "org_organization-fm.def",
- "formCode": "org_organization-fm.js",
+ "formType": "vue",
+ "formCode": "org_organization-fm.vue",
  "entity": "org_organization",
  "isDefault": false
 }
