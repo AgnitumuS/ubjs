@@ -135,12 +135,17 @@ function errorReporter ({ errMsg, errCode, entityCode, detail }) {
     const obj = {
       login: userLogin,
       uitag: activeTabID,
-      message: msgToDisplay,
-      details: detail
+      details: detail,
+      message: msgToDisplay
     }
     const bodyQuery = `body=${encodeURIComponent(JSON.stringify(obj, null, ' '))}`
-    const result = isQuery ? baseUrl + `&${bodyQuery}` : baseUrl + `?${bodyQuery}`
-    return 'mailto:' + result.trim()
+    let result = isQuery ? baseUrl + `&${bodyQuery}` : baseUrl + `?${bodyQuery}`
+    result = 'mailto:' + result.trim()
+    const maxSizeResult = 2035 // problem with max size of message in Win plathorm
+    if (window?.navigator.platform.includes('Win') && result.length > maxSizeResult) {
+      result = result.substring(0, maxSizeResult) + '...'
+    }
+    return result
   }
   // all styles placed in ./template.vue
   const devBtnID = 'ub-notification__error__dev-btn'
