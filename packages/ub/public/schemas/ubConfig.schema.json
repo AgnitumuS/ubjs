@@ -1212,6 +1212,11 @@
               "type": "boolean",
               "description": "Replace Ext.GridEntityPanel by vue UTableEntity"
             },
+            "smartExtGridRefresh": {
+              "type": "boolean",
+              "description": "If true (default) - ExtJS EntityGridPanel subscribes to connection.on('entity:changed') event and refresh one row in grid for modified records. If false - EntityGridPanel store is passed to ExtJS based form and form modify row",
+              "default": true
+            },
             "forceModalsForEditForms": {
               "type": "boolean",
               "description": "If true actions `EditItem` and `AddNewItem` force form to be opened as modal. If false (default) - new and edit forms are opened in new tab",
