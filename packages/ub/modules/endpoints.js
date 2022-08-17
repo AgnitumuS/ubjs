@@ -566,6 +566,9 @@ function allLocalesEp (req, resp) {
     const resources = {}
 
     const addDescriptionAndDocumentation = (resourceKey, meta) => {
+      if (meta.captionSingular) {
+        resources[resourceKey + '#captionSingular'] = meta.captionSingular
+      }
       if (meta.description) {
         resources[resourceKey + '#description'] = meta.description
       }
