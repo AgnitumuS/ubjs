@@ -1037,7 +1037,7 @@ Ext.define('UB.view.EntityGridPanel', {
       const affectedRecord = store.getById(response.resultData.ID)
       const ubq = Ext.clone(store.ubRequest)
       if (store.filters) { // add store filters to ubq
-        const filtersWhere = UB.ux.data.proxy.UBProxy.operationFilter2WhereList({ filters: store.filters.items }, ubq.entity)
+        const filtersWhere = UB.ux.data.proxy.UBProxy.operationFilter2WhereList({ filters: store.filters.items }, ubq.entity) || {}
         UB.apply(filtersWhere, ubq.whereList)
         if (Object.keys(filtersWhere).length) {
           ubq.whereList = filtersWhere

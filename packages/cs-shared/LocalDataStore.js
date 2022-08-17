@@ -88,7 +88,7 @@ module.exports.byID = function byID (cachedData, IDValue) {
  * @param {TubCachedData} cachedData Data, retrieved from cache
  * @param {UBQL} ubql
  * @param {boolean} [skipSubQueriesAndCustom=false] Skip `subquery` and `custom` conditions instead of throw. Can be used
- *   to estimate record match some where conditions
+ *   to estimate record match some of where conditions
  * @returns {Array.<Array>}
  */
 module.exports.doFiltration = function doFiltration (cachedData, ubql, skipSubQueriesAndCustom) {
@@ -165,7 +165,7 @@ module.exports.doSorting = function doSorting (filteredArray, cachedData, ubRequ
  * @param {UBQL} ubql
  * @param {Array.<String>} fieldList
  * @param {boolean} [skipSubQueriesAndCustom=false] Skip `subquery` and `custom` conditions instead of throw. Can be used
- *   to estimate record match some where conditions
+ *   to estimate record match some of where conditions
  * @returns {Array}
  */
 function whereListToFunctions (ubql, fieldList, skipSubQueriesAndCustom) {
@@ -312,8 +312,9 @@ function whereListToFunctions (ubql, fieldList, skipSubQueriesAndCustom) {
   if (reqID) {
     transformClause({ expression: '[ID]', condition: 'equal', values: { ID: reqID } })
   }
+  const joinAs = new Set(ubql.joinAs || [])
   for (const cName in whereList) {
-    if (Object.prototype.hasOwnProperty.call(whereList, cName)) {
+    if (Object.prototype.hasOwnProperty.call(whereList, cName) && !joinAs.has(cName)) {
       transformClause(whereList[cName])
     }
   }
