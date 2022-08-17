@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+- `UDialogs` - fixed logout when send error by email
 
 ## [5.23.11] - 2022-08-16
 ### Added
