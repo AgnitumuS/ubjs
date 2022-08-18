@@ -1,2 +1,0 @@
-settingKey;type;defaultValue;settingValue;name;description
-org.organization.OKPORequired;boolean;"false";"false";CCEO Mandatory;Sets the mandatory of CCEO code for organizations

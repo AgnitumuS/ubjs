@@ -1,0 +1,9 @@
+$context:
+  type: settings
+
+org.organization.OKPORequired:
+  name: CCEO Mandatory
+  description: Sets the mandatory of CCEO code for organizations
+  type: boolean
+  defaultValue: 'false'
+  settingValue: 'false'

@@ -86,7 +86,7 @@ function checkCode (ctx) {
   const execParams = mParams.execParams
 
   if (!execParams.OKPOCode) {
-    const isOKPORequired = ubs_settings.loadKey('org.organization.requiredOKPO', false)
+    const isOKPORequired = ubs_settings.loadKey('org.organization.OKPORequired', false)
     if (isOKPORequired === false) {
       return true
     }
