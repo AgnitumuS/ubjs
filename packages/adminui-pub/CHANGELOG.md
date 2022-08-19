@@ -14,6 +14,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+
+## [5.24.1] - 2022-08-19
+### Fixed
  - fixed EntityGridPanel smart refresh for grids without filters
 
 ## [5.24.0] - 2022-08-16

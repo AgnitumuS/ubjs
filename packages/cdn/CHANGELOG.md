@@ -8,14 +8,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
-- `org_organization` - attribute `OKPOCode` set as not unique (`isUnique`: false) to prevent errors with duplicated values 
-   in environments with non-required CCEO codes
 
 ### Deprecated
 
 ### Removed
 
 ### Fixed
+
+## [5.23.14] - 2022-08-19
+### Changed
+- `org_organization` - attribute `OKPOCode` set as not unique (`isUnique`: false) to prevent errors with duplicated values 
+   in environments with non-required CCEO codes
 
 ## [5.23.13] - 2022-08-16
 ### Fixed

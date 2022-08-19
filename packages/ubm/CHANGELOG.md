@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.23.14] - 2022-08-19
 ## [5.23.13] - 2022-08-16
 ### Added
 - added localization for all not translated fields for `ubm_desktop-uiSettings-fm.vue`

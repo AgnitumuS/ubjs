@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.23.15] - 2022-08-19
 ## [5.23.14] - 2022-08-16
 ### Added
 - new system setting `org.organization.OKPORequired` to set mandatory of CCEO/OKPO codes (`false` by default). 
