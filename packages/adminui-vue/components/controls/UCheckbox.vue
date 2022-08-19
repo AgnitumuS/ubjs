@@ -63,6 +63,9 @@ export default {
     }
   },
   watch: {
+    value (newValue) {
+      this.currentValue = newValue
+    },
     currentValue (e) {
       /**
        * Triggers when the user change state of checkbox

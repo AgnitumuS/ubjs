@@ -14,7 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
-
+- `URadio` and `UCheckbox` - added the ability to programmatically change the state 
 ## [5.23.12] - 2022-08-19
 ### Fixed
 - `UDialogs` - fixed logout when send error by email

@@ -94,6 +94,9 @@ export default {
     }
   },
   watch: {
+    value (newValue) {
+      this.currentValue = newValue
+    },
     currentValue (e) {
       /**
        * Triggers when user change selected item
