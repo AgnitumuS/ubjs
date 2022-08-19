@@ -22,8 +22,7 @@
       "size": 16,
       "caption": "CCEO",
       "description": "Common classifier of enterprises and organizations (CCEO)",
-      "allowNull": true,
-      "isUnique": true
+      "allowNull": true
     },
     {
       "name": "taxCode",
