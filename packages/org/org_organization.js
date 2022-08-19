@@ -15,7 +15,7 @@ me.on('insert:before', checkOKPOCode)
  * @returns {boolean}
  */
 function checkOKPOCode (ctx) {
-  const isOKPORequired = ubs_settings.loadKey('org.organization.requiredOKPO', false)
+  const isOKPORequired = ubs_settings.loadKey('org.organization.OKPORequired', false)
   if (isOKPORequired === false) {
     return true
   }
