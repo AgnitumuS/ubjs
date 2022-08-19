@@ -14,6 +14,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+
+## [5.23.13] - 2022-08-19
+### Fixed
 - `URadio` and `UCheckbox` - added the ability to programmatically change the state 
 ## [5.23.12] - 2022-08-19
 ### Fixed
