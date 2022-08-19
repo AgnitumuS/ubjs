@@ -296,12 +296,12 @@ YOUR_EXTERNAL_URL should be replaced by server external url.
 
 # Tuning OS for high Load
 ## Linux
+Under sudo:
 ```shell script
 touch /usr/lib/sysctl.d/40-ub-tcp-hiload.conf
-```
-```shell script
+
 echo "
-# increase the ephermal port range
+# increase the ephemeral port range
 net.ipv4.ip_local_port_range = 15000 65535
 # decrease fin timeout 
 net.ipv4.tcp_fin_timeout = 30
@@ -310,11 +310,21 @@ net.core.somaxconn=1024
 # raise the nofile/max open files/file descriptors/file handles limit
 fs.file-max = 30000
 " > /usr/lib/sysctl.d/40-ub-tcp-hiload.conf
+
+touch /etc/security/limits.d/40-ub-tcp-hiload.conf
+
+echo "
+# increase file limits
+* hard nofile 1048576
+* soft nofile 102400
+" > /etc/security/limits.d/40-ub-tcp-hiload.conf
+
 ```
 
 to apply settings without a reboot:  
 ```shell script
 sysctl -p /usr/lib/sysctl.d/40-ub-tcp-hiload.conf
+ulimit -n 102400
 ``` 
 
 This allows to create ~1500 connections per second instead of default 470 and total
