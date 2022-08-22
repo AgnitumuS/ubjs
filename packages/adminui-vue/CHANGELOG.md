@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Changed
  - huge refactoring of `UCheckbox` and `URadio` internals
+ - all SVG images for `ub-icons` font are reviewed and simplified
 
 ### Deprecated
 

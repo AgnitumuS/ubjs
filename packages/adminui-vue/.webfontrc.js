@@ -12,6 +12,7 @@ module.exports = {
     icon.name = `icon-${icon.name}`
     return icon
   },
-  fontHeight: 1001,
-  descent: 100
+  normalize: true,
+  preserveAspectRatio: true,
+  fontHeight: 1001
 }
