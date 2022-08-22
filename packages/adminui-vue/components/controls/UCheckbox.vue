@@ -1,18 +1,17 @@
 <template>
   <span class="u-checkbox">
     <input
-      :id="checkboxName"
+      :id="_uid"
       :checked="value"
       :class="['u-checkbox__input', 'u-checkbox__input--'+kind]"
       type="checkbox"
       v-bind="$attrs"
-      :name="checkboxName"
       @input="$emit('input', $event.target.checked)"
     >
     <label
       class="u-checkbox__label"
       :class="{ 'u-checkbox__label--left': labelPosition === 'left' }"
-      :for="checkboxName"
+      :for="_uid"
     >{{ $ut(label) }}</label>
   </span>
 </template>
@@ -24,13 +23,6 @@
 export default {
   name: 'UCheckbox',
   props: {
-    /**
-     * Name for checkbox. Default  - this._uid
-     */
-    name: {
-      type: String,
-      default: ''
-    },
     /**
      * Text for checkbox label. Localized using i18n
      */
@@ -61,11 +53,6 @@ export default {
       validator (value) {
         return ['check', 'switch'].includes(value)
       }
-    }
-  },
-  data () {
-    return {
-      checkboxName: this.name ? this.name : this._uid
     }
   }
 }

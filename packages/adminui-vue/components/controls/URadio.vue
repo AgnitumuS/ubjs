@@ -58,11 +58,14 @@ export default {
       default: () => []
     },
     /**
-     * Group name. MUST be defined to use more than one group of radio on page
+     * Group name. MUST be unique for correct works of inner `<input type="radio">`. Default is `_uid` what works well in most case, but developer can set human-readable name if form submission is used
      */
     name: {
       type: String,
-      default: 'uradio'
+      required: false,
+      default () {
+        return this._uid.toString()
+      }
     },
     /**
      * Selected item ID
@@ -80,11 +83,6 @@ export default {
       validator (value) {
         return ['left', ''].includes(value)
       }
-    }
-  },
-  data () {
-    return {
-      radioName: this.name ? this.name : this._uid
     }
   }
 }
