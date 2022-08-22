@@ -43,7 +43,7 @@ module.exports.mount = function ({ title, tabId, entity, instanceID, formCode, r
 <template>
   <el-scrollbar style="height: 100%;">
     <u-code-mirror v-model="txtCode" value-is-json></u-code-mirror>
-    <fieldset>
+    <fieldset style="line-height: 2em;">
       <legend>UCheckbox</legend>
       <u-checkbox v-model="boolData" label="bool data" />
       <u-checkbox v-model="boolData" label="Bool data as switch" kind="switch"/>
