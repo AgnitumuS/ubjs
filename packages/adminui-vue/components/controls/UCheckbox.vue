@@ -1,18 +1,23 @@
 <template>
   <span class="u-checkbox">
     <input
-      :id="checkboxName"
-      v-model="currentValue"
+      :id="name"
       class="u-checkbox--input"
       type="checkbox"
       v-bind="$attrs"
-      :name="checkboxName"
+      :name="name"
+      :checked="value"
+      @change="$emit('change', $event.target.checked)"
     >
     <label
       class="u-checkbox__label"
-      :class="{ 'u-checkbox__label--left': labelPosition === 'left' }"
-      :for="checkboxName"
-    >{{ label }}</label>
+      :class="{
+        'u-checkbox__label--left': labelPosition === 'left'
+      }"
+      :for="name"
+    >
+      {{ label }}
+    </label>
   </span>
 </template>
 
@@ -22,29 +27,38 @@
  */
 export default {
   name: 'UCheckbox',
-  // for v-model
+
   model: {
     event: 'change'
   },
+
   props: {
     /**
      * Name for checkbox. Default  - this._uid
      */
     name: {
       type: String,
-      default: ''
+      required: false,
+      default () {
+        return this._uid.toString()
+      }
     },
+
     /**
      * Text for checkbox label
      */
     label: {
       type: String,
+      required: false,
       default: ''
     },
+
     value: {
       type: Boolean,
+      required: false,
       default: false
     },
+
     /**
      * Label position. Default  - right
      */
@@ -54,25 +68,6 @@ export default {
       validator (value) {
         return ['left', ''].includes(value)
       }
-    }
-  },
-  data () {
-    return {
-      currentValue: this.value,
-      checkboxName: this.name ? this.name : this._uid
-    }
-  },
-  watch: {
-    value (newValue) {
-      this.currentValue = newValue
-    },
-    currentValue (e) {
-      /**
-       * Triggers when the user change state of checkbox
-       *
-       * @param {boolean}
-       */
-      this.$emit('change', e)
     }
   }
 }
