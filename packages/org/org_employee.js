@@ -13,7 +13,7 @@ me.on('update:after', updateCaptionAndLogToAudit)
 me.on('insert:after', ubaAuditLinkUser)
 me.on('delete:after', ubaAuditLinkUserDelete)
 
-global.uba_user.on('update:after', updateEmployeeFullNameAndTitle)
+global.uba_user.on('update:after', updateEmployeeAttributes)
 
 /**
  * @private
@@ -22,7 +22,7 @@ global.uba_user.on('update:after', updateEmployeeFullNameAndTitle)
 function updateCaptionAndLogToAudit (ctx) {
   updateStaffUnitCaption(ctx)
   ubaAuditLinkUserModify(ctx)
-  updateUserFullNameAndTitle(ctx, true)
+  updateUserAttributes(ctx, true)
 }
 
 /**
@@ -31,67 +31,111 @@ function updateCaptionAndLogToAudit (ctx) {
  * @param {ubMethodParams} ctx
  * @param {boolean} [ctx.mParams.__syncEmployee]
  */
-function updateEmployeeFullNameAndTitle (ctx) {
+function updateEmployeeAttributes (ctx) {
   if (ctx.mParams.__syncEmployee === false) {
     // Ability to explicitly skip the synchronization of employee
     return
   }
 
-  let { fullName, firstName, lastName, title } = ctx.mParams.execParams
-  if (fullName === undefined && firstName === undefined && lastName === undefined && title === undefined && !ctx.mParams.__syncEmployee) {
+  let { fullName, firstName, middleName, lastName, title, avatar } = ctx.mParams.execParams
+  if (
+    fullName === undefined &&
+    firstName === undefined &&
+    lastName === undefined &&
+    middleName === undefined &&
+    title === undefined &&
+    avatar === undefined &&
+    !ctx.mParams.__syncEmployee
+  ) {
     // No name-related attributes updated, do not touch employee in such a case
     return
   }
 
-  // If any of "fullName", "firstName", "lastName" or "title" attributes not provided in execParams, get previous values from
-  // "selectBeforeUpdate" dataset
+  // If any of "fullName", "firstName", "middleName", "lastName", "avatar" or "title"
+  // attributes not provided in execParams, get previous values from "selectBeforeUpdate" dataset
   const oldCurrentDataName = ctx.dataStore.currentDataName
   ctx.dataStore.currentDataName = 'selectBeforeUpdate'
   try {
     if (fullName === undefined) fullName = ctx.dataStore.get('fullName')
     if (firstName === undefined) firstName = ctx.dataStore.get('firstName')
     if (lastName === undefined) lastName = ctx.dataStore.get('lastName')
+    if (middleName === undefined) middleName = ctx.dataStore.get('middleName')
     if (title === undefined) title = ctx.dataStore.get('title')
+    if (avatar === undefined) avatar = ctx.dataStore.get('avatar')
   } finally {
     ctx.dataStore.currentDataName = oldCurrentDataName
   }
 
   const employee = Repository('org_employee')
-    .attrs('ID', 'firstName', 'lastName', 'fullFIO', 'apply')
+    .attrs('ID', 'firstName', 'middleName', 'lastName', 'fullFIO', 'apply', 'avatar')
     .where('userID', '=', ctx.mParams.execParams.ID)
     .selectSingle({
       fullFIO: 'fullName',
       apply: 'title'
     })
+
   if (!employee) {
     // No employee to sync
     return
   }
 
+  let skipAvatarUpdate
+  if (avatar && employee.avatar) {
+    if (JSON.parse(avatar).md5 === JSON.parse(employee.avatar).md5) {
+      // avatars are identical, do not update employee avatar
+      skipAvatarUpdate = true
+    }
+  }
+
   if (firstName === employee.firstName &&
     lastName === employee.lastName &&
+    middleName === employee.middleName &&
     fullName === employee.fullName &&
-    title === employee.title) {
+    title === employee.title && skipAvatarUpdate
+  ) {
     // No changes to employee name, do not touch it
     return
   }
 
-  console.log('Sync employee name attributes with user')
-  DataStore('org_employee').run('update', {
-    execParams: {
+  let tempAvatar
+  if (avatar) {
+    const fileExtension = JSON.parse(avatar).origName.split('.').pop()
+
+    const avatarData = App.blobStores.getContent({
+      entity: 'uba_user',
+      attribute: 'avatar',
+      ID: ctx.mParams.execParams.ID
+    })
+
+    tempAvatar = App.blobStores.putContent({
+      entity: 'org_employee',
+      attribute: 'avatar',
       ID: employee.ID,
-      firstName,
-      lastName,
-      apply: title,
-      fullFIO: fullName
-    },
+      fileName: `employee-avatar-${employee.ID}.${fileExtension}`
+    }, avatarData)
+  }
+
+  console.log('Sync employee attributes with user')
+  const execParams = {
+    ID: employee.ID,
+    firstName,
+    lastName,
+    middleName,
+    apply: title,
+    fullFIO: fullName
+  }
+  if (tempAvatar) {
+    execParams.avatar = JSON.stringify(tempAvatar)
+  }
+  DataStore('org_employee').run('update', {
+    execParams,
     __skipOptimisticLock: true,
     __syncUser: false
   })
 }
 
 /**
- * Update uba_user.fullName for all users of current employee
+ * Update uba_user attributes for all users of current employee
  * @private
  * @param {ubMethodParams} ctx
  * @param {boolean} [ctx.mParams.__syncUser]
@@ -99,20 +143,29 @@ function updateEmployeeFullNameAndTitle (ctx) {
  *   Allow get properties missing in execParams from 'selectBeforeUpdate'
  *   data store.  Pass "true" for update method and "false" for insert method.
  */
-function updateUserFullNameAndTitle (ctx, allowSelectBeforeUpdate) {
+function updateUserAttributes (ctx, allowSelectBeforeUpdate) {
   if (ctx.mParams.__syncUser === false) {
     // Ability to explicitly skip the synchronization of user
     return
   }
 
-  let { fullFIO, firstName, lastName, userID, apply } = ctx.mParams.execParams
-  if (fullFIO === undefined && firstName === undefined && lastName === undefined && apply === undefined && !ctx.mParams.__syncUser) {
-    // No name-related attributes updated, do not touch user in such a case
+  let { ID, fullFIO, firstName, middleName, lastName, userID, apply, avatar } = ctx.mParams.execParams
+
+  if (
+    fullFIO === undefined &&
+    firstName === undefined &&
+    lastName === undefined &&
+    middleName === undefined &&
+    apply === undefined &&
+    avatar === undefined &&
+    !ctx.mParams.__syncUser
+  ) {
+    // No target attributes updated, do not touch user in such a case
     return
   }
 
   if (allowSelectBeforeUpdate) {
-    // If any of "userID", "apply", "fullFIO", "firstName" or "lastName" attributes not provided in execParams,
+    // If any of "userID", "apply", "avatar", "fullFIO", "firstName" or "lastName" attributes not provided in execParams,
     // get previous values from "selectBeforeUpdate" dataset
     const oldCurrentDataName = ctx.dataStore.currentDataName
     ctx.dataStore.currentDataName = 'selectBeforeUpdate'
@@ -120,6 +173,7 @@ function updateUserFullNameAndTitle (ctx, allowSelectBeforeUpdate) {
       if (userID === undefined) userID = ctx.dataStore.get('userID')
       if (fullFIO === undefined) fullFIO = ctx.dataStore.get('fullFIO')
       if (firstName === undefined) firstName = ctx.dataStore.get('firstName')
+      if (middleName === undefined) middleName = ctx.dataStore.get('middleName')
       if (lastName === undefined) lastName = ctx.dataStore.get('lastName')
       if (apply === undefined) apply = ctx.dataStore.get('apply')
     } finally {
@@ -127,21 +181,44 @@ function updateUserFullNameAndTitle (ctx, allowSelectBeforeUpdate) {
     }
   }
 
+  let tempAvatar
+  if (avatar) {
+    const fileExtension = JSON.parse(avatar).origName.split('.').pop()
+
+    const avatarData = App.blobStores.getContent({
+      entity: 'org_employee',
+      attribute: 'avatar',
+      ID
+    })
+
+    tempAvatar = App.blobStores.putContent({
+      entity: 'uba_user',
+      attribute: 'avatar',
+      ID: userID,
+      fileName: `user-avatar-${userID}.${fileExtension}`
+    }, avatarData)
+  }
+
   if (!userID) { // can be undefined or null
     // No userID, this possible if staff unit is not assigned to uba_user
     return
   }
 
-  console.log('Sync user name attributes with employee')
+  console.log('Sync user attributes with employee')
   const userStore = DataStore('uba_user')
+  const execParams = {
+    ID: userID,
+    fullName: fullFIO,
+    title: apply,
+    firstName,
+    middleName,
+    lastName
+  }
+  if (tempAvatar) {
+    execParams.avatar = JSON.stringify(tempAvatar)
+  }
   userStore.run('update', {
-    execParams: {
-      ID: userID,
-      fullName: fullFIO,
-      title: apply,
-      firstName,
-      lastName
-    },
+    execParams,
     __skipOptimisticLock: true,
     __syncEmployee: false
   })
@@ -212,7 +289,7 @@ function ubaAuditLinkUser (ctx) {
       toValue: JSON.stringify(execParams)
     }
   })
-  updateUserFullNameAndTitle(ctx, false)
+  updateUserAttributes(ctx, false)
 }
 
 /**
