@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
+ - all SVG images for `ub-icons` font are reviewed and simplified
 
 ### Deprecated
 
