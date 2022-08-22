@@ -14,7 +14,15 @@ module.exports.default = {
         oldPwd: [
           { required: true, message: 'Please input Activity name', trigger: 'blur' }
         ]
-      }
+      },
+      boolData: false,
+      boolData2: true,
+      radioChoice: 'two',
+      radioChoice2: 1,
+      radioItems: [
+        { id: 1, label: 'first label' },
+        { id: 'two', label: 'second label' }
+      ]
     }
   },
   methods: {
@@ -35,6 +43,28 @@ module.exports.mount = function ({ title, tabId, entity, instanceID, formCode, r
 <template>
   <el-scrollbar style="height: 100%;">
     <u-code-mirror v-model="txtCode" value-is-json></u-code-mirror>
+    <fieldset>
+      <legend>UCheckbox</legend>
+      <u-checkbox v-model="boolData" label="bool data" />
+      <u-checkbox v-model="boolData" label="Bool data as switch" kind="switch"/>
+      <u-checkbox v-model="boolData2" label="Bool data2 left label" label-position="left" kind="switch"/>
+      <u-checkbox v-model="boolData2" label="Bool data2" kind="switch"/>
+      <u-checkbox v-model="boolData" disabled label="bool data disabled"/>
+      <u-checkbox v-model="boolData" disabled label="bool data switch disabled" kind="switch"/>
+      <u-checkbox v-model="boolData" disabled label=""/>
+      <u-form-row label="bool" label-position="top">
+        <u-checkbox v-model="boolData" />
+      </u-form-row>
+      <span> Value is {{ boolData }} value type: {{ typeof boolData }}</span>
+    </fieldset>
+    <fieldset>
+      <legend>URadio</legend>
+      <u-radio v-model="radioChoice" :items="radioItems" />
+      <u-radio v-model="radioChoice2" :items="radioItems" />
+      <u-radio v-model="radioChoice" disabled :items="radioItems" />
+      <span> Choices is {{ radioChoice }} and {{ radioChoice2 }}, choice type: {{ typeof radioChoice }}</span>
+    </fieldset>
+
     <tst-form form-size=""></tst-form>
     <hr/>
     <tst-form form-size="mini"></tst-form>

@@ -1,18 +1,18 @@
 <template>
   <span class="u-checkbox">
     <input
-      :id="checkboxName"
-      v-model="currentValue"
-      class="u-checkbox--input"
+      :id="_uid"
+      :checked="value"
+      :class="['u-checkbox__input', 'u-checkbox__input--'+kind]"
       type="checkbox"
       v-bind="$attrs"
-      :name="checkboxName"
+      @input="$emit('input', $event.target.checked)"
     >
     <label
       class="u-checkbox__label"
       :class="{ 'u-checkbox__label--left': labelPosition === 'left' }"
-      :for="checkboxName"
-    >{{ label }}</label>
+      :for="_uid"
+    >{{ $ut(label) }}</label>
   </span>
 </template>
 
@@ -22,20 +22,9 @@
  */
 export default {
   name: 'UCheckbox',
-  // for v-model
-  model: {
-    event: 'change'
-  },
   props: {
     /**
-     * Name for checkbox. Default  - this._uid
-     */
-    name: {
-      type: String,
-      default: ''
-    },
-    /**
-     * Text for checkbox label
+     * Text for checkbox label. Localized using i18n
      */
     label: {
       type: String,
@@ -54,114 +43,100 @@ export default {
       validator (value) {
         return ['left', ''].includes(value)
       }
-    }
-  },
-  data () {
-    return {
-      currentValue: this.value,
-      checkboxName: this.name ? this.name : this._uid
-    }
-  },
-  watch: {
-    value (newValue) {
-      this.currentValue = newValue
     },
-    currentValue (e) {
-      /**
-       * Triggers when the user change state of checkbox
-       *
-       * @param {boolean}
-       */
-      this.$emit('change', e)
+    /**
+     * View style: either `check` or `switch`
+     */
+    kind: {
+      type: String,
+      default: 'check',
+      validator (value) {
+        return ['check', 'switch'].includes(value)
+      }
     }
   }
 }
 </script>
 
 <style>
-.u-checkbox {
-  display: block;
-  width: min-content;
-}
 /* https://itchief.ru/html-and-css/styling-checkbox-and-radio */
 /* for element input with type="checkbox" */
-.u-checkbox--input {
+.u-checkbox__input {
   position: absolute;
   z-index: -1;
   opacity: 0;
 }
 
-/* for element label, relative with .u-checkbox--input */
-.u-checkbox--input + .u-checkbox__label {
+/* for element label, relative with .u-checkbox__input */
+.u-checkbox__label {
   display: flex;
   cursor: pointer;
   align-items: center;
   user-select: none;
 }
-.u-checkbox--input + .u-checkbox__label.u-checkbox__label--left {
+.u-checkbox__label.u-checkbox__label--left {
   flex-direction: row-reverse;
 }
-.u-checkbox--input + .u-checkbox__label.u-checkbox__label--left::before {
+.u-checkbox__label.u-checkbox__label--left::before {
   margin-left: var(--padding);
   margin-right: 0;
 }
 
-.u-checkbox--input + .u-checkbox__label::before {
+.u-checkbox__label::before {
   content: '';
   display: inline-block;
   width: var(--u-checkbox-dim);
   height: var(--u-checkbox-dim);
   flex-shrink: 0;
   flex-grow: 0;
-  border: 1px solid #adb5bd;
+  border: 1px solid hsl(var(--hs-border), var(--l-input-border-default));
   border-radius: var(--border-radius);
   margin-right: var(--padding);
-  background-repeat: no-repeat;
-  background-position: center center;
-  background-size: 90% 60%;
 }
 
-/* styles for hover */
-.u-checkbox--input:not(:disabled):not(:checked)
-  + .u-checkbox__label:hover::before {
-  border-color: #b3d7ff;
-}
-.u-checkbox--input:disabled + .u-checkbox__label {
+.u-checkbox__input:disabled + .u-checkbox__label {
   cursor: not-allowed;
   color: hsl(var(--hs-text), var(--l-text-disabled));
 }
 
-/* styles for active checkbox (when push to him) */
-.u-checkbox--input:not(:disabled):active + .u-checkbox__label::before {
-  background-color: #b3d7ff;
-  border-color: #b3d7ff;
-}
-.u-checkbox--input:disabled:not(:checked) + .u-checkbox__label::before {
-  background-color: hsl(var(--hs-control), var(--l-state-disabled));
-  border-color: hsl(var(--hs-control), var(--l-state-disabled));
+/* focused */
+.u-checkbox__input:focus + .u-checkbox__label::before {
+  outline: 2px solid hsl(var(--hs-primary), var(--l-layout-border-default));
 }
 
-/* styles for checkbox, in the focus */
-.u-checkbox--input:focus + .u-checkbox__label::before {
-  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
-}
-
-/* styles for checkbox, in focus and not checked */
-.u-checkbox--input:focus:not(:checked) + .u-checkbox__label::before {
-  border-color: #80bdff;
-}
-
-/* styles for checkbox, when checked */
-.u-checkbox--input:checked + .u-checkbox__label::before {
+/* checked */
+.u-checkbox__input:checked + .u-checkbox__label::before {
   border-color: hsl(var(--hs-primary), var(--l-state-default));
   background-color: hsl(var(--hs-primary), var(--l-state-default));
-  background-image: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIiIGhlaWdodD0iOCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBkPSJNMy45NjYgNi40ODQgMS43NDIgNC4yNThhLjYyNS42MjUgMCAwIDAtLjg5IDAgLjYyNi42MjYgMCAwIDAgMCAuODlsMi42NjMgMi42NjZhLjYzMi42MzIgMCAwIDAgLjg5NiAwbDYuNzM2LTYuNzM3YS42MjYuNjI2IDAgMCAwIDAtLjg5MS42MjQuNjI0IDAgMCAwLS44OSAwbC02LjI5IDYuMjk4eiIgZmlsbD0iI2ZmZiIvPjwvc3ZnPg==');
-  /* background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8'%3e%3cpath fill='%23fff' d='M6.564.75l-3.59 3.612-1.538-1.55L0 4.26 2.974 7.25 8 2.193z'/%3e%3c/svg%3e"); */
+  color: white;
+  font-family: ub-icons;
+  font-size: 17px;
+  text-align: center;
+  content: "\f033"; /* u-icon-checked */
+}
+
+/* kind="switch" */
+.u-checkbox__input--switch + .u-checkbox__label::before {
+  color: white;
+  width: 40px;
+  background-color: hsl(var(--hs-control ), var(--l-state-hover));
+  border-radius: 10px;
+  background-repeat: no-repeat;
+  background-position: left;
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3e%3ccircle cx='10' cy='10' r='9' fill='%23fff'/%3e%3c/svg%3e");
+  transition: border-color .3s,background-color .3s,background-position .3s;
+  content: "";
+}
+
+.u-checkbox__input--switch:checked + .u-checkbox__label::before {
+  background-position: right;
+  content: "";
 }
 
 /* styles for checkbox, when disabled */
-.u-checkbox--input:disabled + .u-checkbox__label::before {
+.u-checkbox__input:disabled + .u-checkbox__label::before {
   background-color: hsl(var(--hs-primary), var(--l-state-disabled));
   border-color: hsl(var(--hs-primary), var(--l-state-disabled));
+  cursor: not-allowed;
 }
 </style>

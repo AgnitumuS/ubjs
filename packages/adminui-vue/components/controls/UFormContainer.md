@@ -24,7 +24,7 @@ label position of "Short" sets to `top`.
     </u-form-row>
 
     <u-form-row label="Short" label-position="top">
-      <el-checkbox v-model="checkbox" />
+      <u-checkbox v-model="checkbox" />
     </u-form-row>
   </u-form-container>
 </template>

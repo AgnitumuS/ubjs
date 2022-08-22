@@ -1,5 +1,3 @@
-// TODO: need implement logic when some radio is disabled: cheched and
-not-checked
 <template>
   <span class="u-radio--wrap">
     <label
@@ -7,14 +5,15 @@ not-checked
       :key="index"
       class="u-radio"
       :style="{ display: item[labelProp] ? '' : 'flex' }"
-      @click="currentValue = item[idProp]"
     >
       <input
-        v-model="currentValue"
+        :checked="item[idProp] === value"
         class="u-radio__input"
         type="radio"
+        v-bind="$attrs"
         :name="name"
         :value="item[idProp]"
+        @input="$emit('input', item[idProp])"
       >
       <span
         class="u-radio__label"
@@ -33,10 +32,6 @@ not-checked
  */
 export default {
   name: 'URadio',
-  // for v-model
-  model: {
-    event: 'change'
-  },
   props: {
     /**
      * Property name of element in items to be used as id.
@@ -63,11 +58,14 @@ export default {
       default: () => []
     },
     /**
-     * Group name. MUST be defined to use more when one group of radio in page
+     * Group name. MUST be unique for correct works of inner `<input type="radio">`. Default is `_uid` what works well in most case, but developer can set human-readable name if form submission is used
      */
     name: {
       type: String,
-      default: 'uradio'
+      required: false,
+      default () {
+        return this._uid.toString()
+      }
     },
     /**
      * Selected item ID
@@ -77,7 +75,7 @@ export default {
       default: ''
     },
     /**
-     * Label position. Default  - right
+     * Label position. Default  - '' (right)
      */
     labelPosition: {
       type: String,
@@ -85,25 +83,6 @@ export default {
       validator (value) {
         return ['left', ''].includes(value)
       }
-    }
-  },
-  data () {
-    return {
-      currentValue: this.value ? this.value : '',
-      radioName: this.name ? this.name : this._uid
-    }
-  },
-  watch: {
-    value (newValue) {
-      this.currentValue = newValue
-    },
-    currentValue (e) {
-      /**
-       * Triggers when user change selected item
-       *
-       * @param value `id` value of selected item
-       */
-      this.$emit('change', e)
     }
   }
 }
@@ -145,29 +124,15 @@ export default {
   height: var(--u-checkbox-dim);
   flex-shrink: 0;
   flex-grow: 0;
-  border: 1px solid #adb5bd;
+  border: 1px solid hsl(var(--hs-border), var(--l-input-border-default));
   border-radius: 50%;
   margin-right: var(--padding);
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: 50% 50%;
   cursor: pointer;
-}
-
-/* styles for hover*/
-.u-radio__input:not(:disabled):not(:checked) + .u-radio__label:hover::before {
-  border-color: #b3d7ff;
-}
-
-/* styles for active radio-btn (when push) */
-.u-radio__input:not(:disabled):active + .u-radio__label::before {
-  background-color: #b3d7ff;
-  border-color: #b3d7ff;
 }
 
 /* styles for radio-btn, in focus */
 .u-radio__input:focus + .u-radio__label::before {
-  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+  box-shadow: 0 0 0 1px hsl(var(--hs-primary), var(--l-state-hover));
 }
 
 /* styles for radio-btn,  in focus and not checked */
@@ -179,7 +144,11 @@ export default {
 .u-radio__input:checked + .u-radio__label::before {
   border-color: hsl(var(--hs-primary), var(--l-state-default));
   background-color: hsl(var(--hs-primary), var(--l-state-default));
-  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='%23fff'/%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3e%3ccircle cx='10' cy='10' r='4' fill='%23fff'/%3e%3c/svg%3e");
+  transition: border-color .3s,background-color .3s,background-image .3s;
+  content: "";
 }
 
 /* styles for radio-btn, in the disabled */

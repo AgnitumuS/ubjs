@@ -6,8 +6,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+ - `UCheckbox` new prop `kind`. With `kind="switch"` looks like `el-switch`, with `kind="check"` - like native checkbox but styled
+ - `URadio` reacts on `disabled`
 
 ### Changed
+ - huge refactoring of `UCheckbox` and `URadio` internals
 
 ### Deprecated
 

@@ -17,9 +17,7 @@ Item can contain any valid HTML as we did for `Some action` item.
       <u-dropdown-item @click="say('Add')" icon="u-icon-add" label="Add"/>
       <u-dropdown-item divider/>
       <u-dropdown-item prevent-close>
-        <el-checkbox slot="label" v-model="checked">
-          Some action
-        </el-checkbox>
+        <u-checkbox slot="label" v-model="checked" label="Some action" />
       </u-dropdown-item>
       <u-dropdown-item icon="u-icon-setting" label="Actions">
         <u-dropdown-item icon="u-icon-edit" label="Edit"/>
