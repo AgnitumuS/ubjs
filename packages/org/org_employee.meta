@@ -279,6 +279,14 @@
       "caption": "Facsimile",
       "description": "Employee signature image",
       "allowNull": true
+    },
+    {
+      "name": "avatar",
+      "dataType": "Document",
+      "storeName": "avatars",
+      "caption": "Avatar",
+      "description": "Employee avatar image (recommended 128x128)",
+      "defaultView": false
     }
   ],
   "mixins": {

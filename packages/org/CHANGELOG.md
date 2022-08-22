@@ -6,6 +6,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+- `org_employee`: `avatar` attribute added and two-way synced with `uba_user.avatar` 
 
 ### Changed
 
