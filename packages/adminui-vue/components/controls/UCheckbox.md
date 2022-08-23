@@ -4,8 +4,8 @@ Depends on `kind` property can look like `check` or `switch`
 
 ```vue
 <template>
-  <div>
-    State of checkbox: {{ state }}
+  <div style="line-height: 2em;">
+    State of checkboxes are: {{ state1 }}, {{ state2 }} 
     <u-checkbox v-model="state1" label="UBAuthForgotPassword"/>
     <u-checkbox v-model="state1" disabled label="UBAuthForgotPassword"/>
     <u-checkbox v-model="state2" kind="switch" label="UBAuthForgotPassword"/>
