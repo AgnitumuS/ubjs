@@ -108,16 +108,14 @@ export default {
 .u-checkbox__input:checked + .u-checkbox__label::before {
   border-color: hsl(var(--hs-primary), var(--l-state-default));
   background-color: hsl(var(--hs-primary), var(--l-state-default));
-  color: white;
-  font-family: ub-icons;
-  font-size: 17px;
-  text-align: center;
-  content: "\f033"; /* u-icon-checked */
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3e%3cpath d='M 16.727 4.18 L 16.728 4.179 C 16.797 4.106 17.307 3.89 17.745 4.183 C 17.745 4.183 18.132 4.56 17.946 5.094 C 17.76 5.628 7.911 15.725 7.911 15.725 L 7.91 15.727 C 7.652 15.958 7.46 15.966 7.382 15.966 C 7.288 15.966 7.106 15.945 6.884 15.727 L 2.103 10.642 C 2.031 10.569 1.877 10.067 2.211 9.734 C 2.545 9.401 3.152 9.529 3.282 9.667 L 7.397 14.01 L 16.727 4.18 Z' fill='%23fff'/%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: center;
+  content: "";
 }
 
 /* kind="switch" */
 .u-checkbox__input--switch + .u-checkbox__label::before {
-  color: white;
   width: 40px;
   background-color: hsl(var(--hs-control ), var(--l-state-hover));
   border-radius: 10px;
@@ -130,6 +128,7 @@ export default {
 
 .u-checkbox__input--switch:checked + .u-checkbox__label::before {
   background-position: right;
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3e%3ccircle cx='10' cy='10' r='9' fill='%23fff'/%3e%3c/svg%3e");
   content: "";
 }
 
