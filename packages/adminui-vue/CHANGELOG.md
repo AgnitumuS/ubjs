@@ -6,18 +6,23 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
- - `UCheckbox` new prop `kind`. With `kind="switch"` looks like `el-switch`, with `kind="check"` - like native checkbox but styled
- - `URadio` reacts on `disabled`
 
 ### Changed
- - huge refactoring of `UCheckbox` and `URadio` internals
- - all SVG images for `ub-icons` font are reviewed and simplified
 
 ### Deprecated
 
 ### Removed
 
 ### Fixed
+
+## [5.23.14] - 2022-08-23
+### Added
+ - `UCheckbox` new prop `kind`. With `kind="switch"` looks like `el-switch`, with `kind="check"` - like native checkbox but styled
+ - `URadio` reacts on `disabled`
+
+### Changed
+ - huge refactoring of `UCheckbox` and `URadio` internals
+ - all SVG images for `ub-icons` font are reviewed and simplified
 
 ## [5.23.13] - 2022-08-19
 ### Fixed
