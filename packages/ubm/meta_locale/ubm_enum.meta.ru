@@ -1,6 +1,6 @@
 ﻿{
     "caption": "Перечислимые значения",
-    "captionSingular": "Пронумерованное значение",
+    "captionSingular": "Перечислимое значение",
     "description": "Перечислимые значения",
     "attributes": [
         {

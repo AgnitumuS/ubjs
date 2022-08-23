@@ -1,6 +1,6 @@
 {
   "caption": "Системные справочники",
-  "captionSingular": "Системный словарь",
+  "captionSingular": "Системный справочник",
   "attributes": [
     {"name": "code", "caption": "Код"},
     {"name": "name", "caption": "Наименование"},
