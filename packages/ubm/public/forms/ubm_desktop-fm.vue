@@ -44,7 +44,10 @@ const { mapGetters } = require('vuex')
 const UB = require('@unitybase/ub-pub')
 
 module.exports.mount = cfg => {
-  Form(cfg)
+  Form({
+    ...cfg,
+    title: '{code} {caption}'
+  })
     .processing({
       collections: {
         rightsSubjects: ({ state }) => UB.connection
