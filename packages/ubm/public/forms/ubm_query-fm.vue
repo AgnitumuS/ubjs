@@ -34,7 +34,10 @@ const { Form } = require('@unitybase/adminui-vue')
 const { mapGetters } = require('vuex')
 
 module.exports.mount = cfg => {
-  Form(cfg)
+  Form({
+    ...cfg,
+    title: '{code} {name}'
+  })
     .processing()
     .validation()
     .mount()
