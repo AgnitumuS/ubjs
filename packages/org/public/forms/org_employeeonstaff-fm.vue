@@ -57,7 +57,7 @@ const { mapGetters } = require('vuex')
 module.exports.mount = cfg => {
   Form({
     ...cfg,
-    title: '{employeeID.fullFIO} {staffUnitID.name}'
+    title: '{tabNo} {employeeID.fullFIO}'
   })
     .processing({
       masterFieldList: fieldList,
