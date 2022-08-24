@@ -30,6 +30,7 @@ The right way is to **put the mail messages in the queue** and send them via the
   - a `mail` scheduler job for sending mails from the queue (once a minute by default)
 
 ## Usage sample
+### Direct mail sending (not recommended - use ubq and schedulers instead)
 ```js
   const UBMail = require('@unitybase/mailer')
   // send e-mail
@@ -61,4 +62,18 @@ The right way is to **put the mail messages in the queue** and send them via the
   for (let i = 1; i <= cnt; i++ ) {
       res.push(r.receive(i))
   }
+```
+
+### GMail mailer params
+Example of GMail mailer config parameters:
+```json
+{
+   "host": "smtp.gmail.com",
+   "port": "587",
+   "fromAddr": "......@gmail.com",
+   "user": ".....@gmail.com",
+   "password": "......",
+   "fullSSL": true,
+   "auth": true
+}
 ```
