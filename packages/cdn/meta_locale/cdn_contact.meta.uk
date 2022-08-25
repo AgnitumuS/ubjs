@@ -10,6 +10,10 @@
     {
       "name": "value",
       "caption": "Контакт"
+    },
+    {
+      "name": "subjectID",
+      "caption": "Суб’єкт"
     }
   ]
 }
