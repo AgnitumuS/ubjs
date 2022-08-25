@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
+- `org_employeeonstaff` form - caption template was changed to `{tabNo} {employee.fullFIO}`
 
 ### Deprecated
 
