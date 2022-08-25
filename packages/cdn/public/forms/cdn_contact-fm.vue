@@ -1,5 +1,5 @@
 <template>
-  <div className="u-form-layout">
+  <div class="u-form-layout">
     <u-toolbar/>
 
     <u-form-container label-position="top">
