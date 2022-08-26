@@ -14,6 +14,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+
+## [5.23.16] - 2022-08-26
+### Fixed
 - `cdn_contact` and `cdn_classifieritem` forms - show required fields on form to prevent errors when creating new records via entity table
 - fix orderList in some system dictionaries
 

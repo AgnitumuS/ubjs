@@ -8,14 +8,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
- - improved EntityGridPanel smart refresh - use server-side selection of one row to check whenever modified record much
-   grid filters. Client-side check is not applicable for complex UBQL with logicalPredicates, els etc. 
 
 ### Deprecated
 
 ### Removed
 
 ### Fixed
+
+## [5.24.3] - 2022-08-26
+### Changed
+ - improved EntityGridPanel smart refresh - use server-side selection of one row to check whenever modified record much
+   grid filters. Client-side check is not applicable for complex UBQL with logicalPredicates, els etc. 
 
 ## [5.24.2] - 2022-08-23
 ## [5.24.1] - 2022-08-19

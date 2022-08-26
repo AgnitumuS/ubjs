@@ -14,6 +14,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+
+## [5.23.16] - 2022-08-26
+### Fixed
 - titles for `ubm_desktop`, `ubm_query`, `ubm_sysdictionary` forms are set in format `{code} {name}`
 
 ## [5.23.15] - 2022-08-23
