@@ -1011,25 +1011,12 @@ Ext.define('UB.view.EntityGridPanel', {
 
     // subscribe to entity changes and update one row in grid without refreshing all data
     me.onEntityChangedListener = async function (response) {
-      function transformResponseToTubCachedData (response, whereList = {}) {
-        const fieldsSet = new Set(Object.keys(response.resultData))
-        for (const whereItem of Object.values(whereList)) {
-          if (whereItem.expression) {
-            fieldsSet.add(whereItem.expression.replace(/\[|\]/g, ''))
-          }
-        }
-        return {
-          data: [Object.values(response.resultData)],
-          fields: Array.from(fieldsSet),
-          rowCount: 1
-        }
-      }
-
       // method below is mostly copy-paste of UTableEntity/store.updateData
       if (
         response === undefined ||
         typeof response.resultData !== 'object' ||
-        Array.isArray(response.resultData)
+        Array.isArray(response.resultData) ||
+        !response.resultData.ID
       ) {
         return
       }
@@ -1051,21 +1038,17 @@ Ext.define('UB.view.EntityGridPanel', {
         }
       } else if (ubq) { // insertion or modify and grid based on ubRequest
         const currentRepo = UB.Repository(ubq)
-        // verify inserted row is applicable to current grid conditions
-        const matched = UB.LocalDataStore.doFiltration(
-          transformResponseToTubCachedData(response, ubq.whereList),
-          ubq,
-          true
-        )
-        const currentFiltersMatched = matched.length > 0
-        if (currentFiltersMatched) {
-          if (response.method === 'insert') {
-            const insertedRowData = await currentRepo.selectById(response.resultData.ID)
-            if (insertedRowData) store.add(insertedRowData)
-          } else if (affectedRecord) {
-            const updatedRowData = await currentRepo.selectById(response.resultData.ID)
-            affectedRecord.set(updatedRowData)
+        // verify what new row is applicable to current grid conditions
+        // attempts to verify this on client using LocalDataStore is too complex, so we did a quick `one record` select
+        // in any case this is much better than full refresh as before smartExtGridRefresh feature
+        UB.xhr.allowRequestReiteration() // prevent a monkeyRequestsDetected if two grid with same UBQL exists
+        const rowFromServer = await currentRepo.selectById(response.resultData.ID)
+        if (rowFromServer) { // new row match filters
+          if (affectedRecord) {
+            affectedRecord.set(rowFromServer)
             affectedRecord.commit()
+          } else {
+            store.add(rowFromServer)
           }
         } else if (affectedRecord) { // record in grid, but new data do not match filter conditions - remove
           store.remove(affectedRecord)

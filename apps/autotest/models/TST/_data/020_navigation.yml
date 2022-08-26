@@ -15,3 +15,27 @@ tst_desktop:
               entityName: 'tst_aclrls'
             }
           }
+    - tst_ExtUser:
+        access: User
+        caption: ExtJS User Grid
+        cmd: >
+          {
+            "renderer": "Ext",
+            "cmdType": "showList",
+            "cmdData": {
+              "params": [
+                {
+                  "entity": "uba_user",
+                  "method": "select",
+                  "fieldList": [
+                    "ID",
+                    "name",
+                    "firstName",
+                    "lastName",
+                    "middleName"
+                  ],
+                  "whereList": {"linked": {"expression": "[ID.sType]", "condition": "equal", "value": "U"}}
+                }
+              ]
+            }
+          }

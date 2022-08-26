@@ -78,7 +78,7 @@
     "testcafe": "^0.19.1"
   },
   "engines": {
-    "ub": ">=5.0"
+    "ub": ">=5.22"
   },
   "keywords": [],
   "author": "pavel.mash <pavel.mash@gmail.com> (https://unitybase.info)",
