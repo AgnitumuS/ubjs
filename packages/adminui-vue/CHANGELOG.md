@@ -6,6 +6,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+- Property `forceCmp` for `UFormRow` component, to support scenarios, when inside the row now a single component,
+  but a set of component or a table or a file selector, and the `label`, which is rendered by default work
+  not good in that case
 
 ### Changed
 
