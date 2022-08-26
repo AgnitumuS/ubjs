@@ -1,16 +1,17 @@
 <template>
   <div class="u-form-layout">
-    <u-toolbar />
+    <u-toolbar/>
 
     <u-form-container label-position="top">
-      <u-auto-field attribute-name="contactTypeID" />
-      <u-auto-field attribute-name="value" />
+      <u-auto-field attribute-name="contactTypeID"/>
+      <u-auto-field attribute-name="value"/>
+      <u-auto-field attribute-name="subjectID" v-if="!subjectID"/>
     </u-form-container>
   </div>
 </template>
 
 <script>
-const { Form } = require('@unitybase/adminui-vue')
+const { Form, mapInstanceFields } = require('@unitybase/adminui-vue')
 const { required } = require('vuelidate/lib/validators/index')
 
 module.exports.mount = cfg => {
@@ -20,7 +21,7 @@ module.exports.mount = cfg => {
   })
     .processing({
       inited (store) {
-        if (cfg.parentContext && cfg.parentContext.subjectID) {
+        if (cfg.parentContext?.subjectID) {
           store.commit('LOAD_DATA_PARTIAL', { subjectID: cfg.parentContext.subjectID })
         }
       }
@@ -37,6 +38,10 @@ module.exports.mount = cfg => {
 }
 
 module.exports.default = {
-  name: 'CdnContact'
+  name: 'CdnContact',
+
+  computed: {
+    ...mapInstanceFields(['subjectID'])
+  }
 }
 </script>

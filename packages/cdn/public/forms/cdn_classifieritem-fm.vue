@@ -6,13 +6,14 @@
       <u-auto-field attribute-name="code" />
       <u-auto-field attribute-name="parentID" :repository="getRepo"/>
       <u-auto-field attribute-name="name" />
+      <u-auto-field attribute-name="classifierID" :disabled="!!classifierID && !isNew"/>
     </u-form-container>
   </div>
 </template>
 
 <script>
 const { Form, mapInstanceFields } = require('@unitybase/adminui-vue')
-const { required } = require('vuelidate/lib/validators/index')
+const { mapState } = require('vuex')
 
 module.exports.mount = cfg => {
   Form({
@@ -22,7 +23,7 @@ module.exports.mount = cfg => {
     .processing({
       inited (store) {
         if (store.state.isNew) {
-          store.commit('LOAD_DATA_PARTIAL', { 'classifierID': cfg.parentContext.classifierID })
+          store.commit('LOAD_DATA_PARTIAL', { classifierID: cfg.parentContext.classifierID })
         }
       }
     })
@@ -34,7 +35,10 @@ module.exports.default = {
   name: 'CdnClassifierItem',
   inject: ['entity'],
 
-  computed: mapInstanceFields(['code', 'parentID', 'classifierID']),
+  computed: {
+    ...mapInstanceFields(['code', 'parentID', 'classifierID']),
+    ...mapState(['isNew'])
+  },
 
   methods: {
     getRepo () {

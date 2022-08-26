@@ -55,7 +55,7 @@ cdn_street:
     entity: cdn_street
     method: select
     fieldList: [ID, code, fullName]
-    orderList: [{expression: name, order: asc}]
+    orderList: [{expression: fullName, order: asc}]
 
 cdn_bank:
   name: {$i18n: cdn_bank}
@@ -71,7 +71,7 @@ cdn_currency:
     entity: cdn_currency
     method: select
     fieldList: [ID, code3, name]
-    orderList: [{expression: name, order: asc}]
+    orderList: [{expression: code3, order: asc}]
 
 cdn_organization:
   name: {$i18n: cdn_organization}
@@ -87,7 +87,7 @@ cdn_employee:
     entity: cdn_employee
     method: select
     fieldList: [ID, fullFIO]
-    orderList: [{expression: name, order: asc}]
+    orderList: [{expression: fullFIO, order: asc}]
 
 cdn_address:
   name: {$i18n: cdn_address}
@@ -95,7 +95,7 @@ cdn_address:
     entity: cdn_address
     method: select
     fieldList: [ID, value]
-    orderList: [{expression: name, order: asc}]
+    orderList: [{expression: value, order: asc}]
 
 cdn_department:
   name: {$i18n: cdn_department}
@@ -119,7 +119,7 @@ cdn_person:
     entity: cdn_person
     method: select
     fieldList: [ID, fullFIO]
-    orderList: [{expression: name, order: asc}]
+    orderList: [{expression: fullFIO, order: asc}]
 
 cdn_personcategory:
   name: {$i18n: cdn_personcategory}
@@ -151,7 +151,7 @@ cdn_language:
     entity: cdn_language
     method: select
     fieldList: [ID, code, languageName]
-    orderList: [{expression: name, order: asc}]
+    orderList: [{expression: code, order: asc}]
 
 cdn_classifier:
   name: {$i18n: cdn_classifier}
@@ -159,7 +159,7 @@ cdn_classifier:
     entity: cdn_classifier
     method: select
     fieldList: [ID, code, name]
-    orderList: [{expression: name, order: asc}]
+    orderList: [{expression: code, order: asc}]
 
 cdn_classifieritem:
   name: {$i18n: cdn_classifieritem}
@@ -183,7 +183,7 @@ cdn_contact:
     entity: cdn_contact
     method: select
     fieldList: [ID, value]
-    orderList: [{expression: name, order: asc}]
+    orderList: [{expression: value, order: asc}]
 
 cdn_contacttype:
   name: {$i18n: cdn_contacttype}
@@ -223,7 +223,7 @@ cdn_postindex:
     entity: cdn_postindex
     method: select
     fieldList: [ID, code]
-    orderList: [{expression: name, order: asc}]
+    orderList: [{expression: code, order: asc}]
 
 cdn_staffunittype:
   name: {$i18n: cdn_staffunittype}
