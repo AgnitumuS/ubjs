@@ -1,5 +1,6 @@
 <template>
-  <label
+  <component
+    :is="forceCmp || 'label'"
     class="u-form-row"
     :class="[`u-form-row__${labelPosition}`, {
       'is-error': !!errorText
@@ -36,7 +37,7 @@
     <div class="u-form-row__content">
       <slot />
     </div>
-  </label>
+  </component>
 </template>
 
 <script>
@@ -193,6 +194,16 @@ export default {
      */
     preventLabelEvents: {
       type: Boolean,
+      required: false
+    },
+
+    /**
+     * specify a component that should be used instead of default "label", for example "div" might be desirable
+     * for complex edit controls, because "label" reacts on clicks and causes undesirable effects, for example,
+     * when `u-table-entity` is inside `u-form-row`
+     */
+    forceCmp: {
+      type: String,
       required: false
     }
   },
