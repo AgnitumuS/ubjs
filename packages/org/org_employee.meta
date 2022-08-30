@@ -73,7 +73,7 @@
       "enumGroup": "CDN_SEXTYPE",
       "caption": "Gender",
       "description": "Employee's gender",
-      "allowNull": false
+      "allowNull": true
     },
     {
       "name": "suffix",
