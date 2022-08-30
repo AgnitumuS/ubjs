@@ -5,17 +5,41 @@
   >
     <span>{{ fileName }}</span>
     <u-button
+      v-if="showDownloadButton"
       icon="u-icon-download"
       size="small"
       color="control"
-      appearance="plain"
+      appearance="inverse"
       class="u-table-entity__document-button"
       @click="download"
+    />
+
+    <u-button
+      v-if="showOpenInAppButton && canOpenInApp"
+      icon="u-icon-file-edit"
+      size="small"
+      color="control"
+      appearance="inverse"
+      class="u-table-entity__document-button"
+      @click="openInApp"
+    />
+
+    <u-button
+      v-if="showLinkButton"
+      icon="u-icon-link"
+      size="small"
+      color="control"
+      appearance="inverse"
+      class="u-table-entity__document-button"
+      @click="copyFileLink"
     />
   </div>
 </template>
 
 <script>
+/* global $App */
+const { getMSOfficeApp } = require('../../../utils/MSOfficeAppSelector')
+
 export default {
   name: 'DocumentCellTemplate',
 
@@ -28,6 +52,38 @@ export default {
 
     fileName () {
       return this.document.origName || this.document.fName
+    },
+
+    providerName () {
+      return this.$UB.connection.appConfig.uiSettings.adminUI.webDAVproviderName || 'dfx'
+    },
+
+    davHost () {
+      return window.location.origin
+    },
+
+    canGetDirectLink () {
+      return this.$UB.connection.authMethods.includes('Negotiate')
+    },
+
+    showDownloadButton () {
+      return this.column.downloadButton !== false
+    },
+
+    showOpenInAppButton () {
+      return this.column.openInAppButton !== false
+    },
+
+    showLinkButton () {
+      return this.column.linkButton !== false
+    },
+
+    MSOfficeApp () {
+      return getMSOfficeApp(this.fileName)
+    },
+
+    canOpenInApp () {
+      return !!this.MSOfficeApp
     }
   },
 
@@ -58,25 +114,83 @@ export default {
         attribute,
         ID
       }
+    },
+
+    async openInApp () {
+      if (!this.canOpenInApp) {
+        return
+      }
+
+      window.localStorage.setItem(this.$UB.LDS_KEYS.PREVENT_CALL_LOGOUT_ON_UNLOAD, 'true')
+      const { entity, attribute, ID } = this.getRecordParams()
+
+      document.location.href = [
+        this.MSOfficeApp + this.davHost,
+        'folders',
+        this.providerName,
+        entity,
+        attribute,
+        ID,
+        this.fileName
+      ].join('/')
+    },
+
+    async copyFileLink () {
+      if (!this.canGetDirectLink) {
+        return
+      }
+      window.localStorage.setItem(this.$UB.LDS_KEYS.PREVENT_CALL_LOGOUT_ON_UNLOAD, 'true')
+      const { entity, attribute, ID } = this.getRecordParams()
+
+      const link = [
+        this.davHost,
+        'folders',
+        this.providerName,
+        entity,
+        attribute,
+        ID,
+        this.fileName
+      ].join('/')
+
+      try {
+        await navigator.clipboard.writeText(link)
+      } catch (e) {
+        // if browser very old (or IE) and do not support Clipboard API
+        const input = document.createElement('input')
+        input.value = link
+        input.style.position = 'absolute'
+        input.style.top = '100%'
+        input.style.left = '100%'
+        document.body.appendChild(input)
+        input.select()
+        document.execCommand('copy')
+        document.body.removeChild(input)
+      }
+
+      this.$notify({
+        title: this.$ut('link'),
+        message: this.$ut('linkCopiedText'),
+        duration: 5000
+      })
     }
   }
 }
 </script>
 
 <style>
-  .u-table-entity__document-col {
-    display: flex;
-    align-items: center;
-  }
+.u-table-entity__document-col {
+  display: flex;
+  align-items: center;
+}
 
-  .u-table-entity__document-col span {
-    display: -webkit-box;
-    -webkit-line-clamp: 3;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-  }
+.u-table-entity__document-col span {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
 
-  .u-table-entity__document-button {
-    margin-left: 10px;
-  }
+.u-table-entity__document-button {
+  margin-left: 5px;
+}
 </style>
