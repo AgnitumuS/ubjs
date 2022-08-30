@@ -6,7 +6,7 @@
       :class="['u-checkbox__input', 'u-checkbox__input--'+kind]"
       type="checkbox"
       v-bind="$attrs"
-      @input="$emit('input', $event.target.checked)"
+      @input="$emit('change', $event.target.checked)"
     >
     <label
       class="u-checkbox__label"
@@ -22,6 +22,10 @@
  */
 export default {
   name: 'UCheckbox',
+  // for v-model. see https://v2.vuejs.org/v2/guide/components-custom-events.html#Customizing-Component-v-model
+  model: {
+    event: 'change'
+  },
   props: {
     /**
      * Text for checkbox label. Localized using i18n

@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+ - `UCheckbox` & `URadio` - use change event for correct `v-model` work
 
 ## [5.23.15] - 2022-08-26
 ### Added

@@ -13,7 +13,7 @@
         v-bind="$attrs"
         :name="name"
         :value="item[idProp]"
-        @input="$emit('input', item[idProp])"
+        @input="$emit('change', item[idProp])"
       >
       <span
         class="u-radio__label"
@@ -32,6 +32,10 @@
  */
 export default {
   name: 'URadio',
+  // for v-model. see https://v2.vuejs.org/v2/guide/components-custom-events.html#Customizing-Component-v-model
+  model: {
+    event: 'change'
+  },
   props: {
     /**
      * Property name of element in items to be used as id.
