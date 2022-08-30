@@ -402,7 +402,7 @@ class DDLGenerator {
         name: formatName('IDX_', sqlAlias, '_DTODD', entity.connectionConfig.dialect),
         isUnique: false,
         keys: dateToKeys
-      })
+      }, true, true)
       tableDef.addCheckConstr({
         name: 'CHK_' + sqlAlias + '_HIST',
         expression: 'mi_dateFrom <= mi_dateTo',

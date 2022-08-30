@@ -176,6 +176,11 @@
 				{
 					"path": "./node_modules/@unitybase/adminui-vue"
 				},
+				//#ifdef(%UB_USE_WEBAUTHN%)
+				{
+					"path": "./node_modules/@ub-e/webauthn"
+				},
+				//#endif
 				//#ifdef(%UB_USE_UDISK%)
 				{
 					"path": "./node_modules/@unitybase/udisk"

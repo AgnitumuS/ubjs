@@ -116,10 +116,10 @@ class TableDefinition {
 
   /**
    * @param {IndexAttributes} obj
-   * @param {boolean} [checkName]
-   * @returns {*}
+   * @param {boolean} [overrideExisted=false]
+   * @param {boolean} [skipIfExists=false]
    */
-  addIndex (obj, checkName) {
+  addIndex (obj, overrideExisted, skipIfExists = false) {
     let existed = -1
     obj.isUnique = obj.isUnique || false
     obj.isDisabled = obj.isDisabled || false
@@ -132,15 +132,17 @@ class TableDefinition {
       }
       obj.keys = obj.keys.map(name => name.toUpperCase())
     }
-    if (checkName) {
+    if (overrideExisted || skipIfExists) {
       existed = _.findIndex(this.indexes, { _upperName: obj._upperName })
+    }
+    if (skipIfExists && (existed !== -1)) {
+      return
     }
     if (existed !== -1) {
       this.indexes[existed] = obj
     } else {
       this.indexes.push(obj)
     }
-    return obj
   }
 
   /**

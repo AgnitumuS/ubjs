@@ -38,3 +38,7 @@ fi
 if [ ! -d "./node_modules/@ub-e/nm-scanner" ]; then
   ln -s "$(pwd)/../../../ub-e/packages/nm-scanner" "./node_modules/@ub-e/"
 fi
+
+if [ ! -d "./node_modules/@ub-e/webauthn" ]; then
+  ln -s "$(pwd)/../../../ub-e/packages/webauthn" "./node_modules/@ub-e/"
+fi
