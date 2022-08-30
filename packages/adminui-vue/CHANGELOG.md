@@ -6,6 +6,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+- `UtableEntity`: support customizable buttons (`download`, `openInApp`, `copyLink`) for document attributes in grids. 
+   Buttons are enabled by default, excluding non-webDAV environments - here `copyLink` and `openInApp` buttons are disabled. 
+   To disable buttons, it's need to be added appropriate settings to column config:
+```json
+{
+  "id": "someColumnID",
+  "downloadButton": false,
+  "openInAppButton": false,
+  "linkButton": false
+}
+```
 
 ### Changed
 
