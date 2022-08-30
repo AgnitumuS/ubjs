@@ -21,7 +21,21 @@
 
 ## Database connection parameters
   Each RDBMS driver uses his own mechanism for connection parameters tuning. Below is a recommendations for production usage: 
-  
+
+### Encodings
+ UnityBase always uses `UTF8` encoding for transfer data between client and application server. In case database collation is
+non UTF8 (in most case it's true) character set conversion performed on database driver level (ODBC driver, libclntsh.so, etc).
+In most case this implemented by call to `iconv` libc function. So it's important to have all needed character sets are installed.
+Check it using `iconv -l`.
+
+If required character sets is not in list (as in Oracle Linux 8.6+) - additional package should be added
+
+```shell
+sudo yum install glibc-gconv-extra
+```
+ 
+This prevents errors with ??? instead of national characters, or ODBC `Invalid string or buffer length` exceptions.
+
 ### Postgres
   Most of the connection parameters can be configured using a [PostgreURL](https://www.postgresql.org/docs/current/libpq-connect.html#LIBPQ-CONNSTRING).
   UnityBase allows to set a full postgresURL in the `databaseName` connection parameter, in this case `serverName` should be empty:
