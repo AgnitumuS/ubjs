@@ -95,7 +95,7 @@ async function exportExcel ({
  * @returns {Promise<void>}
  */
 async function exportCsv ({ repository, fileName }) {
-  // TODO: replace with client side rendering
+  // do not replace with client side rendering = server side uses customSettings.csvExport and can export HUGE datasets
   const request = repository.clone().withTotal(false).start(0).limit(0)
   const { data } = await request.connection.xhr({
     method: 'POST',
