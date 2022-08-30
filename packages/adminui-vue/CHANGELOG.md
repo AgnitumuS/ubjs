@@ -6,6 +6,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+## [5.23.16] - 2022-08-30
+### Added
 - `UtableEntity`: support customizable buttons (`download`, `openInApp`, `copyLink`) for document attributes in grids. 
    Buttons are enabled by default, excluding non-webDAV environments - here `copyLink` and `openInApp` buttons are disabled. 
    To disable buttons, it's need to be added appropriate settings to column config:
@@ -17,12 +28,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
   "linkButton": false
 }
 ```
-
-### Changed
-
-### Deprecated
-
-### Removed
 
 ### Fixed
  - `UCheckbox` & `URadio` - use change event for correct `v-model` work
