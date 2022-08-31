@@ -101,7 +101,7 @@ function createDefUniqueIndex (dialect, tableDef, sqlAlias, attrName, isHistory,
   if (isHistory) xDef.keys.push('mi_dateTo')
   // xDef.keys.push('mi_data_id');
   if (storage.safeDelete) xDef.keys.push('mi_deleteDate')
-  tableDef.addIndex(xDef)
+  tableDef.addIndex(xDef, true, true)
 }
 
 /**
@@ -417,7 +417,7 @@ class DDLGenerator {
         name: formatName('UIDX_', sqlAlias, '_HIST', entity.connectionConfig.dialect),
         isUnique: true,
         keys: dateFromKeys
-      })
+      },true, true)
     }
 
     // reference tables for SUFFIXES index storage

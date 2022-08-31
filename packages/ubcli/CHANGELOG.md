@@ -14,6 +14,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+ - `DDLGenerator` - allow override index generated for `isUnique` attributes by define index with the same name
+  in `dbExtension`. This fix regression introduced in 5.23.3
 
 ## [5.23.14] - 2022-08-30
 ### Fixed
