@@ -1,6 +1,6 @@
 $context:
   type: navigation
-  
+
 dev_desktop:
   $amendment: true
   items:
@@ -18,11 +18,10 @@ dev_desktop:
             renderer: vue
             entity: ubm_desktop
             fieldList:
-            - caption
             - code
+            - caption
             - description
             - iconCls
-            - url
             - isDefault
             - displayOrder
       - ubm_navshortcut:
@@ -33,13 +32,12 @@ dev_desktop:
             renderer: vue
             entity: ubm_navshortcut
             fieldList:
-            - desktopID
-            - parentID
             - code
             - caption
+            - desktopID
+            - parentID
             - isFolder
             - description
-            - keywords
       - ubm_ui_settings:
           $systemTenantOnly: true   # disallow for user tenants, because feature does NOT support multitenancy yet
           caption: UI Theme and Logo
