@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
+- `ubm_desktop`, `ubm_navshortcut` - reorder and remove some unnecessary attributes in grids
 
 ### Deprecated
 
