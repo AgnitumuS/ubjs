@@ -922,21 +922,22 @@ Ext.define('UB.view.EntityGridPanel', {
   },
 
   onLoadStore: function (store, records, success) {
-    if (!success || records.length === 0) {
-      this.disableAction('edit')
-      this.disableAction('del')
-      this.disableAction('showPreview')
-      this.disableAction('lock')
-      this.disableAction('unLock')
-      this.disableAction('itemLink')
-    } else {
-      this.enableAction('edit')
-      this.enableAction('del')
-      this.enableAction('showPreview')
-      this.enableAction('lock')
-      this.enableAction('unLock')
-      this.enableAction('itemLink')
-    }
+    // commented because if first record is added (via smartRefresh) onLoadStore is not happens
+    // if (!success || records.length === 0) {
+    //   this.disableAction('edit')
+    //   this.disableAction('del')
+    //   this.disableAction('showPreview')
+    //   this.disableAction('lock')
+    //   this.disableAction('unLock')
+    //   this.disableAction('itemLink')
+    // } else {
+    //   this.enableAction('edit')
+    //   this.enableAction('del')
+    //   this.enableAction('showPreview')
+    //   this.enableAction('lock')
+    //   this.enableAction('unLock')
+    //   this.enableAction('itemLink')
+    // }
   },
 
   createPopupMenu: function () {
@@ -2099,7 +2100,7 @@ Ext.define('UB.view.EntityGridPanel', {
         description: formParam ? formParam.description : formParam,
         entity: formParam && formParam.entityName ? formParam.entityName : me.entityName,
         instanceID: formParam && formParam.instanceID ? formParam.instanceID : (eOpts && eOpts.instanceID),
-        isModal: !!(parentForm || me.isModal),
+        isModal: !!(parentForm || me.isModal) && (formParam.isModal !== false),
         // MPV 2022-08-15: do not pass grid store into doCommand for form - this prevents refreshing grid
         // twice - once by BasePanel.updateStoreRecord and second - by connection.on('entity:changed')
         store: UB.connection.appConfig.uiSettings.adminUI.smartExtGridRefresh !== false ? undefined : me.getStore(),
