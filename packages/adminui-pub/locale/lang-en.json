@@ -230,6 +230,7 @@
   "totalRowCount": "The total number of lines",
 
   "isNull": "empty",
+  "isNotNull": "not empty",
   "by_value": "equal",
   "by_several_value": "one of",
   "more": "more than",

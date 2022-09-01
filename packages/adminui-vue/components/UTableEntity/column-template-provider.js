@@ -65,6 +65,10 @@ ColumnTemplateProvider.registerTemplate({
     isNull: {
       label: 'isNull',
       template: require('./filter-templates/string/isNull.vue').default
+    },
+    isNotNull: {
+      label: 'isNotNull',
+      template: require('./filter-templates/string/isNotNull.vue').default
     }
   }
 })
@@ -89,6 +93,10 @@ ColumnTemplateProvider.registerTemplate({
     isNull: {
       label: 'isNull',
       template: require('./filter-templates/boolean/isNull.vue').default
+    },
+    isNotNull: {
+      label: 'isNotNull',
+      template: require('./filter-templates/boolean/isNotNull.vue').default
     }
   }
 })
@@ -108,6 +116,10 @@ ColumnTemplateProvider.registerTemplate({
     isNull: {
       label: 'isNull',
       template: require('./filter-templates/entity/isNull.vue').default
+    },
+    isNotNull: {
+      label: 'isNotNull',
+      template: require('./filter-templates/entity/isNotNull.vue').default
     },
     notEqual: {
       label: 'notEqual',
@@ -131,6 +143,10 @@ ColumnTemplateProvider.registerTemplate({
     isNull: {
       label: 'isNull',
       template: require('./filter-templates/many/isNull.vue').default
+    },
+    isNotNull: {
+      label: 'isNotNull',
+      template: require('./filter-templates/many/isNotNull.vue').default
     }
   }
 })
@@ -150,6 +166,10 @@ ColumnTemplateProvider.registerTemplate({
     isNull: {
       label: 'isNull',
       template: require('./filter-templates/enum/isNull.vue').default
+    },
+    isNotNull: {
+      label: 'isNotNull',
+      template: require('./filter-templates/enum/isNotNull.vue').default
     },
     notEqual: {
       label: 'notEqual',
@@ -182,6 +202,10 @@ const dateFilters = {
   isNull: {
     label: 'isNull',
     template: require('./filter-templates/date/isNull.vue').default
+  },
+  isNotNull: {
+    label: 'isNotNull',
+    template: require('./filter-templates/date/isNotNull.vue').default
   }
 }
 
@@ -229,6 +253,10 @@ const numberFilter = {
   isNull: {
     label: 'isNull',
     template: require('./filter-templates/number/isNull.vue').default
+  },
+  isNotNull: {
+    label: 'isNotNull',
+    template: require('./filter-templates/number/isNotNull.vue').default
   }
 }
 

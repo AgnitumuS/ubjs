@@ -224,6 +224,7 @@
   "calcRowCount": "Zeilenzahl zählen",
   "totalRowCount": "Gesamtzahl der Zeilen",
   "isNull": "leer",
+  "isNotNull": "nicht leer",
   "by_value": "gleich",
   "by_several_value": "ist eines von",
   "more": "mehr als",

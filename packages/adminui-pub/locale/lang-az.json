@@ -222,6 +222,7 @@
   "clearSelection": "Təmizlə",
 
   "isNull": "Boş qiymət",
+  "isNotNull": "Boş deyil qiymət",
   "by_value": "Bir qiymət",
   "by_several_value": "Bir neçə qiymət",
   "more": "Çox",
