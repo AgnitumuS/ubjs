@@ -72,6 +72,8 @@
     "configurationChanged": "Configuratie wordt gewijzigd. Herlaad pagina om nieuwe instellingen in actie te zien. Sommige instellingen kunnen door de browser in de cache worden opgeslagen, dus het is beter om de browseractie \"Leeg cache en hard opnieuw laden\" te gebruiken om deze onmiddellijk te zien",
     "logoWindowData": "(max 200x48 px, 5 MB)",
     "sidebarLogoExpandedData": "SVG of afbeelding (max. 210x40 px, grootte 5 MB), zichtbaar in de linkerbovenhoek van het scherm wanneer zijbalk is uitgevouwen",
-    "sidebarLogoCollapsedData": "SVG of afbeelding (max. 42x40 px, grootte 5 MB), zichtbaar in de linkerbovenhoek van het scherm wanneer zijbalk is samengevouwen"
+    "sidebarLogoCollapsedData": "SVG of afbeelding (max. 42x40 px, grootte 5 MB), zichtbaar in de linkerbovenhoek van het scherm wanneer zijbalk is samengevouwen",
+    "faviconLabel": "Icon, displayed in the browser's address bar (favicon)",
+    "faviconTip": "Icon (.ico) 16x16 px, used as a site favicon"
   }
 }

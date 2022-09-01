@@ -68,6 +68,8 @@
     "configurationChanged": "Konfiguration wird geändert. Seite neu laden, um neue Einstellungen in Aktion zu sehen. Einige Einstellungen können vom Browser zwischengespeichert werden, daher ist es besser, die Browseraktion \"Cache leeren und erneut laden\" zu verwenden, um sie sofort zu sehen",
     "logoWindowData": "(max. 200x48 Pixel, Größe size < 5 MB)",
     "sidebarLogoExpandedData": "SVG oder Bild (max. 210x40 Pixel, Größe 5 MB), sichtbar in der oberen linken Ecke des Bildschirms, wenn die Seitenleiste erweitert ist",
-    "sidebarLogoCollapsedData": "SVG oder Bild (max. 42x40 Pixel, Größe 5 MB), sichtbar in der oberen linken Ecke des Bildschirms, wenn die Seitenleiste eingeklappt ist"
+    "sidebarLogoCollapsedData": "SVG oder Bild (max. 42x40 Pixel, Größe 5 MB), sichtbar in der oberen linken Ecke des Bildschirms, wenn die Seitenleiste eingeklappt ist",
+    "faviconLabel": "Ein Favicon",
+    "faviconTip": "*.ico 16x16 px, wird als Website-Favicon verwendet"
   }
 }

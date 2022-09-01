@@ -68,6 +68,8 @@
     "configurationChanged": "Konfiguratsiya o'zgartirildi. Yangi sozlamalarni amalda ko‘rish uchun sahifani qayta yuklang. Ba'zi sozlamalar brauzer tomonidan keshlanishi mumkin, shuning uchun uni darhol ko'rish uchun \"Keshni bo'shatish va qattiq qayta yuklash\" amalini ishlatgan ma'qul.",
     "logoWindowData": "(max 200x48 px, size 5 MB)",
     "sidebarLogoExpandedData": "SVG yoki rasm (maksimal 210x40 piksel, oʻlchami 5 MB), yon panel kengaytirilganda ekranning yuqori chap burchagida koʻrinadi",
-    "sidebarLogoCollapsedData": "SVG yoki rasm (maksimal 42x40 piksel, oʻlchami 5 MB), yon panel yopilganda ekranning yuqori chap burchagida koʻrinadi"
+    "sidebarLogoCollapsedData": "SVG yoki rasm (maksimal 42x40 piksel, oʻlchami 5 MB), yon panel yopilganda ekranning yuqori chap burchagida koʻrinadi",
+    "faviconLabel": "Brauzerning manzil satrida ko'rsatilgan belgi (favicon)",
+    "faviconTip": "*.ico 16x16 piksel, sayt favikon sifatida ishlatiladi"
   }
 }

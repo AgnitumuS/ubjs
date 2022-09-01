@@ -19,7 +19,8 @@ function dataURI2Blob (dataUri) {
   const possibleTypes = [
     { sw: 'data:image/svg+xml;base64,', extension: '.svg' },
     { sw: 'data:image/gif;base64,', extension: '.gif' },
-    { sw: 'data:image/png;base64,', extension: '.png' }
+    { sw: 'data:image/png;base64,', extension: '.png' },
+    { sw: 'data:image/x-icon;base64,', extension: '.ico' }
   ]
   if (typeof dataUri !== 'string') return null
   for (const t of possibleTypes) {
@@ -80,7 +81,7 @@ me.changeUISettings = function changeUISettings (ctx) {
       partial.uiSettings.adminUI[inPrmName] = newS[inPrmName]
     }
 
-    ;['loginWindowTopLogo', 'sidebarLogo', 'sidebarLogoBig'].forEach(dataURLSave)
+    ;['loginWindowTopLogo', 'sidebarLogo', 'sidebarLogoBig', 'favicon'].forEach(dataURLSave)
     ;['applicationTitle', 'supportMailTo', 'customTheme'].forEach(strSave)
     if (newS.applicationName && newS.applicationName.startsWith('{')) {
       partial.uiSettings.adminUI.applicationName = JSON.parse(newS.applicationName)
