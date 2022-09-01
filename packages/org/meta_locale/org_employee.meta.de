@@ -1,6 +1,6 @@
 {
   "caption": "Mitarbeiter von internen Organisationen",
-  "captionSingular": "Mitarbeiter der Organisation",
+  "captionSingular": "Mitarbeiter der internen Organisation",
   "description": "Liste der Mitarbeiter von internen Organisationen",
   "documentation": "Dieses Wörterbuch enthält eine Liste der Abteilungen.  Der Mitarbeiter ist Personaleinheiten in der Entität org_employeeonstaff zugeordnet",
   "attributes": [

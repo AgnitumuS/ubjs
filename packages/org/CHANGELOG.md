@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
+- `org_employee` entity: `gender` attribute set as non-required
 
 ### Deprecated
 
