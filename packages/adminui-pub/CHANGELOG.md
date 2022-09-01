@@ -6,10 +6,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
- - `EntityGridPanel`: allow to open form from EntityGridPanel in non-modal mode even in case base form have
-   a parent (by passing `isModal: false` into form opening config)
- - `EntityGridPanel`: do not disable grid actions (`edit`, `del`, `showPreview`, `lock`, `unLock`, `itemLink`) got grids with recordCount === 0.
-   This fix situation when new record is added into empty grin via `smartRefresh` but actions for it are still disabled.
 
 ### Changed
 
@@ -18,6 +14,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+
+## [5.24.4] - 2022-09-01
+### Added
+ - `EntityGridPanel`: allow to open form from EntityGridPanel in non-modal mode even in case base form have
+   a parent (by passing `isModal: false` into form opening config)
+ - `EntityGridPanel`: do not disable grid actions (`edit`, `del`, `showPreview`, `lock`, `unLock`, `itemLink`) got grids with recordCount === 0.
+   This fix situation when new record is added into empty grin via `smartRefresh` but actions for it are still disabled.
 
 ## [5.24.3] - 2022-08-26
 ### Changed
