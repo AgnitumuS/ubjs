@@ -2919,7 +2919,7 @@ Ext.define('UB.view.BasePanel', {
     })
 
     me.formDataReady = false
-    $App.connection.select(request).then(function (result) {
+    return $App.connection.select(request).then(function (result) {
       me.disableBinder()
       UB.ux.data.UBStore.resultDataRow2Record(result, me.record)
       me.record.resultData = result.resultData
@@ -2936,6 +2936,7 @@ Ext.define('UB.view.BasePanel', {
       me.fireDirty = false
       me.updateActions()
       me.fireEvent('recordloaded', me.record, result)
+      return result
     })
   },
 
