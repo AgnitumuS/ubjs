@@ -219,6 +219,12 @@ export default {
     grid-template-rows: auto auto 1fr;
   }
 
+  @media (max-width: 480px) {
+    .u-desktop-drawer {
+      left: 20%;
+    }
+  }
+
   .u-desktop-drawer__title {
     color: hsl(var(--hs-text), var(--l-text-default));
     padding: 16px;
