@@ -6,13 +6,18 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
-- `UTableEntity`: filter `notIsNull` to get not empty attribute values
 
 ### Changed
 
 ### Deprecated
 
 ### Removed
+
+### Fixed
+
+## [5.23.17] - 2022-09-02
+### Added
+- `UTableEntity`: filter `notIsNull` to get not empty attribute values
 
 ### Fixed
  - all modal dialogs max width now limited screen width - mostly for mobile devices  

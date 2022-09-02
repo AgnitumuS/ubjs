@@ -6,8 +6,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
- - `linkStatic` command copy existed favicon.ico into `cust` model (if cust model do not already contains it) and when
-  made a symlink into inetpub. This allows to set custom favicon using UI settings form. 
 
 ### Changed
 
@@ -16,6 +14,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+
+## [5.23.16] - 2022-09-02
+### Added
+ - `linkStatic` command copy existed favicon.ico into `cust` model (if cust model do not already contains it) and when
+  made a symlink into inetpub. This allows to set custom favicon using UI settings form. 
 
 ## [5.23.15] - 2022-08-31
 ### Fixed

@@ -6,13 +6,18 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
- - `BaePanel.loadInstance`: return promise, resolved to select result, instead of undefined 
 
 ### Changed
 
 ### Deprecated
 
 ### Removed
+
+### Fixed
+
+## [5.24.5] - 2022-09-02
+### Added
+ - `BaePanel.loadInstance`: return promise, resolved to select result, instead of undefined 
 
 ### Fixed
  - `EntityGridPanel` isModal 5.24.4 regression 
