@@ -104,6 +104,18 @@
               {{ $ut('ubm_desktop-uiSettings.sidebarLogoCollapsedData') }}
             </div>
           </section>
+
+          <section>
+            <u-form-row label="ubm_desktop-uiSettings.faviconLabel">
+              <u-file-input
+                v-model="faviconFile"
+                accept=".ico"
+              />
+            </u-form-row>
+            <div class="u-form-row__description">
+              {{ $ut('ubm_desktop-uiSettings.faviconTip') }}
+            </div>
+          </section>
         </u-grid>
       </div>
     </u-form-container>
@@ -135,6 +147,8 @@ module.exports.default = {
       sidebarLogoDataURL: '',
       sidebarLogoBigFile: [],
       sidebarLogoBigDataURL: '',
+      faviconFile: [],
+      faviconDataURL: '',
       applicationTitle: this.$UB.connection.appConfig.uiSettings.adminUI.applicationTitle,
       applicationName: typeof appName === 'string' ? appName : JSON.stringify(appName),
       supportMailTo: this.$UB.connection.appConfig.uiSettings.adminUI.supportMailTo,
@@ -168,6 +182,7 @@ module.exports.default = {
           loginWindowTopLogoDataURL: this.loginWindowTopLogoDataURL,
           sidebarLogoDataURL: this.sidebarLogoDataURL,
           sidebarLogoBigDataURL: this.sidebarLogoBigDataURL,
+          faviconDataURL: this.faviconDataURL,
           applicationTitle: this.applicationTitle,
           applicationName: this.applicationName,
           supportMailTo: this.supportMailTo,
@@ -213,6 +228,21 @@ module.exports.default = {
         const reader = new FileReader()
         reader.onloadend = () => {
           this.loginWindowTopLogoDataURL = reader.result
+        }
+        reader.readAsDataURL(files[0])
+      }
+    },
+
+    faviconFile: {
+      deep: true,
+      handler (files) {
+        if (!files.length) {
+          this.faviconDataURL = ''
+          return
+        }
+        const reader = new FileReader()
+        reader.onloadend = () => {
+          this.faviconDataURL = reader.result
         }
         reader.readAsDataURL(files[0])
       }

@@ -72,6 +72,8 @@
     "configurationChanged": "Konfigurasi diubah. Muat ulang halaman untuk melihat pengaturan baru beraksi. Beberapa pengaturan dapat di-cache oleh browser, jadi lebih baik menggunakan tindakan browser \"Cache kosong dan hard reload\" untuk segera melihatnya",
     "logoWindowData": "(max 200x48 px, size 5 MB)",
     "sidebarLogoExpandedData": "SVG atau gambar (maks 210x40 px, ukuran 5 MB), terlihat di pojok kiri atas layar saat bilah sisi diperluas",
-    "sidebarLogoCollapsedData": "SVG atau gambar (maks 42x40 px, ukuran 5 MB), terlihat di pojok kiri atas layar saat bilah sisi diciutkan"
+    "sidebarLogoCollapsedData": "SVG atau gambar (maks 42x40 px, ukuran 5 MB), terlihat di pojok kiri atas layar saat bilah sisi diciutkan",
+    "faviconLabel": "Icon, displayed in the browser's address bar (favicon)",
+    "faviconTip": "*.ico 16x16 px, digunakan sebagai favicon situs"
   }
 }

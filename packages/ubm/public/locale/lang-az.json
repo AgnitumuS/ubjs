@@ -72,6 +72,8 @@
     "configurationChanged": "Konfiqurasiya dəyişdirilir. Fəaliyyətdə olan yeni parametrləri görmək üçün səhifəni yenidən yükləyin. Bəzi parametrlər brauzer tərəfindən keşlənə bilər, ona görə də onu dərhal görmək üçün \"Keşi boşalt və yenidən yükləmə\" brauzer əməliyyatından istifadə etmək daha yaxşıdır.",
     "logoWindowData": "(maksimum 200x48 px, 5 MB)",
     "sidebarLogoExpandedData": "Yan panel genişləndirildikdə ekranın yuxarı sol küncündə görünən SVG və ya şəkil (maksimum 210x40 px, 5 MB)",
-    "sidebarLogoCollapsedData": "Yan panel yığışdırıldıqda ekranın yuxarı sol küncündə görünən SVG və ya şəkil (maksimum 42x40 px, 5 MB)"
+    "sidebarLogoCollapsedData": "Yan panel yığışdırıldıqda ekranın yuxarı sol küncündə görünən SVG və ya şəkil (maksimum 42x40 px, 5 MB)",
+    "faviconLabel": "Brauzerin ünvan çubuğunda göstərilən nişan (favicon)",
+    "faviconTip": "*.ico 16x16 px, saytın favikonu kimi istifadə olunur"
   }
 }

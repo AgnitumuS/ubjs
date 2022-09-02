@@ -72,6 +72,8 @@
     "configurationChanged": "Configuration is changed. Reload page to see new settings in action. Some settings can be cached by browser, so better to use \"Empty cache and hard reload\" browser action to see it immediately",
     "logoWindowData": "(max 200x48 px, size up to 5 MB)",
     "sidebarLogoExpandedData": "SVG or image (max 210x40 px, size 5 MB), visible in the top-left corner of the screen when sidebar is expanded",
-    "sidebarLogoCollapsedData": "SVG or image (max 42x40 px, size 5 MB), visible in the top-left corner of the screen when sidebar is collapsed"
+    "sidebarLogoCollapsedData": "SVG or image (max 42x40 px, size 5 MB), visible in the top-left corner of the screen when sidebar is collapsed",
+    "faviconLabel": "Icon, displayed in the browser's address bar (favicon)",
+    "faviconTip": "Icon (.ico) 16x16 px, used as a site favicon"
   }
 }

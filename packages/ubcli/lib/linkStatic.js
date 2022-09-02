@@ -184,18 +184,46 @@ as drop-in replacement to /clientRequire and /models endpoints`,
   }
 
   const favIconTarget = path.join(target, 'favicon.ico')
-  if (!fs.existsSync(favIconTarget)) {
-    const ubModel = domainModels.find(m => m.name === 'UB')
-    if (ubModel) {
-      const favIconSrc = path.join(ubModel.realPublicPath, 'img', 'UBLogo16.ico')
-      script.push(`${COMMENT} no favicon.ico found in target folder - use default favicon`)
+  let favIconSrc
+  const m = domainModels.find(m => m.name === 'cust')
+  // either use existed cust model favicon or copy one from inetpub or UB model into cust (first run)
+  if (m) {
+    const custFIPath = path.join(m.realPublicPath, 'favicon.ico')
+    if (fs.existsSync(custFIPath)) { // favicon in cust model exists - use it
+      favIconSrc = custFIPath
+      script.push(`${COMMENT} use favicon from ${m.name}`)
+    } if (fs.existsSync(favIconTarget)) { // no favicon in cust model, but exists in intepub - copy it into cust
+      script.push(`${COMMENT} copy favicon from app inetpub into ${m.name}`)
       if (WINDOWS) {
-        script.push(`MKLINK /H ${favIconTarget} ${favIconSrc}`)
+        script.push(`copy ${favIconTarget} ${custFIPath}`)
+        script.push(`del ${favIconTarget}`)
       } else {
-        script.push(`ln -s ${favIconSrc} ${favIconTarget}`)
+        script.push(`cp ${favIconTarget} ${custFIPath}`)
+        script.push(`rm ${favIconTarget}`)
+      }
+      favIconSrc = custFIPath
+    } else { // neither in cust nor in inetpub - use default from UB model
+      const ubModel = domainModels.find(m => m.name === 'UB')
+      if (ubModel) {
+        const ubFavIcon = path.join(ubModel.realPublicPath, 'img', 'UBLogo16.ico')
+        script.push(`${COMMENT} no favicon.ico found in cust model - use default favicon`)
+        if (WINDOWS) {
+          script.push(`copy ${ubFavIcon} ${custFIPath}`)
+        } else {
+          script.push(`cp ${ubFavIcon} ${custFIPath}`)
+        }
+        favIconSrc = custFIPath
       }
     }
   }
+  if (favIconSrc) {
+    if (WINDOWS) {
+      script.push(`MKLINK /H ${favIconTarget} ${favIconSrc}`)
+    } else {
+      script.push(`ln -sf ${favIconSrc} ${favIconTarget}`)
+    }
+  }
+
   script.push(`${COMMENT} update modification time for files in modules updated by npm`)
   if (WINDOWS) {
     script.push(`
