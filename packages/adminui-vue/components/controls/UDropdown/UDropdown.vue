@@ -279,7 +279,8 @@ export default {
 
       return (
         popStyle.right > clientWidth ||
-        popStyle.bottom > clientHeight
+        popStyle.bottom > clientHeight ||
+        popStyle.x < 0
       )
     }
   }

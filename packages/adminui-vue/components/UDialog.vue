@@ -1,6 +1,7 @@
 <template>
   <el-dialog
     v-hold-focus
+    class="u-dialog"
     :width="isDevInfo ? '90%' : '540px'"
     :visible.sync="visible"
     :append-to-body="true"
@@ -123,6 +124,15 @@ export default {
 </script>
 
 <style>
+.u-dialog .el-dialog__footer {
+  display: flex;
+  justify-content: end;
+  flex-wrap: wrap;
+  gap: var(--padding);
+}
+.u-dialog .el-dialog__footer .u-button:first-child {
+  margin-left: auto;
+}
 .ub-dialog_break-word {
   word-break: break-word;
 }
