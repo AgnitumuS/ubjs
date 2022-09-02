@@ -39,12 +39,12 @@ export default {
     },
 
     /**
-     * specify a component what should be used instead of default, based on attribute type.
+     * specify a component that should be used instead of default, based on attribute type.
      * For example `<u-auto-field attribute-name="bool_attr" force-cmp="el-switch" />` will create
      * `el-switch` instead of `u-checkbox` (default cmp for Boolean)
      */
     forceCmp: {
-      type: String,
+      type: [Object, String],
       default: undefined
     }
   },
