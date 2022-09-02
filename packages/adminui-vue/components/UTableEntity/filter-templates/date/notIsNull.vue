@@ -4,7 +4,7 @@
 
 <script>
   export default {
-    name: 'FilterDateIsNotNull',
+    name: 'FilterDateNotIsNull',
 
     components: {
       FilterTemplate: require('../../components/FilterTemplate.vue').default
@@ -15,8 +15,8 @@
     methods: {
       getCondition () {
         return {
-          whereList: [{ condition: 'isNotNull' }],
-          description: 'isNotNull'
+          whereList: [{ condition: 'notIsNull' }],
+          description: 'notIsNull'
         }
       }
     }

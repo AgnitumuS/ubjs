@@ -6,7 +6,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
-- `UTableEntity`: filter `isNotNull` to get not empty attribute values
+- `UTableEntity`: filter `notIsNull` to get not empty attribute values
 
 ### Changed
 

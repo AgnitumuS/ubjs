@@ -66,9 +66,9 @@ ColumnTemplateProvider.registerTemplate({
       label: 'isNull',
       template: require('./filter-templates/string/isNull.vue').default
     },
-    isNotNull: {
-      label: 'isNotNull',
-      template: require('./filter-templates/string/isNotNull.vue').default
+    notIsNull: {
+      label: 'notIsNull',
+      template: require('./filter-templates/string/notIsNull.vue').default
     }
   }
 })
@@ -93,10 +93,6 @@ ColumnTemplateProvider.registerTemplate({
     isNull: {
       label: 'isNull',
       template: require('./filter-templates/boolean/isNull.vue').default
-    },
-    isNotNull: {
-      label: 'isNotNull',
-      template: require('./filter-templates/boolean/isNotNull.vue').default
     }
   }
 })
@@ -117,9 +113,9 @@ ColumnTemplateProvider.registerTemplate({
       label: 'isNull',
       template: require('./filter-templates/entity/isNull.vue').default
     },
-    isNotNull: {
-      label: 'isNotNull',
-      template: require('./filter-templates/entity/isNotNull.vue').default
+    notIsNull: {
+      label: 'notIsNull',
+      template: require('./filter-templates/entity/notIsNull.vue').default
     },
     notEqual: {
       label: 'notEqual',
@@ -144,9 +140,9 @@ ColumnTemplateProvider.registerTemplate({
       label: 'isNull',
       template: require('./filter-templates/many/isNull.vue').default
     },
-    isNotNull: {
-      label: 'isNotNull',
-      template: require('./filter-templates/many/isNotNull.vue').default
+    notIsNull: {
+      label: 'notIsNull',
+      template: require('./filter-templates/many/notIsNull.vue').default
     }
   }
 })
@@ -167,9 +163,9 @@ ColumnTemplateProvider.registerTemplate({
       label: 'isNull',
       template: require('./filter-templates/enum/isNull.vue').default
     },
-    isNotNull: {
-      label: 'isNotNull',
-      template: require('./filter-templates/enum/isNotNull.vue').default
+    notIsNull: {
+      label: 'notIsNull',
+      template: require('./filter-templates/enum/notIsNull.vue').default
     },
     notEqual: {
       label: 'notEqual',
@@ -203,9 +199,9 @@ const dateFilters = {
     label: 'isNull',
     template: require('./filter-templates/date/isNull.vue').default
   },
-  isNotNull: {
-    label: 'isNotNull',
-    template: require('./filter-templates/date/isNotNull.vue').default
+  notIsNull: {
+    label: 'notIsNull',
+    template: require('./filter-templates/date/notIsNull.vue').default
   }
 }
 
@@ -254,9 +250,9 @@ const numberFilter = {
     label: 'isNull',
     template: require('./filter-templates/number/isNull.vue').default
   },
-  isNotNull: {
-    label: 'isNotNull',
-    template: require('./filter-templates/number/isNotNull.vue').default
+  notIsNull: {
+    label: 'notIsNull',
+    template: require('./filter-templates/number/notIsNull.vue').default
   }
 }
 

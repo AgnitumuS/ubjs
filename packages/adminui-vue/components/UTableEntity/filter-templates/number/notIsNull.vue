@@ -4,21 +4,19 @@
 
 <script>
 export default {
-  name: 'FilterStringIsNotNull',
+  name: 'FilterNumberNotIsNull',
+
   components: {
     FilterTemplate: require('../../components/FilterTemplate.vue').default
   },
 
   mixins: [require('../mixinForFilter.js')],
 
-  created () {
-    this.$emit('search-disabled', false)
-  },
   methods: {
     getCondition () {
       return {
-        whereList: [{ condition: 'isNotNull' }],
-        description: 'isNotNull'
+        whereList: [{ condition: 'notIsNull' }],
+        description: 'notIsNull'
       }
     }
   }
