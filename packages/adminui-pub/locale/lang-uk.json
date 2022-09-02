@@ -233,6 +233,7 @@
   "formNotFound": "Форму не знайдено",
 
   "isNull": "не заповнено",
+  "notIsNull": "заповнено",
   "by_value": "дорівнює",
   "by_several_value": "одне з",
   "more": "більше",
