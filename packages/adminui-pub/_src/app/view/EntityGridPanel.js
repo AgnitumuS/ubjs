@@ -2100,7 +2100,7 @@ Ext.define('UB.view.EntityGridPanel', {
         description: formParam ? formParam.description : formParam,
         entity: formParam && formParam.entityName ? formParam.entityName : me.entityName,
         instanceID: formParam && formParam.instanceID ? formParam.instanceID : (eOpts && eOpts.instanceID),
-        isModal: !!(parentForm || me.isModal) && (formParam.isModal !== false),
+        isModal: !!(parentForm || me.isModal) && (!formParam || (formParam.isModal !== false)),
         // MPV 2022-08-15: do not pass grid store into doCommand for form - this prevents refreshing grid
         // twice - once by BasePanel.updateStoreRecord and second - by connection.on('entity:changed')
         store: UB.connection.appConfig.uiSettings.adminUI.smartExtGridRefresh !== false ? undefined : me.getStore(),

@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+ - `EntityGridPanel` isModal 5.24.4 regression 
 
 ## [5.24.4] - 2022-09-01
 ### Added
