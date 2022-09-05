@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+- `$App.scan()`: fix zIndex of dialogs in case some ElementUI dialog is already active
 
 ## [5.24.5] - 2022-09-02
 ### Added
