@@ -572,7 +572,7 @@ $App.dialog('makeChangesSuccessfulTitle', 'makeChangesSuccessfullyBody')
       const statusWindow = Ext.create('UB.view.StatusWindow', {
         title: header
       })
-      setZIndexBasedOnElementUi(statusWindow.el)
+      setZIndexBasedOnElementUi(statusWindow)
 
       function onNotify (progress) {
         if (progress && (progress.action === 'scan') && (progress.pageNum >= 0)) {
@@ -682,7 +682,7 @@ $App.dialog('makeChangesSuccessfulTitle', 'makeChangesSuccessfullyBody')
         const statusWindow = Ext.create('UB.view.StatusWindow', {
           title: header
         })
-        setZIndexBasedOnElementUi(statusWindow.el)
+        setZIndexBasedOnElementUi(statusWindow)
 
         statusWindow.setStatus(UB.i18n('doRecognizeDocument'))
         return $App.connection.post(`${recognitionEndpoint}upload`, scannedArrayB, {
