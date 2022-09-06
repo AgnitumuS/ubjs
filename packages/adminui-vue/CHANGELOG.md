@@ -23,7 +23,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - all modal dialogs max width now limited screen width - mostly for mobile devices  
  - desktop selection popup on mobile moved closer to the left of screen
  - added styles for datepicker on mobile device to fit it into small screen
- - fixed popup positioning for sub-menu on mobile devices 
+ - fixed popup positioning for sub-menu on mobile devices
+ - buttons `openInApp` and `copyFileLink` are set to 'disabled' if action cannot be performed due to non-WebDAV environment
 
 ## [5.23.16] - 2022-08-30
 ### Added

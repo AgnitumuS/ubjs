@@ -270,6 +270,13 @@
   "UTable": {
     "noData": "No data"
   },
+  "UTableEntity": {
+    "buttons": {
+      "download": "Download File",
+      "openInApp": "Open in Application",
+      "copyFileLink": "Copy Link to File"
+    }
+  },
   "UCron": {
     "second": "second",
     "minute": "minute",
