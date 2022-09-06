@@ -254,7 +254,12 @@
 
     <div class="u-table-entity__body">
       <!-- @slot Add a sidebar to the left side of the table or card-view -->
-      <slot name="sidebar" />
+      <div
+        v-if="$scopedSlots.sidebar"
+        class="u-table-entity__body__sidebar"
+      >
+        <slot name="sidebar" />
+      </div>
 
       <u-table
         v-if="viewMode === 'table'"
@@ -1072,5 +1077,18 @@ export default {
 
 .u-table-entity__body__content {
   flex-basis: 100%;
+}
+
+@media (max-width: 768px) {
+  div.u-table-entity div.u-table-entity__body {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+  .u-table-entity__body__sidebar {
+    overflow: auto;
+    border-bottom: 3px dashed hsl(var(--hs-border), var(--l-input-border-disabled));
+    height: 40vh;
+  }
 }
 </style>
