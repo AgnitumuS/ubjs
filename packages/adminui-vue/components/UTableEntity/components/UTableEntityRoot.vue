@@ -1086,9 +1086,11 @@ export default {
     overflow: hidden;
   }
   .u-table-entity__body__sidebar {
-    overflow: auto;
-    border-bottom: 3px dashed hsl(var(--hs-border), var(--l-input-border-disabled));
     height: 40vh;
+    margin-bottom: var(--padding);
+    border-bottom: 2px dashed hsl(var(--hs-border), var(--l-input-border-disabled));
+    box-shadow: 0 2px 8px hsla(var(--hs-text), var(--l-text-default), 0.2);
+    overflow: auto;
   }
 }
 </style>
