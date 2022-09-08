@@ -14,6 +14,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+- `UTableEntityRoot` - fixed table layout with sidebar on small screen. Sidebar placed on top of the table
+- `UMasterDetailView` - fixed table layout with preview-mode on small screen. Preview box placed on top of the table
 
 ## [5.23.17] - 2022-09-02
 ### Added
