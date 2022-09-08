@@ -1,5 +1,8 @@
 <template>
-  <div class="u-table-register">
+  <div
+    class="u-table-register"
+    :class="{ 'u-table-register--preview-mode': viewMode === 'previewForm' }"
+  >
     <div class="u-table-register__view">
       <u-table-entity
         ref="masterTable"
@@ -449,5 +452,32 @@ export default {
 
 .u-table-register__divider-button:hover {
   color: hsl(var(--hs-primary), var(--l-state-hover));
+}
+
+@media (max-width: 1024px) {
+  .u-table-register__view {
+    flex-basis: 400px;
+  }
+}
+@media (max-width: 768px) {
+  .u-table-register--preview-mode {
+    flex-direction: column;
+  }
+  .u-table-register--preview-mode .u-table-register__view {
+    max-height: 40vh;
+    border-bottom: 2px dashed
+      hsl(var(--hs-border), var(--l-layout-border-default));
+    box-shadow: 0 2px 8px hsla(var(--hs-text), var(--l-text-default), 0.2);
+  }
+  .u-table-register--preview-mode .u-table-register__form-preview {
+    margin-left: unset;
+    padding-left: unset;
+    border-left: unset;
+  }
+
+  .u-table-register--preview-mode .u-table-entity__body {
+    padding-bottom: 10px;
+    background: hsl(var(--hs-background), var(--l-background-default));
+  }
 }
 </style>
