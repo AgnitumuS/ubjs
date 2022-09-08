@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
+- EntityGridPanel: adding a new row to the beginning of the list
 
 ### Deprecated
 
