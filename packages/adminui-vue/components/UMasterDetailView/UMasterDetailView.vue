@@ -150,13 +150,6 @@ export default {
     }
   },
 
-  beforeDestroy () {
-    if (!this._unwatchList) return
-    for (const unwatchFn of this._unwatchList) {
-      unwatchFn()
-    }
-  },
-
   data () {
     return {
       rowId: null,
@@ -240,6 +233,13 @@ export default {
     }
   },
 
+  beforeDestroy () {
+    if (!this._unwatchList) return
+    for (const unwatchFn of this._unwatchList) {
+      unwatchFn()
+    }
+  },
+
   methods: {
     setSelectedRow (id) {
       this.$refs.masterTable.$store.commit('SELECT_ROW', id)
@@ -264,9 +264,13 @@ export default {
       this.$refs.masterTable.$el.focus()
     },
 
-    refreshMasterTable: throttle(50, function () {
-      this.$refs.detailsTable.$store.dispatch('refresh')
-    }, { noTrailing: true }),
+    refreshMasterTable: throttle(
+      50,
+      function () {
+        this.$refs.detailsTable.$store.dispatch('refresh')
+      },
+      { noTrailing: true }
+    ),
 
     formatDetailLabel ({ entity, attribute }) {
       const hasSameEntity =
@@ -301,35 +305,66 @@ export default {
 
       const store = masterTableInstance.$store
 
-      const savedFilters = this.$uiSettings.get('UTableEntity', 'filters', this.shortcutCode)
+      const savedFilters = this.$uiSettings.get(
+        'UTableEntity',
+        'filters',
+        this.shortcutCode
+      )
       if (savedFilters) {
         for (const filter of savedFilters) {
           store.commit('APPLY_FILTER', filter)
         }
       }
-      const savedViewMode = this.$uiSettings.get('UTableEntity', 'viewMode', this.shortcutCode)
+      const savedViewMode = this.$uiSettings.get(
+        'UTableEntity',
+        'viewMode',
+        this.shortcutCode
+      )
       if (savedViewMode) {
         this.viewMode = savedViewMode
       }
 
-      const savedSort = this.$uiSettings.get('UTableEntity', 'sort', this.shortcutCode)
+      const savedSort = this.$uiSettings.get(
+        'UTableEntity',
+        'sort',
+        this.shortcutCode
+      )
       if (savedSort) {
         store.commit('SORT', savedSort)
       }
 
       this._unwatchList = [
         store.watch(
-          state => state.filters,
-          value => { this.$uiSettings.put(value, 'UTableEntity', 'filters', this.shortcutCode) }
+          (state) => state.filters,
+          (value) => {
+            this.$uiSettings.put(
+              value,
+              'UTableEntity',
+              'filters',
+              this.shortcutCode
+            )
+          }
         ),
         this.$watch(
           () => this.viewMode,
-          value => { this.$uiSettings.put(value, 'UTableEntity', 'viewMode', this.shortcutCode) }
+          (value) => {
+            this.$uiSettings.put(
+              value,
+              'UTableEntity',
+              'viewMode',
+              this.shortcutCode
+            )
+          }
         ),
         store.watch(
-          state => state.sort,
-          value => {
-            this.$uiSettings.put(value, 'UTableEntity', 'sort', this.shortcutCode)
+          (state) => state.sort,
+          (value) => {
+            this.$uiSettings.put(
+              value,
+              'UTableEntity',
+              'sort',
+              this.shortcutCode
+            )
           }
         )
       ]
