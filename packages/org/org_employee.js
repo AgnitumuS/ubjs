@@ -149,6 +149,16 @@ function updateUserAttributes (ctx, allowSelectBeforeUpdate) {
     return
   }
 
+  // set main attribute value from localised if it's empty
+  const currentLang = Session.userLang
+  const multiLangAttributes = ['firstName', 'middleName', 'lastName', 'apply']
+  for (const attribute of multiLangAttributes) {
+    const userLangAttributeName = `${attribute}_${currentLang}^`
+    if (!ctx.mParams.execParams[attribute] && ctx.mParams.execParams[userLangAttributeName]) {
+      ctx.mParams.execParams[attribute] = ctx.mParams.execParams[userLangAttributeName]
+    }
+  }
+
   let { ID, fullFIO, firstName, middleName, lastName, userID, apply, avatar } = ctx.mParams.execParams
 
   if (
