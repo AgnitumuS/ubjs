@@ -6,6 +6,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+## [5.23.18] - 2022-09-11
+### Added
 - `USelectEntity`, `USelectMultiple`: the `placeholder-no-i18n` prop to not localize the `placeholder` prop
 - `UFormRow`: the `label-no-i18n` prop to not localize the `label` prop
  - `UCheckbox` - added default slot - allows insert some content inside a checkbox label
@@ -27,12 +38,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
    - correct implementation of `step` modifier - allow construct field like `1-10/3`, `3,4,5,6/2` etc.
    - *BREAKING* `UCron` do no longer emits `change` event with expression + it's explanation.
      `$App.verbaliseCronExpression(value)` should be used to get expression explanation. 
-
-### Deprecated
-
-### Removed
-
-### Fixed
 
 ## [5.23.17] - 2022-09-02
 ### Added

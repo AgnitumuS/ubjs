@@ -6,12 +6,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
- - new method `ubq_scheduler.calculateNextCronTerm` - return next `cnt` execution dates for specified cronExpression;
-   Supports non-standard 7-part cron expression syntax, where last field `@occurrence` mean - fires on every x occurrence.
-   Example - `0 0 1 * * 1 @2` = At 01:00 AM, only on Monday, once per 2 occurrence (every second Monday)
-
- - new entity-level method `ubq_scheduler.estimateCronSchedule` - wrapper for `ubq_scheduler.calculateNextCronTerm`
-  for client-side execution. Used by UCron to show "Estimated executions"
 
 ### Changed
 
@@ -20,6 +14,15 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+
+## [5.23.17] - 2022-09-11
+### Added
+ - new method `ubq_scheduler.calculateNextCronTerm` - return next `cnt` execution dates for specified cronExpression;
+   Supports non-standard 7-part cron expression syntax, where last field `@occurrence` mean - fires on every x occurrence.
+   Example - `0 0 1 * * 1 @2` = At 01:00 AM, only on Monday, once per 2 occurrence (every second Monday)
+
+ - new entity-level method `ubq_scheduler.estimateCronSchedule` - wrapper for `ubq_scheduler.calculateNextCronTerm`
+  for client-side execution. Used by UCron to show "Estimated executions"
 
 ## [5.23.16] - 2022-08-26
 ## [5.23.15] - 2022-08-23

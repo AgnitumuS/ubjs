@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.23.17] - 2022-09-11
 ## [5.23.16] - 2022-09-02
 ### Added
  - `linkStatic` command copy existed favicon.ico into `cust` model (if cust model do not already contains it) and when
