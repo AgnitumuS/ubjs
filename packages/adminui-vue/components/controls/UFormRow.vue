@@ -21,7 +21,7 @@
       :style="labelWidthCss"
       :title="descriptionText"
     >
-      <span>{{ $ut(labelText) }}</span>
+      <span>{{ labelText }}</span>
     </div>
     <div class="u-form-row__error">
       <transition name="el-zoom-in-top">
@@ -130,7 +130,16 @@ export default {
     },
 
     /**
-     * if `true` - show red asterix symbol after label
+     * To not apply the i18n for the label value
+     */
+    labelNoI18n: {
+      type: Boolean,
+      required: false,
+      default: false
+    },
+
+    /**
+     * if `true` - show red asterisk symbol after label
      */
     required: {
       type: Boolean,
@@ -210,7 +219,11 @@ export default {
 
   computed: {
     labelText () {
-      return this.label ?? this.attributeLabel
+      if (this.label) {
+        return this.labelNoI18n ? this.label : this.$ut(this.label)
+      }
+
+      return this.$ut(this.attributeLabel)
     },
 
     attributeLabel () {
@@ -230,11 +243,16 @@ export default {
       if (this.description) {
         return this.$ut(this.description)
       }
+
       if (this.attributeName && this.entity) {
         const localeString = `${this.entity}.${this.attributeName}#description`
-        return this.$ut(localeString) === localeString ? this.$ut(this.labelText) : this.$ut(localeString)
+        const localized = this.$ut(localeString)
+        if (localized !== localeString) {
+          return localized
+        }
       }
-      return this.$ut(this.labelText)
+
+      return this.labelText
     },
 
     errorText () {
