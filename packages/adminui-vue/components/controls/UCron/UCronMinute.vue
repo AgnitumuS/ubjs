@@ -1,16 +1,18 @@
 <template>
-  <seconds-cron
+  <u-cron-field
     v-bind="$attrs"
     mode="minute"
+    :range-start="0"
+    :range-end="59"
     v-on="$listeners"
   />
 </template>
 
 <script>
 export default {
-  name: 'MinutesCron',
+  name: 'UCronMinute',
   components: {
-    SecondsCron: require('./secondsCron.vue').default
+    UCronField: require('./UCronField.vue').default
   }
 }
 </script>

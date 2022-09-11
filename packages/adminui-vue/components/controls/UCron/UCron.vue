@@ -1,31 +1,44 @@
 <template>
   <div class="u-cron">
     <div class="u-cron__desc">
-      <div class="u-cron__desc--expresion">
-        {{ $ut('UCron.expression') }}: <span>{{ cronString }}</span>
+      <div>
+        <strong>{{ $ut('UCron.expression') }}:</strong>
+        <span
+          v-for="(p, i) in valueParts"
+          :key="i"
+          class="u-cron__desc-part"
+          :title="$ut('UCron.'+sections[i].id)"
+          @click="activeSectionName=sections[i].id"
+        >
+          {{ p }}
+        </span>
       </div>
-      <div class="u-cron__desc--txt">
-        {{ $ut('UCron.interpretation') }}: <span>{{ humanCronString }}</span>
+      <div>
+        <strong>{{ $ut('UCron.interpretation') }}:</strong> {{ humanCronString }}
+      </div>
+      <div>
+        <strong>{{ $ut('UCron.estimate') }}(5):</strong> {{ estimateStr }}
       </div>
     </div>
     <div class="u-cron__main">
       <div class="u-cron__sidebar">
         <span
-          v-for="(item, index) in everyTime"
-          v-show="item.visible"
+          v-for="(item, index) in sections"
+          v-show="visibleSectionsMap.has(item.id)"
           :key="index"
           class="u-cron__tab"
-          :class="{ 'u-cron__tab-active': everyTimeValue === item.id }"
-          @click="everyTimeValue = item.id"
-        >{{ item.label }}</span>
+          :class="{ 'u-cron__tab-active': activeSectionName === item.id }"
+          @click="activeSectionName = item.id"
+        >{{ $ut('UCron.' + item.id) }}</span>
       </div>
       <div class="u-cron__body">
         <keep-alive>
           <component
-            :is="currentComponent"
-            :item="everyTime.find((i) => i.id === everyTimeValue)"
-            @change="changeHandler"
-          />
+            :is="activeSectionComponent"
+            :value="fieldValues[activeSection.index]"
+            @change="doOnCronFieldChange"
+          >
+          </component>
         </keep-alive>
       </div>
     </div>
@@ -36,21 +49,19 @@
 /* global $App */
 const ubPubAvailable = typeof $App !== 'undefined' // not available for UIDoc
 
-const defaultProp = {
-  visible: true,
-  value: '*'
-}
+const CRON_PARTS = ['second', 'minute', 'hour', 'day', 'month', 'dayOfWeek', 'occurrence']
 
 export default {
   name: 'UCron',
   components: {
-    secondsCron: require('./secondsCron.vue').default,
-    minutesCron: require('./minutesCron.vue').default,
-    hoursCron: require('./hoursCron.vue').default,
-    dayCron: require('./dayCron.vue').default,
-    weekCron: require('./weekCron.vue').default,
-    monthCron: require('./monthCron.vue').default
-    // yearCron: require('./yearCron.vue').default
+    UCronField: require('./UCronField.vue').default,
+    UCronSecond: require('./UCronSecond.vue').default,
+    UCronMinute: require('./UCronMinute.vue').default,
+    UCronHour: require('./UCronHour.vue').default,
+    UCronDay: require('./UCronDay.vue').default,
+    UCronMonth: require('./UCronMonth.vue').default,
+    UCronDayOfWeek: require('./UCronDayOfWeek.vue').default,
+    UCronOccurrence: require('./UCronOccurrence.vue').default
   },
   props: {
     /**
@@ -58,129 +69,105 @@ export default {
      */
     value: {
       type: String,
-      default: ''
+      default: '0 0 0 * * *'
     },
     /**
-     * visible {boolean} - display in the list
-     * value {string} - default value for this part of cron
+     * Array of hidden sections. By default, non-standard `occurrence` section is hidden
+     *
+     * @values second, minute, hour, day, month, dayOfWeek, occurrence
      */
-    seconds: {
-      type: Object,
-      default: () => defaultProp
-    },
-    minutes: {
-      type: Object,
-      default: () => defaultProp
-    },
-    hours: {
-      type: Object,
-      default: () => defaultProp
-    },
-    day: {
-      type: Object,
-      default: () => defaultProp
-    },
-    month: {
-      type: Object,
-      default: () => defaultProp
-    },
-    week: {
-      type: Object,
-      default: () => defaultProp
+    hideSections: {
+      type: Array,
+      default: () => ['occurrence'],
+      validator: function (v) { return v.every(v => CRON_PARTS.includes(v)) }
     }
   },
   data () {
+    const initialData = this.value.split(' ')
+    while (initialData.length < CRON_PARTS.length) initialData.push('')
     return {
-      everyTimeValue: 'day',
-      everyTime: [
-        {
-          id: 'seconds',
-          label: this.$ut('UCron.second'),
-          value: this.seconds.value || '*',
-          visible:
-            this.seconds.visible === undefined ? true : this.seconds.visible
-        },
-        {
-          id: 'minutes',
-          label: this.$ut('UCron.minute'),
-          value: this.minutes.value || '*',
-          visible:
-            this.minutes.visible === undefined ? true : this.minutes.visible
-        },
-        {
-          id: 'hours',
-          label: this.$ut('UCron.hour'),
-          value: this.hours.value || '*',
-          visible: this.hours.visible === undefined ? true : this.hours.visible
-        },
-        {
-          id: 'day',
-          label: this.$ut('UCron.day'),
-          value: this.day.value || '*',
-          visible: this.day.visible === undefined ? true : this.day.visible
-        },
-        {
-          id: 'month',
-          label: this.$ut('UCron.month'),
-          value: this.month.value || '*',
-          visible: this.month.visible === undefined ? true : this.month.visible
-        },
-        {
-          id: 'week',
-          label: this.$ut('UCron.dayOfWeek'),
-          value: this.week.value || '*',
-          visible: this.week.visible === undefined ? true : this.week.visible
-        }
-        // { id: 'year', label: 'року', value: '*' }
-      ]
+      activeSectionName: 'day',
+      fieldValues: initialData,
+      estimateStr: '',
+      humanCronString: initialData
     }
   },
   computed: {
-    currentComponent () {
-      return this.everyTimeValue + 'Cron' || 'div'
+    visibleSectionsMap () {
+      const result = new Set(CRON_PARTS)
+      this.hideSections.forEach(s => result.delete(s))
+      return result
     },
-    cronString () {
-      return this.everyTime.map((i) => i.value).join(' ')
+    activeSection () {
+      return this.sections.find(s => s.id === this.activeSectionName)
     },
-    humanCronString () {
-      return ubPubAvailable
-        ? $App.verbaliseCronExpression(this.cronString)
-        : this.cronString
+    activeSectionComponent () {
+      return 'UCron' + this.activeSection.id.charAt(0).toUpperCase() + this.activeSection.id.slice(1)
+    },
+    sections () {
+      return CRON_PARTS.map((p, idx) => {
+        return {
+          index: idx,
+          id: p
+        }
+      })
+    },
+    valueParts () {
+      return this.value.split(' ')
     }
   },
   watch: {
-    humanCronString (newValue) {
-      /**
-       * Triggers when the user change state of radio
-       *
-       * @param {object} newValue includes new cron expression and human-readable string
-       */
-      this.$emit('change', {
-        cronString: this.cronString,
-        humanString: newValue
-      })
+    value (newCron, oldCron) {
+      if (newCron !== oldCron) {
+        this.updateParts(newCron)
+      }
     }
   },
+  mounted () {
+    this.updateParts(this.value)
+  },
   async created () {
-    this.init(this.value)
     if (ubPubAvailable) {
       await $App.verbaliseCronExpression.init() // lazy load cronstrue
     }
   },
   methods: {
-    init (cronStr = this.value) {
+    updateParts (cronStr) {
       if (!cronStr) return
-      const value = cronStr.split(' ')
-      value.reverse()
-      const { everyTime } = this
-      const length = everyTime.length - 1
-      value.forEach((str, index) => {
-        everyTime[length - index].value = str
-      })
+      const parts = cronStr.split(' ')
+      for (let i = 0, L = CRON_PARTS.length; i < L; i++) { // iterate all possible parts
+        const v = parts[i] || ''
+        if (this.fieldValues[i] !== v) {
+          this.fieldValues[i] = v
+        }
+      }
+      this.humanCronString = ubPubAvailable ? $App.verbaliseCronExpression(cronStr) : cronStr
+      this.refreshEstimate(cronStr)
     },
-    changeHandler (e) {
-      const item = this.everyTime.find((i) => i.id === this.everyTimeValue)
-      item.value = e
+
+    doOnCronFieldChange (e) {
+      this.fieldValues[this.activeSection.index] = e
+      const newValue = this.fieldValues.join(' ').trim()
+      this.$emit('input', newValue)
+    },
+
+    async refreshEstimate (cronExpression) {
+      if (!ubPubAvailable) {
+        this.estimateStr = '-'
+        return
+      }
+
+      try {
+        const estimate = await this.$UB.connection.run({
+          entity: 'ubq_scheduler',
+          method: 'estimateCronSchedule',
+          cronExpression,
+          cnt: 5
+        })
+        this.estimateStr = estimate.dates.map(d => this.$UB.formatter.formatDate(d, 'dateTimeFull')).join(' -> ')
+      } catch {
+        this.estimateStr = '-'
+      }
     }
   }
 }
@@ -220,38 +207,24 @@ export default {
   margin-right: calc(var(--padding) * 2);
   border-right: var(--cron-border);
 }
-.u-cron__body .u-radio {
-  margin-bottom: calc(var(--padding) * 2);
-}
-.u-cron__body .u-radio:last-child {
-  margin-bottom: 0px;
-}
-.u-cron__body .u-radio--wrap {
-  width: 100%;
-}
-.cron__start {
-  display: flex;
-}
-.cron__start__item {
-  margin-right: var(--padding);
-}
-
-.u-cron__body .u-radio__label {
-  font-weight: 500;
-}
 
 .u-cron__desc {
-  margin-bottom: var(--padding);
-  font-size: calc(1em + 1px);
-  font-weight: 500;
+  margin: 0 var(--padding) var(--padding) var(--padding);
+  line-height: 1.7em;
 }
-.u-cron__desc--txt span,
-.u-cron__desc--expresion span {
-  font-weight: normal;
-  margin-left: var(--padding);
-  font-style: italic;
+
+.u-cron-field .u-radio {
+  margin-bottom: calc(var(--padding) * 2);
 }
-.u-cron__desc--expresion {
-  margin-bottom: var(--padding);
+.u-cron-field .u-radio--wrap {
+  width: 100%;
+}
+.u-cron-field select {
+  margin-left: 0.5em;
+  margin-right: 0.5em;
+}
+.u-cron__desc-part {
+  margin-right: .5em;
+  cursor: pointer;
 }
 </style>

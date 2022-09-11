@@ -288,6 +288,10 @@
     "between": "між",
     "expression": "Вираз",
     "interpretation": "Інтерпретація",
-    "and": "та"
+    "and": "та",
+    "estimate": "Орієнтовні старти",
+    "step": "крок",
+    "oncePer": "один раз на",
+    "occurrence": "випадки"
   }
 }

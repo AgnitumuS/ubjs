@@ -288,6 +288,10 @@
     "between": "zwischen",
     "expression": "Cron-Ausdruck",
     "interpretation": "Interpretation",
-    "and": "und"
+    "and": "und",
+    "estimate": "Geschätzte Hinrichtungen",
+    "step": "stap",
+    "oncePer": "een keer per",
+    "occurrence": "voorval"
   }
 }

@@ -1,18 +1,18 @@
 <template>
-  <seconds-cron
+  <u-cron-field
     v-bind="$attrs"
     mode="day"
-    :length="30"
-    :start-count="1"
+    :range-start="1"
+    :range-end="30"
     v-on="$listeners"
   />
 </template>
 
 <script>
 export default {
-  name: 'DayCron',
+  name: 'UCronDay',
   components: {
-    SecondsCron: require('./secondsCron.vue').default
+    UCronField: require('./UCronField.vue').default
   }
 }
 </script>

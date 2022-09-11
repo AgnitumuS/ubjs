@@ -280,6 +280,10 @@
     "between": "between",
     "expression": "cron expression",
     "interpretation": "interpretation",
-    "and": "and"
+    "and": "and",
+    "estimate": "Taxminiy ijrolar",
+    "step": "qadam",
+    "oncePer": "boshiga bir marta",
+    "occurrence": "yuzaga kelishi"
   }
 }

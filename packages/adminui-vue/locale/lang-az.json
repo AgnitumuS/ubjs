@@ -288,6 +288,10 @@
     "between": "between",
     "expression": "cron expression",
     "interpretation": "interpretation",
-    "and": "və"
+    "and": "və",
+    "estimate": "Təxmini Edamlar",
+    "step": "step",
+    "oncePer": "once per",
+    "occurrence": "occurrence"
   }
 }
