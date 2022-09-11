@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 - `USelectEntity`, `USelectMultiple`: the `placeholder-no-i18n` prop to not localize the `placeholder` prop
 - `UFormRow`: the `label-no-i18n` prop to not localize the `label` prop
+ - `UCheckbox` - added default slot - allows insert some content inside a checkbox label
 
 ### Changed
  - `UToolbar`: button definitions passed in the `toolbarButtons` prop may
@@ -17,6 +18,15 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
    `String`. This extension is required because locally registered components
    (i.e. application custom components) cannot be passed as a `forceCmp` by
    name.
+ - `UCron` - rewrite:
+   - added non-standard 7-part cron expression syntax, where last seven field `@n` mean - fires on every `n` occurrence
+   - added "Estimated executions" - first 5 dates what match cron expression.
+     Uses server-side `ubq_scheduler.estimateCronSchedule` method (if available)
+   - added two-way binding support
+   - added hints for cron expression fields of `Expresion`
+   - correct implementation of `step` modifier - allow construct field like `1-10/3`, `3,4,5,6/2` etc.
+   - *BREAKING* `UCron` do no longer emits `change` event with expression + it's explanation.
+     `$App.verbaliseCronExpression(value)` should be used to get expression explanation. 
 
 ### Deprecated
 

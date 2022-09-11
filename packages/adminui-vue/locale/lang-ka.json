@@ -287,6 +287,10 @@
     "between": "between",
     "expression": "cron expression",
     "interpretation": "interpretation",
-    "and": "және"
+    "and": "and",
+    "estimate": "Болжалды орындалулар",
+    "step": "шаг",
+    "oncePer": "один раз на",
+    "occurrence": "случая"
   }
 }

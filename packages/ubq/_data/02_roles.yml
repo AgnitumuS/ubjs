@@ -6,3 +6,10 @@ Everyone:
   els:
     custom:
     - UBQ_RUNSTAT_DENY: "!ubq_runstat,[iuda]*,Deny direct modification of ubq_runstat"
+
+User:
+  $amendment: true
+  description: Allow estimate cron schedule for any user
+  els:
+    custom: [ubq_scheduler.estimateCronSchedule]
+

@@ -6,6 +6,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+ - `$App.verbaliseCronExpression` - added support for non-standard 7-part cron expression syntax,
+  where last field `@occurrence` mean - fires on every x occurrence.
+  Example: `0 0 1 * * 1 @2` = At 01:00 AM, only on Monday, once per 2 occurrence (every second Monday)
 
 ### Changed
 - EntityGridPanel: if `smartExtGridRefresh` is enabled, adding newly added rows are inserted to the beginnigng of the grid instead of appending to the end. This improve UX

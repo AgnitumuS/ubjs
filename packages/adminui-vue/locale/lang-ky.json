@@ -270,12 +270,12 @@
     "noData": "Нет данных"
   },
   "UCron": {
-    "seconds": "second",
-    "minutes": "minute",
-    "hours": "hour",
-    "day": "day",
-    "month": "month",
-    "dayOfWeek": "day of week",
+    "seconds": "секунди",
+    "minutes": "минуты",
+    "hours": "часы",
+    "day": "дни",
+    "month": "месяца",
+    "dayOfWeek": "день недели",
     "every": "every",
     "everySecond": "second(s)",
     "everyMinute": "minute(s)",
@@ -285,8 +285,12 @@
     "chooseOneOrMany": "choose one or many",
     "specific": "specific",
     "between": "between",
-    "expression": "cron expression",
-    "interpretation": "interpretation",
-    "and": "and"
+    "expression": "Выражение",
+    "interpretation": "Интерпритация",
+    "and": "и",
+    "estimate": "Оценочные старты",
+    "step": "step",
+    "oncePer": "once per",
+    "occurrence": "occurrence"
   }
 }
