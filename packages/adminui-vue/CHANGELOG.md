@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+- `USelectEntity`, `USelectMultiple`: the `placeholder-no-i18n` prop to not localize the `placeholder` prop
+- `UFormRow`: the `label-no-i18n` prop to not localize the `label` prop
 
 ### Changed
 

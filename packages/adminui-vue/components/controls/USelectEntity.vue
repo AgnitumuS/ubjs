@@ -34,7 +34,7 @@
             'ub-select__undefined-record': undefinedRecord
           }"
           :readonly="!editable || isReadOnly"
-          :placeholder="$ut(placeholder)"
+          :placeholder="placeholderNoI18n ? placeholder : $ut(placeholder)"
           @click.native="editable || toggleDropdown()"
           @focus="onFocus"
           @blur="onBlur"
@@ -125,7 +125,7 @@
       v-show="disabled"
       disabled
       :value="queryDisplayValue"
-      :placeholder="placeholder"
+      :placeholder="placeholderNoI18n ? placeholder : $ut(placeholder)"
       suffix-icon="u-icon-arrow-down"
     />
 
@@ -246,6 +246,7 @@ export default {
       type: Boolean,
       default: true
     },
+
     /**
      * Input placeholder.
      */
@@ -253,6 +254,16 @@ export default {
       type: String,
       default: ''
     },
+
+    /**
+     * To not apply the i18n for the placeholder value
+     */
+    placeholderNoI18n: {
+      type: Boolean,
+      required: false,
+      default: false
+    },
+
     /**
      * Set readonly status
      */
