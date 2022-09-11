@@ -46,21 +46,79 @@
 </template>
 
 <script>
-/* global $App */
-const ubPubAvailable = typeof $App !== 'undefined' // not available for UIDoc
+const UB = require('@unitybase/ub-pub')
+const UCronField = require('./UCronField.vue').default
 
+const ubPubAvailable = typeof $App !== 'undefined' // not available for UIDoc
 const CRON_PARTS = ['second', 'minute', 'hour', 'day', 'month', 'dayOfWeek', 'occurrence']
+
+/**
+ * Specify a UCronField component tu use as a section editor (instead of creating a separate vue file for each wrapper)
+ * @param {string} forField cron field name
+ * @param {number} rangeStart
+ * @param {number} rangeEnd
+ * @param {function} [getItemName]
+ * @returns Component
+ */
+function specifyCronField (forField, rangeStart, rangeEnd, getItemName = undefined) {
+  return {
+    name: 'UCron' + forField,
+    components: { UCronField },
+    props: ['value'],
+    render (h) {
+      return h('u-cron-field', {
+        on: {
+          change: (e) => { this.$emit('change', e) }
+        },
+        props: {
+          mode: 'second',
+          rangeStart,
+          rangeEnd,
+          getItemName
+        }
+      }, [])
+    }
+  }
+}
+
+// register formatters for day and month names
+if (!UB.formatter.getDatePattern('monthName')) {
+  UB.formatter.registerDatePattern('monthName', { month: 'long' })
+}
+if (!UB.formatter.getDatePattern('dayOfWeekName')) {
+  UB.formatter.registerDatePattern('dayOfWeekName', { weekday: 'short' })
+}
+
+/**
+ * Localized month name for specified month (1 - 12)
+ *
+ * @param {number} m Month # (1 - 12)
+ * @returns {string}
+ */
+function getMonthName (m) {
+  return UB.formatter.formatDate(new Date(2022, m - 1, 1), 'monthName')
+}
+
+/**
+ * Localized day of week name for specified day (0 - 6)
+ *
+ * @param {number} d day of week # (0 - 6)
+ * @returns {string}
+ */
+function getWeekDayName (d) {
+  // 2022-01-02 known to be sunday
+  return UB.formatter.formatDate(new Date(2022, 0, 2 + d), 'dayOfWeekName')
+}
 
 export default {
   name: 'UCron',
   components: {
-    UCronField: require('./UCronField.vue').default,
-    UCronSecond: require('./UCronSecond.vue').default,
-    UCronMinute: require('./UCronMinute.vue').default,
-    UCronHour: require('./UCronHour.vue').default,
-    UCronDay: require('./UCronDay.vue').default,
-    UCronMonth: require('./UCronMonth.vue').default,
-    UCronDayOfWeek: require('./UCronDayOfWeek.vue').default,
+    UCronSecond: specifyCronField('Second', 0, 59),
+    UCronMinute: specifyCronField('Minute', 0, 59),
+    UCronHour: specifyCronField('Hour', 0, 23),
+    UCronDay: specifyCronField('Day', 1, 30),
+    UCronMonth: specifyCronField('Month', 1, 12, getMonthName),
+    UCronDayOfWeek: specifyCronField('DayOfWeek', 0, 6, getWeekDayName),
     UCronOccurrence: require('./UCronOccurrence.vue').default
   },
   props: {

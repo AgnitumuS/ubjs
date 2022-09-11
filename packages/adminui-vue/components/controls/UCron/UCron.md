@@ -5,7 +5,7 @@
 ```vue
 <template>
   <section>
-    <u-cron :v-model="cronExpression" />
+    <u-cron v-model="cronExpression" />
     <label> Cron expression is: <u-base-input v-model="cronExpression"/></label>
   </section>
 </template>
@@ -31,7 +31,7 @@
 ```vue
 <template>
   <u-cron
-    :v-model="cronExpression"
+    v-model="cronExpression"
     allow-periodical-week
     :hide-sections="['minutes', 'seconds', 'hours']"
   />
