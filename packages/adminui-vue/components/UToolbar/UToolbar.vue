@@ -50,9 +50,9 @@
 
         <template
           v-for="button in dropdownButtons"
-          :key="button.name"
         >
           <u-dropdown-item
+            :key="button.name"
             :label="button.label"
             :disabled="button.disabled"
             :icon="button.icon"
@@ -60,6 +60,7 @@
           />
           <u-dropdown-item
             v-if="button.divider"
+            :key="button.name + '_d'"
             divider
           />
         </template>
