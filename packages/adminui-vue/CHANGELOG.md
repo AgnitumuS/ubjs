@@ -10,6 +10,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - `UFormRow`: the `label-no-i18n` prop to not localize the `label` prop
 
 ### Changed
+ - `UToolbar`: button definitions passed in the `toolbarButtons` prop may
+   override not only the buttons on the main panel, but the buttons from the
+   dropdown menu as well.
+ - `UAutoField`: the `forceCmp` prop accepts `Object` type values alongside
+   `String`. This extension is required because locally registered components
+   (i.e. application custom components) cannot be passed as a `forceCmp` by
+   name.
 
 ### Deprecated
 
