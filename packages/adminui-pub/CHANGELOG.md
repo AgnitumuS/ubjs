@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
+- EntityGridPanel: if `smartExtGridRefresh` is enabled, adding newly added rows are inserted to the beginnigng of the grid instead of appending to the end. This improve UX
 
 ### Deprecated
 
