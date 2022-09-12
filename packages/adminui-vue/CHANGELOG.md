@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+ - `UCron`: fixed localization and 2-way binding 
 
 ## [5.23.18] - 2022-09-11
 ### Added

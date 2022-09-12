@@ -33,7 +33,7 @@
   <u-cron
     v-model="cronExpression"
     allow-periodical-week
-    :hide-sections="['minutes', 'seconds', 'hours']"
+    :hide-sections="['minute', 'second', 'hour']"
   />
 </template>
 
