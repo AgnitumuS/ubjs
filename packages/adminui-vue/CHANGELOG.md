@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+- `u-body.css` - set the maximum width for the dropdown element to the width of the screen - - mostly for mobile devices
 
 ## [5.23.18] - 2022-09-11
 ### Added

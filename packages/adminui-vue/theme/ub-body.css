@@ -179,7 +179,7 @@ html, body {
     padding: 0;
 }
 
-.el-dialog {
+.el-dialog, .el-select-dropdown {
     max-width: 100vw;
 }
 
