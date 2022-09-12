@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+- fixed sync between multilingual fields of `org_employee` and non-multilingual fields of `uba_user`
 
 ## [5.23.19] - 2022-09-11
 ## [5.23.18] - 2022-09-01
