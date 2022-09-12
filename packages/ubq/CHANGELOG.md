@@ -14,6 +14,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+
+## [5.23.18] - 2022-09-12
+### Fixed
  - use exactly `cron-parser@4.4.0` (last version what uses require) instead of `^4.4.0`
 
 ## [5.23.17] - 2022-09-11

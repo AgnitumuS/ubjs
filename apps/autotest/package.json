@@ -1,6 +1,6 @@
 {
   "name": "autotest",
-  "version": "5.23.24",
+  "version": "5.23.25",
   "description": "Autotest for UnityBase",
   "repository": "https://git-pub.intecracy.com/unitybase/ubjs/tree/master/apps/autotest",
   "private": true,
@@ -41,7 +41,7 @@
     "@unitybase/uba": "^5.23.17",
     "@unitybase/ubcli": "^5.23.17",
     "@unitybase/ubm": "^5.23.19",
-    "@unitybase/ubq": "^5.23.17",
+    "@unitybase/ubq": "^5.23.18",
     "@unitybase/ubs": "^5.23.17",
     "@unitybase/udisk": "^5.23.14",
     "@unitybase/xlsx": "^5.23.8",
