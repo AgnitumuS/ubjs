@@ -340,39 +340,24 @@ $App.dialog('makeChangesSuccessfulTitle', 'makeChangesSuccessfullyBody')
 
    * @param {String} title
    * @param {String} msg
-   * @param {Object} [config]
+   * @param {Object} [config = {}]
    * @param {Number} [config.buttons] OK: 1, YES: 2, NO: 4, CANCEL: 8.  Default YESNOCANCEL: 14
    * @param {String} [config.icon] Possible values: QUESTION, ERROR, WARNING, INFO. Default QUESTION
    * @returns {Promise} resolved pressed button name ['ok', 'yes', 'no', 'cancel']
    */
-  dialog: function (title, msg, config) {
-    let icon
-    config = config || {}
-    switch (config.icon || 'QUESTION') {
-      case 'QUESTION':
-        icon = Ext.window.MessageBox.QUESTION
-        break
-      case 'ERROR':
-        icon = Ext.window.MessageBox.ERROR
-        break
-      case 'WARNING':
-        icon = Ext.window.MessageBox.WARNING
-        break
-      case 'INFO':
-        icon = Ext.window.MessageBox.INFO
-        break
-    }
+  dialog: function (title, msg, config = {}) {
     return new Promise(function (resolve) {
-      Ext.MessageBox.show({
+      const messageBox = Ext.MessageBox.show({
         modal: true,
         title: UB.i18n(title),
         msg: UB.i18n(msg),
         buttons: config.buttons || Ext.MessageBox.YESNOCANCEL,
-        icon: icon,
+        icon: Ext.window.MessageBox[config.icon || 'QUESTION'],
         fn: function (buttonId) {
           resolve(buttonId)
         }
       })
+      setZIndexBasedOnElementUi(messageBox)
     })
   },
 
@@ -587,6 +572,7 @@ $App.dialog('makeChangesSuccessfulTitle', 'makeChangesSuccessfullyBody')
       const statusWindow = Ext.create('UB.view.StatusWindow', {
         title: header
       })
+      setZIndexBasedOnElementUi(statusWindow)
 
       function onNotify (progress) {
         if (progress && (progress.action === 'scan') && (progress.pageNum >= 0)) {
@@ -696,6 +682,8 @@ $App.dialog('makeChangesSuccessfulTitle', 'makeChangesSuccessfullyBody')
         const statusWindow = Ext.create('UB.view.StatusWindow', {
           title: header
         })
+        setZIndexBasedOnElementUi(statusWindow)
+
         statusWindow.setStatus(UB.i18n('doRecognizeDocument'))
         return $App.connection.post(`${recognitionEndpoint}upload`, scannedArrayB, {
           headers: { 'Content-Type': 'application/octet-stream' }
@@ -1097,4 +1085,12 @@ function getShortcutID (code /* , instanceID */) {
   return rowNum !== -1
     ? store.getAt(rowNum).get('ID')
     : Ext.id()
+}
+
+/**
+ * Get value of last zIndex from Element ui and assign it to passed Ext element
+ */
+function setZIndexBasedOnElementUi (element) {
+  const zIndexFromElementUi = window.Vue.prototype.$zIndex()
+  element.setZIndex(zIndexFromElementUi)
 }

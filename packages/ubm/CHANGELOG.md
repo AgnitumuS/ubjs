@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.23.19] - 2022-09-11
 ## [5.23.18] - 2022-09-02
 ### Added
  - UI Settings form: added ability to change application favicon (linkStatic from ubcli@5.23.16 should be executed, what normally happens during application update)

@@ -17,6 +17,30 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - `UTableEntityRoot` - fixed table layout with sidebar on small screen. Sidebar placed on top of the table
 - `UMasterDetailView` - fixed table layout with preview-mode on small screen. Preview box placed on top of the table
 
+## [5.23.18] - 2022-09-11
+### Added
+- `USelectEntity`, `USelectMultiple`: the `placeholder-no-i18n` prop to not localize the `placeholder` prop
+- `UFormRow`: the `label-no-i18n` prop to not localize the `label` prop
+ - `UCheckbox` - added default slot - allows insert some content inside a checkbox label
+
+### Changed
+ - `UToolbar`: button definitions passed in the `toolbarButtons` prop may
+   override not only the buttons on the main panel, but the buttons from the
+   dropdown menu as well.
+ - `UAutoField`: the `forceCmp` prop accepts `Object` type values alongside
+   `String`. This extension is required because locally registered components
+   (i.e. application custom components) cannot be passed as a `forceCmp` by
+   name.
+ - `UCron` - rewrite:
+   - added non-standard 7-part cron expression syntax, where last seven field `@n` mean - fires on every `n` occurrence
+   - added "Estimated executions" - first 5 dates what match cron expression.
+     Uses server-side `ubq_scheduler.estimateCronSchedule` method (if available)
+   - added two-way binding support
+   - added hints for cron expression fields of `Expresion`
+   - correct implementation of `step` modifier - allow construct field like `1-10/3`, `3,4,5,6/2` etc.
+   - *BREAKING* `UCron` do no longer emits `change` event with expression + it's explanation.
+     `$App.verbaliseCronExpression(value)` should be used to get expression explanation. 
+
 ## [5.23.17] - 2022-09-02
 ### Added
 - `UTableEntity`: filter `notIsNull` to get not empty attribute values
@@ -25,7 +49,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - all modal dialogs max width now limited screen width - mostly for mobile devices  
  - desktop selection popup on mobile moved closer to the left of screen
  - added styles for datepicker on mobile device to fit it into small screen
- - fixed popup positioning for sub-menu on mobile devices 
+ - fixed popup positioning for sub-menu on mobile devices
+ - buttons `openInApp` and `copyFileLink` are set to 'disabled' if action cannot be performed due to non-WebDAV environment
 
 ## [5.23.16] - 2022-08-30
 ### Added

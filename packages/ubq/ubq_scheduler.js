@@ -12,6 +12,7 @@ const App = UB.App
 const _ = require('lodash')
 
 me.entity.addMethod('select')
+me.entity.addMethod('estimateCronSchedule')
 
 // here we store loaded schedulers
 let resultDataCache = null
@@ -134,5 +135,75 @@ function doSelect (ctx) {
 me.select = function (ctx) {
   ctx.dataStore.currentDataName = 'select' // do we need it????
   doSelect(ctx)
+  return true // everything is OK
+}
+
+/**
+ *  Return next resultCount execution dates for specified cronExpression;
+ *  Supports non-standard 7-part cron expression syntax, where last field `@occurrence` mean - fires on every x occurrence
+ *  Example - `0 0 1 * * 1 @2` = At 01:00 AM, only on Monday, once per 2 occurrence (every second Monday)
+ *
+ * @param {string} cronExpression Cron expression; support for non-standard `@occurrence` expression syntax
+ * @param {Date} [initialDate] initial date. Default is now
+ * @param {number} [resultCount=1]
+ * @returns {Date[]|Date} if resultCount=1 - return Date, else - array of dates
+ */
+me.calculateNextCronTerm = function (cronExpression, initialDate, resultCount) {
+  const parser = require('cron-parser') // lazy load inside method because it needed rarely
+  let cronDate = initialDate || new Date()
+  let cnt = resultCount || 1
+  const res = []
+
+  const oncePerIdx = cronExpression.indexOf('@')
+  let oncePer = oncePerIdx !== -1 ? parseInt(cronExpression.substring(oncePerIdx + 1), 10) : 1
+  if (oncePer < 1) {
+    oncePer = 1
+  } else if (oncePer > 10) {
+    oncePer = 10
+  }
+  if (oncePerIdx !== -1) {
+    cronExpression = cronExpression.substring(0, oncePerIdx)
+  }
+  const crontab = parser.parseExpression(cronExpression, { currentDate: cronDate })
+  while (cnt--) {
+    cronDate = crontab.next()
+    for (let i = 0; i < oncePer - 1; i++) {
+      cronDate = crontab.next()
+    }
+    if (!resultCount || resultCount === 1) {
+      return cronDate
+    } else {
+      res.push(cronDate)
+    }
+  }
+  return res
+}
+
+/**
+ * Estimate matched dates for cron expression
+ * @method select
+ * @param {ubMethodParams} ctx
+ * @param {object} ctx.mParams
+ * @param {string} ctx.mParams.cronExpression
+ * @param {string} [ctx.mParams.currentDate] initial date in ISO8601 format
+ * @param {number} [ctx.mParams.cnt=1] matched dates count, max = 20
+ * @return {Boolean}
+ * @memberOf ubq_scheduler_ns.prototype
+ * @memberOfModule @unitybase/ubq
+ * @published
+ */
+me.estimateCronSchedule = function (ctx) {
+  const expression = ctx.mParams.cronExpression
+  const currentDate = ctx.mParams.currentDate
+  const cronDate = currentDate ? new Date(currentDate) : new Date()
+  let cnt = ctx.mParams.cnt || 1
+  if (cnt > 20) cnt = 20
+  let res = me.calculateNextCronTerm(expression, cronDate, cnt)
+  if (Array.isArray(res)) {
+    res = res.map(d => d.toISOString())
+  } else {
+    res = res.toISOString()
+  }
+  ctx.mParams.dates = res
   return true // everything is OK
 }

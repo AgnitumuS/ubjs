@@ -51,7 +51,15 @@ $App.verbaliseCronExpression = function (expression, lang) {
   if (__cronstrue) {
     let res
     try {
+      const oncePer = expression.indexOf('@')
+      const periodicalWeek = oncePer !== -1 ? expression.substring(oncePer + 1) : ''
+      if (periodicalWeek) {
+        expression = expression.substring(0, oncePer)
+      }
       res = __cronstrue.toString(expression, { locale: _defaultLang || 'en' })
+      if (periodicalWeek) {
+        res += `, ${UB.i18n('UCron.oncePer')} ${periodicalWeek} ${UB.i18n('UCron.occurrence')}`
+      }
     } catch (e) {
       res = e.message || e
     }

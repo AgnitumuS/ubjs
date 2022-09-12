@@ -59,7 +59,7 @@
             v-model="queryDisplayValue"
             :readonly="readonly"
             class="ub-select-multiple__input"
-            :placeholder="$ut(placeholder)"
+            :placeholder="placeholderNoI18n ? placeholder : $ut(placeholder)"
             @focus="onFocus"
             @blur="onBlur"
             @keydown.exact.down.alt="readonly || onKeydownAltDown()"
@@ -217,6 +217,7 @@ export default {
      * Add clear icon
      */
     clearable: Boolean,
+
     /**
      * Input placeholder
      */
@@ -224,6 +225,16 @@ export default {
       type: String,
       default: ''
     },
+
+    /**
+     * To not apply the i18n for the placeholder value
+     */
+    placeholderNoI18n: {
+      type: Boolean,
+      required: false,
+      default: false
+    },
+
     /**
      * Set readonly status
      */

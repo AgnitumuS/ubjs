@@ -270,6 +270,13 @@
   "UTable": {
     "noData": "Нет данных"
   },
+  "UTableEntity": {
+    "buttons": {
+      "download": "Скачать файл",
+      "openInApp": "Открыть в приложении",
+      "copyFileLink": "Скопировать ссылку на файл"
+    }
+  },
   "UCron": {
     "seconds": "секунди",
     "minutes": "минуты",
@@ -283,11 +290,15 @@
     "everyHour": "hour(s)",
     "everyDay": "day(s)",
     "everyMonth": "month(s)",
-    "chooseOneOrMany": "choose one or many",
+    "chooseOneOrMany": "выбирите один или несколько",
     "specific": "specific",
-    "between": "between",
+    "between": "между",
     "expression": "Выражение",
     "interpretation": "Интерпритация",
-    "and": "и"
+    "and": "и",
+    "estimate": "Оценочные старты",
+    "step": "шаг",
+    "oncePer": "один раз на",
+    "occurrence": "случая"
   }
 }

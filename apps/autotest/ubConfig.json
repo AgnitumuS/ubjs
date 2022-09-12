@@ -1,6 +1,6 @@
 {
 	"httpServer": {
-		"externalURL": "http://localhost",
+		"externalURL": "http://localhost:8881",
 		//"externalURL": "http://pavelmash-u18",
 		//"serverType": "Socket", // for testing purpose socket based server can be enabled on Windows
 		//#ifdef(%UB_USE_NGINX%)

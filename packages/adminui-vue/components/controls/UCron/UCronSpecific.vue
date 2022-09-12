@@ -1,21 +1,21 @@
 <template>
-  <form
+  <section
     class="specify-cron"
-    name="specify-cron"
   >
     <u-checkbox
       v-for="(item, index) in items"
-      :key="index"
+      :key="index+1"
       v-model="item.checked"
       :label="item.label"
-      @change="changeHandler($event, index)"
+      @change="doOnChange"
     />
-  </form>
+    <slot />
+  </section>
 </template>
 
 <script>
 export default {
-  name: 'SpecifyCron',
+  name: 'UCronSpecific',
 
   props: {
     items: {
@@ -24,12 +24,11 @@ export default {
     }
   },
   methods: {
-    changeHandler (value, index) {
-      const checkedIds = this.items
-        .map((el, index) => {
-          return el.checked ? el.id : el.checked
-        })
-        .filter((el) => !!el || el === 0)
+    doOnChange () {
+      const checkedIds = []
+      for (let i = 0, L = this.items.length; i < L; i++) {
+        if (this.items[i].checked) checkedIds.push(this.items[i].id)
+      }
       this.$emit('change', checkedIds)
     }
   }
@@ -45,11 +44,7 @@ export default {
   padding-left: calc(var(--padding) * 3);
 }
 .specify-cron .u-checkbox {
-  min-width: 40px;
-  margin-right: var(--u-gap-double);
-  white-space: nowrap;
+  min-width: 4em;
 }
-.specify-cron .u-checkbox__label {
-  text-transform: capitalize;
-}
+
 </style>

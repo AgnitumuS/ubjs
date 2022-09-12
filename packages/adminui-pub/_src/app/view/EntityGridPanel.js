@@ -1049,7 +1049,8 @@ Ext.define('UB.view.EntityGridPanel', {
             affectedRecord.set(rowFromServer)
             affectedRecord.commit()
           } else {
-            store.add(rowFromServer)
+            store.insert(0, rowFromServer)
+            me.getView().refreshView()
           }
         } else if (affectedRecord) { // record in grid, but new data do not match filter conditions - remove
           store.remove(affectedRecord)

@@ -270,6 +270,13 @@
   "UTable": {
     "noData": "No data"
   },
+  "UTableEntity": {
+    "buttons": {
+      "download": "Download File",
+      "openInApp": "Open in Application",
+      "copyFileLink": "Copy Link to File"
+    }
+  },
   "UCron": {
     "second": "second",
     "minute": "minute",
@@ -286,8 +293,12 @@
     "chooseOneOrMany": "choose one or many",
     "specific": "specific",
     "between": "between",
-    "expression": "Cron expression",
+    "expression": "Expression",
     "interpretation": "Interpretation",
-    "and": "and"
+    "and": "and",
+    "estimate": "Estimated executions",
+    "step": "step",
+    "oncePer": "once per",
+    "occurrence": "occurrence"
   }
 }

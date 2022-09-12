@@ -6,6 +6,7 @@
     <span>{{ fileName }}</span>
     <u-button
       v-if="showDownloadButton"
+      :title="$ut('UTableEntity.buttons.download')"
       icon="u-icon-download"
       size="small"
       color="control"
@@ -15,7 +16,9 @@
     />
 
     <u-button
-      v-if="showOpenInAppButton && canOpenInApp"
+      v-if="showOpenInAppButton"
+      :title="$ut('UTableEntity.buttons.openInApp')"
+      :disabled="!canOpenInApp || !canGetDirectLink"
       icon="u-icon-file-edit"
       size="small"
       color="control"
@@ -26,6 +29,8 @@
 
     <u-button
       v-if="showLinkButton"
+      :title="$ut('UTableEntity.buttons.copyFileLink')"
+      :disabled="!canGetDirectLink"
       icon="u-icon-link"
       size="small"
       color="control"

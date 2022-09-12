@@ -285,6 +285,10 @@
     "between": "between",
     "expression": "cron expression",
     "interpretation": "interpretation",
-    "and": "ва"
+    "and": "ва",
+    "estimate": "Иҷрои тахминӣ",
+    "step": "step",
+    "oncePer": "once per",
+    "occurrence": "occurrence"
   }
 }

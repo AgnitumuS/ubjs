@@ -270,6 +270,13 @@
   "UTable": {
     "noData": "Немає даних"
   },
+  "UTableEntity": {
+    "buttons": {
+      "download": "Завантажити файл",
+      "openInApp": "Відкрити в додатку",
+      "copyFileLink": "Скопіювати посилання на файл"
+    }
+  },
   "UCron": {
     "second": "секунда",
     "minute": "хвилина",
@@ -288,6 +295,10 @@
     "between": "між",
     "expression": "Вираз",
     "interpretation": "Інтерпретація",
-    "and": "та"
+    "and": "та",
+    "estimate": "Орієнтовні старти",
+    "step": "крок",
+    "oncePer": "один раз на",
+    "occurrence": "випадки"
   }
 }

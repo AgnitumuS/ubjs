@@ -19,6 +19,8 @@ module.exports.default = {
       boolData2: true,
       radioChoice: 'two',
       radioChoice2: 1,
+      cronExpression: '0 0 22 1,2 * *',
+      cronExpression2: '0 0 22 1,2 * *',
       radioItems: [
         { id: 1, label: 'first label' },
         { id: 'two', label: 'second label' }
@@ -43,6 +45,9 @@ module.exports.mount = function ({ title, tabId, entity, instanceID, formCode, r
 <template>
   <el-scrollbar style="height: 100%;">
     <u-code-mirror v-model="txtCode" value-is-json></u-code-mirror>
+    <u-cron v-model="cronExpression" :hide-sections="['second', 'minute']" />
+    <u-cron v-model="cronExpression2" />
+    <u-base-input v-model="cronExpression" />
     <fieldset style="line-height: 2em;">
       <legend>UCheckbox</legend>
       <u-checkbox v-model="boolData" label="bool data" />

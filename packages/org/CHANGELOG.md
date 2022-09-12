@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.23.19] - 2022-09-11
 ## [5.23.18] - 2022-09-01
 ### Changed
 - `org_employee` entity: `gender` attribute set as non-required

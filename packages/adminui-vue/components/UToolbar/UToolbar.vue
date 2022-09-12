@@ -5,8 +5,7 @@
 
     <u-button
       v-for="button in mainPanelButtons"
-      v-if="!button.dropdownOnly"
-      :key="button.label + button.icon"
+      :key="button.name"
       :title="$ut(button.label)"
       :appearance="button.type === 'text' ? 'default' : 'inverse'"
       :size="button.type === 'text' ? 'small' : 'large'"
@@ -37,6 +36,7 @@
       v-if="showDropdown"
       class="u-toolbar__settings-button"
       placement="bottom-end"
+      :disabled="dropdownButtons.length === 0"
     >
       <u-button
         appearance="inverse"
@@ -52,7 +52,7 @@
           v-for="button in dropdownButtons"
         >
           <u-dropdown-item
-            :key="button.label + button.icon"
+            :key="button.name"
             :label="button.label"
             :disabled="button.disabled"
             :icon="button.icon"
@@ -60,7 +60,7 @@
           />
           <u-dropdown-item
             v-if="button.divider"
-            :key="button.label + button.icon + 1"
+            :key="button.name + '_d'"
             divider
           />
         </template>
@@ -151,12 +151,8 @@ export default {
     ]),
     ...helpers.mapInstanceFields(['mi_createDate', 'mi_modifyDate']),
 
-    mainPanelButtons () {
-      if (this.hideDefaultButtons) {
-        return this.toolbarButtons
-      }
-
-      const defaultToolbarButtons = [{
+    defaultToolbarButtons() {
+      return [{
         name: 'save',
         label: this.$ut('save') + ' (Ctrl + S)',
         icon: 'u-icon-save',
@@ -178,24 +174,32 @@ export default {
         disabled: !this.canDelete,
         divider: true
       }]
-
-      return this.mergeButtons(this.toolbarButtons, defaultToolbarButtons)
     },
 
-    dropdownButtons () {
+    mainPanelButtons () {
+      const customButtons = this.toolbarButtons.filter(button => !button.dropdownOnly)
+
       if (this.hideDefaultButtons) {
-        return this.toolbarButtons
+        return customButtons
       }
+
+      return this.mergeButtons(customButtons, this.defaultToolbarButtons)
+    },
+
+    defaultDropdownButtons() {
       const buttons = [{
+        name: 'refresh',
         label: this.$ut('refresh') + ' (Ctrl + R)',
         icon: 'u-icon-refresh',
         handler: () => this.refresh(),
         disabled: !this.canRefresh || this.loading
       }]
-      buttons.push(...this.mainPanelButtons)
+
+      buttons.push(...this.defaultToolbarButtons)
 
       if (window && window.UB_DEV_MODE && this.$UB.connection.domain.isEntityMethodsAccessible('ubm_form', 'update')) {
         buttons.push({
+          name: 'formConstructor',
           icon: 'u-icon-wrench',
           label: 'formConstructor',
           handler: this.formConstructorHandler,
@@ -204,6 +208,7 @@ export default {
       }
 
       buttons.push({
+        name: 'copyLink',
         icon: 'u-icon-link',
         label: 'link',
         handler: this.copyLink
@@ -211,6 +216,7 @@ export default {
 
       if (this.entitySchema.hasMixin('dataHistory')) {
         buttons.push({
+          name: 'showDataHistory',
           icon: 'u-icon-branch',
           label: 'ChangesHistory',
           disabled: this.isNew,
@@ -220,6 +226,7 @@ export default {
 
       if (this.entitySchema.hasMixin('audit')) {
         buttons.push({
+          name: 'showAudit',
           icon: 'u-icon-line-chart',
           label: 'showAudit',
           handler: this.showAudit,
@@ -229,9 +236,12 @@ export default {
 
       if (this.entitySchema.hasMixin('aclRls')) {
         const mixins = this.entitySchema.mixins
+
         if (!mixins.aclRls.sameAs) {
           const aclEntityName = mixins.aclRls.aclStorageEntityName
+
           buttons.push({
+            name: 'aclRls',
             icon: 'u-icon-key',
             label: 'accessRight',
             handler: () => { this.showAccessRights(aclEntityName) },
@@ -242,13 +252,16 @@ export default {
 
       if (this.entitySchema.hasMixin('softLock')) {
         buttons.push({
+          name: 'lockEntity',
           icon: 'u-icon-lock',
           label: 'lockBtn',
           handler: () => { this.lockEntity(true) },
           disabled: this.isNew,
           divider: true
         })
+
         buttons.push({
+          name: 'unlockEntity',
           icon: 'u-icon-unlock',
           label: 'unLockBtn',
           handler: () => { this.unlockEntity() },
@@ -257,6 +270,16 @@ export default {
       }
 
       return buttons
+    },
+
+    dropdownButtons () {
+      const customButtons = this.toolbarButtons
+
+      if (this.hideDefaultButtons) {
+        return customButtons
+      }
+
+      return this.mergeButtons(customButtons, this.defaultDropdownButtons)
     },
 
     linkToEntity () {

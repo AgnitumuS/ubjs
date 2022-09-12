@@ -270,6 +270,13 @@
   "UTable": {
     "noData": "Keine Daten"
   },
+  "UTableEntity": {
+    "buttons": {
+      "download": "Download-Datei",
+      "openInApp": "In Anwendung öffnen",
+      "copyFileLink": "Link zur Datei kopieren"
+    }
+  },
   "UCron": {
     "second": "Sekunde",
     "minute": "Minute",
@@ -288,6 +295,10 @@
     "between": "zwischen",
     "expression": "Cron-Ausdruck",
     "interpretation": "Interpretation",
-    "and": "und"
+    "and": "und",
+    "estimate": "Geschätzte Hinrichtungen",
+    "step": "stap",
+    "oncePer": "een keer per",
+    "occurrence": "voorval"
   }
 }
