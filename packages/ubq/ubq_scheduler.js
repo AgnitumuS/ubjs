@@ -146,9 +146,11 @@ me.select = function (ctx) {
  * @param {string} cronExpression Cron expression; support for non-standard `@occurrence` expression syntax
  * @param {Date} [initialDate] initial date. Default is now
  * @param {number} [resultCount=1]
+ * @param {boolean} [isFirstExecution=true] skip oncePer for first execution.
+ *   In case today is monday, and we need each second (@2) monday - first occurrence should be today (initialDate should be 00:00:01)
  * @returns {Date[]|Date} if resultCount=1 - return Date, else - array of dates
  */
-me.calculateNextCronTerm = function (cronExpression, initialDate, resultCount) {
+me.calculateNextCronTerm = function (cronExpression, initialDate, resultCount = 1, isFirstExecution = true) {
   const parser = require('cron-parser') // lazy load inside method because it needed rarely
   let cronDate = initialDate || new Date()
   let cnt = resultCount || 1
@@ -167,8 +169,12 @@ me.calculateNextCronTerm = function (cronExpression, initialDate, resultCount) {
   const crontab = parser.parseExpression(cronExpression, { currentDate: cronDate })
   while (cnt--) {
     cronDate = crontab.next()
-    for (let i = 0; i < oncePer - 1; i++) {
-      cronDate = crontab.next()
+    if (isFirstExecution) { // skip oncePer for first execution. In case today is monday, and we need each second (@2) monday - first occurrence should be today
+      isFirstExecution = false
+    } else {
+      for (let i = 0; i < oncePer - 1; i++) {
+        cronDate = crontab.next()
+      }
     }
     if (!resultCount || resultCount === 1) {
       return cronDate

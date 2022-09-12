@@ -53,12 +53,13 @@ const ubPubAvailable = typeof $App !== 'undefined' // not available for UIDoc
 const CRON_PARTS = ['second', 'minute', 'hour', 'day', 'month', 'dayOfWeek', 'occurrence']
 
 /**
- * Specify a UCronField component tu use as a section editor (instead of creating a separate vue file for each wrapper)
+ * Specify a UCronField component to use as a section editor (instead of creating a separate vue file for each wrapper)
+ *
  * @param {string} forField cron field name
  * @param {number} rangeStart
  * @param {number} rangeEnd
  * @param {function} [getItemName]
- * @returns Component
+ * @returns {Component}
  */
 function specifyCronField (forField, rangeStart, rangeEnd, getItemName = undefined) {
   return {
@@ -71,7 +72,8 @@ function specifyCronField (forField, rangeStart, rangeEnd, getItemName = undefin
           change: (e) => { this.$emit('change', e) }
         },
         props: {
-          mode: 'second',
+          value: this.value,
+          mode: forField.charAt(0).toLowerCase() + forField.slice(1),
           rangeStart,
           rangeEnd,
           getItemName

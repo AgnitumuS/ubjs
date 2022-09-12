@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 - `u-body.css` - set the maximum width for the dropdown element to the width of the screen - - mostly for mobile devices
+- `UCron`: fixed localization and 2-way binding 
 
 ## [5.23.18] - 2022-09-11
 ### Added

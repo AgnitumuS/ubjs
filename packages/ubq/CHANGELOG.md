@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+ - `ubq_scheduler.calculateNextCronTerm` - added optional parameter `isFirstExecution`; 
+   In case today is monday, and we need each second (@2) monday, then first occurrence should be today (initialDate should be 00:00:01)
 
 ### Changed
 
