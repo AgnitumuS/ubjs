@@ -10,7 +10,6 @@ const UBDomain = require('@unitybase/cs-shared').UBDomain
 const UB = require('@unitybase/ub')
 const App = UB.App
 const _ = require('lodash')
-const parser = require('cron-parser')
 
 me.entity.addMethod('select')
 me.entity.addMethod('estimateCronSchedule')
