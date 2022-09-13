@@ -12,13 +12,14 @@
     />
   </div>
   <div>
-      <h5> Accept only PDF and TXT; Binds to model `selectedFiles` property: </h5>
+      <h5> Accept only PDF and TXT; Maximum file size 1024 Kb; Binds to model `selectedFiles` property: </h5>
       <u-file-input
           :disabled="disabled"
           :multiple="multiple"
           placeholder="Select file for import"
           selected-placeholder="Will import"
           accept=".pdf,.txt"
+          max-file-size-kb="1024"
           v-model="selectedFiles"
       />
       <u-button @click="doImport" :disabled="!selectedFiles.length">Import</u-button>

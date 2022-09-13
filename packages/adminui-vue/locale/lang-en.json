@@ -206,6 +206,7 @@
     "dropZone": {
       "caption": "Drop file(s) here or click to upload",
       "acceptError": "Invalid file(s) type",
+      "sizeError": "File(s) size exceeds the limit {0} Mb",
       "selectedFiles": "Selected"
     }
   },
