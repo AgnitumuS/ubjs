@@ -38,7 +38,7 @@
       v-if="isLoading"
       class="file-loading-container"
     >
-      <i class="el-icon-loading u-icon_color-control u-icon"/>
+      <i class="el-icon-loading u-icon_color-control u-icon" />
       <div class="u-file__dropzone-placeholder">{{ $ut(loadingTxt) }}</div>
     </div>
     <input
