@@ -6,6 +6,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+ - `UFileInput` - new property `maxFileSizeKb` to set limit of uploaded file size (in Kb)
 
 ### Changed
 

@@ -38,7 +38,7 @@
       v-if="isLoading"
       class="file-loading-container"
     >
-      <i class="el-icon-loading u-icon_color-control u-icon" />
+      <i class="el-icon-loading u-icon_color-control u-icon"/>
       <div class="u-file__dropzone-placeholder">{{ $ut(loadingTxt) }}</div>
     </div>
     <input
@@ -118,6 +118,15 @@ export default {
     loadingTxt: {
       type: String,
       default: 'loadingData'
+    },
+
+    /**
+     * Maximum size of file in Kb
+     * if 0, file size limit not applied
+     */
+    maxFileSizeKb: {
+      type: Number,
+      default: 0
     }
   },
 
@@ -165,14 +174,25 @@ export default {
       }
 
       if (invalid.length) {
-        const invalidFilesNames = invalid.map((f) => f.name).join(', ')
-        this.$notify({
-          type: 'error',
-          message: `${this.$ut(
-            'fileInput.dropZone.acceptError'
-          )}: ${invalidFilesNames}`,
-          duration: 0
-        })
+        const invalidFormatFiles = invalid.filter((f) => f.error === 'acceptError').map((f) => f.name).join(', ')
+        const invalidSizeFiles = invalid.filter((f) => f.error === 'sizeError').map((f) => f.name).join(', ')
+        if (invalidFormatFiles) {
+          this.$notify({
+            type: 'error',
+            message: `${this.$ut(
+              'fileInput.dropZone.acceptError'
+            )}: ${invalidFormatFiles}`,
+            duration: 0
+          })
+        } else if (invalidSizeFiles) {
+          this.$notify({
+            type: 'error',
+            message: `${this.$ut(
+              'fileInput.dropZone.sizeError', this.maxFileSizeKb
+            )}: ${invalidSizeFiles}`,
+            duration: 0
+          })
+        }
       }
     },
 
@@ -180,10 +200,17 @@ export default {
       const valid = []
       const invalid = []
       for (const file of Array.from(files)) {
-        if (this.isAcceptable(file)) {
-          valid.push(file)
-        } else {
+        if (!this.isAcceptable(file)) {
+          file.error = 'acceptError'
+        }
+        if (!this.isCorrectFileSize(file)) {
+          file.error = 'sizeError'
+        }
+
+        if (file.error) {
           invalid.push(file)
+        } else {
+          valid.push(file)
         }
       }
 
@@ -208,6 +235,13 @@ export default {
           file.name.toLowerCase().endsWith(lcName) || file.type.includes(lcName)
         )
       })
+    },
+
+    isCorrectFileSize (file) {
+      if (this.maxFileSizeKb === 0) {
+        return true
+      }
+      return file.size < this.maxFileSizeKb * 1024
     }
   }
 }
