@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+- filters `isNull` and `notIsNull` - localised description
 
 ## [5.23.19] - 2022-09-12
 ### Fixed
