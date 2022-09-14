@@ -11,6 +11,7 @@ if (ubaAuditPresent) {
 
 me.on('update:after', updateCaptionAndLogToAudit)
 me.on('insert:after', ubaAuditLinkUser)
+me.on('delete:before', removeLinkToUser)
 me.on('delete:after', ubaAuditLinkUserDelete)
 
 global.uba_user.on('update:after', updateEmployeeAttributes)
@@ -402,4 +403,24 @@ function ubaAuditLinkUserDelete (ctx) {
       }
     })
   }
+}
+
+/**
+ * Remove link to uba_user entity before delete
+ * to prevent reference error on deleting linked user
+ *
+ * @param {ubMethodParams} ctx
+ */
+function removeLinkToUser (ctx) {
+  const params = ctx.mParams.execParams
+  const { ID } = params
+  const store = DataStore('org_employee')
+  store.run('update', {
+    execParams: {
+      ID,
+      mi_modifyDate: new Date(),
+      userID: null
+    },
+    __skipOptimisticLock: true
+  })
 }
