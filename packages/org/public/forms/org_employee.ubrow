@@ -1,9 +1,8 @@
 {
- "description": null,
- "caption": null,
- "formType": "auto",
- "formDef": "org_employee-fm.def",
- "formCode": "org_employee-fm.js",
+ "description": "Employee",
+ "caption": "Employee",
+ "formType": "vue",
+ "formCode": "org_employee-fm.vue",
  "entity": "org_employee",
- "isDefault": false
+ "isDefault": true
 }

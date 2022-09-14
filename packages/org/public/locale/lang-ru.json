@@ -8,5 +8,22 @@
   "orgTreeCanNotBeCyclical": "Дерево не может быть цикличным",
   "orgDepartment": "Подразделение",
   "orgExecutorsGroup": "Группа исполнителей",
-  "orgOrganizationalChart": "Органограмма"
+  "orgOrganizationalChart": "Органограмма",
+  "org_dialogs": {
+    "removeFromOrgStructure": {
+      "title": "Удаление сотрудника",
+      "message": "Удалить учетную запись сотрудника? Пользователя нельзя будет назначать на должности"
+    }
+  },
+  "org_employee_form": {
+    "openUserCard": "Открыть профиль пользователя",
+    "createUserCard": "Создать профиль пользователя",
+    "dialog": {
+      "create": "Создать",
+      "bind": "Привязать",
+      "createNewUser": "создать нового пользователя",
+      "bindToExistingUser": "привязать к существующему пользователю",
+      "bindingType": "Тип привязки"
+    }
+  }
 }

@@ -8,5 +8,22 @@
   "orgTreeCanNotBeCyclical": "Struktur kann nicht zyklisch sein",
   "orgDepartment": "Abteilung",
   "orgExecutorsGroup": "Ausführenden-Gruppe",
-  "orgOrganizationalChart": "Organigramm"
+  "orgOrganizationalChart": "Organigramm",
+  "org_dialogs": {
+    "removeFromOrgStructure": {
+      "title": "Mitarbeiter löschen",
+      "message": "Mitarbeiterkonto löschen? Der Benutzer kann keinen Planstellen zugeordnet werden"
+    }
+  },
+  "org_employee_form": {
+    "openUserCard": "Benutzerprofil öffnen",
+    "createUserCard": "Benutzerprofil erstellen",
+    "dialog": {
+      "create": "Schaffen",
+      "bind": "Verbinden",
+      "createNewUser": "einen neuen Benutzer anlegen",
+      "bindToExistingUser": "verbinden mit bestehendem Benutzer",
+      "bindingType": "Verbindungstyp"
+    }
+  }
 }

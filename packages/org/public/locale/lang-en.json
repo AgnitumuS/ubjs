@@ -8,5 +8,22 @@
   "orgTreeCanNotBeCyclical": "Tree can not be cyclical",
   "orgDepartment": "Department",
   "orgExecutorsGroup": "Executors Group",
-  "orgOrganizationalChart": "Organization Chart"
+  "orgOrganizationalChart": "Organization Chart",
+  "org_dialogs": {
+    "removeFromOrgStructure": {
+      "title": "Deleting an employee",
+      "message": "Delete employee account? User cannot be assigned to positions"
+    }
+  },
+  "org_employee_form": {
+    "openUserCard": "Open User Profile",
+    "createUserCard": "Create User Profile",
+    "dialog": {
+      "create": "Create",
+      "bind": "Link",
+      "createNewUser": "Create a New User Profile",
+      "bindToExistingUser": "Link to Existing User Profile",
+      "bindingType": "Binding Type"
+    }
+  }
 }

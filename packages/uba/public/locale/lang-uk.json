@@ -22,8 +22,8 @@
   "editedImageDocument": "Відредаговано образ документа",
   "removedDocumentImage": "Видалено образ документа",
   "auditImageStore": "Накопичувач",
-  "auditImageFName": "Ім'я файлу",
-  "auditImageOrigName": "Ім'я файлу оригіналу",
+  "auditImageFName": "Ім’я файлу",
+  "auditImageOrigName": "Ім’я файлу оригіналу",
   "auditImageRelPath": "Шлях",
   "auditImageCT": "Тип вмісту",
   "auditImageSize": "Розмір файлу (байт)",
@@ -56,6 +56,14 @@
     "deleteServiceUserProhibited": "Видалення сервісного користувача заборонено",
     "renameBuiltInUserProhibited": "Перейменування вбудованого користувача заборонено",
     "renameServiceUserProhibited": "Перейменування сервісного користувача заборонено"
+  },
+  "uba_user_form": {
+    "groups": "Групи",
+    "editUData": "Редагувати додаткові параметри користувача",
+    "otherSettings": "Додаткова інформація",
+    "extraAuthSettings": "Додаткові параметри аутентифікації",
+    "createEmployeeCard": "Створити картку співробітника",
+    "openEmployeeCard": "Відкрити картку співробітника"
   },
   "uba_role_errors": {
     "deleteBuiltInRoleProhibited": "Видалення сервісної ролі заборонено"

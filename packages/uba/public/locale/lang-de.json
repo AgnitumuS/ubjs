@@ -47,6 +47,17 @@
       }
     }
   },
+  "uba_user_form": {
+    "groups": "Gruppen",
+    "mainSettings": "Haupteinstellungen",
+    "otherSettings": "Zusätzliche Information",
+    "orgStructure": "Organisatorische Struktur",
+    "isEmployee": "Ist ein Angestellter",
+    "extraAuthSettings": "Zusätzliche Authentifizierungsoptionen",
+    "createEmployeeCard": "Mitarbeiterkarte erstellen",
+    "openEmployeeCard": "Mitarbeiterkarte öffnen",
+    "editUData": "Erweiterte Benutzeroptionen bearbeiten"
+  },
   "uba_user_errors": {
     "duplicateUserName": "Doppelter Benutzername (möglicherweise andere Groß- und Kleinschreibung). Versuchen Sie einen anderen Benutzernamen",
     "deleteBuiltInUserProhibited": "Das Entfernen des integrierten Benutzers ist verboten",

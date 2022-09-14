@@ -47,6 +47,14 @@
       }
     }
   },
+  "uba_user_form": {
+    "groups": "Groups",
+    "editUData": "Edit Additional User Data",
+    "otherSettings": "Additional Information",
+    "extraAuthSettings": "Additional Authentication Settings",
+    "createEmployeeCard": "Create Employee Card",
+    "openEmployeeCard": "Open Employee Card"
+  },
   "uba_user_errors": {
     "duplicateUserName": "Duplicate user name (may be in different case). Try another login",
     "deleteBuiltInUserProhibited": "Removing of built-in user is prohibited",

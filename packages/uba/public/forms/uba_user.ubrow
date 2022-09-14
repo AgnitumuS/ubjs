@@ -1,9 +1,8 @@
 {
  "description": "User",
  "caption": "User",
- "formType": "auto",
- "formDef": "uba_user-fm.def",
- "formCode": "uba_user-fm.js",
+ "formType": "vue",
+ "formCode": "uba_user-fm.vue",
  "entity": "uba_user",
  "isDefault": true
 }

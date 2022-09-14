@@ -22,7 +22,7 @@
     },
     {
       "name": "middleName",
-      "caption": "Middle name"
+      "caption": "Middle Name"
     },
     {
       "name": "fullName",
@@ -70,7 +70,7 @@
     },
     {
       "name": "trustedIP",
-      "caption": "trusted IPs"
+      "caption": "Trusted IPs"
     },
     {
       "name": "lastPasswordChangeDate",

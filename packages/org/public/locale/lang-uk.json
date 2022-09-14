@@ -8,5 +8,22 @@
   "orgTreeCanNotBeCyclical": "Дерево не може бути циклічним",
   "orgDepartment": "Підрозділ",
   "orgExecutorsGroup": "Група виконавців",
-  "orgOrganizationalChart": "Органограма"
+  "orgOrganizationalChart": "Органограма",
+  "org_dialogs": {
+    "removeFromOrgStructure": {
+      "title": "Видалення співробітника",
+      "message": "Видалити обліковий запис співробітника? Користувача не можна буде призначати на посади"
+    }
+  },
+  "org_employee_form": {
+    "openUserCard": "Відкрити профіль користувача",
+    "createUserCard": "Створити профіль користувача",
+    "dialog": {
+      "create": "Створити",
+      "bind": "Прив’язати",
+      "createNewUser": "створити нового користувача",
+      "bindToExistingUser": "прив’язати до існуючого користувача",
+      "bindingType": "Тип прив’язки"
+    }
+  }
 }
