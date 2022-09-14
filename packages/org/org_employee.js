@@ -418,7 +418,6 @@ function removeLinkToUser (ctx) {
   store.run('update', {
     execParams: {
       ID,
-      mi_modifyDate: new Date(),
       userID: null
     },
     __skipOptimisticLock: true

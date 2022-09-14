@@ -8,7 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
-- `org_employee`: connection with `uba_user` is removing before delete entry to prevent reference error during deleting linked user
+- `org_employee`: `org_employee.userID` is sets to NULL before deletion - this allows removing uba_user later
 
 ### Deprecated
 
