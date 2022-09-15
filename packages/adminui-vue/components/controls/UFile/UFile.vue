@@ -50,6 +50,7 @@
         :disabled="disabled"
         :border="false"
         :is-loading="isLoading"
+        :max-file-size-kb="maxFileSizeKb"
         @input="upload"
       />
     </template>
@@ -135,6 +136,11 @@ export default {
      * file extensions to bind into `accept` input property
      */
     accept: String,
+
+    /**
+     * maximum file size limit to bind into 'maxFileSizeKb' input property
+     */
+    maxFileSizeKb: Number,
 
     /**
      * if `true` - remove all default buttons. To remove specific buttons - pass an array of button names to be hidden

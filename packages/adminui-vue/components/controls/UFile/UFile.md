@@ -101,7 +101,45 @@
   </script>
   ```
 
-  ### Remove default buttons
+### Set accepted file formats
+  ```vue
+  <template>
+    <u-file
+      entity-name="req_request"
+      attribute-name="document"
+      :accept="'.doc,.pdf'"
+      v-model="document"
+    />
+  </template>
+  <script>
+    const {mapInstanceFields} = require('@unitybase/adminui-vue')
+
+    export default {
+      computed: mapInstanceFields(['document'])
+    }
+  </script>
+  ```
+
+### Set maximum file size
+  ```vue
+  <template>
+    <u-file
+      entity-name="req_request"
+      attribute-name="document"
+      :max-file-size-kb="1024"
+      v-model="document"
+    />
+  </template>
+  <script>
+    const {mapInstanceFields} = require('@unitybase/adminui-vue')
+
+    export default {
+      computed: mapInstanceFields(['document'])
+    }
+  </script>
+  ```
+
+### Remove default buttons
 
   ```vue
   <template>
