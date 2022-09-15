@@ -7,8 +7,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 ### Added
 
+
 ### Changed
 - `org_employee`: `org_employee.userID` is sets to NULL before deletion - this allows removing uba_user later
+- `org_employee` form was rewritten to Vue with some improvements: connect with existing user or create new from the form,
+    sync relevant fields between `org_employee` and `uba_user`, support avatars
 
 ### Deprecated
 

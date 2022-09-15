@@ -8,6 +8,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
+- `uba_user` form was rewritten to Vue with some improvements: open connected employee card or create new one,
+  sync relevant fields between `org_employee` and `uba_user`, updated UX
 
 ### Deprecated
 
