@@ -4,7 +4,8 @@
     class="u-table-entity"
     :class="{
       'u-table-entity__bordered': bordered,
-      'u-table-entity__can-edit': canEdit
+      'u-table-entity__can-edit': canEdit,
+      'u-table-entity--sidebar-collapse': sidebarIsCollapse
     }"
     tabindex="1"
     @keydown.ctrl.delete.exact="canDelete && deleteRecord(selectedRowId)"
@@ -254,12 +255,25 @@
 
     <div class="u-table-entity__body">
       <!-- @slot Add a sidebar to the left side of the table or card-view -->
-      <div
+      <span
         v-if="$scopedSlots.sidebar"
-        class="u-table-entity__body__sidebar"
+        class="u-table-entity__sidebar"
       >
-        <slot name="sidebar" />
-      </div>
+        <div
+          class="u-sidebar__collapse-button"
+          :title="sidebarIsCollapse ? $ut('Expand') : $ut('Collapse')"
+          @click="sidebarIsCollapse = !sidebarIsCollapse"
+        >
+          <i
+            :class="
+              sidebarIsCollapse ? 'u-icon-arrow-right' : 'u-icon-arrow-left'
+            "
+          />
+        </div>
+        <div class="u-table-entity__sidebar--slot">
+          <slot name="sidebar" />
+        </div>
+      </span>
 
       <u-table
         v-if="viewMode === 'table'"
@@ -634,6 +648,7 @@ export default {
 
   data () {
     return {
+      sidebarIsCollapse: false,
       targetColumn: null,
       contextMenuRowId: null,
       cacheActiveElement: null
@@ -973,6 +988,28 @@ export default {
 </script>
 
 <style>
+.u-table-entity__sidebar {
+  position: relative;
+}
+.u-table-entity--sidebar-collapse .u-table-entity__sidebar {
+  width: 0px;
+}
+.u-table-entity--sidebar-collapse .u-table-entity__sidebar--slot {
+  display: none;
+}
+.u-table-entity--sidebar-collapse div.u-table-entity__body{
+  display: block;
+}
+
+.u-table-entity__sidebar .u-sidebar__collapse-button {
+  top: 0px;
+  width: 11px;
+  height: 18px;
+  font-size: 10px;
+  background: hsl(var(--hs-control), var(--l-state-hover));
+  border-top-right-radius: 6px;
+  border-bottom-right-radius: 6px;
+}
 @media (min-height: 500px) {
   .u-table-entity .u-table {
     overflow: auto;
@@ -1077,20 +1114,5 @@ export default {
 
 .u-table-entity__body__content {
   flex-basis: 100%;
-}
-
-@media (max-width: 768px) {
-  div.u-table-entity div.u-table-entity__body {
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-  }
-  .u-table-entity__body__sidebar {
-    height: 40vh;
-    margin-bottom: var(--padding);
-    border-bottom: 2px dashed hsl(var(--hs-border), var(--l-input-border-disabled));
-    box-shadow: 0 2px 8px hsla(var(--hs-text), var(--l-text-default), 0.2);
-    overflow: auto;
-  }
 }
 </style>
