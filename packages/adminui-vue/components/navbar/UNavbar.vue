@@ -400,6 +400,10 @@ export default {
 .u-navbar-all-tabs__dropdown-item.active {
   background: hsl(var(--hs-primary), var(--l-background-default));
 }
+.u-navbar-all-tabs__dropdown-item .u-dropdown-item__label > div{
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 
 .u-navbar-all-tabs__dropdown-item-close-button {
   margin-left: 8px;
