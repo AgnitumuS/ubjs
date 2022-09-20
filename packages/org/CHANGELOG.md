@@ -8,12 +8,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
+- `org_employee`: `org_employee.userID` is sets to NULL before deletion - this allows removing uba_user later
 
 ### Deprecated
 
 ### Removed
 
 ### Fixed
+
+## [5.23.20] - 2022-09-12
+### Fixed
+- fixed sync between multilingual fields of `org_employee` and non-multilingual fields of `uba_user`
 
 ## [5.23.19] - 2022-09-11
 ## [5.23.18] - 2022-09-01

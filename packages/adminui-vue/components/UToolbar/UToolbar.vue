@@ -36,7 +36,7 @@
       v-if="showDropdown"
       class="u-toolbar__settings-button"
       placement="bottom-end"
-      :disabled="dropdownButtons.length === 0"
+      :disabled="isDropdownDisabled"
     >
       <u-button
         appearance="inverse"
@@ -151,7 +151,15 @@ export default {
     ]),
     ...helpers.mapInstanceFields(['mi_createDate', 'mi_modifyDate']),
 
-    defaultToolbarButtons() {
+    isDropdownDisabled () {
+      return (
+        this.dropdownButtons.length === 0 &&
+        !this.$slots['dropdown'] &&
+        !this.$slots['dropdown-prepend']
+      )
+    },
+
+    defaultToolbarButtons () {
       return [{
         name: 'save',
         label: this.$ut('save') + ' (Ctrl + S)',
@@ -186,7 +194,7 @@ export default {
       return this.mergeButtons(customButtons, this.defaultToolbarButtons)
     },
 
-    defaultDropdownButtons() {
+    defaultDropdownButtons () {
       const buttons = [{
         name: 'refresh',
         label: this.$ut('refresh') + ' (Ctrl + R)',

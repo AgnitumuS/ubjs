@@ -11,6 +11,7 @@ if (ubaAuditPresent) {
 
 me.on('update:after', updateCaptionAndLogToAudit)
 me.on('insert:after', ubaAuditLinkUser)
+me.on('delete:before', removeLinkToUser)
 me.on('delete:after', ubaAuditLinkUserDelete)
 
 global.uba_user.on('update:after', updateEmployeeAttributes)
@@ -149,7 +150,18 @@ function updateUserAttributes (ctx, allowSelectBeforeUpdate) {
     return
   }
 
-  let { ID, fullFIO, firstName, middleName, lastName, userID, apply, avatar } = ctx.mParams.execParams
+  // set main attribute value from localised if it's empty
+  const currentLang = Session.userLang
+  const multiLangAttributes = ['firstName', 'middleName', 'lastName', 'apply']
+  const inExecParams = ctx.mParams.execParams
+  for (const attribute of multiLangAttributes) {
+    const userLangAttributeName = `${attribute}_${currentLang}^`
+    if (!inExecParams[attribute] && inExecParams[userLangAttributeName]) {
+      inExecParams[attribute] = inExecParams[userLangAttributeName]
+    }
+  }
+
+  let { ID, fullFIO, firstName, middleName, lastName, userID, apply, avatar } = inExecParams
 
   if (
     fullFIO === undefined &&
@@ -391,4 +403,23 @@ function ubaAuditLinkUserDelete (ctx) {
       }
     })
   }
+}
+
+/**
+ * Remove link to uba_user entity before delete
+ * to prevent reference error on deleting linked user
+ *
+ * @param {ubMethodParams} ctx
+ */
+function removeLinkToUser (ctx) {
+  const params = ctx.mParams.execParams
+  const { ID } = params
+  const store = DataStore('org_employee')
+  store.run('update', {
+    execParams: {
+      ID,
+      userID: null
+    },
+    __skipOptimisticLock: true
+  })
 }

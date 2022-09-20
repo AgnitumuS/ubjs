@@ -206,6 +206,7 @@
     "dropZone": {
       "caption": "Dateien hier ablegen oder zum Hochladen anklicken",
       "acceptError": "Ungültige(r) Dateityp(en)",
+      "sizeError": "Dateigröße überschreitet den Höchstwert von {0} MB",
       "selectedFiles": "Ausgewählt"
     }
   },

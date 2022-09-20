@@ -6,6 +6,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+ - `UFileInput` - new property `maxFileSizeKb` to set limit of uploaded file size (in Kb)
 
 ### Changed
 
@@ -16,6 +17,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 - `UTableEntityRoot` - fixed table layout with sidebar on small screen. Sidebar placed on top of the table
 - `UMasterDetailView` - fixed table layout with preview-mode on small screen. Preview box placed on top of the table
+ - `UToolbar`: enable dropdown if there are slots `dropdown` or `dropdown-prepend`
+
+## [5.23.19] - 2022-09-12
+### Fixed
+- `u-body.css` - set the maximum width for the dropdown element to the width of the screen - - mostly for mobile devices
+- `UCron`: fixed localization and 2-way binding 
 
 ## [5.23.18] - 2022-09-11
 ### Added

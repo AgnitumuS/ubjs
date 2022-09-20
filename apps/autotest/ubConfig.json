@@ -217,7 +217,7 @@
 				"driver": "Oracle",
 				"isDefault": true,
 				"dialect": "Oracle11",
-				"serverName": "(DESCRIPTION = (ADDRESS = (PROTOCOL = TCP)(HOST = ora12.unitybase.info)(PORT = 15211)) (CONNECT_DATA = (SERVER = DEDICATED) (SERVICE_NAME = oraub.cloud.local)))",
+				"serverName": "(DESCRIPTION = (ADDRESS = (PROTOCOL = TCP)(HOST = ora12.unitybase.info)(PORT = 1521)) (CONNECT_DATA = (SERVER = DEDICATED) (SERVICE_NAME = oraub.cloud.local)))",
 				"userID": "UB5_%UB_APP%_%PLATFORM%",
 				"password": "UB5_%UB_APP%_%PLATFORM%",
 				"supportLang": ["en", "uk"],
@@ -238,7 +238,7 @@
 				"isDefault": true,
 				"dialect": "PostgreSQL",
 				//"databaseName": "postgresql://pg10.unitybase.info:5402/ub5_%UB_APP%_%PLATFORM%?tcp_user_timeout=3000",
-				"databaseName": "postgresql://pg10.unitybase.info:5402/ub5_%UB_APP%_%PLATFORM%", // pg9 client not supports tcp_user_timeout
+				"databaseName": "postgresql://pg12.unitybase.info:5432/ub5_%UB_APP%_%PLATFORM%", // pg9 client not supports tcp_user_timeout
 				"userID": "ub5_%UB_APP%_%PLATFORM%",
 				"password": "ub5_%UB_APP%_%PLATFORM%",
 				"supportLang": ["en", "uk"],
@@ -271,7 +271,7 @@
 				"driver": "MSSQL2012OleDB",
 				"isDefault": true,
 				"dialect": "MSSQL2012",
-				"serverName": "ms16.unitybase.info,1405",
+				"serverName": "ms16.unitybase.info,1435",
 				"databaseName": "ub5_%UB_APP%_%PLATFORM%",
 				"userID": "ub5_%UB_APP%_%PLATFORM%",
 				"password": "ub5_%UB_APP%_%PLATFORM%",

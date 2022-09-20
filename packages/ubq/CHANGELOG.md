@@ -15,6 +15,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.23.19] - 2022-09-12
+### Added
+ - `ubq_scheduler.calculateNextCronTerm` - added optional parameter `isFirstExecution`; 
+   In case today is monday, and we need each second (@2) monday, then first occurrence should be today (initialDate should be 00:00:01)
+
 ## [5.23.18] - 2022-09-12
 ### Fixed
  - use exactly `cron-parser@4.4.0` (last version what uses require) instead of `^4.4.0`
