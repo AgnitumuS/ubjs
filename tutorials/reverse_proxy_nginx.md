@@ -296,6 +296,9 @@ YOUR_EXTERNAL_URL should be replaced by server external url.
 
 # Tuning OS for high Load
 ## Linux
+
+- TCP kernel parameters
+
 Under sudo:
 ```shell script
 touch /usr/lib/sysctl.d/40-ub-tcp-hiload.conf
@@ -308,7 +311,7 @@ net.ipv4.tcp_fin_timeout = 30
 # increase a number of socket waiting for accept
 net.core.somaxconn=1024
 # raise the nofile/max open files/file descriptors/file handles limit
-fs.file-max = 30000
+fs.file-max=262144
 " > /usr/lib/sysctl.d/40-ub-tcp-hiload.conf
 
 touch /etc/security/limits.d/40-ub-tcp-hiload.conf
@@ -318,14 +321,32 @@ echo "
 * hard nofile 1048576
 * soft nofile 102400
 " > /etc/security/limits.d/40-ub-tcp-hiload.conf
-
 ```
 
-to apply settings without a reboot:  
+- Mitigations
+
+  In case server is not a "public cloud VM" it is safe to disable all hardware vulnerability mitigations by adding
+`mitigations=off` into GRUB_CMDLINE_LINUX_DEFAULT parameter of `/etc/default/grub`. This give +10-30% performance boots.
+Example: `GRUB_CMDLINE_LINUX_DEFAULT="quiet splash mitigations=off"`
+
+- Nginx main config
+For instances with more than 1200 concurrent users file limits and per-worker connection limits should be increased.
+On the root of the `/etc/nginx/nginx.conf` config:
+```shell
+worker_processes auto; # one worker per CPU core
+worker_rlimit_nofile 98304;
+events {
+    worker_connections 4096;
+}
+```
+
+To apply settings without a reboot:  
 ```shell script
 sysctl -p /usr/lib/sysctl.d/40-ub-tcp-hiload.conf
 ulimit -n 102400
-``` 
+update-grub # if mitigations changed
+systemctl restart nginx
+```
 
 This allows to create ~1500 connections per second instead of default 470 and total
 concurrent browser sessions up to 10000.

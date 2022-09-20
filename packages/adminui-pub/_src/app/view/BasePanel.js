@@ -3626,6 +3626,7 @@ Ext.define('UB.view.BasePanel', {
     promise.then(function () {
       $App.doCommand({
         cmdType: 'showList',
+        description: UB.i18n('accessRight'),
         cmdData: {
           params: [{
             entity: aclEntityName,
