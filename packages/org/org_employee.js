@@ -10,8 +10,9 @@ if (ubaAuditPresent) {
 }
 
 me.on('update:after', updateCaptionAndLogToAudit)
+me.on('insert:before', buildAndFillFullname)
 me.on('insert:after', ubaAuditLinkUser)
-me.on('insert:before', buildAndFillFullName)
+me.on('delete:before', removeLinkToUser)
 me.on('delete:after', ubaAuditLinkUserDelete)
 
 global.uba_user.on('update:after', updateEmployeeAttributes)
@@ -406,10 +407,29 @@ function ubaAuditLinkUserDelete (ctx) {
 }
 
 /**
- * If fullFIO and/or shortFIO didn't come from client, they should be built based on user's language and added to execParams
+ * Remove link to uba_user entity before delete
+ * to prevent reference error on deleting linked user
+ *
  * @param {ubMethodParams} ctx
  */
-function buildAndFillFullName (ctx) {
+function removeLinkToUser (ctx) {
+  const params = ctx.mParams.execParams
+  const { ID } = params
+  const store = DataStore('org_employee')
+  store.run('update', {
+    execParams: {
+      ID,
+      userID: null
+    },
+    __skipOptimisticLock: true
+  })
+}
+
+/**
+ * If fullFIO and/or shortFIO didn't come from client, they should be built based on user's language and added to execParams
+ * @param ctx
+ */
+function buildAndFillFullname (ctx) {
   const params = ctx.mParams.execParams
   const { firstName, middleName, lastName, fullFIO, shortFIO } = params
   const namePartsOrder = ({ firstName, middleName, lastName }) => {
