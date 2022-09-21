@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+- `org_employee`: building `fullFIO` and `shortFIO` depending on the user language (surname at the beginning or at the end)
+  in case they didn't come from client side
 
 ### Changed
 - `org_employee`: `org_employee.userID` is sets to NULL before deletion - this allows removing uba_user later

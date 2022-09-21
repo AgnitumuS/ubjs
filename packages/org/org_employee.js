@@ -11,7 +11,7 @@ if (ubaAuditPresent) {
 
 me.on('update:after', updateCaptionAndLogToAudit)
 me.on('insert:after', ubaAuditLinkUser)
-me.on('delete:before', removeLinkToUser)
+me.on('insert:before', buildAndFillFullName)
 me.on('delete:after', ubaAuditLinkUserDelete)
 
 global.uba_user.on('update:after', updateEmployeeAttributes)
@@ -406,20 +406,37 @@ function ubaAuditLinkUserDelete (ctx) {
 }
 
 /**
- * Remove link to uba_user entity before delete
- * to prevent reference error on deleting linked user
- *
+ * If fullFIO and/or shortFIO didn't come from client, they should be built based on user's language and added to execParams
  * @param {ubMethodParams} ctx
  */
-function removeLinkToUser (ctx) {
+function buildAndFillFullName (ctx) {
   const params = ctx.mParams.execParams
-  const { ID } = params
-  const store = DataStore('org_employee')
-  store.run('update', {
-    execParams: {
-      ID,
-      userID: null
-    },
-    __skipOptimisticLock: true
-  })
+  const { firstName, middleName, lastName, fullFIO, shortFIO } = params
+  const namePartsOrder = ({ firstName, middleName, lastName }) => {
+    const lastNameFirst = ['uk', 'ru', 'az', 'ka', 'uz'].includes(Session.userLang)
+    return lastNameFirst
+      ? [lastName, firstName, middleName]
+      : [firstName, middleName, lastName]
+  }
+  if (!fullFIO) {
+    const formattedFullName = namePartsOrder({ firstName, middleName, lastName })
+      .filter(value => !!value)
+      .join(' ')
+    params.fullFIO = formattedFullName
+  }
+
+  if (!shortFIO) {
+    const shortenedFirstName = firstName ? `${firstName[0].toUpperCase()}.` : ''
+    const shortenedMiddleName = middleName ? `${middleName[0].toUpperCase()}.` : ''
+
+    const formattedShortFullName = namePartsOrder({
+      firstName: shortenedFirstName,
+      middleName: shortenedMiddleName,
+      lastName
+    })
+      .filter(value => !!value)
+      .join(' ')
+
+    params.shortFIO = formattedShortFullName
+  }
 }

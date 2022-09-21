@@ -29,6 +29,7 @@ me.on('delete:before', denyBuildInUserDeletion)
 
 /**
  * Do not allow user with same name but in different case
+ *
  * @private
  * @param {ubMethodParams} ctxt
  */
@@ -57,8 +58,22 @@ function checkDuplicateUser (ctxt) {
  */
 function fillFullNameIfMissing (ctxt) {
   const params = ctxt.mParams.execParams
-  if (!params.fullName) {
-    params.fullName = params.name
+  const { name, firstName, middleName, lastName, fullName } = params
+  const namePartsOrder = ({ firstName, middleName, lastName }) => {
+    const lastNameFirst = ['uk', 'ru', 'az', 'ka', 'uz'].includes(Session.userLang)
+    return lastNameFirst
+      ? [lastName, firstName, middleName]
+      : [firstName, middleName, lastName]
+  }
+  if (!fullName) {
+    const formattedFullName = namePartsOrder({ firstName, middleName, lastName })
+      .filter(value => !!value)
+      .join(' ')
+    if (formattedFullName) {
+      params.fullName = formattedFullName
+    } else {
+      params.fullName = name
+    }
   }
   if (params.name && params.name.indexOf('\\') !== -1) {
     // domain/ldap user password never expire on UB level
@@ -68,12 +83,13 @@ function fillFullNameIfMissing (ctxt) {
 
 /**
  * Change user password
- * @param {Number} userID
- * @param {String} userName Either userName or userID must be specified
- * @param  {String} password
- * @param {Boolean} [needChangePassword=false] If true the password will by expired
- * @param {String} [oldPwdHash] Optional for optimisation
- * @method changePassword
+ *
+ * @param {number} userID
+ * @param {string} userName Either userName or userID must be specified
+ * @param  {string} password
+ * @param {boolean} [needChangePassword=false] If true the password will by expired
+ * @param {string} [oldPwdHash] Optional for optimisation
+ * @function changePassword
  * @memberOf uba_user_ns.prototype
  * @memberOfModule @unitybase/uba
  * @public
@@ -157,9 +173,9 @@ me.changePassword = function (userID, userName, password, needChangePassword, ol
   store.execSQL(
     'update uba_user set uPasswordHashHexa=:newPwd:, lastPasswordChangeDate=:lastPasswordChangeDate: where id = :userID:',
     {
-      newPwd: newPwd,
+      newPwd,
       lastPasswordChangeDate: needChangePassword ? new Date(2000, 1, 1) : new Date(),
-      userID: userID
+      userID
     }
   )
   // store oldPwdHash
@@ -167,7 +183,7 @@ me.changePassword = function (userID, userName, password, needChangePassword, ol
     store.run('insert', {
       entity: 'uba_prevPasswordsHash',
       execParams: {
-        userID: userID,
+        userID,
         uPasswordHashHexa: oldPwdHash
       }
     })
@@ -177,6 +193,7 @@ me.changePassword = function (userID, userName, password, needChangePassword, ol
 /**
  * Change (or set) user password for currently logged in user.
  * Members of `Supervisor` role can change password for other users using uba_user.changeOtherUserPassword method
+ *
  * @private
  * @param {THTTPRequest}  req
  * @param {THTTPResponse} resp
@@ -286,10 +303,12 @@ function changeOtherUserPassword (ctxt) {
   }
   if (failException) throw failException
 }
+
 me.changeOtherUserPassword = changeOtherUserPassword
 
 /**
  * Change uba_user.uData JSON key to value
+ *
  * @param {string} key
  * @param {*} value
  */
@@ -323,7 +342,7 @@ function internalSetUDataKey (key, value) {
  * After call to this method UI must logout user and reload itself.
  *
  * @param {ubMethodParams} ctxt
- * @param {String} ctxt.mParams.newLang new user language
+ * @param {string} ctxt.mParams.newLang new user language
  * @memberOf uba_user_ns.prototype
  * @memberOfModule @unitybase/uba
  * @published
@@ -342,6 +361,7 @@ function changeLanguage (ctxt) {
   }
   internalSetUDataKey('lang', newLang)
 }
+
 me.changeLanguage = changeLanguage
 
 /**
@@ -351,8 +371,8 @@ me.changeLanguage = changeLanguage
  * **WARNING** - overall length of uba_user.uData is 2000 characters, so only short values should be stored there
  *
  * @param {ubMethodParams} ctxt
- * @param {String} ctxt.mParams.key key to change
- * @param {String} ctxt.mParams.value new value
+ * @param {string} ctxt.mParams.key key to change
+ * @param {string} ctxt.mParams.value new value
  * @memberOf uba_user_ns.prototype
  * @memberOfModule @unitybase/uba
  * @published
@@ -366,10 +386,12 @@ function setUDataKey (ctxt) {
 
   internalSetUDataKey(key, value)
 }
+
 me.setUDataKey = setUDataKey
 
 /**
  * After inserting new user - log event to uba_audit
+ *
  * @private
  * @param {ubMethodParams} ctx
  */
@@ -395,6 +417,7 @@ function ubaAuditNewUser (ctx) {
 /**
  * After updating user - log event to uba_audit.
  * Logout a user if disabled is sets to 1
+ *
  * @private
  * @param {ubMethodParams} ctx
  */
@@ -463,6 +486,7 @@ function ubaAuditModifyUser (ctx) {
 
 /**
  * After deleting user - log event to uba_audit
+ *
  * @private
  * @param {ubMethodParams} ctx
  */
@@ -497,6 +521,7 @@ function ubaAuditDeleteUser (ctx) {
 
 /**
  * Check if the user is a built-in user
+ *
  * @private
  * @param {string} userName
  * @returns {boolean}
@@ -508,6 +533,7 @@ function isBuiltInUser (userName) {
 /**
  * Check if the user is a service user defined by the security.disabledAccounts
  * configuration setting.
+ *
  * @private
  * @param {string} userName
  * @returns {boolean}
@@ -519,6 +545,7 @@ function isDisabledUser (userName) {
 
 /**
  * Prevent deletion a build-in user
+ *
  * @private
  * @param {ubMethodParams} ctx
  */
@@ -537,6 +564,7 @@ function denyBuildInUserDeletion (ctx) {
 
 /**
  * Prevent renaming of a build-in user
+ *
  * @private
  * @param {ubMethodParams} ctx
  */
@@ -569,18 +597,18 @@ function denyBuildInUserRename (ctx) {
  * This endpoint is mostly for third-party integration.
  *
  * @example
-GET /rest/uba_user/getUserData
-
+ GET /rest/uba_user/getUserData
  * @param fake
  * @param {THTTPRequest} req
  * @param {THTTPResponse} resp
- * @method getUserData
+ * @function getUserData
  * @memberOf uba_user_ns.prototype
  * @memberOfModule @unitybase/uba
  * @published
-*/
+ */
 function getUserData (fake, req, resp) {
   resp.writeEnd(Session.uData)
   resp.statusCode = 200
 }
+
 me.getUserData = getUserData
