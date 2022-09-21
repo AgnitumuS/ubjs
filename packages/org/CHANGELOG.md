@@ -15,6 +15,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+- `updateEmployeeAttributes` from `org_employee.js`: do not try to update
+  not-null attributes of the `org_employee` entity in case they are `null` in
+  the `uba_user` entity
 
 ## [5.23.20] - 2022-09-12
 ### Fixed
