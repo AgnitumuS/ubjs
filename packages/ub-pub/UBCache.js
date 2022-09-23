@@ -15,7 +15,19 @@ const dbInfo = {
   version: 1
 }
 
-const iDB = (typeof window !== 'undefined') && window.indexedDB
+let iDB = (typeof window !== 'undefined') && window.indexedDB
+
+if (iDB) {
+  try {
+    // additional checking the ability to work with IndexedDB, for Firefox private mode
+    const openRequest = iDB.open(dbInfo.name.toLowerCase(), dbInfo.version || 1)
+    openRequest.onerror = function (e) {
+      iDB = false
+    }
+  } catch (e) {
+    iDB = false
+  }
+}
 
 /**
  * @classdesc
