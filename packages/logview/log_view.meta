@@ -1,0 +1,6 @@
+{
+  "caption": "LogView",
+  "description": "Virtual entity for remote access to server logs",
+  "dsType": "Virtual",
+  "attributes": []
+}

@@ -176,6 +176,9 @@
 				{
 					"path": "./node_modules/@unitybase/adminui-vue"
 				},
+				{
+					"path": "./node_modules/@unitybase/logview"
+				},
 				//#ifdef(%UB_USE_WEBAUTHN%)
 				{
 					"path": "./node_modules/@ub-e/webauthn"

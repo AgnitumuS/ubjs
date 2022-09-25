@@ -12,6 +12,7 @@
       class="u-checkbox__label"
       :class="{ 'u-checkbox__label--left': labelPosition === 'left' }"
       :for="_uid"
+      v-on="$listeners"
     >{{ $ut(label) }}
       <!-- @slot Default slot is inside label, just after input -->
       <slot />

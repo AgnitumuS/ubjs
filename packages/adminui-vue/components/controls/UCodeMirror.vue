@@ -64,7 +64,7 @@ export default {
 
     /**
      * CodeMirror editor mode
-     * @values application/javascript, application/x-javascript, text/javascript, application/json, application/x-json, text/yaml, script/x-vue, text/x-vue
+     * @values application/javascript, application/json, text/yaml, script/x-vue, text/x-sql
      */
     editorMode: {
       type: String,

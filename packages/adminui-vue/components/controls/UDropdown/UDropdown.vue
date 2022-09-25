@@ -232,6 +232,11 @@ export default {
       this.$emit('open')
     },
 
+    /**
+     * Manually close dropdown
+     *
+     * @public
+     */
     close () {
       this.visible = false
       this.$emit('close')
@@ -247,6 +252,12 @@ export default {
       this.close()
     },
 
+    /**
+     * Popup dropdown at the position of the passed mouse event
+     *
+     * @param {MouseEvent|{x: number, y: number, target: EventTarget}} event
+     * @public
+     */
     async show ({ x, y, target }) {
       this.visible = false
       this.renderKey++

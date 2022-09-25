@@ -1,0 +1,7 @@
+{
+ "formType": "vue",
+ "isDefault": false,
+ "entity": "log_view",
+ "caption": "LogView",
+ "formCode": "log_view-fm.vue"
+}
