@@ -8,11 +8,20 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
-- `org_employee`: `org_employee.userID` is sets to NULL before deletion - this allows removing uba_user later
 
 ### Deprecated
 
 ### Removed
+
+### Fixed
+
+## [5.23.21] - 2022-09-26
+### Added
+- `org_employee`: building `fullFIO` and `shortFIO` depending on the user language (surname at the beginning or at the end)
+  in case they didn't come from client side
+
+### Changed
+- `org_employee`: `org_employee.userID` is sets to NULL before deletion - this allows removing uba_user later
 
 ### Fixed
 - `updateEmployeeAttributes` from `org_employee.js`: do not try to update

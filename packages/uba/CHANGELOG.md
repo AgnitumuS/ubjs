@@ -8,13 +8,20 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
- - Navigation shortcut `Administration -> Users And Groups -> Users Sessions` is moved to `Administration -> Maintenance Tools` folder
 
 ### Deprecated
 
 ### Removed
 
 ### Fixed
+
+## [5.23.18] - 2022-09-26
+### Added
+- `uba_user`: building `fullName` depending on the user language (surname at the beginning or at the end)
+  in case it didn't come from client side
+
+### Changed
+ - Navigation shortcut `Administration -> Users And Groups -> Users Sessions` is moved to `Administration -> Maintenance Tools` folder
 
 ## [5.23.17] - 2022-09-11
 ## [5.23.16] - 2022-08-26

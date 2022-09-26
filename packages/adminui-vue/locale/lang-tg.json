@@ -275,11 +275,6 @@
     "month": "моҳҳо",
     "dayOfWeek": "рӯзҳои ҳафта",
     "every": "every",
-    "everySecond": "second(s)",
-    "everyMinute": "minute(s)",
-    "everyHour": "hour(s)",
-    "everyDay": "day(s)",
-    "everyMonth": "month(s)",
     "chooseOneOrMany": "choose one or many",
     "specific": "specific",
     "between": "between",
@@ -288,7 +283,8 @@
     "and": "ва",
     "estimate": "Иҷрои тахминӣ",
     "step": "step",
-    "oncePer": "once per",
+    "oncePer": "every",
+    "oncePerSuffix": " ",
     "occurrence": "occurrence"
   }
 }

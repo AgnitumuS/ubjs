@@ -1,6 +1,6 @@
 {
   "name": "@unitybase/logview",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Log viewer for UnityBase server log format",
   "repository": "https://git-pub.intecracy.com/unitybase/ubjs/tree/master/packages/logview",
   "config": {
@@ -20,7 +20,7 @@
     "@unitybase/base": "^5.23.8",
     "@unitybase/cs-shared": "^5.23.7",
     "@unitybase/ub": "^5.23.14",
-    "@unitybase/uba": "^5.23.17",
+    "@unitybase/uba": "^5.23.18",
     "sql-formatter": "^10.6.0"
   },
   "devDependencies": {

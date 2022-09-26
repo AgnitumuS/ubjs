@@ -6,8 +6,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
- - initial release. Limited to file based logging (journald and docker are in plans)
-
 ### Changed
 
 ### Deprecated
@@ -15,3 +13,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+
+
+## [1.0.1] - 2022-09-26
+### Added
+ - initial release. Limited to file based logging (journald and docker are in plans)

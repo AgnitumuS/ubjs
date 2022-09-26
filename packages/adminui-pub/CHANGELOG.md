@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.24.7] - 2022-09-26
 ## [5.24.6] - 2022-09-11
 ### Added
  - `$App.verbaliseCronExpression` - added support for non-standard 7-part cron expression syntax,

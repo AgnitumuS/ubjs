@@ -6,9 +6,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
- - `UFileInput` - new property `maxFileSizeKb` to set limit of uploaded file size (in Kb)
- - `UCheckbox` - added `v-on="$listeners"` for checkbox label
- - `UDropdown` - added documentation for public methods `show()` and `close()`
 
 ### Changed
 
@@ -19,6 +16,19 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 - `UTableEntityRoot` - fixed table layout with sidebar on small screen. Sidebar placed on top of the table
 - `UMasterDetailView` - fixed table layout with preview-mode on small screen. Preview box placed on top of the table
+
+## [5.23.20] - 2022-09-26
+### Added
+ - `UFileInput` - new property `maxFileSizeKb` to set limit of uploaded file size (in Kb)
+ - `UCheckbox` - added `v-on="$listeners"` for checkbox label
+ - `UDropdown` - added documentation for public methods `show()` and `close()`
+ - `UCron`: new prop `verbalize-fn` - function, what transform cron expression into human-readable string.
+  Default is `$App.verbaliseCronExpression`
+
+### Changed
+ - `UCron` - improved localization for `uk`, `ru` & `de` (cases are taken into account)
+
+### Fixed
 - filters `isNull` and `notIsNull` - localised description
 - `UToolbar`: enable dropdown if there are slots `dropdown` or `dropdown-prepend`
 

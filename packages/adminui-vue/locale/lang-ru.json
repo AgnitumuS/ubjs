@@ -285,21 +285,31 @@
     "day": "дни",
     "month": "месяца",
     "dayOfWeek": "день недели",
-    "every": "every",
-    "everySecond": "second(s)",
-    "everyMinute": "minute(s)",
-    "everyHour": "hour(s)",
-    "everyDay": "day(s)",
-    "everyMonth": "month(s)",
-    "chooseOneOrMany": "выбирите один или несколько",
-    "specific": "specific",
+    "every": {
+      "second": "каждую секунду",
+      "minute": "каждую минуту",
+      "hour": "каждий час",
+      "day": "каждий день",
+      "month": "каждий месяц",
+      "dayOfWeek": "каждий день недели"
+    },
+    "chooseOneOrMany": "один или несколько",
+    "specific": {
+      "second": "конкретные секунды",
+      "minute": "конкретные минуты",
+      "hour": "конкретные часы",
+      "day": "конкретные дни",
+      "month": "конкретные месяцы",
+      "dayOfWeek": "конкретные дни недели"
+    },
     "between": "между",
     "expression": "Выражение",
-    "interpretation": "Интерпритация",
+    "interpretation": "Повторювати",
     "and": "и",
-    "estimate": "Оценочные старты",
+    "estimate": "Запланированные старты",
     "step": "шаг",
-    "oncePer": "один раз на",
+    "oncePer": "каждий",
+    "oncePerSuffix": "-й",
     "occurrence": "случая"
   }
 }
