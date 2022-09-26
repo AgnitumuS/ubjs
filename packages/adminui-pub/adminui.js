@@ -58,7 +58,7 @@ $App.verbaliseCronExpression = function (expression, lang) {
       }
       res = __cronstrue.toString(expression, { locale: _defaultLang || 'en' })
       if (periodicalWeek) {
-        res += `, ${UB.i18n('UCron.oncePer')} ${periodicalWeek} ${UB.i18n('UCron.occurrence')}`
+        res += `, ${UB.i18n('UCron.oncePer')} ${periodicalWeek}${UB.i18n('UCron.oncePerSuffix')}`
       }
     } catch (e) {
       res = e.message || e

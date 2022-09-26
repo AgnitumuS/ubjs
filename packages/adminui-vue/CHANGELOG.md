@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
   Default is `$App.verbaliseCronExpression`
 
 ### Changed
+ - `UCron` - improved localization for `uk`, `ru` & `de` (cases are taken into account)
 
 ### Deprecated
 

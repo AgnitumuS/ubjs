@@ -277,11 +277,6 @@
     "month": "month",
     "dayOfWeek": "day of week",
     "every": "every",
-    "everySecond": "second(s)",
-    "everyMinute": "minute(s)",
-    "everyHour": "hour(s)",
-    "everyDay": "day(s)",
-    "everyMonth": "month(s)",
     "chooseOneOrMany": "choose one or many",
     "specific": "specific",
     "between": "between",
@@ -290,7 +285,8 @@
     "and": "and",
     "estimate": "Болжалды орындалулар",
     "step": "шаг",
-    "oncePer": "один раз на",
+    "oncePer": "every",
+    "oncePerSuffix": "-й",
     "occurrence": "случая"
   }
 }

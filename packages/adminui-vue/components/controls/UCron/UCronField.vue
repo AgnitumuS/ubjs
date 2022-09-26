@@ -46,7 +46,6 @@
                 {{ getItemName(i) }}
               </option>
             </select>
-            {{ `${$ut(`UCron.${mode}`)}` }}
           </span>
         </div>
       </template>
@@ -136,14 +135,20 @@ export default {
       return res
     },
     kinds () {
+      const everyLoc = this.$ut('UCron.every')
+      const everyLabel = typeof everyLoc === 'string' ? everyLoc + ' ' + this.$ut(`UCron.${this.mode}`) : everyLoc[this.mode]
+      const specificLoc = this.$ut('UCron.specific')
+      const specificLabel = typeof specificLoc === 'string' ? specificLoc + ' ' + this.$ut(`UCron.${this.mode}`) : specificLoc[this.mode]
       return [
-        { id: 'every', label: `${this.$ut('UCron.every')} ${this.$ut(`UCron.${this.mode}`)}` },
-        { id: 'specify', label: `${this.$ut('UCron.specific')} ${this.$ut(`UCron.${this.mode}`)} (${this.$ut('UCron.chooseOneOrMany')})` },
+        { id: 'every', label: everyLabel /*this.$ut('UCron.every.' + this.mode)*/ },
+        { id: 'specify', label: `${specificLabel /*this.$ut('UCron.specific.' + this.mode)*/} (${this.$ut('UCron.chooseOneOrMany')})` },
         { id: 'between', label: '' }
       ]
     },
     betweenLabel () {
-      return `${this.$ut('UCron.every')} ${this.$ut(`UCron.${this.mode}`)} ${this.$ut('UCron.between')}`
+      const everyLoc = this.$ut('UCron.every')
+      const everyLabel = typeof everyLoc === 'string' ? everyLoc + ' ' + this.$ut(`UCron.${this.mode}`) : everyLoc[this.mode]
+      return `${everyLabel /*this.$ut('UCron.every.' + this.mode)*/} ${this.$ut('UCron.between')}`
     }
   },
   methods: {
