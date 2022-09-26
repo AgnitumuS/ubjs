@@ -285,21 +285,31 @@
     "day": "Tag",
     "month": "Monat",
     "dayOfWeek": "Wochentag",
-    "every": "alle",
-    "everySecond": "Sekunde(n)",
-    "everyMinute": "Minute(n)",
-    "everyHour": "Stunde(n)",
-    "everyDay": "Tag(e)",
-    "everyMonth": "Monat(e)",
+    "every": {
+      "second": "jede Sekunde",
+      "minute": "jede Minute",
+      "hour": "jede Stunde",
+      "day": "jeden Tag",
+      "month": "jeden Monat",
+      "dayOfWeek": "jeden Wochentag"
+    },
     "chooseOneOrMany": "Bitte wählen Sie mindestens einen Eintrag",
-    "specific": "specific",
+    "specific": {
+      "second": "bestimmte Sekunde",
+      "minute": "bestimmte Minute",
+      "hour": "bestimmte Stunde",
+      "day": "bestimmter Tag",
+      "month": "bestimmter Monat",
+      "dayOfWeek": "bestimmter Wochentag"
+    },
     "between": "zwischen",
     "expression": "Cron-Ausdruck",
     "interpretation": "Interpretation",
     "and": "und",
     "estimate": "Geschätzte Hinrichtungen",
     "step": "stap",
-    "oncePer": "een keer per",
+    "oncePer": "jeden",
+    "oncePerSuffix": " ",
     "occurrence": "voorval"
   }
 }

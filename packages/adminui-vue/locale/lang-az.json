@@ -271,9 +271,9 @@
     "noData": "No data"
   },
   "UCron": {
-    "seconds": "saniyə",
-    "minutes": "dəqiqə",
-    "hours": "saat",
+    "second": "saniyə",
+    "minute": "dəqiqə",
+    "hour": "saat",
     "day": "gün",
     "month": "aylar",
     "dayOfWeek": "həftənin günləri",
@@ -292,6 +292,7 @@
     "estimate": "Təxmini Edamlar",
     "step": "step",
     "oncePer": "once per",
+    "oncePerSuffix": " ",
     "occurrence": "occurrence"
   }
 }

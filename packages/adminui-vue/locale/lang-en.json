@@ -286,12 +286,7 @@
     "month": "month",
     "dayOfWeek": "day of week",
     "every": "every",
-    "everySecond": "second(s)",
-    "everyMinute": "minute(s)",
-    "everyHour": "hour(s)",
-    "everyDay": "day(s)",
-    "everyMonth": "month(s)",
-    "chooseOneOrMany": "choose one or many",
+    "chooseOneOrMany": "one or several",
     "specific": "specific",
     "between": "between",
     "expression": "Expression",
@@ -299,7 +294,8 @@
     "and": "and",
     "estimate": "Estimated executions",
     "step": "step",
-    "oncePer": "once per",
+    "oncePer": "every",
+    "oncePerSuffix": " ",
     "occurrence": "occurrence"
   }
 }
