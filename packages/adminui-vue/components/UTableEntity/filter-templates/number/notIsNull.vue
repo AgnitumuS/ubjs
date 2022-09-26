@@ -1,5 +1,5 @@
 <template>
-  <filter-template @submit="submitHandler"/>
+  <filter-template @submit="submitHandler" />
 </template>
 
 <script>
@@ -14,9 +14,10 @@ export default {
 
   methods: {
     getCondition () {
+      const { $ut } = this
       return {
         whereList: [{ condition: 'notIsNull' }],
-        description: 'notIsNull'
+        description: $ut('notIsNull')
       }
     }
   }
