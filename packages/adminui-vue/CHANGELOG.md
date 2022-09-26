@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - `UFileInput` - new property `maxFileSizeKb` to set limit of uploaded file size (in Kb)
  - `UCheckbox` - added `v-on="$listeners"` for checkbox label
  - `UDropdown` - added documentation for public methods `show()` and `close()`
+ - `UCron`: new prop `verbalize-fn` - function, what transform cron expression into human-readable string.
+  Default is `$App.verbaliseCronExpression`
 
 ### Changed
 
