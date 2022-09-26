@@ -6,6 +6,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+## [5.23.20] - 2022-09-26
+### Added
  - `UFileInput` - new property `maxFileSizeKb` to set limit of uploaded file size (in Kb)
  - `UCheckbox` - added `v-on="$listeners"` for checkbox label
  - `UDropdown` - added documentation for public methods `show()` and `close()`
@@ -14,10 +25,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Changed
  - `UCron` - improved localization for `uk`, `ru` & `de` (cases are taken into account)
-
-### Deprecated
-
-### Removed
 
 ### Fixed
 - filters `isNull` and `notIsNull` - localised description
