@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+- `uba_user`: building `fullName` depending on the user language (surname at the beginning or at the end)
+  in case it didn't come from client side
 
 ### Changed
  - Navigation shortcut `Administration -> Users And Groups -> Users Sessions` is moved to `Administration -> Maintenance Tools` folder

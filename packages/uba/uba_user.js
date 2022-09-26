@@ -53,12 +53,26 @@ function checkDuplicateUser (ctxt) {
  * Set fullName = name in case fullName is missing
  * Set lastPasswordChangeDate = maxDate in case user is domainUser
  * @private
- * @param {ubMethodParams} ctxt
+ * @param {ubMethodParams} ctx
  */
-function fillFullNameIfMissing (ctxt) {
-  const params = ctxt.mParams.execParams
-  if (!params.fullName) {
-    params.fullName = params.name
+function fillFullNameIfMissing (ctx) {
+  const params = ctx.mParams.execParams
+  const { name, firstName, middleName, lastName, fullName } = params
+  const namePartsOrder = ({ firstName, middleName, lastName }) => {
+    const lastNameFirst = ['uk', 'ru', 'az', 'ka', 'uz'].includes(Session.userLang)
+    return lastNameFirst
+      ? [lastName, firstName, middleName]
+      : [firstName, middleName, lastName]
+  }
+  if (!fullName) {
+    const formattedFullName = namePartsOrder({ firstName, middleName, lastName })
+      .filter(value => !!value)
+      .join(' ')
+    if (formattedFullName) {
+      params.fullName = formattedFullName
+    } else {
+      params.fullName = name
+    }
   }
   if (params.name && params.name.indexOf('\\') !== -1) {
     // domain/ldap user password never expire on UB level
@@ -569,7 +583,7 @@ function denyBuildInUserRename (ctx) {
  * This endpoint is mostly for third-party integration.
  *
  * @example
-GET /rest/uba_user/getUserData
+ GET /rest/uba_user/getUserData
 
  * @param fake
  * @param {THTTPRequest} req
@@ -578,7 +592,7 @@ GET /rest/uba_user/getUserData
  * @memberOf uba_user_ns.prototype
  * @memberOfModule @unitybase/uba
  * @published
-*/
+ */
 function getUserData (fake, req, resp) {
   resp.writeEnd(Session.uData)
   resp.statusCode = 200
