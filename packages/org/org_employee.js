@@ -117,17 +117,26 @@ function updateEmployeeAttributes (ctx) {
   }
 
   console.log('Sync employee attributes with user')
+
   const execParams = {
     ID: employee.ID,
-    firstName,
-    lastName,
-    middleName,
     apply: title,
     fullFIO: fullName
+  }
+
+  if (firstName != null) {
+    execParams.firstName = firstName
+  }
+  if (lastName != null) {
+    execParams.lastName = lastName
+  }
+  if (middleName != null) {
+    execParams.middleName = middleName
   }
   if (tempAvatar) {
     execParams.avatar = JSON.stringify(tempAvatar)
   }
+
   DataStore('org_employee').run('update', {
     execParams,
     __skipOptimisticLock: true,
