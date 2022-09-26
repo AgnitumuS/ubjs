@@ -8,19 +8,20 @@ export default {
   components: {
     FilterTemplate: require('../../components/FilterTemplate.vue').default
   },
-  
+
   mixins: [require('../mixinForFilter.js')],
 
-  created(){
+  created () {
     this.$emit('search-disabled', false)
   },
   methods: {
     getCondition () {
+      const { $ut } = this
       return {
         whereList: [{ condition: 'isNull' }],
-        description: 'isNull'
+        description: $ut('isNull')
       }
-    },
+    }
   }
 }
 </script>

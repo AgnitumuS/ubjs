@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
+ - Navigation shortcut `Administration -> Users And Groups -> Users Sessions` is moved to `Administration -> Maintenance Tools` folder
 
 ### Deprecated
 
