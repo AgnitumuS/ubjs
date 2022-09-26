@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - `UDropdown` - added documentation for public methods `show()` and `close()`
 
 ### Changed
+ - `UCron` - improved localization for `uk`, `ru` & `de` (cases are taken into account)
 
 ### Deprecated
 

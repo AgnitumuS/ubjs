@@ -45,7 +45,7 @@ module.exports.mount = function ({ title, tabId, entity, instanceID, formCode, r
 <template>
   <el-scrollbar style="height: 100%;">
     <u-code-mirror v-model="txtCode" value-is-json></u-code-mirror>
-    <u-cron v-model="cronExpression" :hide-sections="['second', 'minute']" />
+    <u-cron v-model="cronExpression" :hide-sections="['second', 'minute', 'hour']" />
     <u-cron v-model="cronExpression2" />
     <u-base-input v-model="cronExpression" />
     <fieldset style="line-height: 2em;">

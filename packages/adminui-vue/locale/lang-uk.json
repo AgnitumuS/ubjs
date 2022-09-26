@@ -285,21 +285,31 @@
     "day": "день",
     "month": "місяць",
     "dayOfWeek": "день тижня",
-    "every": "кожного(ї)",
-    "everySecond": "секунди",
-    "everyMinute": "хвилини",
-    "everyHour": "години",
-    "everyDay": "дня",
-    "everyMonth": "місяця",
-    "chooseOneOrMany": "вибрати один або декілька",
-    "specific": "конкретного(ї)",
+    "every": {
+      "second": "кожну секунду",
+      "minute": "кожну хвилину",
+      "hour": "кожну годину",
+      "day": "кожен день",
+      "month": "кожен місяць",
+      "dayOfWeek": "кожен день тижня"
+    },
+    "chooseOneOrMany": "один або декілька",
+    "specific": {
+      "second": "конкретні секунди",
+      "minute": "конкретні хвилини",
+      "hour": "конкретні години",
+      "day": "конкретні дні",
+      "month": "конкретні місяці",
+      "dayOfWeek": "конкретні дні тижня"
+    },
     "between": "між",
     "expression": "Вираз",
-    "interpretation": "Інтерпретація",
+    "interpretation": "Повторювати",
     "and": "та",
-    "estimate": "Орієнтовні старти",
+    "estimate": "Заплановані старти",
     "step": "крок",
-    "oncePer": "один раз на",
-    "occurrence": "випадки"
+    "oncePer": "кожен",
+    "oncePerSuffix": "-й",
+    "occurrence": "періодичність"
   }
 }

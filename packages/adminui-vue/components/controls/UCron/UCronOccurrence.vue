@@ -10,7 +10,7 @@
       :value="oncePer"
       @input="emitChange"
     />
-    {{ $ut('UCron.occurrence') }}
+    {{ $ut('UCron.oncePerSuffix') }}
   </label>
 </template>
 
