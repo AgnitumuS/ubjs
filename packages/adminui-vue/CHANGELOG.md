@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
+ - `UFileInput` - validation notification set duration to 30 seconds
 
 ### Deprecated
 
