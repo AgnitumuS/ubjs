@@ -14,7 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
-
+- `UDropdown`, `UNavbar` - fixed view on horizontal screens (mainly mobile)
 ## [5.23.20] - 2022-09-26
 ### Added
  - `UFileInput` - new property `maxFileSizeKb` to set limit of uploaded file size (in Kb)
