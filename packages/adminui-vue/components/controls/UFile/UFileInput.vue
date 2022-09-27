@@ -182,7 +182,7 @@ export default {
             message: `${this.$ut(
               'fileInput.dropZone.acceptError'
             )}: ${invalidFormatFiles}`,
-            duration: 0
+            duration: 30000
           })
         } else if (invalidSizeFiles) {
           this.$notify({
@@ -190,7 +190,7 @@ export default {
             message: `${this.$ut(
               'fileInput.dropZone.sizeError', this.maxFileSizeKb
             )}: ${invalidSizeFiles}`,
-            duration: 0
+            duration: 30000
           })
         }
       }
