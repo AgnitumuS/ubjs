@@ -8,12 +8,15 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
+ - **BREAKING** `await UBCache.createStorage` must be called before any UBCache operations. `UBConnection.initCache`
+  already did it during connection creation, so nothing changed for `UBConnection.cache` usage
 
 ### Deprecated
 
 ### Removed
 
 ### Fixed
+ - fixed application start for Firefox in incognito mode (fallback UBCache to in-memory storage)
 
 ## [5.23.8] - 2022-08-19
 ## [5.23.7] - 2022-08-16
