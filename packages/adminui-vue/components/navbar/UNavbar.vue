@@ -265,7 +265,7 @@ export default {
 
 <style>
 .u-navbar-all-tabs__dropdown__body {
-  max-height: calc(100vh - 105px); /* decrease by footer height */
+  max-height: calc(100vh - 105px - var(--navbar-height)); /* decrease by footer height */
   overflow: auto;
 }
 .u-navbar {
@@ -276,7 +276,7 @@ export default {
   border-bottom: 1px solid hsl(var(--hs-border), var(--l-layout-border-default));
   position: relative;
   z-index: 10;
-  height: 54px;
+  height: var(--navbar-height);
 }
 
 .u-navbar__hidden {
@@ -399,6 +399,11 @@ export default {
 
 .u-navbar-all-tabs__dropdown-item.active {
   background: hsl(var(--hs-primary), var(--l-background-default));
+}
+
+.u-navbar-all-tabs__dropdown-item .u-dropdown-item__label > div{
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .u-navbar-all-tabs__dropdown-item-close-button {

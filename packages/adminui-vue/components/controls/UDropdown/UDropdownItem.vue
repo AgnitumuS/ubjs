@@ -7,7 +7,6 @@
   <u-dropdown
     v-else
     :placement="placement"
-    position="absolute"
   >
     <button
       :disabled="disabled"
