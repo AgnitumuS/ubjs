@@ -29,7 +29,14 @@ module.exports.default = {
   },
   methods: {
     doChangePassword: function () {},
-    doLogout: function () {}
+    doLogout: function () {},
+    async revertCheckedIfNeeded (newBoolDataVal) {
+      if (!newBoolDataVal) return
+      const resp = await this.$dialogYesNo('Confirm', 'Really turn on?')
+      if (!resp) {
+        this.boolData = false
+      }
+    }
   }
 }
 
@@ -50,7 +57,7 @@ module.exports.mount = function ({ title, tabId, entity, instanceID, formCode, r
     <u-base-input v-model="cronExpression" />
     <fieldset style="line-height: 2em;">
       <legend>UCheckbox</legend>
-      <u-checkbox v-model="boolData" label="bool data" />
+      <u-checkbox v-model="boolData" label="bool data" @change="revertCheckedIfNeeded"/>
       <u-checkbox v-model="boolData" label="Bool data as switch" kind="switch"/>
       <u-checkbox v-model="boolData2" label="Bool data2 left label" label-position="left" kind="switch"/>
       <u-checkbox v-model="boolData2" label="Bool data2" kind="switch"/>
