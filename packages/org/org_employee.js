@@ -3,8 +3,11 @@
 const me = org_employee
 const { App, Session, Repository, DataStore } = require('@unitybase/ub')
 
+const supportedLanguages = App.domainInfo.get('org_employee').connectionConfig.supportLang
 const ubaAuditPresent = App.domainInfo.has('uba_audit')
+
 let auditStore
+
 if (ubaAuditPresent) {
   auditStore = DataStore('uba_audit')
 }
@@ -435,37 +438,58 @@ function removeLinkToUser (ctx) {
 }
 
 /**
- * If fullFIO and/or shortFIO didn't come from client, they should be built based on user's language and added to execParams
- * @param ctx
+ * If fullFIO and/or shortFIO didn't come from client, they should be built
+ * based on user's language and added to execParams
+ *
+ * @param {ubMethodParams} ctx
  */
 function buildAndFillFullname (ctx) {
   const params = ctx.mParams.execParams
-  const { firstName, middleName, lastName, fullFIO, shortFIO } = params
-  const namePartsOrder = ({ firstName, middleName, lastName }) => {
-    const lastNameFirst = ['uk', 'ru', 'az', 'ka', 'uz'].includes(Session.userLang)
-    return lastNameFirst
-      ? [lastName, firstName, middleName]
-      : [firstName, middleName, lastName]
-  }
-  if (!fullFIO) {
-    const formattedFullName = namePartsOrder({ firstName, middleName, lastName })
-      .filter(value => !!value)
-      .join(' ')
-    params.fullFIO = formattedFullName
+  const lastNameFirst = ['uk', 'ru', 'az', 'ka', 'uz'].includes(Session.userLang)
+
+  // Assign per language parameters
+  for (const lang of supportedLanguages) {
+    const fullFioKey = 'fullFIO_' + lang + '^'
+    const shortFioKey = 'shortFIO_' + lang + '^'
+
+    const lastName = params['lastName_' + lang + '^']
+    const firstName = params['firstName_' + lang + '^']
+    const middleName = params['middleName_' + lang + '^']
+
+    const hasNameComponents = firstName || middleName || lastName
+
+    if (!params[fullFioKey] && hasNameComponents) {
+      params[fullFioKey] = buildFIO({ lastName, firstName, middleName })
+    }
+    if (!params[shortFioKey] && hasNameComponents) {
+      params[shortFioKey] = buildShortFIO({ lastName, firstName, middleName })
+    }
   }
 
-  if (!shortFIO) {
-    const shortenedFirstName = firstName ? `${firstName[0].toUpperCase()}.` : ''
-    const shortenedMiddleName = middleName ? `${middleName[0].toUpperCase()}.` : ''
+  // Assign alias parameters
+  const {firstName, middleName, lastName} = params
+  const hasNameComponents = firstName || middleName || lastName
 
-    const formattedShortFullName = namePartsOrder({
-      firstName: shortenedFirstName,
-      middleName: shortenedMiddleName,
+  if (!params.fullFIO && hasNameComponents) {
+    params.fullFIO = buildFIO({ lastName, firstName, middleName })
+  }
+  if (!params.shortFIO && hasNameComponents) {
+    params.shortFIO = buildShortFIO({ lastName, firstName, middleName })
+  }
+
+  function buildShortFIO ({ firstName, middleName, lastName }) {
+    return buildFIO({
+      firstName: firstName ? firstName[0].toUpperCase() + '.' : '',
+      middleName: middleName ? middleName[0].toUpperCase() + '.' : '',
       lastName
     })
-      .filter(value => !!value)
-      .join(' ')
+  }
 
-    params.shortFIO = formattedShortFullName
+  function buildFIO ({ firstName, middleName, lastName }) {
+    const nameComponents = lastNameFirst
+      ? [lastName, firstName, middleName]
+      : [firstName, middleName, lastName]
+
+    return nameComponents.filter(Boolean).join(' ')
   }
 }

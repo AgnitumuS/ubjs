@@ -717,7 +717,7 @@ UBConnection.prototype.initCache = function (userDbVersion) {
    */
   this.cachedSessionEntityRequested = {}
   // clear use session store
-  return this.cache.clear(UBCache.SESSION)
+  return this.cache.createStorage().then(cache => cache.clear(UBCache.SESSION))
 }
 
 /**

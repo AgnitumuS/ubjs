@@ -1,5 +1,8 @@
 <template>
-  <div class="u-table-register">
+  <div
+    class="u-table-register"
+    :class="{ 'u-table-register--preview-mode': viewMode === 'previewForm' }"
+  >
     <div class="u-table-register__view">
       <u-table-entity
         ref="masterTable"
@@ -150,13 +153,6 @@ export default {
     }
   },
 
-  beforeDestroy () {
-    if (!this._unwatchList) return
-    for (const unwatchFn of this._unwatchList) {
-      unwatchFn()
-    }
-  },
-
   data () {
     return {
       rowId: null,
@@ -240,6 +236,13 @@ export default {
     }
   },
 
+  beforeDestroy () {
+    if (!this._unwatchList) return
+    for (const unwatchFn of this._unwatchList) {
+      unwatchFn()
+    }
+  },
+
   methods: {
     setSelectedRow (id) {
       this.$refs.masterTable.$store.commit('SELECT_ROW', id)
@@ -264,9 +267,13 @@ export default {
       this.$refs.masterTable.$el.focus()
     },
 
-    refreshMasterTable: throttle(50, function () {
-      this.$refs.detailsTable.$store.dispatch('refresh')
-    }, { noTrailing: true }),
+    refreshMasterTable: throttle(
+      50,
+      function () {
+        this.$refs.detailsTable.$store.dispatch('refresh')
+      },
+      { noTrailing: true }
+    ),
 
     formatDetailLabel ({ entity, attribute }) {
       const hasSameEntity =
@@ -301,35 +308,66 @@ export default {
 
       const store = masterTableInstance.$store
 
-      const savedFilters = this.$uiSettings.get('UTableEntity', 'filters', this.shortcutCode)
+      const savedFilters = this.$uiSettings.get(
+        'UTableEntity',
+        'filters',
+        this.shortcutCode
+      )
       if (savedFilters) {
         for (const filter of savedFilters) {
           store.commit('APPLY_FILTER', filter)
         }
       }
-      const savedViewMode = this.$uiSettings.get('UTableEntity', 'viewMode', this.shortcutCode)
+      const savedViewMode = this.$uiSettings.get(
+        'UTableEntity',
+        'viewMode',
+        this.shortcutCode
+      )
       if (savedViewMode) {
         this.viewMode = savedViewMode
       }
 
-      const savedSort = this.$uiSettings.get('UTableEntity', 'sort', this.shortcutCode)
+      const savedSort = this.$uiSettings.get(
+        'UTableEntity',
+        'sort',
+        this.shortcutCode
+      )
       if (savedSort) {
         store.commit('SORT', savedSort)
       }
 
       this._unwatchList = [
         store.watch(
-          state => state.filters,
-          value => { this.$uiSettings.put(value, 'UTableEntity', 'filters', this.shortcutCode) }
+          (state) => state.filters,
+          (value) => {
+            this.$uiSettings.put(
+              value,
+              'UTableEntity',
+              'filters',
+              this.shortcutCode
+            )
+          }
         ),
         this.$watch(
           () => this.viewMode,
-          value => { this.$uiSettings.put(value, 'UTableEntity', 'viewMode', this.shortcutCode) }
+          (value) => {
+            this.$uiSettings.put(
+              value,
+              'UTableEntity',
+              'viewMode',
+              this.shortcutCode
+            )
+          }
         ),
         store.watch(
-          state => state.sort,
-          value => {
-            this.$uiSettings.put(value, 'UTableEntity', 'sort', this.shortcutCode)
+          (state) => state.sort,
+          (value) => {
+            this.$uiSettings.put(
+              value,
+              'UTableEntity',
+              'sort',
+              this.shortcutCode
+            )
           }
         )
       ]
@@ -414,5 +452,32 @@ export default {
 
 .u-table-register__divider-button:hover {
   color: hsl(var(--hs-primary), var(--l-state-hover));
+}
+
+@media (max-width: 1024px) {
+  .u-table-register__view {
+    flex-basis: 400px;
+  }
+}
+@media (max-width: 768px) {
+  .u-table-register--preview-mode {
+    flex-direction: column;
+  }
+  .u-table-register--preview-mode .u-table-register__view {
+    max-height: 40vh;
+    border-bottom: 2px dashed
+      hsl(var(--hs-border), var(--l-layout-border-default));
+    box-shadow: 0 2px 8px hsla(var(--hs-text), var(--l-text-default), 0.2);
+  }
+  .u-table-register--preview-mode .u-table-register__form-preview {
+    margin-left: unset;
+    padding-left: unset;
+    border-left: unset;
+  }
+
+  .u-table-register--preview-mode .u-table-entity__body {
+    padding-bottom: 10px;
+    background: hsl(var(--hs-background), var(--l-background-default));
+  }
 }
 </style>
