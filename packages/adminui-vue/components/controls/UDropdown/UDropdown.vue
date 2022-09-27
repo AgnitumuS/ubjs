@@ -310,14 +310,6 @@ export default {
   z-index: 10;
   padding: 6px 0;
   position: relative;
-  max-height: 98vh;
-  max-width: 98vw;
-  overflow: auto;
-}
-@media (orientation: landscape) {
-  .u-dropdown {
-    overflow-x: hidden;
-  }
 }
 
 .u-dropdown__reference {
