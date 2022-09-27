@@ -5,6 +5,7 @@
     :class="{
       'u-table-entity__bordered': bordered,
       'u-table-entity__can-edit': canEdit,
+      'u-table-entity--sidebar-collapse': sidebarIsCollapse
     }"
     tabindex="1"
     @keydown.ctrl.delete.exact="canDelete && deleteRecord(selectedRowId)"
@@ -254,7 +255,25 @@
 
     <div class="u-table-entity__body">
       <!-- @slot Add a sidebar to the left side of the table or card-view -->
-      <slot name="sidebar" />
+      <span
+        v-if="$scopedSlots.sidebar"
+        class="u-table-entity__sidebar"
+      >
+        <div
+          class="u-sidebar__collapse-button"
+          :title="sidebarIsCollapse ? $ut('Expand') : $ut('Collapse')"
+          @click="sidebarIsCollapse = !sidebarIsCollapse"
+        >
+          <i
+            :class="
+              sidebarIsCollapse ? 'u-icon-arrow-right' : 'u-icon-arrow-left'
+            "
+          />
+        </div>
+        <div class="u-table-entity__sidebar--slot">
+          <slot name="sidebar" />
+        </div>
+      </span>
 
       <u-table
         v-if="viewMode === 'table'"
@@ -301,7 +320,7 @@
 
         <template
           v-for="column in columns"
-          #[column.id]="{row, value}"
+          #[column.id]="{ row, value }"
         >
           <slot
             :column="column"
@@ -380,7 +399,7 @@
     <u-dropdown
       ref="contextMenu"
       class="u-table-entity__contextmenu-wrap"
-      @close='closeDropdownHandler'
+      @close="closeDropdownHandler"
     >
       <template slot="dropdown">
         <!-- @slot Prepend items in context menu -->
@@ -612,11 +631,13 @@ export default {
 
     /**
      * Overrides the record selection event. That is, double click or enter
-     * @type {function({ID: Number, row: Object, close: function})}
+     *
+     * @type {function({ID: number, row: object, close: Function})}
      */
     onSelectRecord: Function,
     /**
      * Show "delete multiple" button if multi-select is enabled
+     *
      * @type {boolean}
      */
     showDeleteMultipleBtn: {
@@ -627,6 +648,7 @@ export default {
 
   data () {
     return {
+      sidebarIsCollapse: false,
       targetColumn: null,
       contextMenuRowId: null,
       cacheActiveElement: null
@@ -634,7 +656,14 @@ export default {
   },
 
   computed: {
-    ...mapState(['items', 'loading', 'withTotal', 'sort', 'pageIndex', 'showOneItemActions']),
+    ...mapState([
+      'items',
+      'loading',
+      'withTotal',
+      'sort',
+      'pageIndex',
+      'showOneItemActions'
+    ]),
     ...mapGetters([
       'showAddNew',
       'canAddNew',
@@ -702,7 +731,9 @@ export default {
 
   watch: {
     selectedRowId (id) {
-      /** fires when user select row (in single-row selection mode)
+      /**
+       * fires when user select row (in single-row selection mode)
+       *
        * @param {number} ID
        */
       this.$emit('change-row', id)
@@ -788,7 +819,7 @@ export default {
     },
 
     getNextArrayValue (array, key, current) {
-      const index = array.findIndex(i => current === i[key])
+      const index = array.findIndex((i) => current === i[key])
       const undefinedIndex = index === -1
       const isLast = index === array.length - 1
       if (undefinedIndex || isLast) {
@@ -799,7 +830,7 @@ export default {
     },
 
     getPrevArrayValue (array, key, current) {
-      const index = array.findIndex(i => current === i[key])
+      const index = array.findIndex((i) => current === i[key])
       const undefinedIndex = index === -1
       const isFirst = index === 0
       if (undefinedIndex) {
@@ -871,7 +902,7 @@ export default {
     getCardClass (row) {
       const customClasses = this.getRowClass(row)
       const selectedClass = row.ID === this.selectedRowId ? 'selected' : ''
-      return [selectedClass, customClasses].filter(c => c).join(' ')
+      return [selectedClass, customClasses].filter((c) => c).join(' ')
     },
 
     async scrollIntoView () {
@@ -957,6 +988,28 @@ export default {
 </script>
 
 <style>
+.u-table-entity__sidebar {
+  position: relative;
+}
+.u-table-entity--sidebar-collapse .u-table-entity__sidebar {
+  width: 0px;
+}
+.u-table-entity--sidebar-collapse .u-table-entity__sidebar--slot {
+  display: none;
+}
+.u-table-entity--sidebar-collapse div.u-table-entity__body{
+  display: block;
+}
+
+.u-table-entity__sidebar .u-sidebar__collapse-button {
+  top: 0px;
+  width: 11px;
+  height: 18px;
+  font-size: 10px;
+  background: hsl(var(--hs-control), var(--l-state-hover));
+  border-top-right-radius: 6px;
+  border-bottom-right-radius: 6px;
+}
 @media (min-height: 500px) {
   .u-table-entity .u-table {
     overflow: auto;
