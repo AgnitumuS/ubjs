@@ -132,6 +132,13 @@ export default {
       default: '0 0 0 * * *'
     },
     /**
+     * Function, what transform cron expression into human-readable string. Default is `$App.verbaliseCronExpression`
+     */
+    verbalizeFn: {
+      type: Function,
+      default: (cronStr) => { return ubPubAvailable ? $App.verbaliseCronExpression(cronStr) : cronStr }
+    },
+    /**
      * Array of hidden sections. By default, non-standard `occurrence` section is hidden
      *
      * @values second, minute, hour, day, month, dayOfWeek, occurrence
@@ -201,7 +208,7 @@ export default {
           this.fieldValues[i] = v
         }
       }
-      this.humanCronString = ubPubAvailable ? $App.verbaliseCronExpression(cronStr) : cronStr
+      this.humanCronString = this.verbalizeFn(cronStr)
       this.refreshEstimate(cronStr)
     },
 

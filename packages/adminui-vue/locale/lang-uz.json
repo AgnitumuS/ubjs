@@ -270,11 +270,6 @@
     "month": "oylar",
     "dayOfWeek": "haftaning kunlari",
     "every": "every",
-    "everySecond": "second(s)",
-    "everyMinute": "minute(s)",
-    "everyHour": "hour(s)",
-    "everyDay": "day(s)",
-    "everyMonth": "month(s)",
     "chooseOneOrMany": "choose one or many",
     "specific": "specific",
     "between": "between",
@@ -283,7 +278,8 @@
     "and": "and",
     "estimate": "Taxminiy ijrolar",
     "step": "qadam",
-    "oncePer": "boshiga bir marta",
+    "oncePer": "every",
+    "oncePerSuffix": " ",
     "occurrence": "yuzaga kelishi"
   }
 }

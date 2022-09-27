@@ -39,7 +39,7 @@
       />
     </button>
 
-    <!-- @slot For children u-dropdown-item -->
+    <!-- @slot For sub-menu u-dropdown-item`s -->
     <slot slot="dropdown" />
   </u-dropdown>
 </template>

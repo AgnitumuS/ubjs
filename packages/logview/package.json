@@ -1,0 +1,37 @@
+{
+  "name": "@unitybase/logview",
+  "version": "1.0.1",
+  "description": "Log viewer for UnityBase server log format",
+  "repository": "https://git-pub.intecracy.com/unitybase/ubjs/tree/master/packages/logview",
+  "config": {
+    "ubmodel": {
+      "name": "LOG"
+    }
+  },
+  "scripts": {
+    "version": "update-changelog"
+  },
+  "public": true,
+  "publishConfig": {
+    "registry": "https://registry.unitybase.info"
+  },
+  "main": "logview.js",
+  "dependencies": {
+    "@unitybase/base": "^5.23.8",
+    "@unitybase/cs-shared": "^5.23.7",
+    "@unitybase/ub": "^5.23.14",
+    "@unitybase/uba": "^5.23.18",
+    "sql-formatter": "^10.6.0"
+  },
+  "devDependencies": {
+    "@unitybase/stubs": "^5.22.8",
+    "@unitybase/update-changelog": "^1.0.4"
+  },
+  "keywords": [
+    "UnityBase",
+    "Logs",
+    "LogView"
+  ],
+  "author": "UnityBase team (https://unitybase.info)",
+  "license": "(GPL-3.0 OR LGPL-3.0 OR MPL-2.0)"
+}

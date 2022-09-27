@@ -1,0 +1,12 @@
+$context:
+  type: roles
+
+SysOps:
+  $amendment: true
+  els:
+    full: log
+
+Developer:
+  $amendment: true
+  els:
+    full: log

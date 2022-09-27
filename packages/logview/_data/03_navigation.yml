@@ -1,0 +1,18 @@
+$context:
+  type: navigation
+
+adm_desktop:
+  $amendment: true
+  items:
+  - adm_folder_maintenance:
+      $amendment: true
+      items:
+      - log_view:
+          $systemTenantOnly: true
+          caption: Log View
+          iconCls: u-icon-file-preview
+          cmd: >
+            {
+              cmdType: 'showForm',
+              formCode: 'log_view'
+            }

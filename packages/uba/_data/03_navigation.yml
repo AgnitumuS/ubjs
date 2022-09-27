@@ -110,25 +110,6 @@ adm_desktop:
                 columns: ['userID.name','otpKind','otp','expiredDate']
               }
             }
-      - uba_session:
-          caption: { $i18n: uba_session }
-          iconCls: fas fa-user-cog
-          cmd: >
-            {
-              renderer: 'vue',
-              cmdType: 'showList',
-              cmdData: {
-                entityName: 'uba_session',
-                columns: [
-                  'ID',
-                  {id: 'userID', label: 'user ID', isLookup: false},
-                  'userName', 'remoteIP', 'tenantID',
-                  {id: 'accessedAt', sortable: false, filterable: false, format: ({ value }) => UB.formatter.formatDate(value, 'dateTimeFull')},
-                  {id: 'createdAt', sortable: false, filterable: false, format: ({ value }) => UB.formatter.formatDate(value, 'dateTimeFull')},
-                  'isPasswordExpired', 'isLocked', 'serverTimeDelta'
-                ]
-              }
-            }
   - adm_folder_security:
       access: Supervisor, SysOps
       caption: Audit Trails
@@ -215,6 +196,25 @@ adm_desktop:
               cmdType: 'showForm',
               formCode: 'uba_audit-securityDashboard'
             }
+      - uba_session:
+          caption: { $i18n: uba_session }
+          iconCls: fas fa-user-cog
+          cmd: >
+            {
+              renderer: 'vue',
+              cmdType: 'showList',
+              cmdData: {
+                entityName: 'uba_session',
+                columns: [
+                  'ID',
+                  {id: 'userID', label: 'user ID', isLookup: false},
+                  'userName', 'remoteIP', 'tenantID',
+                  {id: 'accessedAt', sortable: false, filterable: false, format: ({ value }) => UB.formatter.formatDate(value, 'dateTimeFull')},
+                  {id: 'createdAt', sortable: false, filterable: false, format: ({ value }) => UB.formatter.formatDate(value, 'dateTimeFull')},
+                  'isPasswordExpired', 'isLocked', 'serverTimeDelta'
+                ]
+              }
+            }       
 
 # Submenu in "Studio" desktop
 dev_desktop:

@@ -3,22 +3,23 @@
 </template>
 
 <script>
-  export default {
-    name: 'FilterDateNotIsNull',
+export default {
+  name: 'FilterDateNotIsNull',
 
-    components: {
-      FilterTemplate: require('../../components/FilterTemplate.vue').default
-    },
+  components: {
+    FilterTemplate: require('../../components/FilterTemplate.vue').default
+  },
 
-    mixins: [require('../mixinForFilter.js')],
+  mixins: [require('../mixinForFilter.js')],
 
-    methods: {
-      getCondition () {
-        return {
-          whereList: [{ condition: 'notIsNull' }],
-          description: 'notIsNull'
-        }
+  methods: {
+    getCondition () {
+      const { $ut } = this
+      return {
+        whereList: [{ condition: 'notIsNull' }],
+        description: $ut('notIsNull')
       }
     }
   }
+}
 </script>

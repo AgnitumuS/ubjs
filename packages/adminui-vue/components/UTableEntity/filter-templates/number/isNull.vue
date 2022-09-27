@@ -14,9 +14,10 @@ export default {
 
   methods: {
     getCondition () {
+      const { $ut } = this
       return {
         whereList: [{ condition: 'isNull' }],
-        description: 'isNull'
+        description: $ut('isNull')
       }
     }
   }
