@@ -57,10 +57,10 @@
         "dec": "დეკ"
       },
       "format": {
-        "date": "დდ.თთ.წწწწ",
-        "daterange": "დდ.თთ.წწწწ",
-        "datetime": "დდ.თთ.წწწწ სს:წწ",
-        "firstDayOfWeek": ""
+        "date": "dd.MM.yyyy",
+        "daterange": "dd.MM.yyyy",
+        "datetime": "dd.MM.yyyy HH:mm",
+        "firstDayOfWeek": 1
       }
     },
     "select": {
