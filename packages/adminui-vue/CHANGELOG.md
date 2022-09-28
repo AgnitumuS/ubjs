@@ -8,12 +8,15 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
+ - `UFileInput` - validation notification set duration to 30 seconds
 
 ### Deprecated
 
 ### Removed
 
 ### Fixed
+- `UTableEntityRoot` - fixed table layout with sidebar on small screen. Sidebar placed on top of the table
+- `UMasterDetailView` - fixed table layout with preview-mode on small screen. Preview box placed on top of the table
 
 ## [5.23.20] - 2022-09-26
 ### Added
@@ -28,7 +31,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 - filters `isNull` and `notIsNull` - localised description
- - `UToolbar`: enable dropdown if there are slots `dropdown` or `dropdown-prepend`
+- `UToolbar`: enable dropdown if there are slots `dropdown` or `dropdown-prepend`
 
 ## [5.23.19] - 2022-09-12
 ### Fixed
