@@ -1,15 +1,15 @@
-﻿{
-    "caption": "მომხმარებლის როლი",
-    "captionSingular": "როლი ენიჭება მომხმარებელს",
-    "description": "",
-    "attributes": [
-        {
-            "name": "userID",
-            "caption": "მომხმარებელი"
-        },
-        {
-            "name": "roleID",
-            "caption": "როლი"
-        }
-    ]
+{
+  "caption": "მომხმარებლის როლი",
+  "captionSingular": "როლი ენიჭება მომხმარებელს",
+  "description": "",
+  "attributes": [
+    {
+      "name": "userID",
+      "caption": "მომხმარებელი"
+    },
+    {
+      "name": "roleID",
+      "caption": "როლი"
+    }
+  ]
 }

@@ -1,43 +1,43 @@
-﻿{
-    "caption": "ბანკის ფილიალები",
-    "captionSingular": "ბანკი",
-    "description": "",
-    "attributes": [
-        {
-            "name": "MFO",
-            "caption": "ბანკის კოდი"
-        },
-        {
-            "name": "code",
-            "caption": "ორგანიზაციის კოდი"
-        },
-        {
-            "name": "name",
-            "caption": "სახელი"
-        },
-        {
-            "name": "fullName",
-            "caption": "სრული სახელი"
-        },
-        {
-            "name": "phones",
-            "caption": "ტელეფონები"
-        },
-        {
-            "name": "address",
-            "caption": "მისამართი"
-        },
-        {
-            "name": "countryID",
-            "caption": "ქვეყანა"
-        },
-        {
-            "name": "cityID",
-            "caption": "ქალაქი"
-        },
-        {
-            "name": "description",
-            "caption": "აღწერა"
-        }
-    ]
+{
+  "caption": "ბანკის ფილიალები",
+  "captionSingular": "ბანკი",
+  "description": "",
+  "attributes": [
+    {
+      "name": "MFO",
+      "caption": "ბანკის კოდი"
+    },
+    {
+      "name": "code",
+      "caption": "ორგანიზაციის კოდი"
+    },
+    {
+      "name": "name",
+      "caption": "სახელი"
+    },
+    {
+      "name": "fullName",
+      "caption": "სრული სახელი"
+    },
+    {
+      "name": "phones",
+      "caption": "ტელეფონები"
+    },
+    {
+      "name": "address",
+      "caption": "მისამართი"
+    },
+    {
+      "name": "countryID",
+      "caption": "ქვეყანა"
+    },
+    {
+      "name": "cityID",
+      "caption": "ქალაქი"
+    },
+    {
+      "name": "description",
+      "caption": "აღწერა"
+    }
+  ]
 }

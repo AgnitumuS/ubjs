@@ -1,23 +1,23 @@
-﻿{
-    "caption": "საკუთრების ტიპები",
-    "captionSingular": "საკუთრების ტიპები",
-    "description": "",
-    "attributes": [
-        {
-            "name": "code",
-            "caption": "კოდი"
-        },
-        {
-            "name": "shortName",
-            "caption": "აკრონიმი"
-        },
-        {
-            "name": "name",
-            "caption": "სახელი"
-        },
-        {
-            "name": "fullName",
-            "caption": "სრული სახელი"
-        }
-    ]
+{
+  "caption": "საკუთრების ტიპები",
+  "captionSingular": "საკუთრების ტიპები",
+  "description": "",
+  "attributes": [
+    {
+      "name": "code",
+      "caption": "კოდი"
+    },
+    {
+      "name": "shortName",
+      "caption": "აკრონიმი"
+    },
+    {
+      "name": "name",
+      "caption": "სახელი"
+    },
+    {
+      "name": "fullName",
+      "caption": "სრული სახელი"
+    }
+  ]
 }

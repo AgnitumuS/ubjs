@@ -1,19 +1,19 @@
-﻿{
-    "caption": "პროფესიები",
-    "captionSingular": "სტანდარტული პროფესია",
-    "description": "",
-    "attributes": [
-        {
-            "name": "code",
-            "caption": "კოდი"
-        },
-        {
-            "name": "name",
-            "caption": "სახელი"
-        },
-        {
-            "name": "description",
-            "caption": "წარწერა"
-        }
-    ]
+{
+  "caption": "პროფესიები",
+  "captionSingular": "სტანდარტული პროფესია",
+  "description": "",
+  "attributes": [
+    {
+      "name": "code",
+      "caption": "კოდი"
+    },
+    {
+      "name": "name",
+      "caption": "სახელი"
+    },
+    {
+      "name": "description",
+      "caption": "წარწერა"
+    }
+  ]
 }

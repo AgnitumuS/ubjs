@@ -1,15 +1,15 @@
-﻿{
-    "caption": "ზიპ კოდი",
-    "captionSingular": "Ზიპ კოდი",
-    "description": "",
-    "attributes": [
-        {
-            "name": "code",
-            "caption": "ინდექსი"
-        },
-        {
-            "name": "streetID",
-            "caption": "ქუჩა"
-        }
-    ]
+{
+  "caption": "ზიპ კოდი",
+  "captionSingular": "Ზიპ კოდი",
+  "description": "",
+  "attributes": [
+    {
+      "name": "code",
+      "caption": "ინდექსი"
+    },
+    {
+      "name": "streetID",
+      "caption": "ქუჩა"
+    }
+  ]
 }

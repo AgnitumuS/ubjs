@@ -1,31 +1,31 @@
-﻿{
-    "caption": "მიმდინარე ანგარიშები",
-    "captionSingular": "კონტრაგენტის მიმდინარე ანგარიში",
-    "description": "",
-    "attributes": [
-        {
-            "name": "organizationID",
-            "caption": "ორგანიზაცია"
-        },
-        {
-            "name": "currencyID",
-            "caption": "ვალუტა"
-        },
-        {
-            "name": "bankID",
-            "caption": "ბანკი"
-        },
-        {
-            "name": "code",
-            "caption": "კოდი"
-        },
-        {
-            "name": "acctype",
-            "caption": "სახეობა"
-        },
-        {
-            "name": "description",
-            "caption": "აღწერა"
-        }
-    ]
+{
+  "caption": "მიმდინარე ანგარიშები",
+  "captionSingular": "კონტრაგენტის მიმდინარე ანგარიში",
+  "description": "",
+  "attributes": [
+    {
+      "name": "organizationID",
+      "caption": "ორგანიზაცია"
+    },
+    {
+      "name": "currencyID",
+      "caption": "ვალუტა"
+    },
+    {
+      "name": "bankID",
+      "caption": "ბანკი"
+    },
+    {
+      "name": "code",
+      "caption": "კოდი"
+    },
+    {
+      "name": "acctype",
+      "caption": "სახეობა"
+    },
+    {
+      "name": "description",
+      "caption": "აღწერა"
+    }
+  ]
 }

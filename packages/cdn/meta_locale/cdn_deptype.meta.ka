@@ -1,15 +1,15 @@
-﻿{
-    "caption": "განყოპილების სახეობა",
-    "captionSingular": "დეპარტამენტის ტიპი",
-    "description": "",
-    "attributes": [
-        {
-            "name": "code",
-            "caption": "კოდი"
-        },
-        {
-            "name": "name",
-            "caption": "სახელი"
-        }
-    ]
+{
+  "caption": "განყოპილების სახეობა",
+  "captionSingular": "დეპარტამენტის ტიპი",
+  "description": "",
+  "attributes": [
+    {
+      "name": "code",
+      "caption": "კოდი"
+    },
+    {
+      "name": "name",
+      "caption": "სახელი"
+    }
+  ]
 }

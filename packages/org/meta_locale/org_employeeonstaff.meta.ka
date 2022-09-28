@@ -1,31 +1,31 @@
-﻿{
-    "caption": "შიდა ორგანიზაციის დავალებები",
-    "captionSingular": "შიდა ორგანიზაციის დავალებები",
-    "description": "",
-    "attributes": [
-        {
-            "name": "tabNo",
-            "caption": "თანამშრომლები#"
-        },
-        {
-            "name": "employeeID",
-            "caption": "თანამსჰრომელი"
-        },
-        {
-            "name": "staffUnitID",
-            "caption": "საშტატო ერთეული"
-        },
-        {
-            "name": "employeeOnStaffType",
-            "caption": "დავალების სახეობა"
-        },
-        {
-            "name": "caption",
-            "caption": "დასახელება"
-        },
-        {
-            "name": "description",
-            "caption": "აღწერა"
-        }
-    ]
+{
+  "caption": "შიდა ორგანიზაციის დავალებები",
+  "captionSingular": "შიდა ორგანიზაციის დავალებები",
+  "description": "",
+  "attributes": [
+    {
+      "name": "tabNo",
+      "caption": "თანამშრომლები#"
+    },
+    {
+      "name": "employeeID",
+      "caption": "თანამსჰრომელი"
+    },
+    {
+      "name": "staffUnitID",
+      "caption": "საშტატო ერთეული"
+    },
+    {
+      "name": "employeeOnStaffType",
+      "caption": "დავალების სახეობა"
+    },
+    {
+      "name": "caption",
+      "caption": "დასახელება"
+    },
+    {
+      "name": "description",
+      "caption": "აღწერა"
+    }
+  ]
 }

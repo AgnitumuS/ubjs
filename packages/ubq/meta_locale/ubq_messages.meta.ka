@@ -1,27 +1,27 @@
-﻿{
-    "caption": "შეტყობინების რიგი",
-    "captionSingular": "რიგის ელემენტი",
-    "description": "",
-    "attributes": [
-        {
-            "name": "queueCode",
-            "caption": "რიგის კოდი"
-        },
-        {
-            "name": "msgCmd",
-            "caption": "ბრძანება"
-        },
-        {
-            "name": "msgData",
-            "caption": "მესიჯის თარიღი"
-        },
-        {
-            "name": "msgPriority",
-            "caption": "პრიორიტეტები"
-        },
-        {
-            "name": "completeDate",
-            "caption": "სრული თარიღი"
-        }
-    ]
+{
+  "caption": "შეტყობინების რიგი",
+  "captionSingular": "რიგის ელემენტი",
+  "description": "",
+  "attributes": [
+    {
+      "name": "queueCode",
+      "caption": "რიგის კოდი"
+    },
+    {
+      "name": "msgCmd",
+      "caption": "ბრძანება"
+    },
+    {
+      "name": "msgData",
+      "caption": "მესიჯის თარიღი"
+    },
+    {
+      "name": "msgPriority",
+      "caption": "პრიორიტეტები"
+    },
+    {
+      "name": "completeDate",
+      "caption": "სრული თარიღი"
+    }
+  ]
 }

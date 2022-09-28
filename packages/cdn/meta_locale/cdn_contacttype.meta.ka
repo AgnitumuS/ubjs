@@ -1,15 +1,15 @@
-﻿{
-    "caption": "კონტაქტების სახეობა",
-    "captionSingular": "კონტაქტის ტიპი",
-    "description": "",
-    "attributes": [
-        {
-            "name": "code",
-            "caption": "კოდი"
-        },
-        {
-            "name": "name",
-            "caption": "სახელი"
-        }
-    ]
+{
+  "caption": "კონტაქტების სახეობა",
+  "captionSingular": "კონტაქტის ტიპი",
+  "description": "",
+  "attributes": [
+    {
+      "name": "code",
+      "caption": "კოდი"
+    },
+    {
+      "name": "name",
+      "caption": "სახელი"
+    }
+  ]
 }
