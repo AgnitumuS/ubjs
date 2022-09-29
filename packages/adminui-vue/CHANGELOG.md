@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+- `UMasterDetailView` - now supports a new property `hideViewModes`. It allows hiding some
+   default view modes in the toolbar dropdown menu, such as: `table`, `card`, `previewForm`.
 
 ### Changed
  - `UFileInput` - validation notification set duration to 30 seconds
