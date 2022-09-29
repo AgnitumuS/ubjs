@@ -9,6 +9,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Changed
  - `UFileInput` - validation notification set duration to 30 seconds
+ - `UCodeMirror` - el-tooltip component replaced by HTML `title` attribute
+ - `@unitybase/adminui-vue` package now can be used in projects without UB server (example is logview project) - 
+  fixes are done in fonts and css`s loading
 
 ### Deprecated
 
