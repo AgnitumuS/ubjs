@@ -1,0 +1,36 @@
+{
+  "name": "logview",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "webpack --mode production",
+    "analyse-boundle": "webpack --mode development --profile --json > /tmp/wp_stats_adminui_vue.json && webpack-bundle-analyzer /tmp/wp_stats_adminui_vue.json",
+    "start": "webpack-dev-server --mode development"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@unitybase/adminui-vue": "^5.23.20",
+    "@unitybase/logview": "^1.0.1",
+    "vue": "^2.6.14",
+    "vue-template-compiler": "^2.6.14"
+  },
+  "devDependencies": {
+    "autoprefixer": "^10.4.12",
+    "clean-webpack-plugin": "^4.0.0",
+    "css-loader": "^6.7.1",
+    "file-loader": "^6.2.0",
+    "html-webpack-plugin": "^5.5.0",
+    "mini-css-extract-plugin": "^2.6.1",
+    "postcss": "^8.4.16",
+    "postcss-loader": "^7.0.1",
+    "sass": "^1.55.0",
+    "sass-loader": "^13.0.2",
+    "style-loader": "^3.3.1",
+    "vue-loader": "^15.10.0",
+    "webpack": "^5.74.0",
+    "webpack-dev-server": "^4.11.1"
+  }
+}
