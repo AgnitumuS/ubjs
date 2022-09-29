@@ -13,6 +13,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Deprecated
 
 ### Removed
+ - removed unneeded files from `/dist/fonts/fa/css`: `fontawesome.min.css`, `regular.min.css`, `solid.min.css`
+  and `v4-shims.min.css` - all these files already bundled into `fa-all4ub.min.css`
+ - `fontawesome` - removed unnecessary fallbacks from woff2 to `woff` `ttf` and `svg` - woff2 is supported by all browsers
 
 ### Fixed
 - `UTableEntityRoot` - fixed table layout with sidebar on small screen. Sidebar placed on top of the table
