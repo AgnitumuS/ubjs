@@ -1,40 +1,6 @@
 <template>
   <div class="ub-code-mirror">
-    <el-tooltip
-      :enterable="false"
-      placement="left"
-    >
-      <template slot="content">
-        <h5>Helpers</h5>
-        <ul>
-          <li>Ctrl+Q - code templates</li>
-          <li>Ctrl+Space - code competition</li>
-          <li>Ctrl+B - Beautify content</li>
-        </ul>
-        <h5>Search</h5>
-        <ul>
-          <li>Ctrl+F - Start searching</li>
-          <li>Ctrl+G - Find next</li>
-          <li>Shift-Ctrl+G - Find previous</li>
-          <li>Shift-Ctrl+F - Replace</li>
-          <li>Shift-Ctrl+R - Replace all</li>
-          <li>Alt+F - Persistent search (dialog does not autoclose, enter to find next, Shift-Enter to find previous)
-          </li>
-          <li>Alt+G - Jump to line</li>
-        </ul>
-        <h5>Edit</h5>
-        <ul>
-          <li>Ctrl+A - Select the whole content of the editor</li>
-          <li>Ctrl+D - Deletes the whole line under the cursor</li>
-          <li>Ctrl+Z - Undo the last change</li>
-          <li>Ctrl+Y - Redo the last undone change</li>
-          <li>Ctrl+U - Undo the last change to the selection</li>
-          <li>Alt-Left / Alt-Right - Move the cursor to the start/end of the line</li>
-          <li>Tab / Shift + Tab - If something is selected, indent/dedent it</li>
-        </ul>
-      </template>
-      <i class="u-icon-circle-question ub-code-mirror__help"></i>
-    </el-tooltip>
+    <i class="u-icon-circle-question ub-code-mirror__help" :title="tips"></i>
     <textarea ref="textarea"/>
   </div>
 </template>
@@ -102,6 +68,30 @@ export default {
     // for external use and compatibility
     editorInstance () {
       return this._codeMirror
+    },
+    tips () {
+      return `Helpers:
+  - Ctrl+Q: code templates
+  - Ctrl+Space: code competition
+  - Ctrl+B: Beautify content
+
+Search:
+  - Ctrl+F: Start searching
+  - Ctrl+G: Find next
+  - Shift-Ctrl+G: Find previous
+  - Shift-Ctrl+F: Replace
+  - Shift-Ctrl+R: Replace all
+  - Alt+F: Persistent search (dialog does not auto-close, enter to find next, Shift-Enter to find previous)
+  - Alt+G: Jump to line
+
+Edit:
+  - Ctrl+A: Select the whole content of the editor
+  - Ctrl+D: Deletes the whole line under the cursor
+  - Ctrl+Z: Undo the last change
+  - Ctrl+Y: Redo the last undone change
+  - Ctrl+U: Undo the last change to the selection
+  - Alt-Left / Alt-Right: Move the cursor to the start/end of the line
+  - Tab / Shift + Tab: indent/dedent selected text`
     }
   },
 
@@ -134,7 +124,13 @@ export default {
 
     // do not put _codeMirror inside data to prevent it observation
     // Vue initialize reactivity BEFORE created(), so all NEW object properties assigned here is not reactive
-    SystemJS.import('@unitybase/codemirror-full').then((CodeMirror) => {
+    let codeMirrorPromise
+    if (BOUNDLED_BY_WEBPACK) {
+      codeMirrorPromise = import('@unitybase/codemirror-full').then(cmModule => cmModule.default)
+    } else {
+      codeMirrorPromise = SystemJS.import('@unitybase/codemirror-full')
+    }
+    codeMirrorPromise.then((CodeMirror) => {
       this._codeMirror = CodeMirror.fromTextArea(
         this.$refs.textarea,
         {
@@ -145,7 +141,7 @@ export default {
               asi: true,
               esversion: 8
             },
-            this.$UB.connection.appConfig.uiSettings.adminUI.linter
+            this.$UB.connection ? this.$UB.connection.appConfig.uiSettings.adminUI.linter : {}
           ),
           readOnly: this.readonly,
           extraKeys: {
