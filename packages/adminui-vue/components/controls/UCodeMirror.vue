@@ -218,7 +218,7 @@ Edit:
   top: 10px;
   right: 10px;
   z-index: 100;
-  font-size: 2em;
+  font-size: 1.5em;
   color: hsl(var(--hs-text), var(--l-text-description))
 }
 </style>
