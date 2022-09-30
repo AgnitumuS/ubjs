@@ -21,6 +21,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - `fontawesome` - removed unnecessary fallbacks from woff2 to `woff` `ttf` and `svg` - woff2 is supported by all browsers
 
 ### Fixed
+- `UDropdown`, `UNavbar` - fixed view on horizontal screens (mainly mobile)
 - `UTableEntityRoot` - fixed table layout with sidebar on small screen. Sidebar placed on top of the table
 - `UMasterDetailView` - fixed table layout with preview-mode on small screen. Preview box placed on top of the table
 
