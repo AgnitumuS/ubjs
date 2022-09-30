@@ -14,6 +14,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+
+## [5.23.22] - 2022-09-30
+### Fixed
 - `org_employee`: building `fullFIO` and `shortFIO` now takes into account
   parameters with explicitly specified language (i.e. `fullFIO_de^`). Before the
   fix such parameters were ignored.

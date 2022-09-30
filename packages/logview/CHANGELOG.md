@@ -8,7 +8,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
- - `ULogView` moved from UB form into separate component - to be used in standalone app
 
 ### Deprecated
 
@@ -16,6 +15,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [1.0.2] - 2022-09-30
+### Changed
+ - `ULogView` moved from UB form into separate component - to be used in standalone app
 
 ## [1.0.1] - 2022-09-26
 ### Added

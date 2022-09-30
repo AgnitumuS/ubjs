@@ -6,6 +6,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+## [5.23.21] - 2022-09-30
+### Added
 - `UMasterDetailView` - now supports a new property `hideViewModes`. It allows hiding some
    default view modes in the toolbar dropdown menu, such as: `table`, `card`, `previewForm`.
 
@@ -14,8 +25,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
  - `UCodeMirror` - el-tooltip component replaced by HTML `title` attribute; decreased tooltip icon size
  - `@unitybase/adminui-vue` package now can be used in projects without UB server (example is logview project) - 
   fixes are done in fonts and css`s loading
-
-### Deprecated
 
 ### Removed
  - removed unneeded files from `/dist/fonts/fa/css`: `fontawesome.min.css`, `regular.min.css`, `solid.min.css`

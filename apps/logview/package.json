@@ -1,6 +1,6 @@
 {
   "name": "logview",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "",
   "main": "index.js",
   "private": true,
@@ -13,8 +13,8 @@
   "author": "pavel.mash",
   "license": "ISC",
   "dependencies": {
-    "@unitybase/adminui-vue": "^5.23.20",
-    "@unitybase/logview": "^1.0.1",
+    "@unitybase/adminui-vue": "^5.23.21",
+    "@unitybase/logview": "^1.0.2",
     "vue": "^2.6.14",
     "vue-template-compiler": "^2.6.14"
   },
