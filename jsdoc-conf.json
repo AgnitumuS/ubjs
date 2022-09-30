@@ -157,6 +157,15 @@
           }
         }
       },
+      "logview": {
+        "title": "Log Viewer",
+        "children": {
+          "server": {
+            "title": "Log Viewer App",
+            "link": "/logview/index.html"
+          }
+        }
+      },
       "docsV4": {
         "title": "Old API (UB V4.x)",
         "children": {

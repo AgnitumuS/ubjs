@@ -1,5 +1,7 @@
 ## all-fa-icons
 
+`./dist/fonts/fa/css/fa-all4ub.min.css` is made using `npm run build:fa`
+
 all-fa-icons is made from executing a script (in console)
 
 Page https://fontawesome.com/cheatsheet/free/regular

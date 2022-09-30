@@ -6,7 +6,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+
 ### Changed
+ - `ULogView` moved from UB form into separate component - to be used in standalone app
 
 ### Deprecated
 

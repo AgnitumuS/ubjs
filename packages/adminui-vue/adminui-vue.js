@@ -119,7 +119,7 @@ require('./theme/icons/ub-icons.css')
 require('./theme/ub-body.css')
 if (BOUNDLED_BY_WEBPACK) {
   // webpack MiniCssExtractPlugin extract all styles (for vue SFC), so we need to inject dist/adminui-vue.css
-  UB.inject('/clientRequire/@unitybase/adminui-vue/dist/adminui-vue.min.css')
+  UB.inject('/clientRequire/@unitybase/adminui-vue/dist/adminui-vue.min.css').catch(e => {})
 }
 Vue.use(UB)
 
