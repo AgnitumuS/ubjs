@@ -84,7 +84,7 @@
               icon="u-icon-eye"
             >
               <u-dropdown-item
-                v-for="button in viewModeButtons"
+                v-for="button in allowViewModeButtons"
                 :key="button.code"
                 :disabled="viewMode === button.code"
                 :label="button.label"
@@ -150,6 +150,19 @@ export default {
     shortcutCode: {
       type: String,
       default: undefined
+    },
+
+    /**
+     * Allows to hide some view modes in the toolbar dropdown menu
+     * View modes shall be passed as array of strings, such as:
+     * `table`, `card`, `previewForm`.
+     */
+    hideViewModes: {
+      type: Array,
+      required: false,
+      default () {
+        return []
+      }
     }
   },
 
@@ -213,6 +226,12 @@ export default {
           (a) => a.defaultView && a.code !== this.selectedDetail.attribute
         )
         .map((a) => a.code)
+    },
+
+    allowViewModeButtons () {
+      return Array.isArray(this.hideViewModes)
+        ? this.viewModeButtons.filter(i => !this.hideViewModes.includes(i.code))
+        : this.viewModeButtons
     }
   },
 
