@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+ - fix verbalization of `c=0` for SQL log level (c=0 mean `PlaneCached=no`) 
 
 ## [1.0.2] - 2022-09-30
 ### Changed

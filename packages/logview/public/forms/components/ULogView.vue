@@ -527,7 +527,7 @@ export default {
             let res = v
             if (parts.length === 2) {
               if (parts[0] === 'c') {
-                res = MT[parts[0]] + (parts[1] ? 'yes' : 'no')
+                res = MT[parts[0]] + (parts[1] === '0' ? 'no' : 'yes')
               } else {
                 if (parts[0] === 'r') {
                   res = MT[parts[0]] + parts[1]
