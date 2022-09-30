@@ -3,13 +3,14 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "private": true,
   "scripts": {
     "build": "webpack --mode production",
     "analyse-boundle": "webpack --mode development --profile --json > /tmp/wp_stats_adminui_vue.json && webpack-bundle-analyzer /tmp/wp_stats_adminui_vue.json",
     "start": "webpack-dev-server --mode development"
   },
   "keywords": [],
-  "author": "",
+  "author": "pavel.mash",
   "license": "ISC",
   "dependencies": {
     "@unitybase/adminui-vue": "^5.23.20",

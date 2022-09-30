@@ -10,7 +10,7 @@ module.exports = {
     main: './src/main.js'
   },
   output: {
-    filename: '[name].[contenthash:8].js',
+    filename: '[name].js',
     path: path.resolve(__dirname, 'dist'),
     chunkFilename: '[name].[contenthash:8].js'
   },
@@ -54,7 +54,8 @@ module.exports = {
     }),
     new HtmlWebpackPlugin({
       template: path.resolve(__dirname, 'public', 'index.html'),
-      favicon: './public/favicon.ico'
+      favicon: './public/favicon.ico',
+      minify: false
     }),
     new webpack.IgnorePlugin({
       resourceRegExp: /^\.\/locale$/,

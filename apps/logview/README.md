@@ -1,1 +1,1 @@
-# A standalone build of Log Viewer for UB logs
+# A standalone build of Log Viewer for UB/mORMot logs
