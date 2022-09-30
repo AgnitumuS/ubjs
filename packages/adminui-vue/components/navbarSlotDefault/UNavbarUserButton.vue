@@ -171,7 +171,7 @@ export default {
     doLogout () {
       window.localStorage.setItem(this.$UB.LDS_KEYS.USER_DID_LOGOUT, 'true')
 
-      if (window.localStorage.getItem(this.$UB.LDS_KEYS.LAST_AUTH_SCHEMA).toLowerCase() !== 'openidconnect') {
+      if (window.localStorage.getItem(this.$UB.LDS_KEYS.LAST_AUTH_SCHEMA)?.toLowerCase() !== 'openidconnect') {
         this.$UB.core.UBApp.logout()
         return
       }
