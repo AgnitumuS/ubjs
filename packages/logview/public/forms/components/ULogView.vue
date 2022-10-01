@@ -196,7 +196,7 @@
           class="log-view__preview"
           v-model="selectedLineFormatted"
           :editor-mode="selectedLineContentType"
-          :options="{lineNumbers: false}"
+          :options="{lineNumbers: false, lineWrapping: true}"
         />
 
         <section
@@ -242,8 +242,6 @@ export default {
       selectedFileName: '',
       selectedFileIsLocal: true,
       selectedFileBytes: 0,
-      /** if last line in log fully written (ends with \n) */
-      lastLineComplete: true,
       selectedFileRangeSupported: false,
       followMode: false,
       followModeTimer: null,
@@ -287,7 +285,7 @@ export default {
   methods: {
     reset () {
       clearInterval(this.followModeTimer)
-      this._allLines = []
+      this._logParser = undefined
       this.$refs.log.setLines([])
       this.totalCnt = 0
       this.lls.forEach(ll => { ll.cnt = 0; ll.checked = true })
@@ -331,11 +329,10 @@ export default {
      * @returns {Promise<void>}
      */
     async retrieveContent (file, isPartial = false) {
-      if (!isPartial) this.reset()
-      if (!this._allLines) this._allLines = []
-
-      if (!isPartial) this.loading = true
-      let parsed
+      if (!isPartial) {
+        this.reset()
+        this.loading = true
+      }
       let txt
       try {
         if (typeof file === 'string') {
@@ -358,29 +355,21 @@ export default {
         } else {
           txt = await file.text()
         }
-        parsed = logUtils.parseLog(txt)
       } finally {
         if (!isPartial) this.loading = false
       }
+      if (isPartial) {
+        this._logParser.addLogPortion(txt)
+      } else {
+        this._logParser = new logUtils.LogParser(txt)
+      }
       for (let i = 0; i < logUtils.LOG_LEVELS_CNT; i++) {
-        this.lls[i].cnt += parsed.perLlCnt[i]
+        this.lls[i].cnt = this._logParser.perLlCnt[i]
       }
       for (let i = 0; i < logUtils.MAX_THREADS; i++) {
-        this.threads[i].cnt += parsed.perThCnt[i]
-      }
-      if (isPartial) {
-        if (this.lastLineComplete) {
-          this._allLines = this._allLines.concat(parsed.lines)
-        } else { // add first line to the end of prev. log last line
-          const L = this._allLines.length
-          this._allLines[L - 1] += parsed.lines[0]
-          this._allLines = this._allLines.concat(parsed.lines.slice(1))
-        }
-      } else {
-        this._allLines = parsed.lines
+        this.threads[i].cnt = this._logParser.perThCnt[i]
       }
       this.applyFiltersAndShow(isPartial)
-      this.lastLineComplete = txt.charAt(txt.length - 1) === '\n'
     },
 
     retrievePartialContent () {
@@ -390,8 +379,8 @@ export default {
     startStopFollowing () {
       if (this.followMode) {
         if (this.selectedFileIsLocal) return
-        this.$refs.log.selectRow(this._allLines.length - 1)
-        this.followModeTimer = setInterval(this.retrievePartialContent, 3 * 1000)
+        this.$refs.log.selectRow(this._logParser.allLines.length - 1)
+        this.followModeTimer = setInterval(this.retrievePartialContent, 10 * 1000)
       } else {
         clearInterval(this.followModeTimer)
       }
@@ -402,40 +391,15 @@ export default {
     },
 
     applyFiltersAndShow (isPartial) {
-      // use direct log line access instead of parseLine, it's x3 times faster
-      // filter by log level
-      console.time('filtration')
-      const usedLLs = new Set(this.logLevels4Filter)
-      const isLlFiltered = usedLLs.size !== logUtils.LOG_LEVELS_CNT
-      const TH_POS = logUtils.TH_POS
-      const byLl = isLlFiltered
-        ? (l) => usedLLs.has(l.substring(TH_POS + 2, TH_POS + 2 + 6))
-        : () => true
-      // filter by threads
-      const usedTh = new Set(this.threads4Filter)
-      const isThFiltered = usedTh.size !== logUtils.MAX_THREADS
-      const byTh = isThFiltered
-        ? (l) => usedTh.has(l.charCodeAt(TH_POS))
-        : () => true
-
-      const fStr = this.filterStr
-      const byStr = this.filterStr
-        ? (l) => l.includes(fStr)
-        : () => true
+      if (!this._logParser) return
       this.loading = true
       try {
-        let visibleLines
-        if (isLlFiltered || isThFiltered || fStr) {
-          visibleLines = this._allLines.filter(l => byLl(l) && byTh(l) && byStr(l))
-        } else {
-          visibleLines = this._allLines
-        }
-        this.$refs.log.setLines(visibleLines, isPartial)
-        this.totalCnt = visibleLines.length
+        const filteredLines = this._logParser.getFilteredLines(this.logLevels4Filter, this.threads4Filter, this.filterStr)
+        this.$refs.log.setLines(filteredLines, this._logParser, isPartial)
+        this.totalCnt = filteredLines.length
       } finally {
         this.loading = false
       }
-      console.timeEnd('filtration')
     },
 
     async doSave (fromRemote) {
@@ -452,9 +416,9 @@ export default {
     async showLineContent (line, idx) {
       this.selectedLineContent = line
       this.selectedLineIdx = idx
-      const parsed = logUtils.parseLine(line)
+      const parsed = this._logParser.parseLine(line, idx, false)
       this.selectedLineContentType = parsed.logLevel.contentType || LOG_LEVELS.unknown.contentType
-      this.selectedLineFormatted = this.formatPreview(line)
+      this.selectedLineFormatted = this.formatPreview(parsed, line)
     },
 
     applyLogLevelPrefilter (pf) {
@@ -503,48 +467,63 @@ export default {
       return f.fn + '\n' + this.formatFileInfo(f)
     },
 
-    formatPreview (line) {
-      const parsed = logUtils.parseLine(line)
+    formatPreview (parsed, line) {
       let txt = parsed.txt
       let fmt
       try {
         if (parsed.logLevel.contentType === 'text/x-sql') {
-          const qStart = txt.indexOf('q=')
-          if (qStart === -1) return
-          const comment = txt.substring(0, qStart).trim()
-          txt = txt.substring(qStart + 2)
-          // heuristic for dialect based on parameters format
-          let lang = 'sqlite' // ?
-          if (txt.includes('$1')) { // Postgres, SQL Server
-            lang = 'postgresql'
-          } else if (txt.includes(':1')) { // Oracle
-            lang = 'plsql'
+          let qStart = txt.indexOf('q=')
+          const isUB = qStart !== -1
+          if (!isUB) {
+            const uTXT = txt.toLowerCase()
+            qStart = (uTXT.indexOf('select') + 1) || (uTXT.indexOf('insert') + 1) || (uTXT.indexOf('update') + 1) || (uTXT.indexOf('delete') + 1)
+            qStart -= 1
+          } else {
+            qStart += 2
           }
-          // r=1 t=1260 fr=1257 c=0
-          const MT = { r: 'Rows: ', t: 'Time: ', fr: 'TimeToFirstRow: ', c: 'PlaneCached: ' }
-          const metrics = comment.split(' ').map(v => {
-            const parts = v.split('=')
-            let res = v
-            if (parts.length === 2) {
-              if (parts[0] === 'c') {
-                res = MT[parts[0]] + (parts[1] === '0' ? 'no' : 'yes')
-              } else {
-                if (parts[0] === 'r') {
-                  res = MT[parts[0]] + parts[1]
-                } else {
-                  res = MT[parts[0]] + (Math.round(parseInt(parts[1], 10) / 100) / 10) + 'ms'
-                }
-              }
+          fmt = `-- ${this._logParser.getLineTime(line, true)} Thread: #${parsed.th}`
+          if (qStart === -1) {
+            fmt += `\n${parsed.txt}`
+          } else {
+            const comment = txt.substring(0, isUB ? qStart - 2 : qStart).trim()
+            const SQL = txt.substring(qStart)
+            // heuristic for dialect based on parameters format
+            let lang = 'sqlite' // ?
+            if (SQL.includes('$1')) { // Postgres, SQL Server
+              lang = 'postgresql'
+            } else if (SQL.includes(':1')) { // Oracle
+              lang = 'plsql'
             }
-            return res
-          })
-          fmt = `-- ${parsed.time} Thread: #${parsed.th}, ${metrics.join(', ')}\n` + sqlFormatter.format(txt, { language: lang })
+            if (isUB) {
+              // r=1 t=1260 fr=1257 c=0
+              const MT = { r: 'Rows: ', t: 'Time: ', fr: 'TimeToFirstRow: ', c: 'PlaneCached: ' }
+              const metrics = comment.split(' ').map(v => {
+                const parts = v.split('=')
+                let res = v
+                if (parts.length === 2) {
+                  if (parts[0] === 'c') {
+                    res = MT[parts[0]] + (parts[1] === '0' ? 'no' : 'yes')
+                  } else {
+                    if (parts[0] === 'r') {
+                      res = MT[parts[0]] + parts[1]
+                    } else {
+                      res = MT[parts[0]] + (Math.round(parseInt(parts[1], 10) / 100) / 10) + 'ms'
+                    }
+                  }
+                }
+                return res
+              })
+              fmt += `\n-- ${metrics.join(', ')}\n` + sqlFormatter.format(SQL, { language: lang })
+            } else {
+              fmt += '\n' + sqlFormatter.format(SQL, { language: lang })
+            }
+          }
         } else if (parsed.logLevel.contentType === 'application/json') {
           txt = txt.trim().replaceAll('...]', '"more..."]') // truncated array parameter
           fmt = JSON.stringify(JSON.parse(txt), null, '\t')
-          fmt = `//${parsed.time} Thread: #${parsed.th} \n${fmt}`
+          fmt = `//${this._logParser.getLineTime(line, true)} Thread: #${parsed.th} \n${fmt}`
         } else if (parsed.logLevel !== LOG_LEVELS.unknown) {
-          fmt = `-- ${logUtils.getLineTime(line, true)} Thread: #${parsed.th} Log level: ${parsed.logLevel.label}\n`
+          fmt = `-- ${this._logParser.getLineTime(line, true)} Thread: #${parsed.th} Log level: ${parsed.logLevel.label}\n`
           txt = txt.trim()
           if (txt.startsWith('[{') || txt.startsWith('{')) { // most likely UBQL or some other JSON
             try {
@@ -572,7 +551,7 @@ export default {
       } else {
         this.loading = true
         try {
-          let timings = logUtils.buildMethodsTiming(this._allLines, this.lls[LOG_LEVELS.enter.idx].cnt)
+          let timings = this._logParser.buildMethodsTiming()
           timings.sort((a, b) => b.time - a.time)
           timings = timings.slice(0, 1000)
           timings.forEach(t => {
@@ -587,7 +566,7 @@ export default {
               t.timeFmt = (t.time + 'μs')
             }
             t.timeFmt = t.timeFmt.padStart(8, ' ')
-            t.txtFmt = this._allLines[t.idx].substring(logUtils.TH_POS + 2 + 6)
+            t.txtFmt = this._logParser.allLines[t.idx].substring(this._logParser.TH_POS + 2 + 6)
           })
           this._timings = timings
         } finally {
@@ -596,67 +575,16 @@ export default {
         this.methodsTimingVisible = true // force reactivity
       }
     },
-    formatTimingLine (l, i) {
-      return {
-        idx: i,
-        logLevel: LOG_LEVELS.enter,
-        txt: `${l.time} ${this._lines[l.idx]}`
-      }
-    },
     showTimingLine (idx) {
-      const p = logUtils.parseLine(this._allLines[idx])
+      const p = this._logParser.parseLine(idx)
       this._prefilterPoppedAt = p.th
       this.applyThreadPrefilter('cur') // filter by thread
-      Vue.nextTick(() => { this.$refs.log.searchAndSelect(this._allLines[idx], 'equal', 'full') })
+      // eslint-disable-next-line no-undef
+      Vue.nextTick(() => { this.$refs.log.searchAndSelect(this._logParser.allLines[idx], 'equal', 'full') })
     },
 
-    computeStats () {
-      let dateStart, dateEnd
-      const LL = this._allLines
-      for (let i = 0, L = LL.length; i < L; i++) {
-        dateStart = logUtils.getLineTime(LL[i])
-        if (!isNaN(dateStart)) break // first line with valid date
-      }
-      for (let i = LL.length - 1; i >= 0; i--) { // last line with date
-        dateEnd = logUtils.getLineTime(LL[i])
-        if (!isNaN(dateEnd)) break // last line with valid date
-      }
-      if (!dateStart || !dateEnd) {
-        return 'Log should contains at last 2 line what starts with dates to compute statistic'
-      }
-      const FMT = this.$UB.formatter
-      const totalSeconds = Math.round((dateEnd - dateStart) / 1000)
-      const threadsInfo = this.usedThreads.map(th => `${th.label}: ${FMT.formatNumber(th.cnt, 'numberGroup').padStart(9, ' ')}`).join('\n')
-      const llInfo = this.usedLogLevels.map(ll => `${ll.label}: ${FMT.formatNumber(ll.cnt, 'numberGroup').padStart(9, ' ')}`).join('\n')
-      const totalEvents = this.usedLogLevels.reduce((acum, ll) => acum + ll.cnt, 0)
-      const cHTTP = this.lls[LOG_LEVELS.http.idx].cnt
-      const cSQL = this.lls[LOG_LEVELS.SQL.idx].cnt
-      const dateElapsed = new Date(dateEnd - dateStart)
-      return `${this.selectedFileName}
--------------------------------
-
-Started : ${FMT.formatDate(dateStart, 'dateTimeFull')}
-Ended   : ${FMT.formatDate(dateEnd, 'dateTimeFull')}
-Duration: ${dateElapsed.getUTCDate() - 1}.${dateElapsed.getUTCHours()}:${dateElapsed.getUTCMinutes()}:${dateElapsed.getUTCSeconds()}
-Events  : ${FMT.formatNumber(totalEvents, 'numberGroup')}
-Threads : ${this.usedThreads.length}
-
-Load average
-------------------------------
-HTTP Requests Per Second: ${FMT.formatNumber(Math.round(cHTTP / 2 / totalSeconds), 'numberGroup').padStart(3, ' ')}
-SQL Query Per Second    : ${FMT.formatNumber(Math.round(cSQL / totalSeconds), 'numberGroup').padStart(3, ' ')}
-
-Events
-------------------
-${llInfo}
-
-Per thread events
------------------
-${threadsInfo}
-`
-    },
     showStats () {
-      this.selectedLineFormatted = this.computeStats()
+      this.selectedLineFormatted = this._logParser.computeStats(this.selectedFileName)
       this.selectedLineContentType = LOG_LEVELS.unknown.contentType
     }
   },
@@ -679,7 +607,7 @@ ${threadsInfo}
     threads4Filter () {
       const res = []
       this.threads.forEach(th => {
-        if (th.checked) { res.push(logUtils.TH_0 + th.idx) }
+        if (th.checked) { res.push(th.idx) }
       })
       return res
     },

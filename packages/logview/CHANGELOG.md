@@ -6,8 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+ - added parsing of logs in Hi resolution timer format
 
 ### Changed
+ - added line wrapping in preview 
 
 ### Deprecated
 
