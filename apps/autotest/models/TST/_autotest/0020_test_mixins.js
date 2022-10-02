@@ -22,27 +22,27 @@ module.exports = function runMixinsTests (options) {
   const session = argv.establishConnectionFromCmdLineAttributes(options)
   const conn = session.connection
 
-  // console.debug('testClobTruncate')
-  // testClobTruncate(conn)
-  // console.debug('testDateTime')
-  // testDateTime(conn)
-  // console.debug('test param macros')
-  // testParamMacros(conn)
-  // console.debug('test float & currency attributes')
-  // testFloatAndCurrency(conn)
-  // if (base.ubVersionNum > 5017000) {
-  //   console.debug('test Tree mixin')
-  //   testTreeMixin(conn)
-  //   console.debug('test asterisk in UBQL')
-  //   testAsterisk(conn)
-  // }
-  // testSkipSelectBeforeUpdate(conn)
-  // if (base.ubVersionNum >= 5018014) {
-  //   testSuffixIndex(conn)
-  // }
-  // if (base.ubVersionNum >= 50220010) {
-  //   testCtxEntitySwitch(conn)
-  // }
+  console.debug('testClobTruncate')
+  testClobTruncate(conn)
+  console.debug('testDateTime')
+  testDateTime(conn)
+  console.debug('test param macros')
+  testParamMacros(conn)
+  console.debug('test float & currency attributes')
+  testFloatAndCurrency(conn)
+  if (base.ubVersionNum > 5017000) {
+    console.debug('test Tree mixin')
+    testTreeMixin(conn)
+    console.debug('test asterisk in UBQL')
+    testAsterisk(conn)
+  }
+  testSkipSelectBeforeUpdate(conn)
+  if (base.ubVersionNum >= 5018014) {
+    testSuffixIndex(conn)
+  }
+  if (base.ubVersionNum >= 50220010) {
+    testCtxEntitySwitch(conn)
+  }
   testAddNew(conn)
 }
 
