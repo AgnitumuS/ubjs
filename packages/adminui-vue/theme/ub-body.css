@@ -55,6 +55,9 @@
     --padding: var(--u-gap-double);
 
     --u-checkbox-dim: 20px;
+
+    /* sizes */
+    --navbar-height: 54px;
 }
 
 ::-webkit-scrollbar {

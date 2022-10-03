@@ -32,7 +32,7 @@
 
 <script>
 const Vue = require('vue')
-const { parseLine, LOG_LEVELS } = require('./uLogUtils')
+const { LOG_LEVELS } = require('./uLogUtils')
 /**
  * Virtual scroll based log lines viewer
  */
@@ -77,7 +77,7 @@ export default {
     visibleLines () {
       const res = []
       for (let i = this.firstVisibleLine, L = this.firstVisibleLine + this.visibleLinesCount; i < L; i++) {
-        res.push(parseLine(this._lines[i], i))
+        res.push(this._logParser.parseLine(this._lines[i], i))
       }
       return res
     }
@@ -103,13 +103,15 @@ export default {
      * Set array of log lines (non-reactive) for displaying
      *
      * @param {Array<string>} logLines
+     * @param {LogParser} logParser
      * @param {boolean} [isPartial=false]
      * @public
      */
-    setLines (logLines, isPartial = false) {
+    setLines (logLines, logParser, isPartial = false) {
       // for partial content in case last line is selected - scroll to new last line
       const moveToLast = isPartial && (this.selectedRowIndex + 1 >= this.itemsCount)
       const activeText = (this._lines && this._lines.length && this.selectedRowIndex !== -1) ? this._lines[this.selectedRowIndex] : ''
+      this._logParser = logParser
       this._lines = logLines
       // Maximum items count for virtual scroll are:
       // Chrome - 1579031
@@ -235,7 +237,7 @@ export default {
       let rowIdx = 0
       while (k < L) {
         k++
-        if (parseLine(ln[k], k, true).logLevel === ll) {
+        if (this._logParser.parseLine(ln[k], k, true).logLevel === ll) {
           rowIdx = k
           break
         }
@@ -250,7 +252,7 @@ export default {
      * @returns {boolean}
      */
     jumpCallStack (i) {
-      const p = parseLine(this._lines[i], i, true)
+      const p = this._logParser.parseLine(this._lines[i], i, true)
       const TH = p.th
       const lFrom = p.logLevel
       let e = this.itemsCount
@@ -272,7 +274,7 @@ export default {
       const maxI = this.itemsCount
       while (i !== e && i >= -1 && i < maxI) {
         i += d
-        const p = parseLine(this._lines[i], i, true)
+        const p = this._logParser.parseLine(this._lines[i], i, true)
         if (p.th !== TH || !(p.logLevel === lFrom || p.logLevel === lTo)) continue
         if (p.logLevel === lTo && rec === 0) {
           found = true

@@ -43,6 +43,7 @@ module.exports = function runMixinsTests (options) {
   if (base.ubVersionNum >= 50220010) {
     testCtxEntitySwitch(conn)
   }
+  testAddNew(conn)
 }
 
 /**
@@ -354,3 +355,22 @@ function testCtxEntitySwitch (conn) {
   console.debug('Test SUFFIXES index')
   conn.query({ entity: 'tst_document', method: 'runInAnotherConn' })
 }
+
+/**
+ * Server side method what uses ctx.dataStore.switchEntity to change store connection. Should not throw
+ * @param {SyncConnection} conn
+ */
+function testAddNew (conn) {
+  console.debug('Test addNew')
+  const res = conn.query({ entity: 'tst_service', method: 'testAddNew' })
+  console.log('res=', res)
+  assert.strictEqual(typeof res.resID, 'number', "type of ds.get('ID') must be number, got " + typeof res.resID)
+  assert.strictEqual(typeof res.resName, 'string')
+  assert.strictEqual(res.resName, '22')
+  const resJson = JSON.parse(res.resJson)
+  assert.strictEqual(typeof resJson[0].ID, 'number')
+  assert.strictEqual(typeof resJson[0].name, 'string')
+  assert.strictEqual(resJson[0].ID, res.resID)
+  assert.strictEqual(resJson[0].name, res.resName)
+}
+

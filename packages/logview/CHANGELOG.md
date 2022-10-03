@@ -6,14 +6,21 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+ - added parsing of logs in Hi resolution timer format
+
 ### Changed
+ - added line wrapping in preview 
 
 ### Deprecated
 
 ### Removed
 
 ### Fixed
+ - fix verbalization of `c=0` for SQL log level (c=0 mean `PlaneCached=no`) 
 
+## [1.0.2] - 2022-09-30
+### Changed
+ - `ULogView` moved from UB form into separate component - to be used in standalone app
 
 ## [1.0.1] - 2022-09-26
 ### Added

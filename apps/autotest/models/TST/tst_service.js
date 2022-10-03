@@ -398,3 +398,27 @@ me.reloadConfig = function (ctx) {
   const prevTID = Session.setTempTenantID(12)
   console.log(`tenantID switched from ${prevTID}`)
 }
+
+me.entity.addMethod('testAddNew')
+/**
+ * @param {ubMethodParams} ctx
+ */
+me.testAddNew = function (ctx) {
+  const uDs = UB.DataStore('uba_user')
+  uDs.run('addnew', {
+    fieldList: ['ID', 'name', 'mi_modifyDate'],
+    execParams: { name: '22' }
+  })
+
+  const ID = uDs.get('ID')
+  const name = uDs.get('name')
+  const modifyDate = uDs.get('mi_modifyDate')
+  console.log('ID=', ID, 'of type', typeof ID)
+  console.log('name =', name, 'of type', typeof name)
+  console.log('modifyDate=', modifyDate, 'of type', typeof modifyDate)
+  const json = uDs.getAsJsObject()
+  console.log('json=', json)
+  ctx.mParams.resID = ID
+  ctx.mParams.resName = name
+  ctx.mParams.resJson = JSON.stringify(json)
+}

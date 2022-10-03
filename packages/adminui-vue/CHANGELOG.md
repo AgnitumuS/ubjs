@@ -8,13 +8,31 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
- - `UFileInput` - validation notification set duration to 30 seconds
 
 ### Deprecated
 
 ### Removed
 
 ### Fixed
+
+## [5.23.21] - 2022-09-30
+### Added
+- `UMasterDetailView` - now supports a new property `hideViewModes`. It allows hiding some
+   default view modes in the toolbar dropdown menu, such as: `table`, `card`, `previewForm`.
+
+### Changed
+ - `UFileInput` - validation notification set duration to 30 seconds
+ - `UCodeMirror` - el-tooltip component replaced by HTML `title` attribute; decreased tooltip icon size
+ - `@unitybase/adminui-vue` package now can be used in projects without UB server (example is logview project) - 
+  fixes are done in fonts and css`s loading
+
+### Removed
+ - removed unneeded files from `/dist/fonts/fa/css`: `fontawesome.min.css`, `regular.min.css`, `solid.min.css`
+  and `v4-shims.min.css` - all these files already bundled into `fa-all4ub.min.css`
+ - `fontawesome` - removed unnecessary fallbacks from woff2 to `woff` `ttf` and `svg` - woff2 is supported by all browsers
+
+### Fixed
+- `UDropdown`, `UNavbar` - fixed view on horizontal screens (mainly mobile)
 - `UTableEntityRoot` - fixed table layout with sidebar on small screen. Sidebar placed on top of the table
 - `UMasterDetailView` - fixed table layout with preview-mode on small screen. Preview box placed on top of the table
 
