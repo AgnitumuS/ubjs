@@ -14,6 +14,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+ - org_employee: in case one of firstName/lastName/middleName for specific lang is missed - use value from default lang
+  to build short and full names
 
 ## [5.23.22] - 2022-09-30
 ### Fixed
