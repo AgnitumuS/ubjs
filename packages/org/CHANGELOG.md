@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
+- `org_staffunit-fm.vue` form changed to be able to extend `u-table-entity`
 
 ### Deprecated
 
