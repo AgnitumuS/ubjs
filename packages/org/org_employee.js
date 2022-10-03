@@ -13,7 +13,7 @@ if (ubaAuditPresent) {
 }
 
 me.on('update:after', updateCaptionAndLogToAudit)
-me.on('insert:before', buildAndFillFullname)
+me.on('insert:before', buildAndFillFullName)
 me.on('insert:after', ubaAuditLinkUser)
 me.on('delete:before', removeLinkToUser)
 me.on('delete:after', ubaAuditLinkUserDelete)
@@ -437,25 +437,46 @@ function removeLinkToUser (ctx) {
   })
 }
 
+const LAST_NAME_FIRST = new Set(['uk', 'ru', 'az', 'ka', 'uz'])
 /**
  * If fullFIO and/or shortFIO didn't come from client, they should be built
  * based on user's language and added to execParams
  *
  * @param {ubMethodParams} ctx
  */
-function buildAndFillFullname (ctx) {
+function buildAndFillFullName (ctx) {
   const params = ctx.mParams.execParams
-  const lastNameFirst = ['uk', 'ru', 'az', 'ka', 'uz'].includes(Session.userLang)
+  const lastNameFirst = LAST_NAME_FIRST.has(Session.userLang)
 
+  const langKey = (attrCode, lang) => App.defaultLang === lang ? attrCode : `${attrCode}_${lang}^`
   // Assign per language parameters
   for (const lang of supportedLanguages) {
-    const fullFioKey = 'fullFIO_' + lang + '^'
-    const shortFioKey = 'shortFIO_' + lang + '^'
+    const fullFioKey = langKey('fullFIO', lang)
+    const shortFioKey = langKey('shortFIO', lang)
 
-    const lastName = params['lastName_' + lang + '^']
-    const firstName = params['firstName_' + lang + '^']
-    const middleName = params['middleName_' + lang + '^']
-
+    const lastNameKey = langKey('lastName', lang)
+    const lastNameDefKey = `lastName_${App.defaultLang}^`
+    let lastName = params[lastNameKey]
+    const firstNameKey = langKey('firstName', lang)
+    const firstNameDefKey = `firstName_${App.defaultLang}^`
+    let firstName = params[firstNameKey]
+    const middleNameKey = langKey('middleName', lang)
+    const middleNameDefKey = `middleName_${App.defaultLang}^`
+    let middleName = params[middleNameKey]
+    if (lang !== App.defaultLang) { // fill first/last/middle Name for missed lang
+      if (!lastName && (params.lastName || params[lastNameDefKey])) {
+        lastName = (params.lastName || params[lastNameDefKey])
+        params[lastNameKey] = lastName
+      }
+      if (!firstName && (params.firstName || params[firstNameDefKey])) {
+        firstName = (params.firstName || params[firstNameDefKey])
+        params[firstNameKey] = firstName
+      }
+      if (!middleName && (params.middleName || params[middleNameDefKey])) {
+        middleName = (params.middleName || params[middleNameDefKey])
+        params[middleNameKey] = middleName
+      }
+    }
     const hasNameComponents = firstName || middleName || lastName
 
     if (!params[fullFioKey] && hasNameComponents) {
@@ -467,7 +488,7 @@ function buildAndFillFullname (ctx) {
   }
 
   // Assign alias parameters
-  const {firstName, middleName, lastName} = params
+  const { firstName, middleName, lastName } = params
   const hasNameComponents = firstName || middleName || lastName
 
   if (!params.fullFIO && hasNameComponents) {
