@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+- `UMasterDetailView` - fixed supports a property `hideViewModes` for showList method.
 
 ## [5.23.21] - 2022-09-30
 ### Added
