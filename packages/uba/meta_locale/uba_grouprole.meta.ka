@@ -1,15 +1,15 @@
-﻿{
-    "caption": "ჯგუფის როლი",
-    "captionSingular": "ჯგუფის როლი",
-    "description": "",
-    "attributes": [
-        {
-            "name": "groupID",
-            "caption": "ჯგუფი "
-        },
-        {
-            "name": "roleID",
-            "caption": "როლი"
-        }
-    ]
+{
+  "caption": "ჯგუფის როლი",
+  "captionSingular": "ჯგუფის როლი",
+  "description": "",
+  "attributes": [
+    {
+      "name": "groupID",
+      "caption": "ჯგუფი "
+    },
+    {
+      "name": "roleID",
+      "caption": "როლი"
+    }
+  ]
 }

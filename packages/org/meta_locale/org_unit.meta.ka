@@ -1,23 +1,23 @@
-﻿{
-    "caption": "ორგანიზაციის ქვეგანყოფილება",
-    "captionSingular": "საორგანიზაციო ერთეული",
-    "description": "",
-    "attributes": [
-        {
-            "name": "parentID",
-            "caption": "ძირითადი"
-        },
-        {
-            "name": "code",
-            "caption": "შიდა კოდი"
-        },
-        {
-            "name": "caption",
-            "caption": "დასახელება"
-        },
-        {
-            "name": "unitType",
-            "caption": "ორგანიზაციის ქვეგანყოფილების ტიპი"
-        }
-    ]
+{
+  "caption": "ორგანიზაციის ქვეგანყოფილება",
+  "captionSingular": "საორგანიზაციო ერთეული",
+  "description": "",
+  "attributes": [
+    {
+      "name": "parentID",
+      "caption": "ძირითადი"
+    },
+    {
+      "name": "code",
+      "caption": "შიდა კოდი"
+    },
+    {
+      "name": "caption",
+      "caption": "დასახელება"
+    },
+    {
+      "name": "unitType",
+      "caption": "ორგანიზაციის ქვეგანყოფილების ტიპი"
+    }
+  ]
 }

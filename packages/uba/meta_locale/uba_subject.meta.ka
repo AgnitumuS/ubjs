@@ -1,19 +1,19 @@
-﻿{
-    "caption": "ადმინისტრაციული თემა",
-    "captionSingular": "ადმინისტრირების საგანი",
-    "description": "",
-    "attributes": [
-        {
-            "name": "code",
-            "caption": "თემის კოდი"
-        },
-        {
-            "name": "name",
-            "caption": "შესვლა"
-        },
-        {
-            "name": "sType",
-            "caption": "თემის ტიპი"
-        }
-    ]
+{
+  "caption": "ადმინისტრაციული თემა",
+  "captionSingular": "ადმინისტრირების საგანი",
+  "description": "",
+  "attributes": [
+    {
+      "name": "code",
+      "caption": "თემის კოდი"
+    },
+    {
+      "name": "name",
+      "caption": "შესვლა"
+    },
+    {
+      "name": "sType",
+      "caption": "თემის ტიპი"
+    }
+  ]
 }

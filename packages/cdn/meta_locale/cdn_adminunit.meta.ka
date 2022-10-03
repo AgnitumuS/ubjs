@@ -1,31 +1,31 @@
-﻿{
-    "caption": "ადმინისტრაციული დანაყოფი",
-    "captionSingular": "ადმინისტრაციული ერთეული",
-    "description": "",
-    "attributes": [
-        {
-            "name": "parentAdminUnitID",
-            "caption": "თავდაპირველი(საწყისი)"
-        },
-        {
-            "name": "code",
-            "caption": "კოდი"
-        },
-        {
-            "name": "name",
-            "caption": "სახელი"
-        },
-        {
-            "name": "fullName",
-            "caption": "სრული დასახელება"
-        },
-        {
-            "name": "adminUnitType",
-            "caption": "ადმინისტრაციული დანაყოფის სახეობა"
-        },
-        {
-            "name": "caption",
-            "caption": "წარწერა"
-        }
-    ]
+{
+  "caption": "ადმინისტრაციული დანაყოფი",
+  "captionSingular": "ადმინისტრაციული ერთეული",
+  "description": "",
+  "attributes": [
+    {
+      "name": "parentAdminUnitID",
+      "caption": "თავდაპირველი(საწყისი)"
+    },
+    {
+      "name": "code",
+      "caption": "კოდი"
+    },
+    {
+      "name": "name",
+      "caption": "სახელი"
+    },
+    {
+      "name": "fullName",
+      "caption": "სრული დასახელება"
+    },
+    {
+      "name": "adminUnitType",
+      "caption": "ადმინისტრაციული დანაყოფის სახეობა"
+    },
+    {
+      "name": "caption",
+      "caption": "წარწერა"
+    }
+  ]
 }

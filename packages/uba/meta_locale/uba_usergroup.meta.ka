@@ -1,14 +1,14 @@
-﻿{
-    "caption": "მომხმარებლის ჯგუფი",
-    "captionSingular": "მომხმარებლის შესვლა ჯგუფში",
-    "attributes": [
-        {
-            "name": "userID",
-            "caption": "მომხმარებელი"
-        },
-        {
-            "name": "groupID",
-            "caption": "ჯგუფი"
-        }
-    ]
+{
+  "caption": "მომხმარებლის ჯგუფი",
+  "captionSingular": "მომხმარებლის შესვლა ჯგუფში",
+  "attributes": [
+    {
+      "name": "userID",
+      "caption": "მომხმარებელი"
+    },
+    {
+      "name": "groupID",
+      "caption": "ჯგუფი"
+    }
+  ]
 }

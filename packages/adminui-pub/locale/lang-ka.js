@@ -1,30 +1,29 @@
 ﻿UB.i18nExtend({
-  "NMInstallExtensionFirefox": "<p>To use this application Firefox extension <b>\"UBExtension\"</b> must be installed.</p> " +
-    "<p>Follow <a href=\"https://addons.mozilla.org/addon/ub-extension/\" target=\"_blank\">ADD EXTENSION</a> " +
-    " to go to the Firefox add-ons</p>" +
-    "<p> At the add-on window click button <b>+Add to Firefox</b></p>" +
-    "<p>Confirm adding a new extension.</p>" +
-    "<p>After installing the extension <b>restart your browser!</b></p>",
-  "NMInstallExtensionChrome": "<p>Chrome extension <b>\"UBExtension\"</b> must be installed.</p> " +
-    "<p>Follow <a href=\"https://unitybase-info.translate.goog/news/setup-ubextension-without-using-the-google-store.html?_x_tr_sl=uk&_x_tr_tl=en&_x_tr_hl=uk&_x_tr_pto=nui\" target=\"_blank\">setup instruction</a>.</p>" +
-    "<p><b>Restart the browser after installation!</b></p>",
-  "NMInstallExtensionOpera": "<p>To use this application Opera extension <b>\"UBExtension\"</b> must be installed.</p> " +
-    "<p>Follow <a href=\"models/adminui-pub/ub-extension/UBExtension.crx\" target=\"_blank\">DOWNLOAD EXTENSION</a> link.</p>" +
-    "<p>After extension is downloaded you can see \"unknown source\" warning in the upper part of your Opera browser. " +
-    "Press \"Go\" button on the message bar - Opera open extension page. On this page you must found \"UBExtension\" and press \"Install\" button twice</p> " +
-    "<p>After this installation is complete and better to restart your browser.</p>",
-  "NMUpdateExtensionChrome": "<p>To continue you need to update your browser<b>{0}</b> up to version <i>{2}</i>.</p> " +
-    "<p>Usually Google Chrome updating extensions automatically. Try to close/open browser. " +
-    " For manually updating go to the Google store<a href=\"https://chrome.google.com/webstore/detail/ubextension/{3}\" target=\"_blank\">and follow this link</a> </p>",
-  "NMUpdateExtensionOpera": "<p>The new version <i>{2}</i> of the <b>{0}</b> is available and should be installed.</p> " +
-    "Read <a href=\"models/adminui-pub/ub-extension/extensionUpdateInstructionOpera.html\" target=\"_blank\">update instruction</a> " +
-    " and follow <a href=\"https://chrome.google.com/webstore/detail/ubextension/{3}\" target=\"_blank\">UPDATE</a>. <p>After update is complete - restart your browser.</p>",
-  "NMInstallFeature": "<p>To use this feature <b>{0}</b> must be installed.</p> " +
-    "<p>Follow <a href=\"{3}\" target=\"_blank\">DOWNLOAD SETUP</a>. After download is complete, run the install and follow the prompts.</p>" +
-    "<p>After the installation is complete, restart your browser.</p>",
-  "NMUpdateFeature": "<p>The new version <i>{1}</i> of the application <b>{0}</b> is available and should be installed.</p> " +
-    "<p>Follow <a href=\"{3}\" target=\"_blank\">DOWNLOAD UPDATE SETUP</a>. After the download is complete, run the install and follow the prompts.</p>" +
-    "<p>After the update is complete, restart your browser.</p>"
+  "NMInstallExtensionFirefox": "<p>ამ აპლიკაციით სარგებლობისთვის Firefox ექსთენშენი <b>\"UBExtension\"</b> უნდა იყოს დაინსტალირებული.</p> " +
+    "<p>გადადით ბმულზე <a href=\"https://addons.mozilla.org/addon/ub-extension/\" target=\"_blank\">ექსთენშენის დამატება</a> " +
+    " Firefox გაფართოების დასამატებლად</p>" +
+    "<p> შესაბამის ფანჯარაში დააკლიკეთ ღილაკს  <b>+Firefox-ში დამატება</b></p>" +
+    "<p>დაადასტურეთ ახალი ექსთენშენის დამატება.</p>" +
+    "<p>ექსთენშენის ინსტალაციის შემდეგ <b>დაარესტარტეთ ბრაუზერი!</b></p>",
+  "NMInstallExtensionChrome": "<p>ქრომის extension <b>\"UBExtension\"</b> უნდა იყოს დაინსტალირებული.</p> " +
+    "<p>გადადით ბმულზე <a href=\"https://unitybase-info.translate.goog/news/setup-ubextension-without-using-the-google-store.html?_x_tr_sl=uk&_x_tr_tl=en&_x_tr_hl=uk&_x_tr_pto=nui\" target=\"_blank\">ინსტალაციის ინსტრუქცია</a>.</p>" +
+    "<p><b>ინსტალაციის დასრულების შემდეგ დაარესტარტეთ ბრაუზერი!</b></p>",
+  "NMInstallExtensionOpera": "<p>ამ აპლიკაციით სარგებლობისთვის Opera ექსთენშენი <b>\"UBExtension\"</b> უნდა იყოს დაინსტალირებული.</p> " +
+    "<p>გადადით ბმულზე <a href=\"models/adminui-pub/ub-extension/UBExtension.crx\" target=\"_blank\">ექსთენშენის ჩამოტვირთვა</a> ბმული.</p>" +
+    " <p>ექსთენშენის ჩამოტვირთვის შემდეგ თქვენი Opera ბრაუზერის ზედა ნაწილში დაინახავთ გამაფრთხილებელ შეტყობინებას \"unknown source\". დააკლიკეთ \"Go\" ღილაკს" + "შეტყობინების ფანჯარაზე - Opera გახსნის ექსთენშენის გვერდს. ამ გვერდზე უნდა მოძებნოთ \"UBExtension\" და დააკლიკოთ \"Install\" ღილაკს ორჯერ</p> " +
+    "<p>ინსტალაციის დასრულების შემდეგ დაარესტარტეთ ბრაუზერი.</p>",
+  "NMUpdateExtensionChrome": "<p>გასაგრძელებლად საჭიროა თქვენი ბრაუზერის განახლება<b>{0}</b> ვერსიამდე <i>{2}</i>.</p> " +
+    "<p>როგორც წესი, Google Chrome ავტომატურად ანახლებს ექსთენშებებს. სცადეთ ბრაუზერის დახურვა/გახსნა. " +
+    " ხელით განახლებისთვის Google Store-ს<a href=\"https://chrome.google.com/webstore/detail/ubextension/{3}\" target=\"_blank\">და გადადით ბმულზე</a> </p>",
+  "NMUpdateExtensionOpera": "<p>ახალი ვერსია <i>{2}</i> of the <b>{0}</b> ხელმისაწვდომია და გთხოვთ დააინსტალიროთ.</p> " +
+    "წაიკითხეთ <a href=\"models/adminui-pub/ub-extension/extensionUpdateInstructionOpera.html\" target=\"_blank\">განახლების ინსტრუქცია</a> " +
+    " და მიჰყევით ბმულს <a href=\"https://chrome.google.com/webstore/detail/ubextension/{3}\" target=\"_blank\">განახლება</a>. <p>განახლების დასრულების შემდეგ, გადატვირთეთ თქვენი ბრაუზერი.</p>",
+  "NMInstallFeature": "<p>ამ ფუნქციის გამოსაყენებლად <b>{0}</b> უნდა იყოს დაინსტალირებული.</p> " +
+    "<p>მიჰყევით ბმულს <a href=\"{3}\" target=\"_blank\">ინსტალაციის ჩამოტვირთვა</a>. ჩამოტვირთვის დასრულების შემდეგ, გაუშვით ინსტალაცია და მიჰყევით მითითებებს</p>" +
+    "<p>ინსტალაციის დასრულების შემდეგ, გადატვირთეთ ინტერნეტ ბრაუზერი.</p>",
+  "NMUpdateFeature": "<p>ახალი ვერსია <i>{1}</i> ამ აპლიკაციისთვის <b>{0}</b>ხელმისაწვდომია და გთხოვთ დააინსტალიროთ.</p> " +
+    "<p>მიჰყევით <a href=\"{3}\" target=\"_blank\">განახლების ჩამოტვირთვა</a>. ჩამოტვირთვის დასრულების შემდეგ, გაუშვით ინსტალაცია და მიჰყევით მითითებებს.</p>" +
+    "<p>ინსტალაციის დასრულების შემდეგ, გადატვირთეთ ინტერნეტ ბრაუზერი.</p>"
 })
 
 if (typeof Ext !== 'undefined') {

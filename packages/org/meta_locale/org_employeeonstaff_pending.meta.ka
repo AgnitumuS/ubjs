@@ -1,19 +1,19 @@
-﻿{
-    "caption": "დავალების შესრულების თარიღი",
-    "captionSingular": "დავალების შესრულების თარიღი",
-    "description": "",
-    "attributes": [
-        {
-            "name": "emponstaffID",
-            "caption": "დავალება"
-        },
-        {
-            "name": "startDate",
-            "caption": "დასაწყისი"
-        },
-        {
-            "name": "endDate",
-            "caption": "დასასრული"
-        }
-    ]
+{
+  "caption": "დავალების შესრულების თარიღი",
+  "captionSingular": "დავალების შესრულების თარიღი",
+  "description": "",
+  "attributes": [
+    {
+      "name": "emponstaffID",
+      "caption": "დავალება"
+    },
+    {
+      "name": "startDate",
+      "caption": "დასაწყისი"
+    },
+    {
+      "name": "endDate",
+      "caption": "დასასრული"
+    }
+  ]
 }

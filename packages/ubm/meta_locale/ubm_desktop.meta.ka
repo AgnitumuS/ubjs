@@ -1,35 +1,35 @@
-﻿{
-    "caption": "სამუშაო ეკრანი",
-    "captionSingular": "სამუშაო მაგიდა",
-    "description": "",
-    "attributes": [
-        {
-            "name": "caption",
-            "caption": "კომპიუტერის დასახელება"
-        },
-        {
-            "name": "code",
-            "caption": "კოდი "
-        },
-        {
-            "name": "url",
-            "caption": "URL"
-        },
-        {
-            "name": "isDefault",
-            "caption": "ნაგულისხმევი"
-        },
-        {
-            "name": "displayOrder",
-            "caption": "№ ბრძანება"
-        },
-        {
-            "name": "iconCls",
-            "caption": "გამოსახულების css კლასის სახელი"
-        },
-        {
-            "name": "description",
-            "caption": "დესკტოპის აღწერა"
-        }
-    ]
+{
+  "caption": "სამუშაო ეკრანი",
+  "captionSingular": "სამუშაო მაგიდა",
+  "description": "",
+  "attributes": [
+    {
+      "name": "caption",
+      "caption": "კომპიუტერის დასახელება"
+    },
+    {
+      "name": "code",
+      "caption": "კოდი "
+    },
+    {
+      "name": "url",
+      "caption": "URL"
+    },
+    {
+      "name": "isDefault",
+      "caption": "ნაგულისხმევი"
+    },
+    {
+      "name": "displayOrder",
+      "caption": "№ ბრძანება"
+    },
+    {
+      "name": "iconCls",
+      "caption": "გამოსახულების css კლასის სახელი"
+    },
+    {
+      "name": "description",
+      "caption": "დესკტოპის აღწერა"
+    }
+  ]
 }

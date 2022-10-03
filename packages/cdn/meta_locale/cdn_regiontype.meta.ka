@@ -1,15 +1,15 @@
-﻿{
-    "caption": "რეგიონების სახეობები",
-    "captionSingular": "რეგიონის ტიპი",
-    "description": "",
-    "attributes": [
-        {
-            "name": "code",
-            "caption": "კოდი"
-        },
-        {
-            "name": "name",
-            "caption": "სახელი"
-        }
-    ]
+{
+  "caption": "რეგიონების სახეობები",
+  "captionSingular": "რეგიონის ტიპი",
+  "description": "",
+  "attributes": [
+    {
+      "name": "code",
+      "caption": "კოდი"
+    },
+    {
+      "name": "name",
+      "caption": "სახელი"
+    }
+  ]
 }

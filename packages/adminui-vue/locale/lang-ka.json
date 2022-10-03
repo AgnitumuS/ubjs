@@ -1,60 +1,60 @@
 {
   "el": {
     "colorpicker": {
-      "confirm": "OK",
-      "clear": "Clear"
+      "confirm": "გასაგებია",
+      "clear": "გასუფთავება"
     },
     "datepicker": {
-      "now": "Now",
-      "today": "Today",
-      "cancel": "Cancel",
-      "clear": "Clear",
-      "confirm": "OK",
-      "selectDate": "Select date",
-      "selectTime": "Select time",
-      "startDate": "from",
-      "startTime": "from",
-      "endDate": "to",
-      "endTime": "to",
-      "prevYear": "Previous Year",
-      "nextYear": "Next Year",
-      "prevMonth": "Previous Month",
-      "nextMonth": "Next Month",
+      "now": "ახლა",
+      "today": "დღეს",
+      "cancel": "გაუქმება",
+      "clear": "გასუფთავება",
+      "confirm": "გასაგებია",
+      "selectDate": "აირჩიეთ თარიღი",
+      "selectTime": "აირღიეთ დრო",
+      "startDate": "-დან",
+      "startTime": "-დან",
+      "endDate": "-მდე",
+      "endTime": "-მდე",
+      "prevYear": "წინა წელი",
+      "nextYear": "შემდეგი წელი",
+      "prevMonth": "წინა თვე",
+      "nextMonth": "შემდეგი თვე",
       "year": "",
-      "month1": "January",
-      "month2": "February",
-      "month3": "March",
-      "month4": "April",
-      "month5": "May",
-      "month6": "June",
-      "month7": "July",
-      "month8": "August",
-      "month9": "September",
-      "month10": "October",
-      "month11": "November",
-      "month12": "December",
+      "month1": "იანვარი",
+      "month2": "თებერვალი",
+      "month3": "მარტი",
+      "month4": "აპრილი",
+      "month5": "მაისი",
+      "month6": "ივნისი",
+      "month7": "ივლისი",
+      "month8": "აგვისტო",
+      "month9": "სექტემბერი",
+      "month10": "ოქტომბერი",
+      "month11": "ნოემბერი",
+      "month12": "დეკემბერი",
       "weeks": {
-        "sun": "Sun",
-        "mon": "Mon",
-        "tue": "Tue",
-        "wed": "Wed",
-        "thu": "Thu",
-        "fri": "Fri",
-        "sat": "Sat"
+        "sun": "კვირა",
+        "mon": "ორშაბათი",
+        "tue": "სამშაბათი",
+        "wed": "ოთხშაბათი",
+        "thu": "ხუთშაბათი",
+        "fri": "პარასკევი",
+        "sat": "შაბათი"
       },
       "months": {
-        "jan": "Jan",
-        "feb": "Feb",
-        "mar": "Mar",
-        "apr": "Apr",
-        "may": "May",
-        "jun": "Jun",
-        "jul": "Jul",
-        "aug": "Aug",
-        "sep": "Sep",
-        "oct": "Oct",
-        "nov": "Nov",
-        "dec": "Dec"
+        "jan": "იან",
+        "feb": "თებ",
+        "mar": "მარ",
+        "apr": "აპრ",
+        "may": "მაი",
+        "jun": "ივნ",
+        "jul": "ივლ",
+        "aug": "აგვ",
+        "sep": "სექ",
+        "oct": "ოქტ",
+        "nov": "ნოემ",
+        "dec": "დეკ"
       },
       "format": {
         "date": "dd.MM.yyyy",
@@ -64,229 +64,234 @@
       }
     },
     "select": {
-      "loading": "Loading",
-      "noMatch": "No matching data",
-      "noData": "No data",
-      "placeholder": "Select"
+      "loading": "იტვირთება",
+      "noMatch": "შესაბამისი მონაცემები არ არის",
+      "noData": "მონაცემები არ არის",
+      "placeholder": "არჩევა"
     },
     "cascader": {
-      "noMatch": "No matching data",
-      "loading": "Loading",
-      "placeholder": "Select"
+      "noMatch": "შესაბამისი მონაცემები არ არის",
+      "loading": "იტვირთება",
+      "placeholder": "არჩევა"
     },
     "pagination": {
-      "goto": "Go to",
-      "pagesize": "/page",
-      "total": "Total {total}",
+      "goto": "გადასვლა",
+      "pagesize": "/გვერდი",
+      "total": "სულ {total}",
       "pageClassifier": ""
     },
     "messagebox": {
-      "title": "Message",
-      "confirm": "OK",
-      "cancel": "Cancel",
-      "error": "Illegal input"
+      "title": "შეტყობინება",
+      "confirm": "გასაგებია",
+      "cancel": "გაუქმება",
+      "error": "არალეგალური მნიშვნელობა"
     },
     "upload": {
-      "deleteTip": "press delete to remove",
-      "delete": "Delete",
-      "preview": "Preview",
-      "continue": "Continue"
+      "deleteTip": "აღმოფრვრისთვის დააჭირეთ წაშლას",
+      "delete": "წაშლა",
+      "preview": "გადახედვა",
+      "continue": "გაგრძელება"
     },
     "table": {
-      "emptyText": "No Data",
-      "confirmFilter": "Confirm",
-      "resetFilter": "Reset",
-      "clearFilter": "All",
-      "sumText": "Sum"
+      "emptyText": "მონაცემები არ არის",
+      "confirmFilter": "დადასტურება",
+      "resetFilter": "განულება",
+      "clearFilter": "ყველა",
+      "sumText": "ჯამი"
     },
     "tree": {
-      "emptyText": "No Data"
+      "emptyText": "მონაცემები არ არის"
     },
     "transfer": {
-      "noMatch": "No matching data",
-      "noData": "No data",
+      "noMatch": "შესაბამისი მონაცემები არ არის",
+      "noData": "მონაცემები არ არის",
       "titles": [
-        "List 1",
-        "List 2"
+        "ჩამონათვალი 1",
+        "ჩამონათვალი 2"
       ],
-      "filterPlaceholder": "Enter keyword",
-      "noCheckedFormat": "{total} items",
-      "hasCheckedFormat": "{checked}/{total} checked"
+      "filterPlaceholder": "შეიყვანეთ სიტყვა",
+      "noCheckedFormat": "{total} ელემენტი",
+      "hasCheckedFormat": "{checked}/{total} შემოწმებულია"
     }
   },
-  "supportMailToTitle": "Send error to support",
-  "isRequiredFieldFmt": "{0} is required",
-  "linkCopiedText": "Link copied to clipboard",
-  "createdEntityCaption": "Created",
-  "updatedEntityCaption": "Updated",
-  "searchByDateRange": "Date range",
-  "forAllTime": "For all time",
-  "lastMonth": "Last Month",
-  "lastQuarter": "Last quarter",
-  "last6Month": "Last 6 month",
-  "thisYear": "This year",
-  "successfullySaved": "Successfully saved",
-  "formWasRefreshed": "Form was refreshed",
-  "recordDeletedSuccessfully": "Record deleted successfully",
-  "selectedValueWasDeleted": "Selected value was deleted",
-  "value is out of date": "value is out of date",
-  "recordWasDeleted": "Record was deleted",
-  "validationError": "Unable to save.<br>Error in fields:<br>{0}",
-  "formCrashTitle": "Form was crashed",
-  "formCrashBody": "Something going wrong please reload form or contact system administrator",
-  "selectDate": "Select date",
-  "selectDateAndTime": "Select date and time",
-  "Add": "Add",
-  "Continue": "Continue",
+  "supportMailToTitle": "შეცდომის გაგზავნა საპორტში",
+  "isRequiredFieldFmt": "{0} სავალდებულოა",
+  "linkCopiedText": "ბმული კოპირებულია ბუფერში",
+  "createdEntityCaption": "შექმნილია",
+  "updatedEntityCaption": "განახლებულია",
+  "searchByDateRange": "თარიღის დიაპაზონი",
+  "forAllTime": "ყველა დროის",
+  "lastMonth": "ბოლო თვე",
+  "lastQuarter": "ბოლო კვარტალი",
+  "last6Month": "ბოლო 6 თვე",
+  "thisYear": "მიმდინარე წელი",
+  "successfullySaved": "შენახულია წარმატებით",
+  "formWasRefreshed": "ფორმა განახლებულია",
+  "recordDeletedSuccessfully": "ჩანაწერი წაშლილია წარმატებით",
+  "selectedValueWasDeleted": "არჩეული მნიშვნელობა წაშლილია",
+  "value is out of date": "მნიშვნელობა ვადაგასულია",
+  "recordWasDeleted": "ჩანაწერი წაშლილია",
+  "validationError": "შენახვა შეუძლებელია.<br>შეცდომა ველში:<br>{0}",
+  "formCrashTitle": "ფორმა გაფუჭდა",
+  "formCrashBody": "მოხდა გაუთვალისწინებელი შეცდომა. გთხოვთ განაახლოთ ფორმა ან დაუკავშირდეთ სისტემის ადმინისტრატორს.",
+  "selectDate": "აირჩიეთ თარიღი",
+  "selectDateAndTime": "აირჩიეთ თარიღი და დრო",
+  "Add": "დამატება",
+  "Continue": "გაგრძელება",
   "sidebar": {
     "desktopSelector": {
-      "title": "Desktop selection"
+      "title": "დესკტოპის არჩევა"
     }
   },
   "table": {
     "filter": {
       "list": {
-        "title": "Filters"
+        "title": "ფილტრები"
       },
-      "conditionPlaceholder": "Condition",
-      "valueLabel": "Value",
+      "conditionPlaceholder": "მდგომარეობა",
+      "valueLabel": "მნიშვნელობა",
       "date": {
-        "from": "from",
-        "to": "to",
-        "valuePlaceholder": "Select date"
+        "from": "-დან",
+        "to": "-მდე",
+        "valuePlaceholder": "აირჩიეთ თარიღი"
       },
-      "columnPlaceholder": "Column"
+      "columnPlaceholder": "სვეტი"
     },
     "pagination": {
-      "outOf": "out of",
+      "outOf": "გარეთ",
       "nextPage": "შემდეგი გვერდი",
       "prevPage": "წინა გვერდი"
     },
-    "columnLabel": "Column",
+    "columnLabel": "სვეტი",
     "viewMode": {
-      "label": "View mode",
-      "card": "Card",
-      "table": "Table"
+      "label": "ხედვის რეჟიმი",
+      "card": "ბარათი",
+      "table": "ცხრილი"
     },
     "sort": {
-      "label": "Sort",
+      "label": "სორტირება",
       "direction": {
-        "label": "Direction",
-        "asc": "Ascending",
-        "desc": "Descending",
-        "none": "None"
+        "label": "მიმართულება",
+        "asc": "აღმავალი",
+        "desc": "დაღმავალი",
+        "none": "არცერთი"
       }
     },
     "summary": {
-      "menuText": "Show totals",
-      "header": "Totals for \"{forTitle:i18n}\"",
-      "totalRowCount": "Total row count",
-      "columnSummaries": "Column summaries",
-      "SUM": "sum",
-      "MIN": "minimum",
-      "MAX": "maximum",
-      "AVG": "average"
+      "menuText": "ჯამების ჩვენება",
+      "header": "ჯამები \"{forTitle:i18n}\"",
+      "totalRowCount": "მწკრივების მთლიანი რაოდენობა",
+      "columnSummaries": "სვეტების შეჯამება",
+      "SUM": "ჯამი",
+      "MIN": "მინიმუმ",
+      "MAX": "მაქსიმუმ",
+      "AVG": "საშუალო"
     }
   },
   "sizeUnits": {
-    "b": "Bytes",
-    "kb": "KB",
-    "mb": "MB",
-    "gb": "GB",
-    "tb": "TB"
+    "b": "ბაიტი",
+    "kb": "კილობაიტი",
+    "mb": "მეგაბაიტი",
+    "gb": "გიგაბაიტი",
+    "tb": "ტერებაიტი"
   },
   "fileInput": {
     "manyFilesTable": {
-      "label": "Label",
-      "size": "Size",
-      "type": "Type",
-      "uploadDate": "Upload date"
+      "label": "ლეიბლი",
+      "size": "ზომა",
+      "type": "ტიპი",
+      "uploadDate": "მონაცემების ატვირთვა"
     },
     "dropZone": {
-      "caption": "Drop file(s) here or click to upload",
-      "acceptError": "Invalid file(s) type",
-      "selectedFiles": "Selected"
+      "caption": "გადაიტანეთ ფაილ(ებ)ი აქ და დააჭირეთ ატვირთვას",
+      "acceptError": "არასწორი ფაილ(ებ)ის ტიპი",
+      "selectedFiles": "არჩეული"
     }
   },
   "select": {
-    "valueIsUndefined": "Value \"{0}\" not found in entity \"{1}\"",
-    "dictionaryAdding": "Adding new record",
-    "dictionaryAddingChoices": "Element <strong>\"{text}\"</strong> is not found in the dictionary \"{entity}\". Choose: <ul><li><strong>Continue</strong> to select another record</li> <li><strong>Add</strong> to add a new record with text \"{text}\"</li> <li><strong>Edit</strong> to define additional attributes</li> </ul>",
-    "recordAddedSuccessfully": "Record added successfully"
+    "valueIsUndefined": "მნიშვნელობა \"{0}\" არ მოიძებნა ელემენტში \"{1}\"",
+    "dictionaryAdding": "ახალი ჩანაწერის დამატება",
+    "dictionaryAddingChoices": "ელემენტი <strong>\"{text}\"</strong> არ მოიძებნა დირექტორიაში \"{entity}\". აირჩიეთ: <ul><li><strong>გაგრძელება</strong> ახალი ჩანაწერის ასარჩევად</li> <li><strong>დამატება</strong> ახალი ტექსტური ჩანაწერის დასამატებლად \"{text}\"</li> <li><strong>რედაქტირება</strong> დამატებითი ატრიბუტის განსასაზღვრად</li> </ul>",
+    "recordAddedSuccessfully": "ჩანაწერი დამატებულია წარმატებით"
   },
   "tableRegister": {
-    "hideDetails": "Hide details"
+    "hideDetails": "დეტალების დამალვა"
   },
   "chat": {
-    "emptyMessage": "No messages yet ...",
-    "inputPlaceholder": "Enter a message",
-    "copyNotification": "Message successfully copied in clipboard",
-    "removeMessageDialog": "Remove message \"{0}\"",
-    "removeMessageNotification": "Message successfully deleted"
+    "emptyMessage": "შეტყობინებები არ არის ...",
+    "inputPlaceholder": "შეიყვანეთ შეტყობინება",
+    "copyNotification": "შეტყობინება წარმატებით დაკოპირდა ბუფერში",
+    "removeMessageDialog": "შეტყობინების წაშლა \"{0}\"",
+    "removeMessageNotification": "შეტყობინება წაიშალა წარმატებით"
   },
   "aclRlsInfo": {
-    "subject": "Subject",
-    "name": "Name"
+    "subject": "სათაური",
+    "name": "დასახელება"
   },
   "UFile": {
     "webcam": {
-      "webcamLabel": "Webcam",
-      "pictureLabel": "Picture",
-      "emptyPicturePlaceholder": "Your picture",
-      "takePictureButton": "Take picture",
-      "takeAnotherPictureButton": "Take another",
-      "intoPicture": "As picture",
-      "intoPdf": "As PDF",
-      "addPage": "Add as page",
+      "webcamLabel": "ვებკამერა",
+      "pictureLabel": "სურათი",
+      "emptyPicturePlaceholder": "თქვენი სურათი",
+      "takePictureButton": "სურათის გადაღება",
+      "takeAnotherPictureButton": "სხვა სურათის გადაღება",
+      "intoPicture": "როგორც სურათი",
+      "intoPdf": "როგორც PDF",
+      "addPage": "დაამატე როგორც გვერდი",
       "resolution": {
         "low": "1280x720 (~1Mb)",
         "fullHD": "1920x1080 (~3Mb)",
         "4K": "3840x2160 (~8Mb)"
       },
       "error": {
-        "NotReadableError": "Access to webcam disabled by operation system settings",
-        "NotFoundError": "Cannot see any webcam devices",
-        "NotAllowedError": "Access to webcam disabled. Turn it on in browser settings"
+        "NotReadableError": "წვდომა ვებკამერაზე შეზღუდულია ოპერაციული სისტემის პარამეტრებიდან",
+        "NotFoundError": "ვებკამერის მოწყობილების დანახვა ვერ ხერხდება",
+        "NotAllowedError": "წვდომა ვებკამერაზე შეზღუდულია. გთხოვთ ჩართოთ შესაბამისი უფლება ბრაუზერის პარამეტრებიდან"
       }
     },
-    "addButtonTooltip": "Add",
-    "downloadButtonTooltip": "Download",
-    "previewButtonTooltip": "Preview",
-    "removeButtonTooltip": "Remove",
-    "scanButtonTooltip": "Scan",
-    "scanSettingsButtonTooltip": "Scan settings",
-    "webcamButtonTooltip": "Take image from webcam",
-    "fullscreenButtonTooltip": "Full screen preview"
+    "addButtonTooltip": "დამატება",
+    "downloadButtonTooltip": "ჩამოტვირთვა",
+    "previewButtonTooltip": "გადახედვა",
+    "removeButtonTooltip": "წაშლა",
+    "scanButtonTooltip": "დასკანერება",
+    "scanSettingsButtonTooltip": "სკანერის პარამეტრები",
+    "webcamButtonTooltip": "სურათის გადაღება ვებკამერიდან",
+    "fullscreenButtonTooltip": "მთელ ეკრანზე გადახედვა"
   },
   "UNavbar": {
-    "allTabsButton": "All opened tabs"
+    "allTabsButton": "ყველა გახსნილი ჩანართი"
   },
   "USelectEntity": {
     "dropdown": {
-      "moreButton": "More"
+      "moreButton": "მეტი"
     }
   },
   "UTable": {
-    "noData": "No data"
+    "noData": "მონაცემები არ არის"
   },
   "UCron": {
-    "seconds": "seconds",
-    "minutes": "minutes",
-    "hours": "hours",
-    "day": "day",
-    "month": "month",
-    "dayOfWeek": "day of week",
-    "every": "every",
-    "chooseOneOrMany": "choose one or many",
-    "specific": "specific",
-    "between": "between",
-    "expression": "cron expression",
-    "interpretation": "interpretation",
-    "and": "and",
-    "estimate": "Болжалды орындалулар",
-    "step": "шаг",
-    "oncePer": "every",
+    "seconds": "წამები",
+    "minutes": "წუთები",
+    "hours": "საათები",
+    "day": "დღეს",
+    "month": "თვე",
+    "dayOfWeek": "კვირის დღე",
+    "every": "ყოველი",
+    "chooseOneOrMany": "აირჩიეთ ერთი ან რამოდენიმე",
+    "specific": "კონკრეტული",
+    "between": "შორის",
+    "expression": "გამონაკლისი",
+    "interpretation": "ინტერპრეტაცია",
+    "and": "და",
+    "estimate": "დადგენილი ქმედებები",
+    "step": "ნაბიჯი",
+    "oncePer": "ერთხელ",
     "oncePerSuffix": "-й",
-    "occurrence": "случая"
+    "occurrence": "შემთხვევა",
+    "everySecond": "წამ(ებ)ი",
+    "everyMinute": "წუთ(ებ)ი",
+    "everyHour": "საათ(ებ)ი",
+    "everyDay": "დღე(ები)",
+    "everyMonth": "თვე(ები)"
   }
 }

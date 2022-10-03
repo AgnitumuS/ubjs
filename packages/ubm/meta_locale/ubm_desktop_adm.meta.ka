@@ -1,15 +1,15 @@
-﻿{
-    "caption": "კომპიუტერების ადმინისტრირება",
-    "captionSingular": "დესკტოპის ადმინისტრირება",
-    "description": "",
-    "attributes": [
-        {
-            "name": "instanceID",
-            "caption": "კომპიუტერი "
-        },
-        {
-            "name": "admSubjID",
-            "caption": "ადმინისტრატორის თემა"
-        }
-    ]
+{
+  "caption": "კომპიუტერების ადმინისტრირება",
+  "captionSingular": "დესკტოპის ადმინისტრირება",
+  "description": "",
+  "attributes": [
+    {
+      "name": "instanceID",
+      "caption": "კომპიუტერი "
+    },
+    {
+      "name": "admSubjID",
+      "caption": "ადმინისტრატორის თემა"
+    }
+  ]
 }

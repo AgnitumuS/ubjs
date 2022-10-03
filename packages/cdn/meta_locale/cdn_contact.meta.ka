@@ -1,19 +1,19 @@
-﻿{
-    "caption": "კონტაქტები",
-    "captionSingular": "კონტაქტი",
-    "description": "",
-    "attributes": [
-        {
-            "name": "contactTypeID",
-            "caption": "კონტაქტების სახეობა"
-        },
-        {
-            "name": "value",
-            "caption": "კონტაქტი"
-        },
-        {
-            "name": "subjectID",
-            "caption": "სათაური"
-        }
-    ]
+{
+  "caption": "კონტაქტები",
+  "captionSingular": "კონტაქტი",
+  "description": "",
+  "attributes": [
+    {
+      "name": "contactTypeID",
+      "caption": "კონტაქტების სახეობა"
+    },
+    {
+      "name": "value",
+      "caption": "კონტაქტი"
+    },
+    {
+      "name": "subjectID",
+      "caption": "სათაური"
+    }
+  ]
 }
