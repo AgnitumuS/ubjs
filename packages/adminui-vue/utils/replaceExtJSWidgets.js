@@ -228,7 +228,8 @@ function replaceShowList () {
           buildEditConfig: cfg.cmpInitConfig && cfg.cmpInitConfig.buildEditConfig,
           onSelectRecord: cfg.onSelectRecord,
           parentContext: cfg.parentContext,
-          hideActions: cfg.hideActions
+          hideActions: cfg.hideActions,
+          hideViewModes: cfg.hideViewModes
         }
       }
 
