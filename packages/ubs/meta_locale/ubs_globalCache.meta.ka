@@ -1,19 +1,19 @@
-﻿{
-    "caption": "სერვერის ქეში",
-    "captionSingular": "სერვერის ქეში",
-    "description": "სერვერის ქეში",
-    "attributes": [
-        {
-            "name": "ID",
-            "caption": "ИД"
-        },
-        {
-            "name": "key",
-            "caption": "Key"
-        },
-        {
-            "name": "value",
-            "caption": "Value"
-        }
-    ]
+{
+  "caption": "სერვერის ქეში",
+  "captionSingular": "სერვერის ქეში",
+  "description": "სერვერის ქეში",
+  "attributes": [
+    {
+      "name": "ID",
+      "caption": "ИД"
+    },
+    {
+      "name": "key",
+      "caption": "Key"
+    },
+    {
+      "name": "value",
+      "caption": "Value"
+    }
+  ]
 }

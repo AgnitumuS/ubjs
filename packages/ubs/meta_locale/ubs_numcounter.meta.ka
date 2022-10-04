@@ -1,15 +1,15 @@
-﻿{
-    "caption": "რეგისტრაციის ძირითადი მრიცხველი",
-    "captionSingular": "რეგისტრაციის გასაღების მრიცხველი",
-    "description": "",
-    "attributes": [
-        {
-            "name": "regKey",
-            "caption": "რეგისტრაციის მრიცხველი"
-        },
-        {
-            "name": "counter",
-            "caption": "ქვეყანა"
-        }
-    ]
+{
+  "caption": "რეგისტრაციის ძირითადი მრიცხველი",
+  "captionSingular": "რეგისტრაციის გასაღების მრიცხველი",
+  "description": "",
+  "attributes": [
+    {
+      "name": "regKey",
+      "caption": "რეგისტრაციის მრიცხველი"
+    },
+    {
+      "name": "counter",
+      "caption": "ქვეყანა"
+    }
+  ]
 }

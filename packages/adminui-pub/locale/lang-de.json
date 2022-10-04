@@ -15,6 +15,8 @@
   "gridCategoryCaption": "Kategorie",
   "gridFavoritesCaption": "Favoriten",
   "requiredField": "Dieses Feld ist erforderlich",
+  "numberExceedsMaxLimit": "Dieser Wert darf {0} nicht überschreiten",
+  "numberExceedsMinLimit": "Dieser Wert darf nicht kleiner als {0} sein",
   "General": "Allgemeines",
   "missingDescriptionAttribute": "Die Eigenschaft \"descriptionAttribute\" \"{0}\" für Entität \"{1}\" verweist auf fehlendes Attribut",
   "userSettings": "Einstellungen",

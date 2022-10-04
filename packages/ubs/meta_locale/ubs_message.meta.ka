@@ -1,31 +1,31 @@
-﻿{
-    "caption": "შეტყობინება",
-    "captionSingular": "შეტყობინება",
-    "description": "",
-    "attributes": [
-        {
-            "name": "messageBody",
-            "caption": "შეტყობინება"
-        },
-        {
-            "name": "complete",
-            "caption": "დასრულება"
-        },
-        {
-            "name": "messageType",
-            "caption": "ტიპი"
-        },
-        {
-            "name": "startDate",
-            "caption": "დაწყების თარიღი"
-        },
-        {
-            "name": "expireDate",
-            "caption": "დასრულების თარიღი"
-        },
-        {
-            "name": "recipients",
-            "caption": "მიმღები"
-        }
-    ]
+{
+  "caption": "შეტყობინება",
+  "captionSingular": "შეტყობინება",
+  "description": "",
+  "attributes": [
+    {
+      "name": "messageBody",
+      "caption": "შეტყობინება"
+    },
+    {
+      "name": "complete",
+      "caption": "დასრულება"
+    },
+    {
+      "name": "messageType",
+      "caption": "ტიპი"
+    },
+    {
+      "name": "startDate",
+      "caption": "დაწყების თარიღი"
+    },
+    {
+      "name": "expireDate",
+      "caption": "დასრულების თარიღი"
+    },
+    {
+      "name": "recipients",
+      "caption": "მიმღები"
+    }
+  ]
 }

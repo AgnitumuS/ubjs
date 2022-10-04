@@ -1,31 +1,31 @@
-﻿{
-    "caption": "მოხსენების თარგები",
-    "captionSingular": "მოხსენების შაბლონი",
-    "description": "",
-    "attributes": [
-        {
-            "name": "ID",
-            "caption": "ID"
-        },
-        {
-            "name": "model",
-            "caption": "მოდელი"
-        },
-        {
-            "name": "report_code",
-            "caption": "ანგარიშის კოდი"
-        },
-        {
-            "name": "name",
-            "caption": "სახელი"
-        },
-        {
-            "name": "template",
-            "caption": "თარგი"
-        },
-        {
-            "name": "code",
-            "caption": "ჯავასკრიპტის კოდი"
-        }
-    ]
+{
+  "caption": "მოხსენების თარგები",
+  "captionSingular": "მოხსენების შაბლონი",
+  "description": "",
+  "attributes": [
+    {
+      "name": "ID",
+      "caption": "ID"
+    },
+    {
+      "name": "model",
+      "caption": "მოდელი"
+    },
+    {
+      "name": "report_code",
+      "caption": "ანგარიშის კოდი"
+    },
+    {
+      "name": "name",
+      "caption": "სახელი"
+    },
+    {
+      "name": "template",
+      "caption": "თარგი"
+    },
+    {
+      "name": "code",
+      "caption": "ჯავასკრიპტის კოდი"
+    }
+  ]
 }

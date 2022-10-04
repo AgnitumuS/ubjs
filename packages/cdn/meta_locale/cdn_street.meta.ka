@@ -1,27 +1,27 @@
-﻿{
-    "caption": "ქუჩების სია",
-    "captionSingular": "ქუჩა",
-    "description": "",
-    "attributes": [
-        {
-            "name": "name",
-            "caption": "სახელი"
-        },
-        {
-            "name": "fullName",
-            "caption": "სრული სახელი"
-        },
-        {
-            "name": "code",
-            "caption": "კოდი"
-        },
-        {
-            "name": "streetType",
-            "caption": "ტიპი"
-        },
-        {
-            "name": "cityID",
-            "caption": "ქალაქი"
-        }
-    ]
+{
+  "caption": "ქუჩების სია",
+  "captionSingular": "ქუჩა",
+  "description": "",
+  "attributes": [
+    {
+      "name": "name",
+      "caption": "სახელი"
+    },
+    {
+      "name": "fullName",
+      "caption": "სრული სახელი"
+    },
+    {
+      "name": "code",
+      "caption": "კოდი"
+    },
+    {
+      "name": "streetType",
+      "caption": "ტიპი"
+    },
+    {
+      "name": "cityID",
+      "caption": "ქალაქი"
+    }
+  ]
 }

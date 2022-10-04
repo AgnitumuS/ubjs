@@ -2,7 +2,6 @@
   "caption": "მომხმარებლების სესიები",
   "captionSingular": "მომხმარებლის სესია",
   "description": "Logged-in user sessions list",
-  "documentation": "Read-only access to server-side sessions list of logged-in users",
   "attributes": [
     {
       "name": "ID",
@@ -18,33 +17,27 @@
     },
     {
       "name": "remoteIP",
-      "caption": "IP address",
-      "description": "IP address user login from"
+      "caption": "IP address"
     },
     {
       "name": "isPasswordExpired",
-      "caption": "Password expired",
-      "description": "True in case user need to change password because of expiration"
+      "caption": "Password expired"
     },
     {
       "name": "isLocked",
-      "caption": "Is locked",
-      "description": "Blocked because the maximum number of incorrect password entries has exceeded 'UBA.passwordPolicy.maxInvalidAttempts' parameter value"
+      "caption": "Is locked"
     },
     {
       "name": "serverTimeDelta",
-      "caption": "Time delta",
-      "description": "Delta between client and server time"
+      "caption": "Time delta"
     },
     {
       "name": "createdAt",
-      "caption": "Created at",
-      "description": "Session creation time"
+      "caption": "Created at"
     },
     {
       "name": "accessedAt",
-      "caption": "Accessed at",
-      "description": "Last time the user accessed the server"
+      "caption": "Accessed at"
     }
   ]
 }

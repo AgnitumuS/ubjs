@@ -32,15 +32,16 @@
               attribute-name="isBoss"
             />
           </u-grid>
-
-          <u-table-entity
-            v-if="ID"
-            :repository="employeeOnStaffRepo"
-            :columns="['staffUnitID.name', 'employeeID.fullFIO', 'employeeOnStaffType', 'mi_dateFrom', 'mi_dateTo']"
-            :build-edit-config="getConfig"
-            :build-add-new-config="getConfig"
-            :before-add-new="saveParentBeforeAddNew"
-          />
+          <slot name="slotForExtending">
+            <u-table-entity
+                v-if="ID"
+                :repository="employeeOnStaffRepo"
+                :columns="['staffUnitID.name', 'employeeID.fullFIO', 'employeeOnStaffType', 'mi_dateFrom', 'mi_dateTo']"
+                :build-edit-config="getConfig"
+                :build-add-new-config="getConfig"
+                :before-add-new="saveParentBeforeAddNew"
+            />
+          </slot>
         </el-tab-pane>
 
         <el-tab-pane
@@ -62,18 +63,24 @@
 <script>
 const { Form, mapInstanceFields } = require('@unitybase/adminui-vue')
 const { mapState, mapGetters } = require('vuex')
-module.exports.mount = cfg => {
+const fieldList = [
+  'ID', 'parentID', 'professionID', 'staffUnitTypeID', 'professionExtID', 'code', 'name', 'fullName',
+  'description', 'subordinationLevel', 'isBoss', 'nameGen', 'nameDat', 'fullNameGen', 'fullNameDat'
+]
+
+const buildFormMountFunction = function (cfg) {
   Form({
     ...cfg,
     title: '{code} {name}'
   })
-    .processing({
-      masterFieldList: ['parentID', 'professionID', 'staffUnitTypeID', 'professionExtID', 'code', 'name', 'fullName',
-        'description', 'subordinationLevel', 'isBoss', 'nameGen', 'nameDat', 'fullNameGen', 'fullNameDat']
-    })
-    .validation()
-    .mount()
+      .processing({
+        masterFieldList: fieldList
+      })
+      .validation()
+      .mount()
 }
+
+module.exports.mount = cfg => buildFormMountFunction(cfg)
 
 module.exports.default = {
   name: 'org_staffunit',
@@ -85,21 +92,7 @@ module.exports.default = {
   },
 
   computed: {
-    ...mapInstanceFields([
-      'ID',
-      'parentID',
-      'professionID',
-      'code',
-      'name',
-      'fullName',
-      'description',
-      'subordinationLevel',
-      'isBoss',
-      'nameGen',
-      'nameDat',
-      'fullNameGen',
-      'fullNameDat'
-    ]),
+    ...mapInstanceFields(fieldList),
     ...mapState(['isNew']),
     ...mapGetters(['loading', 'canSave'])
   },
@@ -146,7 +139,10 @@ module.exports.default = {
 
     async saveParentBeforeAddNew () {
       if (this.isNew || this.canSave) await this.$store.dispatch('save')
-    }
+    },
+
+    buildFormMountFunction: cfg => buildFormMountFunction(cfg),
+    getFieldList: () => fieldList
   }
 }
 </script>

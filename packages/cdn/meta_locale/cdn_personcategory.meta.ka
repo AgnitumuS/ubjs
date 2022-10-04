@@ -1,15 +1,15 @@
-﻿{
-    "caption": "კატეგორია",
-    "captionSingular": "კატეგორია",
-    "description": "",
-    "attributes": [
-        {
-            "name": "code",
-            "caption": "კოდი"
-        },
-        {
-            "name": "name",
-            "caption": "სახელი"
-        }
-    ]
+{
+  "caption": "კატეგორია",
+  "captionSingular": "კატეგორია",
+  "description": "",
+  "attributes": [
+    {
+      "name": "code",
+      "caption": "კოდი"
+    },
+    {
+      "name": "name",
+      "caption": "სახელი"
+    }
+  ]
 }

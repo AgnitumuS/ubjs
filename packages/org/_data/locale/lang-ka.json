@@ -1,7 +1,7 @@
 {
   "ubm_desktop.org_desktop.caption": "ორგანიზაციული სტრუქტურა",
-  "ubm_desktop.org_desktop.description": "განყოფილებები, თანამდებობები, თანამშრომლები, დანიშვნები, ...",
-  "ubm_navshortcut.org_folder_internal.caption": "შიდა ორგანიზება",
+  "ubm_desktop.org_desktop.description": "დეპარტამენტები, თანამდებობები, თანამშრომლები, დანიშვნები, ...",
+  "ubm_navshortcut.org_folder_internal.caption": "შიდა ორგანიზაცია",
   "ubm_navshortcut.org_employeeonstaff_all.caption": "დავალების ისტორია",
   "ubm_navshortcut.org_folder_dict.caption": "დამატებითი"
 }

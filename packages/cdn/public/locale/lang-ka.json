@@ -1,4 +1,4 @@
-﻿{
+{
   "externalOrganizations_title": "ორგანიზაციები",
   "physPerson_title": "ფიზიკური პირი",
   "locality_title": "უბანი",
@@ -7,13 +7,13 @@
   "employee_title": "გარე ორგანიზაციის თანამშრომელი",
   "profession_title": "პროფესია",
   "region_title": "რეგიონი",
-  "ClassifTypePanelClassifiersTitle": "კლასიფიკაციის ღირებულებები",
+  "ClassifTypePanelClassifiersTitle": "კლასიფიკატორის მნიშვნელობა",
   "classifier": {
     "caption": "კლასიფიკატორი",
     "description": "კლასიფიკატორის ჩანაწერი"
   },
   "classifieritem": {
     "caption": "კლასიფიკატორის ელემენტი",
-    "description": "კლასიფიკატორის ნივთის ჩანაწერი"
+    "description": "კლასიფიკატორის ელემენტის ჩანაწერი"
   }
 }
