@@ -4,9 +4,13 @@ const Vue = require('vue')
 // vuex required for type checking
 // eslint-disable-next-line no-unused-vars
 const Vuex = require('vuex')
-const { required } = require('vuelidate/lib/validators/index')
+const { required, minValue, maxValue } = require('vuelidate/lib/validators/index')
+const { i18n } = require('@unitybase/ub-pub')
 
-const { mapInstanceFields } = require('./helpers')
+const { mapInstanceFields, validateWithErrorText } = require('./helpers')
+
+const MAX_INT_VALUE = 2 ** 31 - 1
+const MIN_INT_VALUE = -(2 ** 31)
 
 const attrCaptionsMixin = {
   computed: {
@@ -63,6 +67,8 @@ class Validator {
       .filterAttribute(attr => attr.defaultView && !attr.allowNull && masterFieldList.includes(attr.code))
       .map(attr => attr.name)
 
+    const intAttributesNames = entitySchema.filterAttribute(attr => attr.dataType === 'Int').map(attr => attr.name)
+
     const defaultValidationMixin = {
       computed: {
         ...mapInstanceFields(entitySchema.getAttributeNames()),
@@ -73,7 +79,21 @@ class Validator {
       },
 
       validations () {
-        return Object.fromEntries(requiredAttributesNames.map(attr => [attr, { required }]))
+        const requiredAttrs = requiredAttributesNames.map(attr => [attr, { required }])
+        const validationObject = Object.fromEntries(requiredAttrs)
+        if (intAttributesNames.length) {
+          for (const attributeName of intAttributesNames) {
+            validationObject[attributeName].minValue = validateWithErrorText(
+              i18n('numberExceedsMinLimit', MIN_INT_VALUE),
+              minValue(MIN_INT_VALUE)
+            )
+            validationObject[attributeName].maxValue = validateWithErrorText(
+              i18n('numberExceedsMaxLimit', MAX_INT_VALUE),
+              maxValue(MAX_INT_VALUE)
+            )
+          }
+        }
+        return validationObject
       }
     }
 
