@@ -15,6 +15,8 @@
   "gridCategoryCaption": "Категорія",
   "gridFavoritesCaption": "Обране",
   "requiredField": "Це поле обов'язкове для заповнення",
+  "numberExceedsMaxLimit": "Значення не може перевищувати {0}",
+  "numberExceedsMinLimit": "Значення не може бути менше {0}",
   "General": "Загальні",
   "missingDescriptionAttribute": "Властивість 'descriptionAttribute': '{0}' у сутності '{1}' вказує на неіснуючий атрибут",
   "userSettings": "Налаштування",

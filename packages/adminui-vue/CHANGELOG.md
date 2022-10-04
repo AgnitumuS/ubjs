@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+- Form validation: set `minValue` (-2^31) and `maxValue` (2^31 - 1) validators for fields with attribute data type 'Int'
 
 ## [5.23.21] - 2022-09-30
 ### Added

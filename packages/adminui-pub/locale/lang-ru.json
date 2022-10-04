@@ -15,6 +15,8 @@
   "gridCategoryCaption": "Категория",
   "gridFavoritesCaption": "Избранное",
   "requiredField": "Это поле обязательно для заполнения",
+  "numberExceedsMaxLimit": "Значение не может превышать {0}",
+  "numberExceedsMinLimit": "Значение не может быть меньше {0}",
   "General": "Общее",
   "missingDescriptionAttribute": "Свойство 'descriptionAttribute': '{0}' у сущности '{1}' указывает на несуществующий атрибут",
   "userSettings": "Настройки",
