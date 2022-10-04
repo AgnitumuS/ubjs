@@ -14,6 +14,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+
+## [5.23.22] - 2022-10-04
+### Fixed
 - Form validation: set `minValue` (-2^31) and `maxValue` (2^31 - 1) validators for fields with attribute data type 'Int'
 - `UMasterDetailView` - fixed supports a property `hideViewModes` for showList method.
 

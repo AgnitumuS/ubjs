@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.23.19] - 2022-10-04
 ## [5.23.18] - 2022-09-26
 ### Added
 - `uba_user`: building `fullName` depending on the user language (surname at the beginning or at the end)

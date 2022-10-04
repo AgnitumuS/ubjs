@@ -8,11 +8,16 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
-- `org_staffunit-fm.vue` form changed to be able to extend `u-table-entity`
 
 ### Deprecated
 
 ### Removed
+
+### Fixed
+
+## [5.23.23] - 2022-10-04
+### Changed
+- `org_staffunit-fm.vue` form changed to be able to extend `u-table-entity`
 
 ### Fixed
  - org_employee: in case one of firstName/lastName/middleName for specific lang is missed - use value from default lang

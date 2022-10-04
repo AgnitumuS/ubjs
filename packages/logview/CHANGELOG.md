@@ -6,14 +6,21 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
- - added parsing of logs in Hi resolution timer format
 
 ### Changed
- - added line wrapping in preview 
 
 ### Deprecated
 
 ### Removed
+
+### Fixed
+
+## [1.0.3] - 2022-10-04
+### Added
+ - added parsing of logs in Hi resolution timer format
+
+### Changed
+ - added line wrapping in preview 
 
 ### Fixed
  - fix verbalization of `c=0` for SQL log level (c=0 mean `PlaneCached=no`) 
