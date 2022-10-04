@@ -5,7 +5,6 @@
     :class="{
       'u-table-entity__bordered': bordered,
       'u-table-entity__can-edit': canEdit,
-      'u-table-entity--sidebar-collapse': sidebarIsCollapse
     }"
     tabindex="1"
     @keydown.ctrl.delete.exact="canDelete && deleteRecord(selectedRowId)"
@@ -255,25 +254,7 @@
 
     <div class="u-table-entity__body">
       <!-- @slot Add a sidebar to the left side of the table or card-view -->
-      <span
-        v-if="$scopedSlots.sidebar"
-        class="u-table-entity__sidebar"
-      >
-        <div
-          class="u-sidebar__collapse-button"
-          :title="sidebarIsCollapse ? $ut('Expand') : $ut('Collapse')"
-          @click="sidebarIsCollapse = !sidebarIsCollapse"
-        >
-          <i
-            :class="
-              sidebarIsCollapse ? 'u-icon-arrow-right' : 'u-icon-arrow-left'
-            "
-          />
-        </div>
-        <div class="u-table-entity__sidebar--slot">
-          <slot name="sidebar" />
-        </div>
-      </span>
+      <slot name="sidebar" />
 
       <u-table
         v-if="viewMode === 'table'"
@@ -648,7 +629,6 @@ export default {
 
   data () {
     return {
-      sidebarIsCollapse: false,
       targetColumn: null,
       contextMenuRowId: null,
       cacheActiveElement: null
@@ -988,28 +968,6 @@ export default {
 </script>
 
 <style>
-.u-table-entity__sidebar {
-  position: relative;
-}
-.u-table-entity--sidebar-collapse .u-table-entity__sidebar {
-  width: 0px;
-}
-.u-table-entity--sidebar-collapse .u-table-entity__sidebar--slot {
-  display: none;
-}
-.u-table-entity--sidebar-collapse div.u-table-entity__body{
-  display: block;
-}
-
-.u-table-entity__sidebar .u-sidebar__collapse-button {
-  top: 0px;
-  width: 11px;
-  height: 18px;
-  font-size: 10px;
-  background: hsl(var(--hs-control), var(--l-state-hover));
-  border-top-right-radius: 6px;
-  border-bottom-right-radius: 6px;
-}
 @media (min-height: 500px) {
   .u-table-entity .u-table {
     overflow: auto;
