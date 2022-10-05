@@ -510,7 +510,10 @@ export default {
       }
     },
 
-    leaveInput () {
+    leaveInput (e) {
+      if (e) {
+        e.stopPropagation()
+      }
       if (this.dropdownVisible) {
         this.query = ''
         this.dropdownVisible = false

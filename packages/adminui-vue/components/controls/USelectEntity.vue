@@ -18,6 +18,7 @@
       @keydown.native.exact.up="changeSelected(-1)"
       @keydown.native.enter="chooseOption(selectedOption)"
       @keydown.native.esc.capture="leaveInput"
+      @keydown.native.tab="leaveInput"
     >
       <div
         slot="reference"

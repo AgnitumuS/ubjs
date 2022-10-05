@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+- `USelectEntity` and `USelectMultiple`: correct 'TAB' button handling
 
 ## [5.23.23] - 2022-10-04
 ### Fixed
