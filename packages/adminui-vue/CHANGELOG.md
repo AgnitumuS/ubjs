@@ -15,6 +15,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+## [5.23.23] - 2022-10-04
+### Fixed
+- Form validation: fix error when field with 'Int' data type not required
+
 ## [5.23.22] - 2022-10-04
 ### Fixed
 - Form validation: set `minValue` (-2^31) and `maxValue` (2^31 - 1) validators for fields with attribute data type 'Int'

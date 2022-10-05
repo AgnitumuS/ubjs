@@ -83,6 +83,7 @@ class Validator {
         const validationObject = Object.fromEntries(requiredAttrs)
         if (intAttributesNames.length) {
           for (const attributeName of intAttributesNames) {
+            validationObject[attributeName] = validationObject[attributeName] ?? {}
             validationObject[attributeName].minValue = validateWithErrorText(
               i18n('numberExceedsMinLimit', MIN_INT_VALUE),
               minValue(MIN_INT_VALUE)
