@@ -6,7 +6,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
- - `EntityGridPanel`: Add params clicksToEdit for RowEditing plugin
+ - `EntityGridPanel`: RowEditing plugin uses `this.clicksToEdit` (if defined) as a value for `Ext.grid.plugin.RowEditing.clicksToEdit`
+ 
 ### Changed
 
 ### Deprecated
