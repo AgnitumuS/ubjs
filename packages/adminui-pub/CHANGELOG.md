@@ -6,7 +6,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
-
+ - `EntityGridPanel`: Add params clicksToEdit for RowEditing plugin
 ### Changed
 
 ### Deprecated

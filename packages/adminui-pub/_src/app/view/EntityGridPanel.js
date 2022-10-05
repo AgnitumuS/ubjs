@@ -1124,7 +1124,7 @@ Ext.define('UB.view.EntityGridPanel', {
     /* RowEditing */
     if (me.rowEditing) {
       let rowEditing = Ext.create('Ext.grid.plugin.RowEditing', {
-        clicksToEdit: 1,
+        clicksToEdit: me.clicksToEdit || 1,
         clicksToMoveEditor: 2,
         saveBtnText: UB.i18n('save'),
         cancelBtnText: UB.i18n('actionCancel'),
