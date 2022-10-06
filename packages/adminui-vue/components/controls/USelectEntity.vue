@@ -18,7 +18,7 @@
       @keydown.native.exact.up="changeSelected(-1)"
       @keydown.native.enter="chooseOption(selectedOption)"
       @keydown.native.esc.capture="leaveInput"
-      @keydown.native.tab="leaveInput"
+      @keydown.native.tab.stop
     >
       <div
         slot="reference"
@@ -800,12 +800,12 @@ export default {
         onClose: this.skipAutoComplete
           ? undefined
           : (ID, store, formWasSaved, record) => {
-              this.editingFormIsOpened = false
-              if (!ID) return // form for adding new record is closed while in isNew state (value not saved to DB) - do nothing
-              if (!this.$el.isConnected) return // form is closed before addNew form
-              const formAttrs = Object.assign({}, store?.state?.data || record?.data) // form data is plain, so safe to use assign
-              this.$emit('input', formAttrs[this.valueAttribute], formAttrs)
-            }
+            this.editingFormIsOpened = false
+            if (!ID) return // form for adding new record is closed while in isNew state (value not saved to DB) - do nothing
+            if (!this.$el.isConnected) return // form is closed before addNew form
+            const formAttrs = Object.assign({}, store?.state?.data || record?.data) // form data is plain, so safe to use assign
+            this.$emit('input', formAttrs[this.valueAttribute], formAttrs)
+          }
       })
       this.editingFormIsOpened = true
       this.$UB.core.UBApp.doCommand(config)

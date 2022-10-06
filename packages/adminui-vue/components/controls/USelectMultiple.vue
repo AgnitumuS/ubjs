@@ -18,6 +18,7 @@
       @keydown.native.enter="chooseOption"
       @keydown.native.esc.capture="cancelInput"
       @keydown.native.tab="leaveInput"
+      @keydown.native.tab.stop
     >
       <div
         slot="reference"
@@ -510,10 +511,7 @@ export default {
       }
     },
 
-    leaveInput (e) {
-      if (e) {
-        e.stopPropagation()
-      }
+    leaveInput () {
       if (this.dropdownVisible) {
         this.query = ''
         this.dropdownVisible = false
