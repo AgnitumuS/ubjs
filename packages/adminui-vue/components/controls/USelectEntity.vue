@@ -680,7 +680,7 @@ export default {
          */
         this.$emit('input', this.selectedID, JSON.parse(JSON.stringify(option)))
       }
-      this.setQueryByValue(this.selectedID)
+      this.setQueryByValue(this.value)
       this.dropdownVisible = false
     },
 
