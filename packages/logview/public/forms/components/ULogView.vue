@@ -503,6 +503,8 @@ export default {
                   } else {
                     v = `TO_DATE('${v}','YYYY-MM-DD')`
                   }
+                } else {
+                  v = "'" + v + "'"
                 }
               } else if (k.t.charAt(0) === 'a') { // array
                 const isStrArr = k.t.charAt(1) === 's' // as | ai
