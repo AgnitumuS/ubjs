@@ -68,6 +68,11 @@ class LogParser {
      */
     this.allLines = []
     /**
+     * Lines to be shown (with filters applied)
+     * @type {Array<string>}
+     */
+    this.filteredLines = []
+    /**
      * Is Last added line ends with \n
      *
      * @type {boolean}
@@ -99,6 +104,7 @@ class LogParser {
     this.startedAt = new Date().getTime()
     /**
      * For Hi resolution timer logs - timer frequency in milliseconds
+     *
      * @type {number}
      */
     this.hiResTimerFreq = 1000
@@ -140,6 +146,11 @@ class LogParser {
     }
 
     this.addLogPortion(lines, false)
+  }
+
+  lineThread (l) {
+    const thN = l.charCodeAt(this.TH_POS) - TH_0
+    return (thN < 0 || thN > MAX_THREADS) ? -1 : thN
   }
 
   /**
@@ -197,10 +208,64 @@ class LogParser {
     } else {
       this.allLines = lines
     }
+    this.filteredLines = this.allLines
     if (!Array.isArray(linesOrText)) {
       this.lastLineComplete = linesOrText.endsWith('\n')
     }
     console.timeEnd('parseLogPortion')
+  }
+
+  /**
+   * Search for pattern, return line index (in allLines or in filtered lines depending on `inFiltered` param) or -1 if not found
+   *
+   * @param {string} pattern
+   * @param {string} [patternType='like'] One of `regexp`, `like`, `equal`
+   * @param {string} [direction='down'] Direction from `selectedRowIndex`. One of `up` `down` `full`
+   * @param {number} from For `up`/`down` directions - line # to search from
+   * @param {boolean} [inFiltered=true] Search in filtered lines or on allLines
+   * @returns {number} line index or -1 if not found
+   */
+  findLine (pattern, patternType, direction = 'down', from = 0, inFiltered = true) {
+    const L = inFiltered ? this.filteredLines : this.allLines
+    // by default - down
+    let i = from
+    let e = L.length
+    let d = 1
+    let found = false
+    if (direction === 'full') {
+      i = -1
+    } else if (direction === 'up') {
+      e = 0; d = -1
+    }
+    const maxI = L.length - d
+    // below small code duplication to avoid unnecessary function call
+    if (patternType === 'equal') {
+      while (i !== e && i >= -1 && i < maxI) {
+        i += d
+        if (L[i] === pattern) {
+          found = true
+          break
+        }
+      }
+    } else if (patternType === 'regexp') {
+      const re = new RegExp(pattern)
+      while (i !== e && i >= -1 && i < maxI) {
+        i += d
+        if (re.test(L[i])) {
+          found = true
+          break
+        }
+      }
+    } else { // default - like
+      while (i !== e && i >= -1 && i < maxI) {
+        i += d
+        if (L[i].includes(pattern)) {
+          found = true
+          break
+        }
+      }
+    }
+    return found ? i : -1
   }
 
   /**
@@ -251,14 +316,14 @@ class LogParser {
   }
 
   /**
-   * Return lines what match filtering conditions
+   * Compute filteredLInes array what match filtering conditions
    *
    * @param {Array<string>} logLevels Log levels codes (code from LOG_LEVELS)
    * @param {Array<number>} threads Array of threads indexes to show
    * @param {string} expr
    * @returns {Array<string>}
    */
-  getFilteredLines (logLevels, threads, expr) {
+  applyFilters (logLevels, threads, expr) {
     // use direct log line access instead of parseLine, it's x3 times faster
     // filter by log level
     console.time('filtration')
@@ -290,7 +355,7 @@ class LogParser {
       filtered = this.allLines
     }
     console.timeEnd('filtration')
-    return filtered
+    this.filteredLines = filtered
   }
 
   /**

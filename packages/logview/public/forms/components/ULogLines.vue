@@ -47,7 +47,7 @@ export default {
     },
     contextMenuFn: {
       type: Function,
-      default: undefined
+      default: () => false
     }
   },
   data () {
@@ -154,51 +154,14 @@ export default {
      * @returns {boolean} true if found
      */
     searchAndSelect (pattern, patternType, direction = 'down') {
-      const L = this._lines
-      // by default - down
-      let i = this.selectedRowIndex
-      let e = this.itemsCount
-      let d = 1
-      let found = false
-      if (direction === 'full') {
-        i = -1
-      } else if (direction === 'up') {
-        e = 0; d = -1
-      }
-      const maxI = this.itemsCount - d
-      // below small code duplication to avoid unnecessary function call
-      if (patternType === 'equal') {
-        while (i !== e && i >= -1 && i < maxI) {
-          i += d
-          if (L[i] === pattern) {
-            found = true
-            break
-          }
-        }
-      } else if (patternType === 'regexp') {
-        const re = new RegExp(pattern)
-        while (i !== e && i >= -1 && i < maxI) {
-          i += d
-          if (re.test(L[i])) {
-            found = true
-            break
-          }
-        }
-      } else { // default - like
-        while (i !== e && i >= -1 && i < maxI) {
-          i += d
-          if (L[i].includes(pattern)) {
-            found = true
-            break
-          }
-        }
-      }
-      if (found) {
+      const idx = this._logParser.findLine(pattern, patternType, direction, this.selectedRowIndex, true)
+
+      if (idx !== -1) {
         Vue.nextTick(() => {
-          this.selectRow(i, true, direction !== 'down')
+          this.selectRow(idx, true, direction !== 'down')
         })
       }
-      return found
+      return idx !== -1
     },
 
     doOnScroll (e) {

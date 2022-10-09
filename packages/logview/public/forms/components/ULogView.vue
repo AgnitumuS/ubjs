@@ -68,6 +68,14 @@
         @click="showStats"
       />
 
+      <u-button
+        title="Format SQL with parameters inlined"
+        :disabled="(selectedLineContentType !== LOG_LEVELS.SQL.contentType) && (selectedLineContentType !== LOG_LEVELS.cust1.contentType)"
+        icon="u-icon-signature"
+        appearance="inverse"
+        @click="formatPreviewInlinedParams"
+      />
+
       <u-base-input
         placeholder="search for..."
         :disabled="!selectedFileName"
@@ -282,6 +290,10 @@ export default {
     }
   },
 
+  beforeMount () {
+    this.LOG_LEVELS = LOG_LEVELS
+  },
+
   async mounted () {
     // this.refreshFiles()
   },
@@ -402,9 +414,9 @@ export default {
       if (!this._logParser) return
       this.loading = true
       try {
-        const filteredLines = this._logParser.getFilteredLines(this.logLevels4Filter, this.threads4Filter, this.filterStr)
-        this.$refs.log.setLines(filteredLines, this._logParser, isPartial)
-        this.totalCnt = filteredLines.length
+        this._logParser.applyFilters(this.logLevels4Filter, this.threads4Filter, this.filterStr)
+        this.$refs.log.setLines(this._logParser.filteredLines, this._logParser, isPartial)
+        this.totalCnt = this._logParser.filteredLines.length
       } finally {
         this.loading = false
       }
@@ -427,6 +439,101 @@ export default {
       const parsed = this._logParser.parseLine(line, idx, false)
       this.selectedLineContentType = parsed.logLevel.contentType || LOG_LEVELS.unknown.contentType
       this.selectedLineFormatted = this.formatPreview(parsed, line)
+    },
+
+    formatPreviewInlinedParams () {
+      const line = this.selectedLineContent
+      let parsedSQLLine
+      let paramsTxt
+      const parsed = this._logParser.parseLine(line, 0, false)
+      let lineIdx = this._logParser.findLine(line, 'equal', 'all', 0, false)
+      const L = this._logParser.allLines
+      if (parsed.logLevel === LOG_LEVELS.SQL) {
+        parsedSQLLine = parsed
+        while (--lineIdx > 0) {
+          if (this._logParser.lineThread(L[lineIdx]) === parsed.th) {
+            // params line goes just above SQL in the same thread
+            const parsedParams = this._logParser.parseLine(L[lineIdx], 0, false)
+            if (parsedParams.logLevel === LOG_LEVELS.cust1) {
+              paramsTxt = parsedParams.txt
+              break
+            }
+          }
+        }
+      } if (parsed.logLevel === LOG_LEVELS.cust1) {
+        // SQL line goes just below params
+        paramsTxt = parsed.txt
+        const Ll = L.length
+        while (++lineIdx < Ll) {
+          if (this._logParser.lineThread(L[lineIdx]) === parsed.th) {
+            // params line goes below SQL
+            const parsedSQL = this._logParser.parseLine(L[lineIdx], 0, false)
+            if (parsedSQL.logLevel === LOG_LEVELS.SQL) {
+              parsedSQLLine = parsedSQL
+              break
+            }
+          }
+        }
+      }
+      if (!parsedSQLLine) return
+      const qStart = this.getSQLStartIdx(parsedSQLLine.txt)
+      if (qStart === -1) return
+      const SQL = parsedSQLLine.txt.substring(qStart)
+      let parsedParams
+      if (paramsTxt) {
+        try {
+          const p = JSON.parse(paramsTxt.trim().replaceAll('...]', '"more..."]')) // truncated array parameter
+          const keys = Object.keys(p)
+          if (keys.length) {
+            const isOracle = SQL.includes(':1')
+            parsedParams = isOracle ? {} : []
+            // reorder params from 1 to N
+            const normalizedKeys = keys.map(k => {
+              let [param, n, t] = /P(\d*)(.*)/.exec(k)
+              n = parseInt(n, 10)
+              return { param, n, t }
+            }).sort((a, b) => a.n - b.n)
+            normalizedKeys.forEach(k => {
+              let v = p[k.param]
+              if (k.t === 'd') { // Date or DateTime
+                v = v.replace('T', ' ') // Oracle and Postgres require ' ' instead of T; SQL Server accept both date format
+                if (isOracle) {
+                  if (v.length > 9) {
+                    v = `TO_DATE('${v}','YYYY-MM-DD HH24:MI:SS')`
+                  } else {
+                    v = `TO_DATE('${v}','YYYY-MM-DD')`
+                  }
+                }
+              } else if (k.t.charAt(0) === 'a') { // array
+                const isStrArr = k.t.charAt(1) === 's' // as | ai
+                const isMS = SQL.includes('SELECT * FROM ?')
+                if (isMS) { // SQL server inline = select * from (values (1), (23)) as tt(f)
+                  v = '(VALUES ' + v.map(av => isStrArr ? `('${av}')` : `(${av})`).join(', ') + ') AS TT(F)'
+                } else {
+                  v = v.map(av => isStrArr ? `'${av}'` : av).join(', ')
+                }
+                if (SQL.includes('AS SYS.')) { // Oracle array
+                  v = (isStrArr ? 'SYS.ODCIVARCHAR2LIST(' : 'SYS.ODCINUMBERLIST(') + v + ')'
+                } else if (SQL.includes('ANY(')) { // Postgres array
+                  v = '{' + v + '}'
+                }
+              } else if (typeof v === 'string') {
+                v = "'" + v + "'"
+              } else if (v === null) {
+                v = 'null'
+              }
+              if (Array.isArray(parsedParams)) { // positioned params
+                parsedParams.push(v)
+              } else { // named params
+                parsedParams[k.n] = v
+              }
+            })
+          }
+        } catch {}
+      }
+      this.selectedLineContentType = LOG_LEVELS.SQL.contentType
+      this.selectedLineFormatted = '-- WARNING: plane for query with inlined parameters is NOT the same as with parameters binding' +
+        '\n' + this.formatSQL(SQL, parsedParams)
     },
 
     applyLogLevelPrefilter (pf) {
@@ -475,33 +582,41 @@ export default {
       return f.fn + '\n' + this.formatFileInfo(f)
     },
 
+    formatSQL (SQL, params) {
+      // heuristic for dialect based on parameters format
+      let lang = 'sqlite' // ?
+      if (SQL.includes('$1')) { // Postgres, SQL Server
+        lang = 'postgresql'
+      } else if (SQL.includes(':1')) { // Oracle
+        lang = 'plsql'
+      }
+      return sqlFormatter.format(SQL, { language: lang, params })
+    },
+    getSQLStartIdx (txt) {
+      let qStart = txt.indexOf('q=')
+      if (qStart === -1) {
+        const uTXT = txt.toLowerCase()
+        qStart = (uTXT.indexOf('select') + 1) || (uTXT.indexOf('insert') + 1) || (uTXT.indexOf('update') + 1) || (uTXT.indexOf('delete') + 1)
+        qStart -= 1
+      } else {
+        qStart += 2
+      }
+      return qStart
+    },
+
     formatPreview (parsed, line) {
       let txt = parsed.txt
       let fmt
       try {
         if (parsed.logLevel.contentType === 'text/x-sql') {
-          let qStart = txt.indexOf('q=')
+          const qStart = this.getSQLStartIdx(txt)
           const isUB = qStart !== -1
-          if (!isUB) {
-            const uTXT = txt.toLowerCase()
-            qStart = (uTXT.indexOf('select') + 1) || (uTXT.indexOf('insert') + 1) || (uTXT.indexOf('update') + 1) || (uTXT.indexOf('delete') + 1)
-            qStart -= 1
-          } else {
-            qStart += 2
-          }
           fmt = `-- ${this._logParser.getLineTime(line, true)} Thread: #${parsed.th}`
           if (qStart === -1) {
             fmt += `\n${parsed.txt}`
           } else {
             const comment = txt.substring(0, isUB ? qStart - 2 : qStart).trim()
             const SQL = txt.substring(qStart)
-            // heuristic for dialect based on parameters format
-            let lang = 'sqlite' // ?
-            if (SQL.includes('$1')) { // Postgres, SQL Server
-              lang = 'postgresql'
-            } else if (SQL.includes(':1')) { // Oracle
-              lang = 'plsql'
-            }
             if (isUB) {
               // r=1 t=1260 fr=1257 c=0
               const MT = { r: 'Rows: ', t: 'Time: ', fr: 'TimeToFirstRow: ', c: 'PlaneCached: ' }
@@ -521,9 +636,9 @@ export default {
                 }
                 return res
               })
-              fmt += `\n-- ${metrics.join(', ')}\n` + sqlFormatter.format(SQL, { language: lang })
+              fmt += `\n-- ${metrics.join(', ')}\n` + this.formatSQL(SQL)
             } else {
-              fmt += '\n' + sqlFormatter.format(SQL, { language: lang })
+              fmt += '\n' + this.formatSQL(SQL)
             }
           }
         } else if (parsed.logLevel.contentType === 'application/json') {

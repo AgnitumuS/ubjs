@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased]
 ### Added
  - added help button. Help message contains UI tips and log line format explanation
+ - added action on toolbar "Format SQL with parameters inlined". Including array binding
 
 ### Changed
 
