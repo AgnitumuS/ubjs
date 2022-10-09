@@ -17,6 +17,7 @@
         tabindex="0"
         @click="selectRow(parseInt($event.target.dataset.idx,10))"
         @dblclick="jumpCallStack(parseInt($event.target.dataset.idx,10))"
+        @contextmenu.prevent="contextMenuFn"
       >
         <pre
           v-for="l in visibleLines"
@@ -43,6 +44,10 @@ export default {
     itemHeight: {
       type: Number,
       default: 17
+    },
+    contextMenuFn: {
+      type: Function,
+      default: undefined
     }
   },
   data () {
@@ -230,6 +235,7 @@ export default {
         }
       }
     },
+
     gotoNextLogLevelLine (ll) {
       let k = this.selectedRowIndex
       const ln = this._lines

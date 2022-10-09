@@ -112,6 +112,13 @@
         </u-checkbox>
       </div>
 
+      <u-button
+        icon="u-icon-circle-question"
+        appearance="inverse"
+        title="Show help"
+        @click="showHelp"
+      />
+
       <table class="u-toolbar__date">
         <tr>
           <td>{{ selectedFileIsLocal ? 'File:' : 'Remote:' }}</td>
@@ -167,7 +174,7 @@
               :label="`${th.label}(${th.cnt})`"
               @contextmenu.prevent="showThreadsPrefilter($event, th.idx)"
             />
-            <u-dropdown ref="threadPre">
+            <u-dropdown ref="threadPreMenu">
               <template slot="dropdown">
                 <u-dropdown-item
                   label="All"
@@ -190,7 +197,8 @@
           ref="log"
           class="log-view__lines"
           @line-select="showLineContent"
-        />
+        >
+        </u-log-lines>
 
         <u-code-mirror
           class="log-view__preview"
@@ -428,7 +436,7 @@ export default {
 
     showThreadsPrefilter (e, thIdx) {
       this._prefilterPoppedAt = thIdx
-      this.$refs.threadPre.show(e)
+      this.$refs.threadPreMenu.show(e)
     },
     applyThreadPrefilter (action) {
       if (action === 'all') {
@@ -586,6 +594,49 @@ export default {
     showStats () {
       this.selectedLineFormatted = this._logParser.computeStats(this.selectedFileName)
       this.selectedLineContentType = LOG_LEVELS.unknown.contentType
+    },
+
+    showHelp () {
+      this.selectedLineContentType = LOG_LEVELS.unknown.contentType
+      this.selectedLineFormatted = `Log Viewer
+==========
+
+User interface tips
+-------------------
+
+- on the left panel "Events" and "Threads" group has a popup menu with pre-defined filters
+
+- "Find next" action in "Events" popup find next lone with the same event of *any thread*
+
+- dbl-clicking on log line:
+  - for '-->' (Enter) event  : find a corresponding Leave event
+  - for '<-->' (Leave) event : find a corresponding Enter event
+  - for other event types    : find next line with the same event type and the *same thread*
+
+- dbl-clicking on methods timing line sets "Thread" filter to the timing line thread and select line
+
+- when line with SQL log level is selected - query content is automatically formatted in the preview
+
+
+Log line formats
+----------------
+
+- "Params" log line JSON keys format is 'P' + parameter # + [parameter type]:
+  - P1     : parameter #1 of type "Int64"
+  - P2d    : parameter #2 of type "Date"
+  - P3ai20 : parameter #3 of type "Array of Int64" with 20 elements
+  - P4as19 : parameter #4 of type "Array of String" with 19 elements
+  - P5s10  : parameter #5 of type "String", string length is 10
+
+- "SQL" log line format is r=nn t=nn fr=nn c=n q=..., where
+  - r= : total number of rows affected (fetched, inserted, updated or deleted)
+  - t= : total tile for fetching/inserting/updating/deletion for r rows in milliseconds
+  - fr=: for selects - time to first row (pure fetch time is t-fr) in milliseconds
+  - c= : indicates SQL query execution plane is cached (if !==0).
+         Queries with non-cached planes are executes in 2 step - prepare/exec,
+         for cached - exec only (faster).
+         Caching strategy depends on used database driver
+`
     }
   },
   computed: {
