@@ -6,8 +6,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 ### Added
+- `ubqMailjob` - added batch. Default behavior is to handle 100 messages in one scheduler call
 
 ### Changed
+- `ubqMailjob` - added optional parameter `exhauseQueue`. 
+  In case `exhauseQueue === true` - repeat batch sending until all messages have been sent
 
 ### Deprecated
 
