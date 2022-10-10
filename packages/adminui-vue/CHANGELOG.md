@@ -14,6 +14,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ### Fixed
+- `USelectEntity` - fixed unsync between selected value and input field's text in cases when control's owner `input` event handler
+  decides not to change `value` prop or does it in async way or for some reasons sets another value
 
 ## [5.23.23] - 2022-10-04
 ### Fixed
