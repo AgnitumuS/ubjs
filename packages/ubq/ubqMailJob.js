@@ -37,109 +37,136 @@ const processTerminationRequested = typeof process.terminationRequested === 'fun
  * @module ubqMailJob
  * @memberOf module:@unitybase/ubq
  */
-module.exports = function () {
-  let eMsg
-  const mailData = {}
+module.exports = function (options) {
+  const BATCH_SIZE = 100
+  const useBatches = options && !!options.exhaustQueue ? options.exhaustQueue : false
   let sentCount = 0
+  let hasMail = false
+  let mailSender
+  const ensureSenderCreated = () => { // lazy initialization for mailSender
+    if (!mailSender) {
+      console.debug('Mailer: before new TubMailSender')
+      mailSender = new UBMail.TubMailSender({
+        host: mailerParams.targetHost,
+        port: mailerParams.targetPort || '25',
+        user: mailerParams.user || '',
+        password: mailerParams.password || '',
+        tls: Boolean(mailerParams.autoTLS),
+        fullSSL: Boolean(mailerParams.fullSSL),
+        auth: mailerParams.auth || false,
+        deferLogin: true
+      })
+
+      console.debug('Mailer: before mailSender.Login')
+      mailSender.login()
+      console.debug('Mailer: after mailSender.Login')
+    }
+  }
 
   console.log('Call JS method: UB.UBQ.sendQueueMail')
   if (!mailerParams.targetHost) {
     throw new Error('Invalid mailer configuration. Define ubConfig.YourApp.customSettings.mailerConfig object')
   }
-
-  const inst = UB.Repository('ubq_messages')
-    .attrs(['ID', 'queueCode', 'msgCmd']) // 'msgData' will be retrieved for each row, because it can be huge
-    .where('[queueCode]', '=', 'mail')
-    .where('[completeDate]', 'isNull')
-    .limit(100)
-    // handle messages In the order of their arrival
-    .orderBy('[ID]')
-    .select()
-
-  if (inst.eof) {
-    return 'No emails sent'
-  }
-  console.debug('Mailer: before new TubMailSender')
-  let mailSender = new UBMail.TubMailSender({
-    host: mailerParams.targetHost,
-    port: mailerParams.targetPort || '25',
-    user: mailerParams.user || '',
-    password: mailerParams.password || '',
-    tls: Boolean(mailerParams.autoTLS),
-    fullSSL: Boolean(mailerParams.fullSSL),
-    auth: mailerParams.auth || false,
-    deferLogin: true
-  })
   try {
-    console.debug('Mailer: before mailSender.Login')
-    mailSender.login()
-    console.debug('Mailer: after mailSender.Login')
-    const msgDataStore = UB.DataStore('ubq_messages') // avoid create a new instance inside a loop
-    while (!inst.eof && !processTerminationRequested()) { // terminate mail scheduler ASAP, without waiting all pending mails sends, in case process termination is requested
-      mailData.ID = inst.get('ID')
-      mailData.msgCmd = inst.get('msgCmd')
+    do {
+      const inst = UB.Repository('ubq_messages')
+        .attrs(['ID', 'queueCode', 'msgCmd']) // 'msgData' will be retrieved for each row, because it can be huge
+        .where('[queueCode]', '=', 'mail')
+        .where('[completeDate]', 'isNull')
+        .limit(BATCH_SIZE)
+        // handle messages In the order of their arrival
+        .orderBy('[ID]')
+        .select()
 
-      // retrieve msgData one by one to avoid fetch size overflow (see ubConfig.connections.connName.statementMaxMemoryMb. 50Mb by default)
-      UB.Repository('ubq_messages')
-        .attrs('msgData')
-        .where('[ID]', '=', mailData.ID)
-        .select(msgDataStore)
-      mailData.msgData = msgDataStore.get(0)
+      hasMail = !inst.eof
+      if (hasMail) {
+        ensureSenderCreated()
+        sentCount += sendMessages(inst, mailSender)
+      }
+      /* eslint-disable-next-line */
+    } while (useBatches && hasMail && !processTerminationRequested())
+  } finally {
+    if (mailSender) {
+      console.debug('!!!!!!!!! mailSender.freeNative !!!!!!!!!')
+      mailSender.freeNative() // release a connection to mail server
+      mailSender = null
+    }
+  }
+  return sentCount ? `Send ${sentCount} emails` : 'No emails sent'
+}
 
-      const cmd = JSON.parse(mailData.msgCmd)
-      mailData.attaches = []
-      if (cmd.attaches && cmd.attaches.length) {
-        for (let i = 0, L = cmd.attaches.length; i < L; i++) {
-          try {
-            const attachFN = App.blobStores.getContentPath({
-              entity: cmd.attaches[i].entity,
-              attribute: cmd.attaches[i].attribute,
-              ID: cmd.attaches[i].id
-            })
-            if (!fs.existsSync(attachFN)) {
-              mailData.attaches.push({
-                kind: UBMail.TubSendMailAttachKind.Text,
-                attachName: cmd.attaches[i].attachName + '.txt',
-                data: `File not exists, please forward this message to administrator.
+/**
+ * @private
+ * @param {ServerRepository} inst Repository instance
+ * @param {UBMail} mailSender Mailer instance
+ * @returns {number} Sent emails count
+ */
+function sendMessages (inst, mailSender) {
+  let eMsg
+  const mailData = {}
+  let sentCount = 0
+
+  const msgDataStore = UB.DataStore('ubq_messages') // avoid create a new instance inside a loop
+  while (!inst.eof && !processTerminationRequested()) { // terminate mail scheduler ASAP, without waiting all pending mails sends, in case process termination is requested
+    mailData.ID = inst.get('ID')
+    mailData.msgCmd = inst.get('msgCmd')
+
+    // retrieve msgData one by one to avoid fetch size overflow (see ubConfig.connections.connName.statementMaxMemoryMb. 50Mb by default)
+    UB.Repository('ubq_messages')
+      .attrs('msgData')
+      .where('[ID]', '=', mailData.ID)
+      .select(msgDataStore)
+    mailData.msgData = msgDataStore.get(0)
+
+    const cmd = JSON.parse(mailData.msgCmd)
+    mailData.attaches = []
+    if (cmd.attaches && cmd.attaches.length) {
+      for (let i = 0, L = cmd.attaches.length; i < L; i++) {
+        try {
+          const attachFN = App.blobStores.getContentPath({
+            entity: cmd.attaches[i].entity,
+            attribute: cmd.attaches[i].attribute,
+            ID: cmd.attaches[i].id
+          })
+          if (!fs.existsSync(attachFN)) {
+            mailData.attaches.push({
+              kind: UBMail.TubSendMailAttachKind.Text,
+              attachName: cmd.attaches[i].attachName + '.txt',
+              data: `File not exists, please forward this message to administrator.
   Entity: ${cmd.attaches[i].entity}, attribute: ${cmd.attaches[i].attribute}, ID: ${cmd.attaches[i].id}`
-              })
-            } else {
-              mailData.attaches.push({
-                kind: UBMail.TubSendMailAttachKind.File,
-                attachName: cmd.attaches[i].attachName,
-                data: attachFN,
-                isBase64: false
-              })
-            }
-
-            if (cmd.attaches[i].entity === 'ubq_mailAttachment') {
-              UB.DataStore('ubq_mailAttachment').run('delete', {
-                execParams: {
-                  ID: cmd.attaches[i].id
-                }
-              })
-            }
-          } catch (e) {
-            eMsg = (e && e.stack) ? e.message + ' - ' + e.stack : e
-            console.error('loadContent', eMsg)
+            })
+          } else {
+            mailData.attaches.push({
+              kind: UBMail.TubSendMailAttachKind.File,
+              attachName: cmd.attaches[i].attachName,
+              data: attachFN,
+              isBase64: false
+            })
           }
+
+          if (cmd.attaches[i].entity === 'ubq_mailAttachment') {
+            UB.DataStore('ubq_mailAttachment').run('delete', {
+              execParams: {
+                ID: cmd.attaches[i].id
+              }
+            })
+          }
+        } catch (e) {
+          eMsg = (e && e.stack) ? e.message + ' - ' + e.stack : e
+          console.error('loadContent', eMsg)
         }
       }
-      /* this. */
-      internalSendMail(mailData, mailSender)
-      sentCount++
-      inst.run('success', {
-        ID: mailData.ID
-      })
-      App.dbCommit(App.domainInfo.entities.ubq_messages.connectionName)
-      inst.next()
     }
-  } finally {
-    console.debug('!!!!!!!!! mailSender.freeNative !!!!!!!!!')
-    mailSender.freeNative() // release a connection to mail server
-    mailSender = null
+    /* this. */
+    internalSendMail(mailData, mailSender)
+    sentCount++
+    inst.run('success', {
+      ID: mailData.ID
+    })
+    App.dbCommit(App.domainInfo.entities.ubq_messages.connectionName)
+    inst.next()
   }
-  return `Send ${sentCount} emails`
+  return sentCount
 }
 
 /**
