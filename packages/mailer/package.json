@@ -7,7 +7,7 @@
     "ubmodel": {}
   },
   "scripts": {
-    "build": "./build_native",
+    "build": "docker run -it --rm --user \"$(id -u)\":\"$(id -g)\" -v \"$PWD/../../..\":/usr/src -w /usr/src/ubjs/packages/mailer unitybase/fpc-cross bash -c pwd && ./build_native",
     "version": "update-changelog"
   },
   "public": true,

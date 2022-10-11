@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 ### Changed
+ - `build` command now uses `unitybase/fpc-cross` docker image to build native module
 
 ### Deprecated
 
